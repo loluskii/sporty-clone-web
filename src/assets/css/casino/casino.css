@@ -1051,7 +1051,7 @@ body[data-route-full=lobby] .notification-container .notification-text {
 }
 
 .categories-list .category-parent.isSelected .category-item {
-  background-color: #262262
+  background-color: var(--brand-primary)
 }
 
 .categories-list .category-parent.isSelected .category-item span {
@@ -1064,7 +1064,7 @@ body[data-route-full=lobby] .notification-container .notification-text {
 }
 
 .categories-list .category-parent:hover .category-item {
-  background-color: #262262;
+  background-color: var(--brand-primary);
   color: white;
 }
 

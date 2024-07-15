@@ -220,12 +220,12 @@ const activeClass = (name) => {
   white-space: nowrap;
 }
 .x-user-center .x-list-item .free-wrapper {
-  border: solid 1px #262262;
+  border: solid 1px var(--brand-primary);
   border-radius: 7.5px;
   padding: 1px 4px;
 }
 .x-user-center .x-list-item .free-wrapper .free-text {
-  color: #262262;
+  color: var(--brand-primary);
   display: inline-block;
   font-size: 10px;
   font-weight: bold;
@@ -245,7 +245,7 @@ const activeClass = (name) => {
   width: 5px;
 }
 .x-user-center .x-list-item--active {
-  background: #262262;
+  background: var(--brand-primary);
   color: #fff;
   margin: 0 -1px 0 -1px;
 }
@@ -278,7 +278,7 @@ const activeClass = (name) => {
   width: 7px;
 }
 .x-user-center .identity-verification {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 10px;
   margin-top: 3px;
   padding-left: 20px;

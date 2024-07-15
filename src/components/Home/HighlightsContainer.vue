@@ -445,9 +445,9 @@ onMounted(async () => {
   cursor: pointer;
 }
 .simple-select-wrap .select-item:hover {
-  background-color: #262262;
+  background-color: var(--brand-primary);
 }
 .simple-select-wrap .select-item.select-item-active {
-  background-color: #262262;
+  background-color: var(--brand-primary);
 }
 </style>

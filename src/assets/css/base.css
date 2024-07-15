@@ -1246,14 +1246,14 @@ only screen and (min-width: 2560px) {
   font-weight: 700;
   min-width: 75px;
   width: auto;
-  color: #fca311;
+  color: var(--brand-secondary);
   color: var(--brand-secondary);
 }
 
 .x-dialog.opennet-dialog-style .x-dialog-footer .es-dialog-btn:hover {
   background-color: initial;
   cursor: pointer;
-  color: #fca311;
+  color: var(--brand-secondary);
   color: var(--brand-secondary);
 }
 
@@ -1518,7 +1518,7 @@ textarea {
 }
 
 .c-footer .x-footer-top .x-t-light {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 
 .c-footer .x-footer-top .x-t-small {
@@ -2091,6 +2091,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 .x-tabs-nav .x-tabs-tab:hover {
   color: #3dac5f;
 }
+
 .x-tabs-nav .x-tabs-tab .x-icon {
   height: 14px;
   margin-right: 8px;
@@ -2257,7 +2258,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-input-wrapper .x-input-icon.x-input-icon--clickable:hover {
-  color: #262262;
+  color: var(--brand-primary);
   color: var(--brand-secondary);
   cursor: pointer;
 }
@@ -2288,7 +2289,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   width: 42px;
-  color: #262262;
+  color: var(--brand-primary);
   color: var(--brand-secondary);
 }
 
@@ -2301,18 +2302,18 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-input-wrapper.x-input-wrapper--active .x-input {
-  border: 1px solid #262262;
-  border-color: #262262;
+  border: 1px solid var(--brand-primary);
+  border-color: var(--brand-primary);
   border-color: var(--brand-secondary);
 }
 
 .x-input-wrapper.x-input-wrapper--active .x-input-prepend {
-  border-color: #262262;
+  border-color: var(--brand-primary);
   border-color: var(--brand-secondary);
 }
 
 .x-input-wrapper.x-input-wrapper--active.x-input-group--prepend .x-input {
-  border-color: #262262;
+  border-color: var(--brand-primary);
   border-color: var(--brand-secondary);
 }
 

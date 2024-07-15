@@ -1,6 +1,129 @@
 import moment from 'moment'
 import _ from 'lodash'
 import { getSplitPropsData } from '@/helpers'
+import { brandDetails } from '/branding'
+import { useUtilstStore } from '@/stores'
+import { brandDetails as defBrandDetails } from '/branding-template'
+
+export const applyBranding = async () => {
+  try {
+    let defConfig
+    if (brandDetails) {
+      defConfig = brandDetails
+    } else {
+      defConfig = defBrandDetails
+    }
+    const config = defConfig
+    const utilsStore = useUtilstStore()
+    const loadFont = (url) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      document.head.appendChild(link)
+    }
+
+    utilsStore.brandName = config.name
+
+    loadFont(config.fonts.primaryFontURL)
+    loadFont(config.fonts.secondaryFontURL)
+
+    document.documentElement.style.setProperty('--brand-primary', config.colors.primaryColor)
+    document.documentElement.style.setProperty('--brand-secondary', config.colors.secondaryColor)
+    document.documentElement.style.setProperty('--brand-tertiary', config.colors.tertiaryColor)
+
+    document.documentElement.style.setProperty(
+      '--brand-text-secondary',
+      config.colors.secondaryColor
+    )
+    document.documentElement.style.setProperty(
+      '--brand-background-primary',
+      config.colors.primaryBackground
+    )
+    document.documentElement.style.setProperty(
+      '--brand-background-secondary',
+      config.colors.secondaryBackground
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-active-tab-bg',
+      config.colors.activeTabColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-background-live',
+      config.colors.liveContainerBackgroundColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-text-primary',
+      config.colors.primaryTextColor
+    )
+    document.documentElement.style.setProperty(
+      '--brand-text-secondary',
+      config.colors.secondaryTextColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-prematch-odds-bg',
+      config.colors.prematchOddBackgroundColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-prematch-odd-bg-hover',
+      config.colors.prematchOddBackgroundHover
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-prematch-odds-text',
+      config.colors.prematchOddTextColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-live-odds-bg',
+      config.colors.liveOddBackgroundColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-live-odds-text',
+      config.colors.liveOddTextColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-active-prematch-odds-bg',
+      config.colors.activePrematchOddBackground
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-active-prematch-odds-text',
+      config.colors.activePrematchOddTextColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-highlight-text',
+      config.colors.highlightTextColor
+    )
+
+    document.documentElement.style.setProperty(
+      '--brand-primary-font-family',
+      config.fonts.primaryFont
+    )
+    document.documentElement.style.setProperty(
+      '--brand-text-secondary-font-family',
+      config.fonts.secondaryFont
+    )
+
+    const logoElement = document.getElementById('logo')
+    if (logoElement) {
+      logoElement.src = config.images.logo
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error applying branding:', error)
+  }
+}
+
+export default applyBranding
 
 export const calculateBonus = (coupondata, globalVars, bonusList) => {
   if (!globalVars || !bonusList) {
@@ -69,9 +192,9 @@ export const getDataFromPayload = (couponPayload) => {
 }
 
 export const formatDate = (date, format) => {
-  const fixDateForAllBrowsers = date.replace(/-/g, '/');
-  const d = new Date(fixDateForAllBrowsers);
-  return moment(d).format(format);
+  const fixDateForAllBrowsers = date.replace(/-/g, '/')
+  const d = new Date(fixDateForAllBrowsers)
+  return moment(d).format(format)
 }
 
 export const slugify = (str) => {
@@ -381,14 +504,13 @@ export const validateCombinability = (no_of_fixtures, tournaments) => {
   return res
 }
 
-
 export const formatString = (str, pos, length = 12) => {
   let ast = '****'
-  if(pos == 'pre'){
+  if (pos == 'pre') {
     return ast.concat(str.slice(-4))
-  }else{
-    let spaceIndex = str.indexOf(" ")
-    return str.substr(0,spaceIndex+5).concat(ast)
+  } else {
+    let spaceIndex = str.indexOf(' ')
+    return str.substr(0, spaceIndex + 5).concat(ast)
   }
 }
 

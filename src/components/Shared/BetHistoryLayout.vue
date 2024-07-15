@@ -267,12 +267,12 @@ const activeClass = (name) => {
   white-space: nowrap;
 }
 .x-user-center .x-list-item .free-wrapper {
-  border: solid 1px #262262;
+  border: solid 1px var(--brand-primary);
   border-radius: 7.5px;
   padding: 1px 4px;
 }
 .x-user-center .x-list-item .free-wrapper .free-text {
-  color: #262262;
+  color: var(--brand-primary);
   display: inline-block;
   font-size: 10px;
   font-weight: bold;
@@ -292,7 +292,7 @@ const activeClass = (name) => {
   width: 5px;
 }
 .x-user-center .x-list-item--active {
-  background: #262262;
+  background: var(--brand-primary);
   color: #fff;
   margin: 0 -1px 0 -1px;
 }
@@ -325,7 +325,7 @@ const activeClass = (name) => {
   width: 7px;
 }
 .x-user-center .identity-verification {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 10px;
   margin-top: 3px;
   padding-left: 20px;
@@ -355,11 +355,11 @@ const activeClass = (name) => {
 }
 .x-order-wrapper .x-pg-container .pageNum.selected {
   color: #fff;
-  background-color: #262262;
+  background-color: var(--brand-primary);
 }
 .x-order-wrapper .x-pg-container .pageNum.icon-prev::before,
 .x-order-wrapper .x-pg-container .pageNum.icon-next::before {
-  color: #262262;
+  color: var(--brand-primary);
 }
 .x-order-wrapper .x-pg-container .pageNum.icon-prev.icon-disabled::before,
 .x-order-wrapper .x-pg-container .pageNum.icon-next.icon-disabled::before {
@@ -383,7 +383,7 @@ const activeClass = (name) => {
   left: 4px;
   top: 6px;
   border-width: 4px 4px 0;
-  border-color: #262262 transparent transparent;
+  border-color: var(--brand-primary) transparent transparent;
   border-style: solid;
 }
 .x-order-wrapper .x-icon-ques {
@@ -515,7 +515,7 @@ const activeClass = (name) => {
   font-style: normal;
 }
 .x-order-wrapper .x-icon--dollar::before {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 11px;
   line-height: 11px;
 }

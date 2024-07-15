@@ -144,7 +144,7 @@ function selectCategory(id) {
   } else {
     utilsStore.activeCategories.push(id) // Add to activeCategories
     emitter.emit('newActiveCategory', id)
-    router.push({ name: 'fixtures-by-sport', query: {type: 'byCategory'} })
+    router.push({ name: 'fixtures-by-sport', query: { type: 'byCategory' } })
   }
 }
 
@@ -428,8 +428,8 @@ onMounted(async () => {
 }
 #sportList .game-list .popular-list .tournament-list .tournament-list-item .checkbox.active,
 #sportList .game-list .sport-list .tournament-list .tournament-list-item .checkbox.active {
-  background-color: #fca311;
-  border: 1px solid #fca311;
+  background-color: var(--brand-secondary);
+  border: 1px solid var(--brand-secondary);
   color: #ffffff;
 }
 #sportList .game-list .popular-list .tournament-list .tournament-list-item .checkbox.active:after,

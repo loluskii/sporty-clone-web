@@ -106,15 +106,15 @@ export default {}
   word-break: keep-all;
 }
 .m-loading .loading-fail .fail-btn {
-  border: 1px solid #fca311;
+  border: 1px solid var(--brand-secondary);
   border-radius: 0.25rem;
   display: inline-block;
   height: 3rem;
   line-height: 3rem;
   padding: 0 2.33333333rem;
-  border-color: #fca311;
   border-color: var(--brand-secondary);
-  color: #fca311;
+  border-color: var(--brand-secondary);
+  color: var(--brand-secondary);
   color: var(--brand-secondary);
 }
 .m-loading.light {

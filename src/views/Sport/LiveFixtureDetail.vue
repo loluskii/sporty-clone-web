@@ -363,7 +363,7 @@ defineComponent({
 }
 .x-table-header .x-icon--unfold:before,
 .x-table-header .x-icon--fold:before {
-  color: #fca311;
+  color: var(--brand-secondary);
   font-size: 10px !important;
   display: inline-block;
 }
@@ -499,7 +499,7 @@ defineComponent({
   padding: 7px 10px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: #262262;
+  background: var(--brand-secondary);
   color: #fff;
   border-radius: 4px;
 }
@@ -578,7 +578,7 @@ defineComponent({
   margin-top: 1px;
 }
 .x-outcome .x-table-cell--checked {
-  background: #051c9e;
+  background: var(--brand-active-prematch-odds-bg);;
 }
 .x-outcome .x-table-cell--responsive:hover {
   background: #051c9e;

@@ -112,7 +112,7 @@ function switchBetContainerView(view) {
 
 /*  */
 .x-betslips .x-list-nav .x-table-cell {
-  background: #fca311;
+  background: var(--brand-secondary);
   border-radius: 2px 2px 0 0;
   color: #ffffff;
   font-size: 12px;
@@ -190,7 +190,7 @@ function switchBetContainerView(view) {
   margin: 0 4px;
 }
 .x-betslips .x-opertaion .x-icon--switch-active {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-betslips .x-opertaion .x-icon--switch-active::before {
   content: '\e63f';
@@ -310,7 +310,7 @@ function switchBetContainerView(view) {
   border-radius: 2px;
 }
 .x-betslips .af-button--primary {
-  background: #fca311 !important;
+  background: var(--brand-secondary) !important;
   color: #ffffff !important;
 }
 .x-betslips .is-disabled,
@@ -345,13 +345,13 @@ function switchBetContainerView(view) {
   border-color: #e41827 !important;
 }
 .x-betslips .x-input-wrapper.x-input-wrapper--active .x-input {
-  border-color: #fca311;
+  border-color: var(--brand-secondary);
 }
 .x-betslips .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover {
-  color: #fca311 !important;
+  color: var(--brand-secondary) !important;
 }
 .x-betslips .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover + .x-input {
-  border-color: #fca311 !important;
+  border-color: var(--brand-secondary) !important;
 }
 .x-betslips .x-input-wrapper .x-input-icon--clickable:hover {
   color: #9ca0ab !important;
@@ -618,8 +618,8 @@ function switchBetContainerView(view) {
 }
 .x-betslips .x-stake .x-btn--submit {
   background: #ffffff;
-  border: 1px solid #fca311 !important;
-  color: #fca311;
+  border: 1px solid var(--brand-secondary) !important;
+  color: var(--brand-secondary);
   font-size: 14px;
   line-height: 16px;
   width: 100%;
@@ -706,7 +706,7 @@ function switchBetContainerView(view) {
   padding: 8px 0;
 }
 .x-betslips .x-betslip-search .x-opt-wrapper .country-select.selected .af-select-title {
-  border-color: #fca311;
+  border-color: var(--brand-secondary);
 }
 .x-betslips .x-betslip-search .x-opt-wrapper .country-select .af-select-title {
   border: 1px solid #b4b4b4;

@@ -29,7 +29,7 @@
 .liveInPlay .live-num {
   background: rgba(250, 250, 250, 0.1);
   border-radius: 2px;
-  color: #fca311;
+  color: var(--brand-secondary);
   font-size: 14px;
   font-weight: bold;
   height: 20px;
@@ -101,7 +101,7 @@
   width: 19px;
 }
 .liveInPlay .live-banner .league-title .dis-icon > em {
-  color: #fca311;
+  color: var(--brand-secondary);
   display: inline-block;
   font-family: 'iconfont';
   font-size: 10px;
@@ -281,7 +281,7 @@
   width: 40%;
 }
 .liveInPlay .live-match .match-table .match-row .left-team-cell .left-arrow {
-  fill: #fca311;
+  fill: var(--brand-secondary);
   height: 50px;
   left: -10px;
   overflow: hidden;
@@ -389,7 +389,7 @@
   width: 50px;
 }
 .liveInPlay .live-match .match-table .match-row .market-size:after {
-  color: #fca311;
+  color: var(--brand-secondary);
   content: '\e608';
   display: inline-block;
   font-family: 'iconfont';

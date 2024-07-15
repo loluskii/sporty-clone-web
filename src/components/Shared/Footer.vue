@@ -5,12 +5,12 @@
         <li class="x-col-wrapper brand-col">
           <div class="d-flex flex-direction-column">
             <div class="d-flex">
-              <img src="@/assets/images/logo.png" alt="Cubebet" class="logo" />
+              <img src="@/assets/images/logo.png" alt="{{ utilsStore.brandName }}" class="logo" />
             </div>
           </div>
         </li>
         <li class="x-col-wrapper x-m-r">
-          <h6 class="x-col-title">Cubebet Nigeria</h6>
+          <h6 class="x-col-title">{{ utilsStore.brandName }} Nigeria</h6>
           <ul class="x-col-content">
             <li class="x-icon-more">
               <a href="/CMS/AboutUs"
@@ -31,7 +31,9 @@
             </li>
             <li class="x-icon-more">
               <a href="/CMS/ResponsibleGambling"
-                ><span data-cms-key="privacy" data-cms-page="common_helps">Responsible Gambling</span></a
+                ><span data-cms-key="privacy" data-cms-page="common_helps"
+                  >Responsible Gambling</span
+                ></a
               >
             </li>
             <li class="x-icon-more">
@@ -52,26 +54,21 @@
               >
             </li>
             <li class="x-icon-more">
-              <a href="/"
-                ><span data-cms-key="sports" data-cms-page="common_helps">Sports</span></a
-              >
+              <a href="/"><span data-cms-key="sports" data-cms-page="common_helps">Sports</span></a>
             </li>
             <li class="x-icon-more">
-              <a href="/Sport/Live"
-                ><span data-cms-key="live_betting">Live Betting</span></a
-              >
+              <a href="/Sport/Live"><span data-cms-key="live_betting">Live Betting</span></a>
             </li>
             <li class="x-icon-more">
               <a href="/Casino"><span data-cms-key="games">Games</span></a>
             </li>
-          
           </ul>
         </li>
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
             <div data-cms-key="tell_phone_number">Telephone: +23481655185250</div>
-            <div data-cms-key="mail_to">Email: support@cubebet.ng</div>
+            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}.ng</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
                 <a href="https://www.facebook.com/" target="_blank"
@@ -119,8 +116,8 @@
             </div>
           </div>
           <p class="x-right" data-cms-key="18_age_tip">
-            Age 18 and above only to register or play at Cubebet. Play Responsibly. Betting is
-            addictive and can be psychologically harmful.
+            Age 18 and above only to register or play at {{ utilsStore.brandName }}. Play
+            Responsibly. Betting is addictive and can be psychologically harmful.
           </p>
         </li>
         <li style="padding: 20px"></li>
@@ -134,19 +131,17 @@
             </div>
           </div>
           <p class="x-right" data-cms-key="licence">
-            Cubebet is licensed by the Oyo State Gaming Board, according to the License No:
-            OYSGB/SPB/232975 issued by the Oyo State Gaming Board.
+            {{ utilsStore.brandName }} is licensed by the Oyo State Gaming Board, according to the
+            License No: OYSGB/SPB/232975 issued by the Oyo State Gaming Board.
           </p>
         </li>
       </ul>
     </div>
     <div class="x-footer-bottom">
       <div class="x-content">
-        <ul class="x-left">
-          
-        </ul>
+        <ul class="x-left"></ul>
         <span class="x-copy" data-cms-key="year_copy_right"
-          >© 2024 Cubebet. All rights reserved.</span
+          >© 2024 {{ utilsStore.brandName }}. All rights reserved.</span
         >
       </div>
     </div>
@@ -155,6 +150,9 @@
 
 <script setup>
 import { defineComponent } from 'vue'
+import { useUtilstStore } from '@/stores'
+
+const utilsStore = useUtilstStore()
 
 defineComponent({
   name: 'footer-component'
@@ -240,6 +238,6 @@ defineComponent({
   text-align: center;
 }
 .brand-col .country-paybill .m-row-top {
-  border-bottom: 1px dotted #fca311;
+  border-bottom: 1px dotted var(--brand-secondary);
 }
 </style>

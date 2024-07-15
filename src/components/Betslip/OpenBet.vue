@@ -105,7 +105,7 @@ async function confirmCashout() {
 
   if (res.success) {
     console.log('cashout successful')
-    
+
     // emitter.emit('showDialogueToaster', 'Cashout Successful!')
     // await getBetsData()
   } else {
@@ -277,8 +277,8 @@ async function confirmCashout() {
 }
 .m-cashout .m-comfirm-wrapper .m-btn--submit {
   background: #ffffff;
-  color: #262262;
-  border: 1px solid #262262 !important;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary) !important;
   font-size: 14px;
   line-height: 16px;
   width: 100%;
@@ -289,8 +289,8 @@ async function confirmCashout() {
 .m-cashout .m-comfirm-wrapper .m-btn--submit:hover,
 .m-cashout .m-comfirm-wrapper .m-btn--submit:focus {
   background: #ffffff;
-  color: #262262;
-  border: 1px solid #262262 !important;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary) !important;
 }
 .m-cashout.m-cashout-fix {
   margin-bottom: -5px;

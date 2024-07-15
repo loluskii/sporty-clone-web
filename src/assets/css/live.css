@@ -563,7 +563,7 @@
 }
 
 .x-openbet-pop .x-no-bets__link {
-  color: #fca311;
+  color: var(--brand-secondary);
   margin-top: 1.83333333rem;
 }
 
@@ -839,7 +839,7 @@
 
 .x-eventview .x-tracker .x-result-score .x-value {
   width: 180px;
-  background: #fca311;
+  background: var(--brand-secondary);
   font-size: 24px;
   font-weight: bold;
   text-align: center;
@@ -855,7 +855,7 @@
   width: 0;
   height: 0;
   vertical-align: middle;
-  border-bottom: 55px solid #fca311;
+  border-bottom: 55px solid var(--brand-secondary);
   border-left: 10px solid transparent;
 }
 
@@ -1111,7 +1111,7 @@
 }
 
 .x-eventview .x-error-wrapper .af-button {
-  background: #fca311 !important;
+  background: var(--brand-secondary) !important;
   color: #fff !important;
   width: 65px;
   height: 32px;
@@ -1504,7 +1504,7 @@
 }
 
 .x-eventview .x-side-bar .x-item--active {
-  background: #fca311;
+  background: var(--brand-secondary);
   color: #000;
 }
 
@@ -1640,7 +1640,7 @@
   font-size: 12px;
   line-height: 16px;
   text-align: right;
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 
 .x-eventview .x-side-bar .x-list .x-item-score>div {
@@ -1674,7 +1674,7 @@
 }
 
 .x-eventview .x-side-bar .x-list .x-icon-more:before {
-  color: #fca311;
+  color: var(--brand-secondary);
   font-size: 14px;
 }
 
@@ -1708,7 +1708,7 @@
 }
 
 .x-eventview .x-side-bar .x-list-active .x-item-name {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 
 .x-eventview {
@@ -1809,7 +1809,7 @@
 }
 
 .x-detail-wrapper .x-nav .x-nav-item--active {
-  border-bottom: 3px solid #fca311 !important;
+  border-bottom: 3px solid var(--brand-secondary) !important;
   font-weight: bold;
 }
 
@@ -1925,7 +1925,7 @@
   height: 32px;
   padding: 0 !important;
   width: 65px;
-  background: #fca311 !important;
+  background: var(--brand-secondary) !important;
   color: #fff !important;
 }
 
@@ -1968,7 +1968,7 @@
 }
 
 .x-eventview .x-nav-wrapper .x-nav-item--active {
-  border-bottom-color: #fca311;
+  border-bottom-color: var(--brand-secondary);
   font-weight: bold;
 }
 

@@ -124,11 +124,11 @@ onMounted(() => {})
     SimHei;
   border-radius: 2px;
   border-width: 0px;
-  background: #262262;
+  background: var(--brand-primary);
   color: #fff;
 }
 .es-dialog .es-dialog-footer .es-dialog-focus-btn {
-  background: #262262;
+  background: var(--brand-primary);
   color: #fff;
   border-width: 0px;
 }
@@ -185,12 +185,12 @@ onMounted(() => {})
   font-size: 14px;
 }
 .x-wd-pop .f-line .af-button--primary {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 .x-wd-pop .f-line .af-button--text {
-  color: #262262;
-  border: 1px solid #262262 !important;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary) !important;
   font-weight: 600;
   margin-right: 8px;
 }
@@ -239,7 +239,7 @@ onMounted(() => {})
   .x-input-wrapper.x-input-wrapper--active
   .x-input-icon--clickable:hover
   + .x-input {
-  border-color: #262262 !important;
+  border-color: var(--brand-primary) !important;
 }
 .x-wd-pop .f-line .x-input-wrapper.x-input-wrapper--error .x-input {
   border-color: #e41827 !important;
@@ -256,7 +256,7 @@ onMounted(() => {})
   padding-left: 0;
 }
 .x-wd-pop .f-line .x-input-group--prepend.x-input-wrapper--active .x-input-prepend {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .x-wd-pop .f-line .x-input-wrapper {
   width: 200px;
@@ -328,13 +328,13 @@ onMounted(() => {})
 }
 
 .x-wd-pop .f-line .af-button--primary {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 
 .x-wd-pop .f-line .af-button--text {
-  color: #262262;
-  border: 1px solid #262262 !important;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary) !important;
   font-weight: 600;
   margin-right: 8px;
 }
@@ -381,13 +381,13 @@ onMounted(() => {})
   line-height: 16px;
 }
 .x-wd-pop .f-line .x-input-wrapper.x-input-wrapper--active .x-input {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .x-wd-pop .f-line .x-input-wrapper.x-input-wrapper--active .x-input-prepend {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .x-wd-pop .f-line .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover {
-  color: #262262 !important;
+  color: var(--brand-primary) !important;
 }
 
 .x-wd-pop
@@ -398,7 +398,7 @@ onMounted(() => {})
   border-color: #e41827 !important;
 }
 .x-wd-pop .f-line .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .x-wd-pop .f-line .x-input-wrapper .x-input-icon--clickable:hover {
   color: #9ca0ab !important;

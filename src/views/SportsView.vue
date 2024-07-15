@@ -141,7 +141,7 @@ import SportsLayout from '@/components/Shared/SportsLayout.vue'
 import LiveInplay from '@/components/LiveInplay.vue'
 import { getSportHighlights, getToday2 } from '../helpers'
 import { useRoute } from 'vue-router'
-import {  ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import _ from 'lodash'
 import { getFixturesByTournamentId, formatDate } from '@/helpers'
 import { useUtilstStore } from '@/stores'
@@ -303,7 +303,7 @@ onMounted(async () => {
     width: 19px;
   }
   .import-match .match-league .league-title .dis-icon > em {
-    color: #fca311;
+    color: var(--brand-secondary);
     display: inline-block;
     font-family: 'iconfont';
     font-size: 12px;
@@ -377,7 +377,7 @@ onMounted(async () => {
     border-bottom: solid rgba(13, 151, 55, 0.5) 2px;
   }
   .import-match .match-league .match-opt > div.active {
-    border-bottom: solid #fca311 2px;
+    border-bottom: solid var(--brand-secondary) 2px;
   }
   .import-match .match-league .market-group {
     border-bottom: 1px solid #eaecef;
@@ -402,7 +402,7 @@ onMounted(async () => {
     text-align: center;
   }
   .import-match .match-league .market-group .market-item.active {
-    border-bottom: 4px solid #fca311;
+    border-bottom: 4px solid var(--brand-secondary);
     font-weight: 700;
   }
   .import-match .match-league .market-group .market-item:hover {
@@ -434,7 +434,7 @@ onMounted(async () => {
     background-color: #eaecef;
   }
   .import-match .match-league .market-group .market-item.x-select-market .select-list li.active {
-    color: #fca311;
+    color: var(--brand-secondary);
   }
   .import-match .match-league .market-group .market-item.x-select-market .x-icon-fold {
     color: #9ca0ab;
@@ -771,17 +771,17 @@ onMounted(async () => {
     width: 55px;
   }
   .import-match .match-league .match-table .match-row .market-size:after {
-    color: #fca311;
+    color: var(--brand-secondary);
     content: '\e608';
     display: inline-block;
     font-family: 'iconfont';
     font-weight: 700;
   }
   .import-match .match-league .match-table .match-row.active-h2h .lmt-icon {
-    color: #fca311;
+    color: var(--brand-secondary);
   }
   .import-match .match-league .match-table .match-row.active-h2h .lmt-icon .icon {
-    color: #fca311;
+    color: var(--brand-secondary);
     display: inline-block;
     font-weight: 700;
     vertical-align: text-bottom;
@@ -811,7 +811,7 @@ onMounted(async () => {
     text-align: center;
   }
   .import-match .match-league .view-all:after {
-    color: #fca311;
+    color: var(--brand-secondary);
     content: '\e608';
     display: inline-block;
     font-family: 'iconfont';
@@ -829,13 +829,13 @@ onMounted(async () => {
   }
   .import-match .pagination .icon-prev:before,
   .import-match .pagination .icon-next:before {
-    color: #fca311;
+    color: var(--brand-secondary);
   }
   .import-match .pagination .icon-disabled::before {
     color: #9ca0ab;
   }
   .import-match .pagination .selected {
-    background-color: #fca311;
+    background-color: var(--brand-secondary);
     color: #fff;
   }
   .pagination {
