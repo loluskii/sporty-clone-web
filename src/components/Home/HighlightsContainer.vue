@@ -66,6 +66,7 @@
                 <div class="x-table-cell each-module-wrap">
                   <div
                     v-for="group in activeSportMarkets"
+                    :key="group"
                     class="each-module-table"
                     :class="activeSportMarkets.length > 1 ? 'two-markets' : ''"
                   >
@@ -76,7 +77,11 @@
                     >
                       {{ group.specifier }}
                     </div>
-                    <div v-for="market in group.outcomes" class="each-module">
+                    <div
+                      v-for="market in _.sortBy(group.outcomes, 'outcomeID')"
+                      :key="market"
+                      class="each-module"
+                    >
                       {{ market.outcomeName }}
                     </div>
                   </div>
@@ -134,7 +139,7 @@
                     v-for="(market, m) in getFilteredOutcomes(game.outcomes)"
                     :key="m"
                   >
-                    <div
+                    <!-- <div
                       v-if="market.specifier !== '' && market.outcomes.length"
                       class="x-outcome specifiers-select"
                     >
@@ -144,12 +149,13 @@
                           <span class="af-select-icon-item"><em class="icon">^</em></span>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <template
-                      v-for="(k, l) in market.outcomes"
+                      v-for="(k, l) in sortArr(market.outcomes, 'outcomeID')"
                       :key="l"
                       v-if="market.outcomes.length"
                     >
+                      <!-- {{ k }} -->
                       <div
                         @click="addToBetslip(game, k, market)"
                         class="x-outcome"
@@ -186,7 +192,7 @@ import { useUtilstStore, useCouponStore } from '@/stores'
 import EmptyOdds from '../EmptyOdds.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 
-import { getHighlights2, formatDate, slugify, createID, isSelected } from '@/helpers'
+import { getHighlights2, formatDate, slugify, createID, isSelected, sortArr } from '@/helpers'
 import { onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 
@@ -228,13 +234,14 @@ async function getHighlightGames() {
         (fixture) => fixture.date.split(' ')[0]
       )
       // get active sports first two markets
-      activeSportMarkets.value = response.markets.slice(0, 2)
+      let m = response.markets.filter((market) => market.specifier === '')
+      activeSportMarkets.value = m.slice(0, 2)
 
       // extract market ids from markets
-      selectedMarketIDs.value = response.markets.slice(0, 2).map((market) => ({
+      selectedMarketIDs.value = m.slice(0, 2).map((market) => ({
         marketID: parseInt(market.marketID),
         marketName: market.marketName,
-        specifier: market.specifier || ''
+        specifier: market.specifier
       }))
     } else {
       highlightsData.value = []
