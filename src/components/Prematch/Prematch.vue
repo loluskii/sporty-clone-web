@@ -25,7 +25,9 @@
           <div class="home-team">{{ match.homeTeam }}</div>
           <div class="away-team">{{ match.awayTeam }}</div>
         </div>
-        <div class="lmt-icon"  @click="showFixtureAnalysis(match.matchID)"><em class="icon"></em></div>
+        <div class="lmt-icon" @click="showFixtureAnalysis(match.matchID)">
+          <em class="icon"></em>
+        </div>
       </div>
     </div>
     <div class="x-table-cell market-cell">
@@ -206,7 +208,7 @@ onMounted(() => {
 .af-select-item.active {
   background-color: #fafafa;
   background-color: var(--background-general-primary);
-  color: #fca311;
+  color: var(--brand-secondary);
   color: var(--brand-quaternary);
 }
 .af-select-item.hover {

@@ -73,7 +73,7 @@ const isLoading = ref(true)
 
 onMounted(async () => {
   let payload = {
-    clientId: import.meta.env.VITE_CLIENT_ID,
+    clientId: import.meta.env.VITE_CLIENT_ID
     // startDate: moment().subtract(7, 'days').format('YYYY-MM-DD'),
     // endDate: moment().format('YYYY-MM-DD'),
     // page: 1,
@@ -105,7 +105,7 @@ onMounted(async () => {
   overflow: hidden;
 }
 .x-trans-list .x-list-header .x-reconciliation-btn {
-  color: #262262;
+  color: var(--brand-primary);
   cursor: pointer;
   float: right;
   font-size: 13.3px;
@@ -268,7 +268,7 @@ onMounted(async () => {
   width: 28px;
 }
 .x-manual-check .btn {
-  background: #262262;
+  background: var(--brand-primary);
   border-radius: 2px;
   color: #fff;
   cursor: pointer;

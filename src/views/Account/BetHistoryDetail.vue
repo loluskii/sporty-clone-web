@@ -55,7 +55,7 @@
             <div class="cell total-return">
               <span class="label" data-cms-key="total_return">Total Return</span>
               <span>: </span>
-              <span class="value" :class="{'green':betDetail.winnings}">
+              <span class="value" :class="{ green: betDetail.winnings }">
                 {{ betDetail.winnings ? formatNumber(betDetail.winnings) : '0.00' }}
               </span>
             </div>
@@ -213,7 +213,7 @@ const getTeamShortName = (eventName, outcomeName) => {
 
 <style>
 .x-order-wrapper .af-button--primary {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   border: 0px;
   color: #fff !important;
 }
@@ -380,7 +380,7 @@ const getTeamShortName = (eventName, outcomeName) => {
   padding: 0 6px;
 }
 .x-order-wrapper .x-order-detail-wrap .status-bar.green {
-  background-color: rgb(0, 193, 0);;
+  background-color: rgb(0, 193, 0);
 }
 .x-order-wrapper .x-order-detail-wrap .status-bar.gray {
   background-color: #9ca0ab;
@@ -759,7 +759,7 @@ const getTeamShortName = (eventName, outcomeName) => {
   .selection-detail
   .selection-header
   .selection-status.checked::before {
-  color: #262262;
+  color: var(--brand-primary);
 }
 .x-order-wrapper
   .x-order-detail-wrap.list
@@ -934,9 +934,9 @@ const getTeamShortName = (eventName, outcomeName) => {
   .selection-body
   .banker-wrap
   .banker-icon {
-  border: 1px solid #262262;
+  border: 1px solid var(--brand-primary);
   border-radius: 8px;
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 12px;
   font-weight: bold;
   height: 14px;
@@ -1045,7 +1045,7 @@ const getTeamShortName = (eventName, outcomeName) => {
   text-align: left;
 }
 .x-order-wrapper .x-order-detail-wrap.list .bet-number-wrap .bet-detail {
-  color: #262262;
+  color: var(--brand-primary);
   cursor: pointer;
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
@@ -1053,7 +1053,7 @@ const getTeamShortName = (eventName, outcomeName) => {
   flex: 0 0 auto;
 }
 .x-order-wrapper .x-order-detail-wrap.list .bet-number-wrap .bet-detail-icon {
-  color: #262262;
+  color: var(--brand-primary);
   cursor: pointer;
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;

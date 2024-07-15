@@ -152,7 +152,7 @@ defineProps({
   padding: 0 !important;
 }
 .x-pop-dialog__wrapper .x-page--login .x-page-nav .x-tabs-nav .x-tabs-tab-active {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-pop-dialog__wrapper .x-page--login .x-page-nav .x-tabs-nav .x-tabs-ink-bar {
   height: 3px;

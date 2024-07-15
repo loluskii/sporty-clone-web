@@ -363,7 +363,7 @@ async function placeBet(e) {
 .x-betslips .x-share--wrapper span {
   font-size: 12px;
   line-height: 1;
-  color: #fca311;
+  color: var(--brand-secondary);
   display: inline-block;
   vertical-align: top;
 }

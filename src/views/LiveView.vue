@@ -303,7 +303,7 @@ defineComponent({
 }
 .x-overview .sport-name .sport-name-item.active {
   font-weight: 700;
-  border-bottom: 4px solid #fca311;
+  border-bottom: 4px solid var(--brand-secondary);
 }
 .x-overview .sport-name .sport-simple-select {
   height: 48px;
@@ -323,7 +323,7 @@ defineComponent({
   white-space: nowrap;
 }
 .x-overview .sport-name .sport-simple-select-active {
-  border-bottom: 4px solid #fca311;
+  border-bottom: 4px solid var(--brand-secondary);
 }
 .x-overview .match {
   position: relative;
@@ -557,7 +557,7 @@ defineComponent({
   top: 0px;
   height: 50px;
   overflow: hidden;
-  fill: #fca311;
+  fill: var(--brand-secondary);
 }
 .x-overview .match .match-table .match-row .left-team-cell .left-team-table {
   display: inline-table;
@@ -592,7 +592,7 @@ defineComponent({
 .x-overview .match .match-table .match-row .left-team-cell .left-team-table .teams {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-overview .match .match-table .match-row .left-team-cell .left-team-table .teams > div {
   overflow: hidden;
@@ -664,7 +664,7 @@ defineComponent({
   font-weight: 700;
   display: inline-block;
   text-indent: 10px;
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-overview .match .match-table .tennis-row .score,
 .x-overview .match .match-table .tennis-row .game-score,

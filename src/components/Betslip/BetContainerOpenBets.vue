@@ -136,7 +136,7 @@ onMounted(async () => {
   text-transform: none;
 }
 .m-cashout .m-cashout-title .m-desc {
-  color: #262262;
+  color: var(--brand-primary);
   text-align: right;
   with: 60px;
 }
@@ -240,7 +240,7 @@ onMounted(async () => {
   color: #353a45;
 }
 .m-cashout .m-cashout-detail .m-score {
-  color: #262262;
+  color: var(--brand-primary);
 }
 .m-cashout .m-cashout-detail .m-icon-banker {
   background: #353a45;
@@ -276,7 +276,7 @@ onMounted(async () => {
   vertical-align: top;
 }
 .m-cashout .m-cashout-detail .m-btn-wrapper .m-btn-item {
-  border: 1px solid #262262;
+  border: 1px solid var(--brand-primary);
   border-radius: 2px;
   height: 36px;
   margin-right: 10px;
@@ -300,12 +300,12 @@ onMounted(async () => {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   color: #ffffff !important;
 }
 
 .m-cashout .m-cashout-detail .m-btn-wrapper .af-button--text {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 14px;
   font-weight: bold;
 }
@@ -336,7 +336,7 @@ onMounted(async () => {
   font-style: normal;
 }
 .m-cashout .m-cashout-detail .m-btn-wrapper .m-btn--success:before {
-  color: #262262;
+  color: var(--brand-primary);
   margin-right: 28px;
 }
 .m-cashout .m-cashout-detail .m-btn-wrapper .m-btn--success:hover,
@@ -376,7 +376,7 @@ onMounted(async () => {
   padding: 0 10px;
 }
 .m-cashout .m-cashout-detail .m-text--green {
-  color: #262262;
+  color: var(--brand-primary);
   font-weight: bold;
 }
 .m-cashout .m-cashout-detail .m-text--gray {
@@ -431,7 +431,7 @@ onMounted(async () => {
 }
 .instant-dialog.es-dialog .es-dialog-footer .es-dialog-btn:first-of-type {
   background: #fff;
-  color: #262262;
+  color: var(--brand-primary);
   margin: 0;
 }
 .instant-dialog.es-dialog .es-dialog-footer .es-dialog-main {
@@ -471,7 +471,7 @@ onMounted(async () => {
 .m-cashout .m-operation .m-fold {
   background: #f2f3f5;
   border-radius: 2px;
-  color: #262262;
+  color: var(--brand-primary);
   cursor: pointer;
   display: inline-block;
   height: 16px;

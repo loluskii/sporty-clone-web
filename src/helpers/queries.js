@@ -288,29 +288,6 @@ export const getGames = async (page) => {
   )
 }
 
-export const getCasinoStartUrl = async (provider, payload) => {
-  switch (provider) {
-    case 'c27':
-      payload = { ...payload, demo: 0 }
-      return await startC27Game(payload)
-    case 'shack-evolution':
-      return await startShackEvoGame(payload?.game_id)
-    case 'tada-games':
-      return await startTadaGame(payload)
-    case 'golden-race':
-      payload = { ...payload, demo: 0 }
-      return await playGame({ provider, payload })
-    case 'evo-play':
-      payload = {
-        ...payload,
-        home_url: 'https://www.cubebet.ng/Games',
-        deposit_url: 'https://www.cubebet.ng/Account/Deposit'
-      }
-      return await startEvoPlayGame(payload)
-    default:
-  }
-}
-
 export const getTopGameCategories = async () => {
   return parseData(
     fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/casino/top-games-categories`)

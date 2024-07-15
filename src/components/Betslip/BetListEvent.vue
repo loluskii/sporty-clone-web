@@ -135,7 +135,7 @@ async function removeSelection(element_id) {
 .x-list .x-icon-live {
   display: inline-block;
   vertical-align: top;
-  background: #fca311;
+  background: var(--brand-secondary);
   color: #353a45;
   position: relative;
   margin-right: 5px;
@@ -150,8 +150,8 @@ async function removeSelection(element_id) {
   content: '';
   width: 0;
   height: 0;
-  border-top: 8px solid #fca311;
-  border-left: 1px solid #fca311;
+  border-top: 8px solid var(--brand-secondary);
+  border-left: 1px solid var(--brand-secondary);
   border-right: 1px solid transparent;
   border-bottom: 8px solid transparent;
 }
@@ -219,7 +219,7 @@ async function removeSelection(element_id) {
   font-size: 14px;
 }
 .x-list .x-icon-up {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-list .x-icon-up::before {
   content: '\e609';

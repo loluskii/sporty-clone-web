@@ -184,7 +184,7 @@ onMounted(async () => {
 #x-order-nav.x-nav-wrapper .x-nav-item--active {
   font-size: 16px;
   font-weight: bold;
-  border-bottom: 3px solid #262262;
+  border-bottom: 3px solid var(--brand-primary);
 }
 #x-order-nav.x-nav-wrapper .x-wrap {
   display: -webkit-box;
@@ -233,8 +233,8 @@ onMounted(async () => {
   font-size: 12px;
 }
 #x-order-nav.x-nav-wrapper .x-wrap .x-type .x-type-item--active {
-  border: 1px solid #262262;
-  background-color: #262262;
+  border: 1px solid var(--brand-primary);
+  background-color: var(--brand-primary);
   color: #fff;
 }
 #x-order-nav.x-nav-wrapper .x-wrap .x-type .x-type-item--active .x-text-main {
@@ -259,7 +259,7 @@ onMounted(async () => {
   position: absolute;
   top: 2px;
   right: 3px;
-  color: #262262;
+  color: var(--brand-primary);
 }
 #x-order-nav.x-nav-wrapper .x-wrap .x-date .date-label .arrow-icon::before {
   content: '\e6a3';

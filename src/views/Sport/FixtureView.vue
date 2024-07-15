@@ -289,7 +289,7 @@ onBeforeRouteLeave((to, from) => {
     width: 19px;
   }
   .import-match .match-league .league-title .dis-icon > em {
-    color: #fca311;
+    color: var(--brand-secondary);
     display: inline-block;
     font-family: 'iconfont';
     font-size: 12px;
@@ -363,7 +363,7 @@ onBeforeRouteLeave((to, from) => {
     border-bottom: solid rgba(13, 151, 55, 0.5) 2px;
   }
   .import-match .match-league .match-opt > div.active {
-    border-bottom: solid #fca311 2px;
+    border-bottom: solid var(--brand-secondary) 2px;
   }
   .import-match .match-league .market-group {
     border-bottom: 1px solid #eaecef;
@@ -388,7 +388,7 @@ onBeforeRouteLeave((to, from) => {
     text-align: center;
   }
   .import-match .match-league .market-group .market-item.active {
-    border-bottom: 4px solid #fca311;
+    border-bottom: 4px solid var(--brand-secondary);
     font-weight: 700;
   }
   .import-match .match-league .market-group .market-item:hover {
@@ -420,7 +420,7 @@ onBeforeRouteLeave((to, from) => {
     background-color: #eaecef;
   }
   .import-match .match-league .market-group .market-item.x-select-market .select-list li.active {
-    color: #fca311;
+    color: var(--brand-secondary);
   }
   .import-match .match-league .market-group .market-item.x-select-market .x-icon-fold {
     color: #9ca0ab;
@@ -757,17 +757,17 @@ onBeforeRouteLeave((to, from) => {
     width: 55px;
   }
   .import-match .match-league .match-table .match-row .market-size:after {
-    color: #262262;
+    color: var(--brand-secondary);
     content: '\e608';
     display: inline-block;
     font-family: 'iconfont';
     font-weight: 700;
   }
   .import-match .match-league .match-table .match-row.active-h2h .lmt-icon {
-    color: #fca311;
+    color: var(--brand-secondary);
   }
   .import-match .match-league .match-table .match-row.active-h2h .lmt-icon .icon {
-    color: #fca311;
+    color: var(--brand-secondary);
     display: inline-block;
     font-weight: 700;
     vertical-align: text-bottom;
@@ -797,7 +797,7 @@ onBeforeRouteLeave((to, from) => {
     text-align: center;
   }
   .import-match .match-league .view-all:after {
-    color: #fca311;
+    color: var(--brand-secondary);
     content: '\e608';
     display: inline-block;
     font-family: 'iconfont';
@@ -815,13 +815,13 @@ onBeforeRouteLeave((to, from) => {
   }
   .import-match .pagination .icon-prev:before,
   .import-match .pagination .icon-next:before {
-    color: #262262;
+    color: var(--brand-secondary);
   }
   .import-match .pagination .icon-disabled::before {
     color: #9ca0ab;
   }
   .import-match .pagination .selected {
-    background-color: #262262;
+    background-color: var(--brand-secondary);
     color: #fff;
   }
   .pagination {

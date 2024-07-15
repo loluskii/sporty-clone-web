@@ -457,7 +457,7 @@ onMounted(() => {
   background: #fff;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 12px;
   left: 0;
   line-height: 16px;
@@ -530,11 +530,11 @@ onMounted(() => {
   margin-right: 5px;
 }
 .c-header .x-login-bar .x-phone-wrapper.on {
-  border: 1px solid #fca311;
+  border: 1px solid var(--brand-secondary);
   border-radius: 2px;
 }
 .c-header .x-login-bar .x-psd-wrapper.on input {
-  border: 1px solid #fca311;
+  border: 1px solid var(--brand-secondary);
   border-right: 0;
 }
 .c-header .x-login-bar .x-error-toast {
@@ -596,7 +596,7 @@ onMounted(() => {
   padding: 0 8px;
 }
 .c-header .x-login-bar .x-balance {
-  color: #fca311;
+  color: yellow;
   font-weight: bold;
 }
 .c-header .x-login-bar a:hover {
@@ -617,7 +617,7 @@ onMounted(() => {
   color: #3656a3;
 }
 .c-header .x-login-bar .x-error-wrapper .x-icon-tips {
-  color: #262262;
+  color: var(--brand-primary);
 }
 .c-header .x-login-bar .x-error-wrapper .x-icon-tips::before {
   content: '\e623';
@@ -686,7 +686,7 @@ onMounted(() => {
   padding: 10px 6px 12px 6px;
 }
 .c-header .x-login-bar .x-userInfo .x-list-bar:last-of-type {
-  color: #262262;
+  color: var(--brand-primary);
 }
 .c-header .x-login-bar .x-userInfo .x-balance div > * {
   display: inline-block;
@@ -813,7 +813,7 @@ onMounted(() => {
   width: 100%;
 }
 .c-header .x-top-wrapper {
-  background: #262262;
+  background: var(--brand-primary);
 }
 .c-header .x-nav-wrapper {
   margin: 0 auto;
@@ -933,7 +933,7 @@ onMounted(() => {
 .c-header .x-nav-main .x-flex-item--active,
 .c-header .x-nav-main .x-flex-item.router-link-exact-active {
   background: #fff;
-  color: #262262;
+  color: var(--brand-primary);
   padding: 18px 0;
 }
 

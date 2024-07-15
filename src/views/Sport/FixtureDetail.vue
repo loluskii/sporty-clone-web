@@ -49,9 +49,9 @@
                         market.marketName
                       }}</span>
                     </div>
-                    <div class="x-table-cell x-table-cell--responsive x-table-cell--transparent">
-                     
-                    </div>
+                    <div
+                      class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
+                    ></div>
                   </div>
                 </div>
                 <div class="x-table">
@@ -236,7 +236,7 @@ onMounted(async () => {
   text-transform: capitalize;
 }
 .x-detail-wrapper .x-nav .x-nav-item--active {
-  border-bottom: 3px solid #fca311 !important;
+  border-bottom: 3px solid var(--brand-secondary) !important;
   font-weight: bold;
 }
 .x-detail-wrapper .x-detail-loading {
@@ -341,7 +341,7 @@ onMounted(async () => {
   height: 32px;
   padding: 0 !important;
   width: 65px;
-  background: #fca311 !important;
+  background: var(--brand-secondary) !important;
   color: #fff !important;
 }
 .x-detail-wrapper .x-detail-error .af-button:hover {
@@ -451,7 +451,7 @@ onMounted(async () => {
 }
 .x-eventDetail .x-title-wrapper .x-icon-pack,
 .x-eventDetail .x-title-wrapper .x-icon-unpack {
-  color: #fca311;
+  color: var(--brand-secondary);
   display: inline-block;
   vertical-align: middle;
   width: 16px;
@@ -510,7 +510,7 @@ onMounted(async () => {
   font-style: normal;
 }
 .x-eventDetail .x-title-wrapper .x-icon-h2h.active {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-eventDetail .x-title-wrapper .x-icon-h2h.active em::before {
   content: '\e62d';
@@ -652,10 +652,10 @@ onMounted(async () => {
   background: #f8f8f8;
 }
 .x-eventDetail .x-list-wrapper .x-list:active {
-  color: #fca311;
+  color: var(--brand-secondary);
 }
 .x-eventDetail .x-list-wrapper .x-list--active .x-name {
-  color: #fca311 !important;
+  color: var(--brand-secondary) !important;
 }
 .x-eventDetail .x-list-wrapper .x-info-wrapper-fix {
   padding-top: 8px;
@@ -850,7 +850,7 @@ onMounted(async () => {
   margin: 4px 0 18px;
 }
 .x-eventDetail .x-error-wrapper-fix .af-button {
-  background: #fca311 !important;
+  background: var(--brand-secondary) !important;
   color: #fff !important;
   width: 65px;
   height: 32px;
@@ -980,7 +980,7 @@ onMounted(async () => {
 }
 .x-table-header .x-icon--unfold:before,
 .x-table-header .x-icon--fold:before {
-  color: #fca311;
+  color: var(--brand-secondary);
   font-size: 10px !important;
   display: inline-block;
 }
@@ -1116,7 +1116,7 @@ onMounted(async () => {
   padding: 7px 10px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: #262262;
+  background: var(--brand-secondary);
   color: #fff;
   border-radius: 4px;
 }
@@ -1195,8 +1195,8 @@ onMounted(async () => {
   margin-top: 1px;
 }
 .x-outcome .x-table-cell--checked {
-  background: #051c9e;
-  color: #fff;
+  background: var(--brand-active-prematch-odds-bg);
+  color: var(--brand-active-prematch-odds-text);
 }
 .x-outcome .x-table-cell--responsive:hover {
   /* background: #32ce62; */

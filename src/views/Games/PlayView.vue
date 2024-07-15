@@ -14,7 +14,7 @@
 
 <script setup>
 import { watch, ref } from 'vue'
-import { getCasinoStartUrl } from '@/helpers'
+// import { getCasinoStartUrl } from '@/helpers'
 import { useRoute } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import CasinoLayout from '@/components/Shared/CasinoLayout.vue'
@@ -32,9 +32,9 @@ watch(
 
 async function getCasinoURL(provider, game_id) {
   isLoading.value = true
-  const res = await getCasinoStartUrl(provider, { game_id })
+  // const res = await getCasinoStartUrl(provider, { game_id })
   isLoading.value = false
-  gameURL.value = getPlayURL(res, provider)
+  // gameURL.value = getPlayURL(res, provider)
 }
 
 function getPlayURL(res, provider) {

@@ -355,10 +355,10 @@ onMounted(async () => {
   color: #9ca0ab;
 }
 .x-wd-ng .f-line .x-input-wrapper.x-input-wrapper--active {
-  border: 1px solid #262262 !important;
+  border: 1px solid var(--brand-primary) !important;
 }
 .x-wd-ng .f-line .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover {
-  color: #262262 !important;
+  color: var(--brand-primary) !important;
 }
 .x-wd-ng .f-line .x-input-wrapper.x-input-wrapper--error {
   border: 1px solid #e41827 !important;
@@ -389,7 +389,7 @@ onMounted(async () => {
   width: 170px;
 }
 .x-wd-ng .f-line .af-button--primary {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 .x-wd-ng .f-line .is-disabled {
@@ -505,7 +505,7 @@ onMounted(async () => {
   line-height: 87px;
 }
 .x-wd-ng .x-error-wrapper .af-button {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
   width: 65px;
   height: 32px;
@@ -655,7 +655,7 @@ onMounted(async () => {
   display: none;
 }
 .x-bank .f-line .i-icon--more {
-  color: #262262;
+  color: var(--brand-primary);
   display: table-cell;
   vertical-align: middle;
   width: 25px;
@@ -768,7 +768,7 @@ onMounted(async () => {
   height: 48px;
 }
 .x-bank .f-list .l-item--checked {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .x-bank .f-list .l-item--checked .i-icon-checked {
   position: absolute;
@@ -777,7 +777,7 @@ onMounted(async () => {
   display: inline-block;
   vertical-align: top;
   line-height: 1;
-  color: #262262;
+  color: var(--brand-primary);
 }
 .x-bank .f-list .l-item--checked .i-icon-checked::before {
   content: '\e622';
@@ -951,7 +951,7 @@ onMounted(async () => {
   background-color: #fff;
 }
 .x-bank-list .l-item-checked .i-icon-check {
-  color: #262262;
+  color: var(--brand-primary);
 }
 .x-fix-input {
   height: 40px;
@@ -1046,8 +1046,8 @@ onMounted(async () => {
   font-size: 12px;
 }
 .x-bank-list .f-del-wrapper .f-line .af-button--text {
-  color: #262262;
-  border: 1px solid #262262 !important;
+  color: var(--brand-primary);
+  border: 1px solid var(--brand-primary) !important;
   margin-right: 8px;
 }
 
@@ -1219,7 +1219,7 @@ onMounted(async () => {
   height: 48px;
 }
 .x-bank-list .f-list .l-item--checked {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .x-bank-list .f-list .l-item--checked .i-icon-checked {
   position: absolute;
@@ -1228,7 +1228,7 @@ onMounted(async () => {
   display: inline-block;
   vertical-align: top;
   line-height: 1;
-  color: #262262;
+  color: var(--brand-primary);
 }
 .x-bank-list .f-list .l-item--checked .i-icon-checked::before {
   content: '\e622';

@@ -116,7 +116,7 @@ defineProps({
   font-style: normal;
 }
 .m-dialog-wrapper .m-holding-icon:before {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 30px;
   line-height: 1;
   vertical-align: top;
@@ -176,7 +176,7 @@ defineProps({
   font-style: normal;
 }
 .m-dialog-wrapper .m-pop-header-fix .m-icon-suc:before {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 28px;
   line-height: 1;
 }
@@ -261,12 +261,12 @@ defineProps({
   margin-right: 10px;
 }
 .m-dialog-wrapper .af-button--text {
-  color: #262262;
+  color: var(--brand-primary);
   font-size: 14px;
   font-weight: bold;
 }
 .m-dialog-wrapper .af-button--primary {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   border: none;
   color: #ffffff !important;
   font-size: 12px;
@@ -419,14 +419,14 @@ defineProps({
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--active .m-input,
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--active .m-input-append {
-  border-color: #262262;
+  border-color: var(--brand-primary);
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper .m-input-append {
   background: #f2f3f5;
   border: 1px solid #eaecef;
   border-left: none;
   border-radius: 0 2px 2px 0;
-  color: #262262;
+  color: var(--brand-primary);
   cursor: pointer;
 }
 .m-dialog-suc {
@@ -449,7 +449,7 @@ defineProps({
   font-style: normal;
 }
 .m-dialog-suc .m-pop-header .m-icon-suc:after {
-  background: #262262;
+  background: var(--brand-primary);
   content: '';
   display: inline-block;
   height: 25px;
@@ -548,8 +548,8 @@ defineProps({
 }
 .m-dialog-suc .m-share-wrap .af-button {
   background: #ffffff !important;
-  border: 1px solid #262262;
-  color: #262262 !important;
+  border: 1px solid var(--brand-primary);
+  color: var(--brand-primary) !important;
   width: 170px;
 }
 .m-dialog-suc .m-share-wrap .af-button:active {
@@ -563,7 +563,7 @@ defineProps({
   text-align: center;
 }
 .m-dialog-suc .m-btn-text > a {
-  color: #262262;
+  color: var(--brand-primary);
   cursor: pointer;
   display: inline-block;
   font-size: 14px;
@@ -613,7 +613,7 @@ defineProps({
   padding: 0 16px;
 }
 .es-dialog.desktop .es-dialog-footer .es-dialog-btn {
-  background: #262262;
+  background: var(--brand-primary);
   color: #ffffff;
   font-size: 14px;
   padding: 6px 16px;

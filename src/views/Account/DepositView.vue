@@ -197,7 +197,7 @@ onMounted(async () => {
   color: #9ca0ab;
 }
 .x-dp-ng .f-line .x-input-wrapper.x-input-wrapper--active {
-  border: 1px solid #262262 !important;
+  border: 1px solid var(--brand-primary) !important;
 }
 
 .x-dp-ng .f-line .x-input-wrapper.x-input-wrapper--error {
@@ -226,7 +226,7 @@ onMounted(async () => {
   width: 170px;
 }
 .x-dp-ng .f-line .af-button--primary {
-  background: #262262 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 .x-dp-ng .f-line .is-disabled {
@@ -310,7 +310,7 @@ onMounted(async () => {
 }
 .x-dp-nav .f-item.f-item--active {
   font-weight: bold;
-  border-bottom: 3px solid #262262;
+  border-bottom: 3px solid var(--brand-primary);
 }
 
 .bank-transfer-card {
@@ -462,7 +462,7 @@ html[theme='light'] {
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   width: 42px;
-  color: #262262;
+  color: var(--brand-primary);
   color: var(--brand-secondary);
 }
 .x-input-wrapper .x-input-text--icon + .x-input {
@@ -472,16 +472,16 @@ html[theme='light'] {
   border: none !important;
 }
 .x-input-wrapper.x-input-wrapper--active .x-input {
-  border: 1px solid #262262;
-  border-color: #262262;
+  border: 1px solid var(--brand-primary);
+  border-color: var(--brand-primary);
   border-color: var(--brand-secondary);
 }
 .x-input-wrapper.x-input-wrapper--active .x-input-prepend {
-  border-color: #262262;
+  border-color: var(--brand-primary);
   border-color: var(--brand-secondary);
 }
 .x-input-wrapper.x-input-wrapper--active.x-input-group--prepend .x-input {
-  border-color: #262262;
+  border-color: var(--brand-primary);
   border-color: var(--brand-secondary);
 }
 .x-input-wrapper.x-input-wrapper--disabled .x-input,
