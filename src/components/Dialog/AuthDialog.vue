@@ -1,0 +1,1024 @@
+<template>
+  <div class="es-dialog x-dialog auth">
+    <div class="es-dialog-body x-dialog-body">
+      <div class="es-dialog-main x-dialog-main" style="height: auto">
+        <div class="x-pop-wrapper">
+          <div class="x-pop-mian">
+            <div slot="popContent" class="x-pop-dialog">
+              <ul class="x-pop-dialog__wrapper" style="transform: translate3d(0%, 0px, 0px)">
+                <li class="x-list__item" style="transform: translate3d(0%, 0px, 0px)">
+                  <div class="x-page x-page--login">
+                    <header class="x-header-bar">
+                      <span class="x-header-bar-title"></span>
+                      <span @click="emitter.emit('hideDialog')" class="x-icon x-icon-close"></span>
+                    </header>
+                    <section class="x-page-main">
+                      <div class="x-tab-wrapper">
+                        <div class="x-page-nav x-tabs x-tabs-no-animation">
+                          <div v-if="activeStep === 1" class="x-tabs-nav">
+                            <div
+                              class="x-tabs-tab"
+                              @click="setAuthType('register')"
+                              :class="authType === 'register' ? ' x-tabs-tab-active' : ''"
+                            >
+                              Register
+                            </div>
+                            <div
+                              class="x-tabs-tab"
+                              :class="authType === 'login' ? ' x-tabs-tab-active' : ''"
+                              @click="setAuthType('login')"
+                            >
+                              Login
+                            </div>
+                          </div>
+                          <div v-else-if="activeStep === 2" class="x-tabs-nav">
+                            <div class="x-tabs-tab">Verify Mobile Number</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="x-opt-wrapper">
+                        <div v-if="authStore.authError" class="x-error-wrap">
+                          <div class="x-error">
+                            <i class="x-icon--error"></i>
+                            <p class="x-text-info">{{ authStore.authError }}</p>
+                          </div>
+                        </div>
+                        <div v-if="activeStep === 1" class="x-page-opt without-error">
+                          <div
+                            tabindex="6"
+                            class="x-input-wrapper x-input-group x-input-group--prepend"
+                          >
+                            <div class="x-input-prepend"><span>+234</span></div>
+                            <span class="x-input-com"
+                              ><i
+                                class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
+                              ></i>
+                              <input
+                                type="input"
+                                input-mode=""
+                                name=""
+                                placeholder="Mobile Number"
+                                onpaste="return true"
+                                class="x-input fs-exclude"
+                                v-model="phoneNumber"
+                            /></span>
+                          </div>
+                          <div tabindex="8" class="x-input-wrapper">
+                            <span class="x-input-com">
+                              <input
+                                type="password"
+                                name=""
+                                placeholder="Password"
+                                onpaste="return true"
+                                class="x-input fs-exclude"
+                                v-model="password"
+                            /></span>
+                          </div>
+
+                          <div class="x-btn-wrap">
+                            <button
+                              @click.prevent="handleFormSubmit"
+                              class="af-button af-button--primary"
+                              :class="{
+                                'is-disabled': authStore.loading || !phoneNumber || !password
+                              }"
+                              :disabled="authStore.loading"
+                            >
+                              <span
+                                ><span data-cms-key="log_in">{{
+                                  authStore.loading ? 'Please Wait' : 'Continue'
+                                }}</span></span
+                              >
+                            </button>
+                          </div>
+                        </div>
+                        <div v-else-if="activeStep === 2" class="bg-wrapper">
+                          <div
+                            class="flex-column size-14 text-center pd-t-40 pd-b-24 justify-between"
+                          >
+                            <span
+                              ><p class="mg-b-16 size-18 pd-hor-100">
+                                We’ve sent you a 6-digit code to +234 {{ phoneNumber }}
+                              </p></span
+                            >
+                            <div>
+                              <div class="x-pin-code-wrapper mg-b-16 size-20">
+                                <form>
+                                  <v-otp-input
+                                    ref="otpInput"
+                                    v-model:value="bindModal"
+                                    input-classes="x-pin-code-input fs-exclude"
+                                    separator="  "
+                                    :num-inputs="6"
+                                    :should-auto-focus="true"
+                                    input-type="number"
+                                    @on-complete="storeOTP"
+                                  />
+                                </form>
+                              </div>
+                              <div>
+                                <span class="darkGray not-allowed">Didn't get the code? </span
+                                >&nbsp;<span class="sec-left"> Send Again</span>
+
+                                <LoadingSpinner v-if="authStore.loading"></LoadingSpinner>
+
+                                <!-- <div class="darkGray mg-t-16" style="cursor: pointer;" @click="toLogin">Cancel</div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="x-list__item" style="transform: translate3d(100%, 0px, 0px)"></li>
+                <li
+                  class="x-list__item x-item-suc"
+                  style="transform: translate3d(200%, 0px, 0px)"
+                ></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { onMounted, ref, toRef } from 'vue'
+import emitter from '@/plugins/emitter'
+import { useAuthStore } from '@/stores'
+import { sendOTP, verifyOTP, register } from '@/helpers'
+import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
+
+const props = defineProps({
+  authType: String
+})
+const authStore = useAuthStore()
+const phoneNumber = ref('')
+const password = ref('')
+const authType = toRef(props.authType)
+const buttonText = ref('Create Your Account')
+const registerError = ref(false)
+const registerErrorMessage = ref('')
+const activeStep = ref(1)
+// const OTP = ref('')
+
+function setAuthType(type) {
+  authType.value = type
+  authStore.authError = null
+  if (type === 'register') {
+    buttonText.value = 'Create Your Account'
+  } else {
+    buttonText.value = 'Login'
+  }
+}
+
+const handleFormSubmit = async () => {
+  authStore.authError = null
+  if (authType.value === 'register') {
+    await registerUser()
+  } else {
+    await login()
+  }
+}
+
+async function login() {
+  let payload = {
+    username: formattedPhoneNumber(phoneNumber.value),
+    password: password.value,
+    clientId: import.meta.env.VITE_CLIENT_ID
+  }
+  authStore.doLogin(payload)
+}
+
+const registerUser = async () => {
+  authStore.loading = true
+  let payload = {
+    clientID: import.meta.env.VITE_CLIENT_ID,
+    phoneNumber: `234${formattedPhoneNumber(phoneNumber.value)}`
+  }
+
+  const res = await sendOTP(payload)
+  authStore.loading = false
+  if (res.status) {
+    activeStep.value = 2
+  } else {
+    registerError.value = true
+    registerErrorMessage.value = res.message
+  }
+}
+
+const storeOTP = async (data) => {
+  authStore.loading = true
+  authStore.authError = null
+  const internationalNumber = `234${formattedPhoneNumber(phoneNumber.value)}`
+  let payload = {
+    clientID: import.meta.env.VITE_CLIENT_ID,
+    phoneNumber: internationalNumber,
+    code: data
+  }
+
+  const res = await verifyOTP(payload)
+  if (res.data.status) {
+    await doRegistration()
+  } else {
+    authStore.loading = false
+    authStore.authError = res.data.message
+  }
+}
+
+const formattedPhoneNumber = (phoneNumber) => {
+  const pNumber = phoneNumber.toString()
+  const first = pNumber.charAt(0)
+  return first === '0' ? pNumber.substring(1) : pNumber
+}
+
+const doRegistration = async () => {
+  authStore.loading = true
+  authStore.authError = null
+
+  const payload = {
+    username: formattedPhoneNumber(phoneNumber.value),
+    password: password.value,
+    phone: `234${formattedPhoneNumber(phoneNumber.value)}`,
+    clientID: import.meta.env.VITE_CLIENT_ID
+  }
+
+  try {
+    const res = await register(payload)
+    if (res.data.success) {
+      await authStore.doLogin(payload)
+      authStore.loading = false
+    } else {
+      throw Error(res.data.error)
+    }
+  } catch (error) {
+    authStore.loading = false
+    authStore.authError = error
+  }
+}
+
+// const toLogin = () => {
+//   activeStep.value = 1
+//   authStore.loading = false
+//   authStore.authError = null
+//   document.querySelector('input').textContent = ''
+// }
+
+onMounted(() => {
+  authStore.authError = null
+  authStore.loading = false
+})
+</script>
+<style>
+.es-dialog.x-dialog.auth {
+  margin-left: auto;
+}
+/* Header Bar */
+.x-header-bar {
+  height: 110px;
+  min-height: 110px;
+  position: relative;
+}
+.x-header-bar .x-icon {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 15px;
+  position: absolute;
+  top: 16px;
+  z-index: 999;
+}
+.x-header-bar .x-icon-back {
+  color: #9ca0ab;
+  left: 0;
+  text-decoration: none;
+}
+.x-header-bar .x-icon-back::before {
+  content: '\e604';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.x-header-bar .x-icon-close {
+  color: #9ca0ab;
+  cursor: pointer;
+  right: 0;
+}
+.x-header-bar .x-icon-close::before {
+  content: '\e69a';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.x-header-bar .x-header-bar-title {
+  color: #000;
+  font-size: 24px;
+  line-height: 33px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translate3d(0, -50%, 0);
+  transform: translate3d(0, -50%, 0);
+  width: 100%;
+}
+.x-header-bar .x-icon-success::before {
+  content: '\e60b';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.x-header-bar .x-icon-success:before {
+  border-radius: 50%;
+  color: #262262;
+  display: inline-block;
+  font-size: 32px;
+  font-weight: bold;
+  height: 34px;
+  line-height: 34px;
+  margin-right: 10px;
+  vertical-align: top;
+  width: 34px;
+}
+
+/* Input */
+.x-page .x-input-wrapper,
+.x-pop-wrapper .x-page .x-input-wrapper {
+  width: 100%;
+}
+.x-page .x-input-wrapper .x-input-text--icon,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-text--icon {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+  text-indent: 4px;
+  width: 32px;
+}
+.x-page .x-input-wrapper .x-input-text--icon + .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-text--icon + .x-input {
+  padding-right: 55px;
+}
+.x-page .x-input-wrapper .x-input-icon,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon {
+  text-align: left;
+  text-indent: 2px;
+}
+.x-page .x-input-wrapper .x-input-icon + .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon + .x-input {
+  padding-right: 40px;
+}
+.x-page .x-input-wrapper .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input {
+  border: 1px solid #b4b4b4;
+  border-radius: 2px;
+  font-size: 14px;
+  height: 100%;
+  padding-left: 18px;
+}
+.x-page .x-input-wrapper .x-input-icon:before,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon:before {
+  line-height: 16px;
+}
+.x-page .x-input-wrapper.x-input-wrapper--active .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--active .x-input {
+  border-color: #262262;
+}
+.x-page .x-input-wrapper.x-input-wrapper--active .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--active .x-input-prepend {
+  border-color: #262262;
+}
+.x-page .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover {
+  color: #262262 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover + .x-input,
+.x-pop-wrapper
+  .x-page
+  .x-input-wrapper.x-input-wrapper--active
+  .x-input-icon--clickable:hover
+  + .x-input {
+  border-color: #262262 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--error .x-input {
+  border-color: #e41827 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--error .x-input-prepend {
+  border-color: #e41827 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input-icon--clickable:hover,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--error .x-input-icon--clickable:hover {
+  color: #e41827 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input-icon--clickable:hover + .x-input,
+.x-pop-wrapper
+  .x-page
+  .x-input-wrapper.x-input-wrapper--error
+  .x-input-icon--clickable:hover
+  + .x-input {
+  border-color: #e41827 !important;
+}
+.x-page .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input {
+  border-color: #262262;
+}
+.x-page .x-input-wrapper .x-input-icon--clickable:hover,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon--clickable:hover {
+  color: #9ca0ab !important;
+}
+.x-page .x-input-wrapper .x-input-icon--clickable:hover + .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon--clickable:hover + .x-input {
+  border-color: #b4b4b4 !important;
+}
+.x-page .x-input-group--prepend.x-input-wrapper--error .x-input,
+.x-pop-wrapper .x-page .x-input-group--prepend.x-input-wrapper--error .x-input {
+  border-left: none !important;
+}
+.x-page .x-input-group--prepend .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-group--prepend .x-input-prepend {
+  border-color: #b4b4b4;
+  border-radius: 2px 0 0 2px;
+  padding-left: 18px;
+}
+.x-page .x-input-group--prepend .x-input,
+.x-pop-wrapper .x-page .x-input-group--prepend .x-input {
+  border-left: none !important;
+  border-radius: 0 2px 2px 0;
+  padding-left: 0;
+}
+.x-page .x-input-group--prepend.x-input-wrapper--active .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-group--prepend.x-input-wrapper--active .x-input-prepend {
+  border-color: #262262;
+}
+.x-opt-wrapper,
+.x-page-opt {
+  position: relative;
+}
+.x-opt-wrapper .x-error-tips,
+.x-page-opt .x-error-tips {
+  position: absolute;
+  top: 47px;
+  font-size: 12px;
+  line-height: 14px;
+  color: #e41827;
+}
+.x-page--login .mt-100 {
+  margin-top: 100px !important;
+}
+.x-page--login .pswd_tip {
+  color: #353a45;
+  margin: 24px auto 33px;
+  text-align: center;
+  width: 400px;
+}
+.x-page--login .progress-container {
+  margin: 0 auto;
+  width: 304px;
+}
+.x-page--login .x-page-opt {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 82px;
+  text-align: left;
+}
+.x-page--login .x-page-opt.without-error {
+  padding-top: 36px;
+}
+.x-page--login .x-page-opt .x-input-wrapper {
+  height: 54px;
+}
+.x-page--login .x-page-opt .x-input-wrapper.x-input-wrapper--active .x-input-prepend,
+.x-page--login .x-page-opt .x-input-wrapper.x-input-wrapper--active .x-input {
+  border-color: 1px #262262;
+}
+.x-page--login .x-page-opt .x-input-wrapper.x-input-wrapper--error .x-input-prepend,
+.x-page--login .x-page-opt .x-input-wrapper.x-input-wrapper--error .x-input {
+  border-color: #e41827;
+}
+.x-page--login .x-page-opt .x-input-wrapper:nth-of-type(1) .x-input {
+  border-bottom: none !important;
+  border-radius: 0 2px 0 0;
+}
+.x-page--login .x-page-opt .x-input-wrapper:nth-of-type(1) .x-input-prepend {
+  border-bottom: none;
+}
+.x-page--login
+  .x-page-opt
+  .x-input-wrapper:nth-of-type(1).x-input-wrapper--active
+  + .x-input-wrapper
+  .x-input {
+  border-top: 1px solid #262262;
+}
+.x-page--login
+  .x-page-opt
+  .x-input-wrapper:nth-of-type(1).x-input-wrapper--error
+  + .x-input-wrapper
+  .x-input {
+  border-top: 1px solid #e41827;
+}
+.x-page--login .x-page-opt .x-input-wrapper:nth-of-type(2) .x-input {
+  border-radius: 0 0 2px 2px;
+}
+.x-page--login .x-page-opt .x-input-wrapper .x-input {
+  height: 54px !important;
+}
+.x-page--login .x-page-opt .x-input-group--prepend .x-input-prepend {
+  border-radius: 2px 0 0 0;
+}
+.x-page--login .x-page-opt .x-btn-wrap {
+  margin: 20px auto;
+  text-align: center;
+}
+.x-page--login .x-page-opt .x-btn-wrap .af-button {
+  font-size: 16px;
+}
+.x-page--login .x-page-opt .x-btn-wrap-fix {
+  margin: 35px auto 15px;
+}
+
+.x-page--login .x-error-wrap {
+  margin: 0 auto 10px;
+  width: calc(462px - 82px - 82px);
+}
+.x-page--login .x-error-wrap .x-error {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 300px;
+  padding: 12px 10px;
+}
+.x-page--login .x-error-wrap .x-icon--error {
+  margin-right: 8px;
+}
+.x-page--login .x-error-wrap .x-text-info {
+  font-size: 12px;
+  line-height: 18px;
+}
+.x-page--login .x-popOver-wrapper {
+  border: none;
+  padding: 10px;
+  -webkit-transform: translate3d(18px, -25px, 0);
+  transform: translate3d(18px, -25px, 0);
+}
+.x-page--login .x-popOver-wrapper .x-popOver {
+  font-size: 10px;
+  line-height: 14px;
+}
+.x-page--login .x-popOver-wrapper .x-popOver-arrow {
+  border: none;
+  top: -6px !important;
+}
+.x-page--login .tips {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 12px 0 0;
+}
+.x-page--login .tips .check {
+  color: #9ca0ab;
+}
+.x-page--login .tips .check.active {
+  color: #262262;
+}
+.x-page--login .tips .tip {
+  color: #9ca0ab;
+}
+.x-page--login .tips .tip.active {
+  color: #262262;
+}
+.x-page--login .tips .left {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.x-page--login .tips .right {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+.x-page--login .mobile-warning-info {
+  font-weight: bold;
+  margin-bottom: -20px;
+  padding: 5px;
+}
+
+.x-text-second {
+  font-size: 13px;
+  line-height: 1;
+}
+.x-page .btn-wrapper,
+.x-page .af-button {
+  width: 100%;
+  height: 38px;
+}
+.x-page .af-button {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+  border: none !important;
+  font-size: 16px;
+  border-radius: 2px;
+}
+.x-page .af-button--primary {
+  background: #262262 !important;
+  color: #fff !important;
+}
+
+.x-page .is-disabled {
+  background: #dcdee5 !important;
+  color: #fff !important;
+}
+.x-page .is-disabled:hover,
+.x-page .is-disabled:active {
+  background: #dcdee5 !important;
+  color: #fff !important;
+}
+.x-page .x-input-wrapper,
+.x-pop-wrapper .x-page .x-input-wrapper {
+  width: 100%;
+}
+.x-page .x-input-wrapper .x-input-text--icon,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-text--icon {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+  text-indent: 4px;
+  width: 32px;
+}
+.x-page .x-input-wrapper .x-input-text--icon + .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-text--icon + .x-input {
+  padding-right: 55px;
+}
+.x-page .x-input-wrapper .x-input-icon,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon {
+  text-align: left;
+  text-indent: 2px;
+}
+.x-page .x-input-wrapper .x-input-icon + .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon + .x-input {
+  padding-right: 40px;
+}
+.x-page .x-input-wrapper .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input {
+  border: 1px solid #b4b4b4;
+  border-radius: 2px;
+  font-size: 14px;
+  height: 100%;
+  padding-left: 18px;
+}
+.x-page .x-input-wrapper .x-input-icon:before,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon:before {
+  line-height: 16px;
+}
+
+.x-page .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover {
+  color: #262262 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--active .x-input-icon--clickable:hover + .x-input,
+.x-pop-wrapper
+  .x-page
+  .x-input-wrapper.x-input-wrapper--active
+  .x-input-icon--clickable:hover
+  + .x-input {
+  border-color: #262262 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--error .x-input {
+  border-color: #e41827 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--error .x-input-prepend {
+  border-color: #e41827 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input-icon--clickable:hover,
+.x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--error .x-input-icon--clickable:hover {
+  color: #e41827 !important;
+}
+.x-page .x-input-wrapper.x-input-wrapper--error .x-input-icon--clickable:hover + .x-input,
+.x-pop-wrapper
+  .x-page
+  .x-input-wrapper.x-input-wrapper--error
+  .x-input-icon--clickable:hover
+  + .x-input {
+  border-color: #e41827 !important;
+}
+.x-page .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input {
+  border-color: #262262;
+}
+.x-page .x-input-wrapper .x-input-icon--clickable:hover,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon--clickable:hover {
+  color: #9ca0ab !important;
+}
+.x-page .x-input-wrapper .x-input-icon--clickable:hover + .x-input,
+.x-pop-wrapper .x-page .x-input-wrapper .x-input-icon--clickable:hover + .x-input {
+  border-color: #b4b4b4 !important;
+}
+.x-page .x-input-group--prepend.x-input-wrapper--error .x-input,
+.x-pop-wrapper .x-page .x-input-group--prepend.x-input-wrapper--error .x-input {
+  border-left: none !important;
+}
+.x-page .x-input-group--prepend .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-group--prepend .x-input-prepend {
+  border-color: #b4b4b4;
+  border-radius: 2px 0 0 2px;
+  padding-left: 18px;
+}
+.x-page .x-input-group--prepend .x-input,
+.x-pop-wrapper .x-page .x-input-group--prepend .x-input {
+  border-left: none !important;
+  border-radius: 0 2px 2px 0;
+  padding-left: 0;
+}
+.x-page .x-input-group--prepend.x-input-wrapper--active .x-input-prepend,
+.x-pop-wrapper .x-page .x-input-group--prepend.x-input-wrapper--active .x-input-prepend {
+  border-color: #262262;
+}
+.x-opt-wrapper,
+.x-page-opt {
+  position: relative;
+}
+.x-opt-wrapper .x-error-tips,
+.x-page-opt .x-error-tips {
+  position: absolute;
+  top: 47px;
+  font-size: 12px;
+  line-height: 14px;
+  color: #e41827;
+}
+.x-page--success .x-header-bar {
+  height: 97px;
+}
+.x-page--success .x-page-main {
+  height: 242px;
+}
+.x-page--success .x-page-main .x-desc-wrapper {
+  margin-top: 35px;
+  text-align: center;
+  color: #353a45;
+}
+.x-page--success .x-page-main .x-t-big {
+  font-size: 20px;
+  line-height: 21px;
+  font-weight: bold;
+}
+.x-page--success .x-page-main .x-t-min {
+  font-size: 16px;
+  line-height: 21px;
+}
+.x-page--success .x-page-main .x-btn-wrapper {
+  margin-top: 25px;
+  text-align: center;
+}
+.x-page--success .x-page-main .x-btn-wrapper .af-button {
+  width: 300px;
+  font-weight: bold;
+}
+.x-page--success .x-icon-success {
+  line-height: 33px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  color: #353a45;
+}
+.x-page--success .x-icon-success::before {
+  content: '\e60b';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.x-page--success .x-icon-success:before {
+  display: inline-block;
+  color: #262262;
+  font-size: 34px;
+  margin-right: 16px;
+  font-size: 32px;
+  line-height: 34px;
+  font-weight: bold;
+  border-radius: 50%;
+  vertical-align: top;
+}
+.x-page--success .x-page-footer {
+  height: 102px;
+  border-top: 1px solid #eaecef;
+  padding-top: 24px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.x-page--success .x-page-opt {
+  font-size: 0;
+  text-align: center;
+}
+.x-page--success .x-page-opt > * {
+  display: inline-block;
+  vertical-align: top;
+}
+.x-page--success .x-page-opt .x-text-tips {
+  font-size: 14px;
+  margin-right: 10px;
+  color: #353a45;
+  line-height: 30px;
+}
+.x-page--success .x-page-opt .x-code {
+  font-size: 20px;
+  line-height: 30px;
+  color: #353a45;
+  text-align: center;
+  padding-right: 25px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.x-page--success .x-page-opt .x-border {
+  border-right: 1px solid #eaecef;
+}
+.x-page--success .x-page-opt .x-border + .x-opt-wrapper {
+  padding-left: 25px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 30px;
+}
+.x-page--success .x-page-opt .x-opt-wrapper {
+  font-size: 0;
+}
+.x-page--success .x-page-opt .x-opt-wrapper:nth-of-type(1) {
+  position: relative;
+  padding-right: 25px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.x-page--success .x-page-opt .x-opt-wrapper:only-of-type {
+  padding-right: none;
+}
+.x-page--success .x-page-opt .x-opt-wrapper.referral-code-input-container {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.x-page--success .x-page-opt .x-opt-wrapper.referral-code-input-container .x-icon-delete {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.x-page--success .x-page-opt .x-opt-wrapper.referral-code-input-container .af-button {
+  margin-left: 0.33333333rem;
+}
+.x-page--success .x-page-opt .x-input-wrapper,
+.x-page--success .x-page-opt .af-button {
+  display: inline-block;
+  vertical-align: middle;
+}
+.x-page--success .x-page-opt .x-input-wrapper {
+  width: 210px !important;
+  height: 30px;
+  margin-right: 10px;
+  background: #fff;
+}
+.x-page--success .x-page-opt .x-input-wrapper .x-input {
+  height: 30px !important;
+  font-size: 12px;
+}
+.x-page--success .x-page-opt .af-button--info {
+  height: 30px;
+  width: 66px;
+  font-size: 12px !important;
+  line-height: 30px;
+  padding: 0;
+}
+.x-page--success .x-page-opt .af-button--text {
+  color: #26448a;
+  text-align: right;
+  font-size: 13px !important;
+  height: 30px;
+  padding: 0 !important;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.x-page--success .x-page-opt .x-icon-arrow-right::before {
+  content: '\e608';
+  font-family: 'iconfont' !important;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+}
+.x-page--success .x-page-opt .x-icon-arrow-right:before {
+  display: inline-block;
+  vertical-align: middle;
+  color: #26448a;
+  margin-left: 5px;
+  font-size: 12px;
+}
+.x-page--success .x-page-opt .x-error-tips {
+  top: 34px !important;
+}
+.x-page--success .x-page-opt .af-icon-loading {
+  vertical-align: middle !important;
+}
+.x-page--success .x-image-wrapper {
+  margin: 0 auto;
+  width: 680px;
+  height: 84px;
+}
+.x-page--success .x-image-wrapper > img {
+  height: 100%;
+  width: 100%;
+}
+.x-page--success .x-promotion {
+  cursor: pointer;
+}
+
+.x-pin-code-wrapper {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+}
+.x-pin-code-wrapper .x-pin-code-input {
+  background-color: #fafafa;
+  border: solid 1px #9ca0ab;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 20px;
+  outline: none;
+  text-align: center;
+  border-color: #9ca0ab;
+  color: #1b1e25;
+  width: 43px;
+  height: 47px;
+}
+.x-pin-code-wrapper .x-pin-code-input.mask {
+  -webkit-text-security: disc;
+}
+.x-pin-code-wrapper .x-pin-code-input.mask.text-security {
+  font-family: text-security-disc;
+}
+@font-face {
+  font-family: text-security-disc;
+  src: url(//s.sporty.net/global/main/common/iconfont/text-security-disc.4fa38d775a.woff);
+}
+.x-pin-code-wrapper .x-pin-code-input:not(:last-child) {
+  margin-right: 10px;
+}
+.x-pin-code-wrapper .x-pin-code-input:focus {
+  border: solid 1px #262262;
+  border-color: #262262;
+  border-color: var(--brand-secondary);
+}
+.x-pin-code-wrapper .x-pin-code-input.error {
+  border: solid 1px #e41827;
+  border-color: #e41827;
+  border-color: var(--warning-primary);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+</style>
