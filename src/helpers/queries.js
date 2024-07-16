@@ -37,59 +37,24 @@ const parseData = async (response) => {
   return response instanceof Promise ? (await response)?.data : response.data
 }
 
-const startC27Game = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/c27/start-session`, payload)
-  )
-}
-
-const startEvoPlayGame = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/evo-play/get-game-url`, payload)
-  )
-}
-
-const startShackEvoGame = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/shacks-evo/start/${payload}`)
-  )
-}
-const startTadaGame = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/tada/get-game-url`, payload)
-  )
-}
-
-const playGame = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/c27/start-session`, payload)
-  )
-}
-
 export const fetchGlobalVars = async () => {
-  return fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/utilities/globalvariables`)
+  return fetchWrapper.get(`${NEW_BASE_API}/auth/globalvariables/${CLIENT_ID}`)
 }
 
 export const fetchBanners = async () => {
-  return parseData(
-    fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/sports/mobile/sliders?banner_type=web`)
-  )
+  return parseData(fetchWrapper.get(`${BASE_API}/api/sports/mobile/sliders?banner_type=mobile`))
 }
 
 export const fetchBonusList = async () => {
-  return fetchWrapper.get(
-    `${import.meta.env.VITE_BASE_API}/api/utilities/bonuslist?section=onliners`
-  )
+  return fetchWrapper.get(`${BASE_API}/api/utilities/bonuslist?section=onliners`)
 }
 
 export const getSplitPropsData = async (payload) => {
-  return fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/sports/get-split-props`, payload)
+  return fetchWrapper.post(`${BASE_API}/api/sports/get-split-props`, payload)
 }
 
 export const getCombosData = async (payload) => {
-  return fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/sports/get-combos`, {
-    selections: payload.selections
-  })
+  return fetchWrapper.post(`${BASE_API}/api/sports/get-combos`, { selections: payload.selections })
 }
 
 export const login = async (payload) => {
@@ -101,7 +66,7 @@ export const register = async (payload) => {
 }
 
 export const sendOTP = async (payload) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/notification/send-otp`, payload))
+  return fetchWrapper.post(`${NEW_BASE_API}/notification/send-otp`, payload)
 }
 
 export const verifyOTP = async (payload) => {
@@ -109,15 +74,11 @@ export const verifyOTP = async (payload) => {
 }
 
 export const verifyUsername = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/auth/verify-username`, payload)
-  )
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/auth/verify-username`, payload))
 }
 
 export const resetPassword = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${import.meta.env.VITE_BASE_API}/api/auth/reset-password`, payload)
-  )
+  return parseData(fetchWrapper.patch(`${NEW_BASE_API}/auth/update/reset-password`, payload))
 }
 
 export const updateProfile = async (payload) => {
@@ -147,7 +108,15 @@ export const getCategoriesBySport = async (sportID) => {
 export const getTournamentsByCategories = async (categoryId) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/categories/${categoryId}?timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/tournaments/${categoryId}?timeoffset=${sign}${offsetHours}`
+    )
+  )
+}
+
+export const getFixturesByCategories = async (categoryId, sid) => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/sports/get-fixtures-by-categories/${categoryId}?timeoffset=${sign}${offsetHours}&sportID=${sid}&limit=50&source=website`
     )
   )
 }
@@ -155,7 +124,7 @@ export const getTournamentsByCategories = async (categoryId) => {
 export const getFixturesBySport = async () => {
   return parseData(
     fetchWrapper.get(
-      `${import.meta.env.VITE_BASE_API}/api/sports/group-fixtures-by-sport?date=${today()}&end_date=${end()}&timeoffset=+1`
+      `${BASE_API}/api/sports/group-fixtures-by-sport?date=${today()}&end_date=${end()}&timeoffset=${sign}${offsetHours}`
     )
   )
 }
@@ -178,7 +147,7 @@ export const getSportHighlights = async (sid, hours, page) => {
   if (hours) {
     return parseData(
       fetchWrapper.get(
-        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&hours=${hours}&page=${page}&perPage=30&timeoffset=${sign}${offsetHours}`
+        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&hours=${hours}&page=1&perPage=25&timeoffset=${sign}${offsetHours}`
       )
     )
   } else {
@@ -190,84 +159,62 @@ export const getSportHighlights = async (sid, hours, page) => {
   }
 }
 
-export const performCashout = async (payload) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/cashout/`, payload))
-}
-
-export const getHighlights2 = async (sid, perPage = 25) => {
+export const getHighlights2 = async (sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=${perPage}&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=25&timeoffset=${sign}${offsetHours}`
     )
   )
 }
 
-export const getFixturesByTournamentId = async (id, sid, page) => {
+export const getFixturesByTournamentId = async (id, sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/get-fixtures/${id}?sportID=${sid}&source=website&timeoffset=${sign}${offsetHours}&page=${page}`
+      `${NEW_BASE_API}/sports/get-fixtures/${id}?sportID=${sid}&marketID=1&source=website&timeoffset=${sign}${offsetHours}`
     )
   )
 }
 
 export const getFixtureMarkets = async (id) => {
-  return parseData(fetchWrapper.get(`${NEW_BASE_API}/sports/match/${id}`))
-}
-
-export const getFixturesByCategory = async (id, sid) => {
   return parseData(
-    fetchWrapper.get(
-      `${import.meta.env.VITE_SPORTS_BASE_API}/sports/get-fixtures-by-category/${id}?sportID=${sid}&source=website&timeoffset=+1`
-    )
+    fetchWrapper.get(`${NEW_BASE_API}/sports/match/${id}?timeoffset=${sign}${offsetHours}`)
   )
 }
 
-export const getBets = async (payload, page = 1) => {
-  return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/bets/history?page=${page}&perPage=6`, payload)
-  )
-}
-
-export const getOpenBets = async (payload) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/history`, payload))
+export const getBets = async (payload) => {
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/history?page=1`, payload))
 }
 
 export const getSettledBets = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/history?page=1`, payload))
 }
 
-export const getTransactionsData = async (payload, page) => {
-  return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/transactions?source=website`, payload)
-  )
+export const getTransactionsData = async (payload) => {
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/user/wallet/transactions`, payload))
+}
+
+export const fetchBankAssets = async () => {
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/user/wallet/bank-accounts`))
 }
 
 export const getCouponById = async (id) => {
-  return parseData(
-    fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/sports/find-coupon/${id}`)
-  )
+  return parseData(fetchWrapper.get(`${BASE_API}/api/sports/find-coupon/${id}`))
 }
 
 export const placeBet = async (payload) => {
-  return parseData(
-    fetchWrapper.post(
-      `${import.meta.env.VITE_BASE_API}/api/sports/place-bet?channel=mobile`,
-      payload
-    )
-  )
+  return parseData(fetchWrapper.post(`${BASE_API}/api/sports/place-bet?channel=mobile`, payload))
 }
 
 export const placeBet2 = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/place-bet/${CLIENT_ID}`, payload))
 }
 
+export const performCashout = async (payload) => {
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/cashout/`, payload))
+}
+
 export const bookBet = async (payload) => {
-  return parseData(
-    fetchWrapper.post(
-      `${import.meta.env.VITE_BASE_API}/api/sports/book-bet?channel=mobile`,
-      payload
-    )
-  )
+  return parseData(fetchWrapper.post(`${BASE_API}/api/sports/book-bet?channel=mobile`, payload))
 }
 
 export const bookBet2 = async (payload) => {
@@ -275,41 +222,31 @@ export const bookBet2 = async (payload) => {
 }
 
 export const loadBetslip = async (betslipId) => {
-  return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/bets/find-coupon`, { clientId: CLIENT_ID, betslipId })
-  )
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/find-bet?code=${betslipId}`))
 }
 
 export const getGames = async (page) => {
-  return parseData(
-    fetchWrapper.get(
-      `${import.meta.env.VITE_BASE_API}/api/casino/web-games?paginate=1&page=${page}`
-    )
-  )
+  return parseData(fetchWrapper.get(`${BASE_API}/api/casino/web-games?paginate=1&page=${page}`))
+}
+
+export const getCasinoStartUrl = async (payload) => {
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/start`, payload))
 }
 
 export const getTopGameCategories = async () => {
-  return parseData(
-    fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/casino/top-games-categories`)
-  )
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/games/categories`))
 }
 
 export const gamesByTopCategory = async (id) => {
-  return parseData(fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/casino/top-games/${id}`))
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/games/${CLIENT_ID}/list?categoryId=${id}`))
 }
 
 export const getPaymentMethods = async () => {
-  return parseData(
-    fetchWrapper.get(`${import.meta.env.VITE_BASE_API}/api/utilities/payment-methods`)
-  )
+  return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/payment-methods`))
 }
 
 export const getBanksList = async () => {
   return parseData(fetchWrapper.get(`${NEW_BASE_API}/user/wallet/${CLIENT_ID}/banks`))
-}
-
-export const fetchBankAssets = async () => {
-  return parseData(fetchWrapper.get(`${NEW_BASE_API}/user/wallet/bank-accounts`))
 }
 
 export const verifyAccount = async (payload) => {
@@ -342,11 +279,11 @@ export const getUserBonus = async () => {
 
 export const checkFirstDeposit = async () => {
   return parseData(
-    fetchWrapper.get(`${NEW_BASE_API}/bonus/user/check-first-deposit?client_id=${CLIENT_ID}`)
+    fetchWrapper.get(`${NEW_BASE_API}/bonus/user/check-deposit-bonus?client_id=${CLIENT_ID}`)
   )
 }
 
-export const awardDeposit = async (payload) => {
+export const awardBonus = async (payload) => {
   return parseData(
     fetchWrapper.post(`${NEW_BASE_API}/bonus/user/award?client_id=${CLIENT_ID}`, payload)
   )

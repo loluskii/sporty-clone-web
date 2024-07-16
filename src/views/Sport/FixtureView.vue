@@ -39,7 +39,7 @@ import {
   unslugify,
   getSportHighlights,
   getToday2,
-  getFixturesByCategory
+  getFixturesByCategories
 } from '@/helpers'
 import { useRoute, onBeforeRouteLeave } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
@@ -232,7 +232,7 @@ async function fetchTodayActiveSport(id) {
 async function handleNewActiveCategory(data) {
   try {
     if (Object.keys(fixturesList.value).length <= 100) {
-      const res = await getFixturesByCategory(data, activeSport.value.sportID)
+      const res = await getFixturesByCategories(data, activeSport.value.sportID)
       fixturesList.value = { ...fixturesList.value, ..._.groupBy(res.fixtures, 'tournament') }
       marketsGroup.value = res.markets
     } else {

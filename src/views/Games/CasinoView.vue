@@ -5,15 +5,6 @@
         <div class="row scroll-list no-gutters">
           <div
             class="category-parent col mb-2"
-            :class="activeTopCategory === 'all' ? 'isSelected' : ''"
-            @click="getGameByTopCategory('all')"
-          >
-            <div class="category-item px-3">
-              <span data-cms-key="popular">All</span>
-            </div>
-          </div>
-          <div
-            class="category-parent col mb-2"
             v-for="(category, index) in topGameCategories"
             :key="index"
             :class="activeTopCategory.id == category.id ? 'isSelected' : ''"
@@ -38,7 +29,6 @@
                         data-id="34"
                         class="list-item text-center col-3 row-last-item"
                         style="padding: 0.5rem"
-                        v-if="game.status && game.game_id !== null && game.provider_id != 'C27'"
                         @click="redirectToGamePlay(game)"
                       >
                         <div class="row game-item no-gutters user-logged-in">
@@ -62,13 +52,7 @@
                                 <div class="main-option-container col">
                                   <div class="name-container col">
                                     <div class="scroll-div">
-                                      <span class="name" data-cms-key="aviator">{{
-                                        game.provider_id == 'tada-games'
-                                          ? game.title
-                                          : game.provider_id == 'evo-play'
-                                            ? game.description
-                                            : ''
-                                      }}</span>
+                                      <span class="name">{{ game.title }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -80,15 +64,7 @@
                       </div>
                     </template>
                   </div>
-                  <div class="fix-scroll-height"></div>
-                  <div
-                    v-if="!isLoading && hasNextPage"
-                    style="display: flex; justify-content: center"
-                  >
-                    <button @click.prevent="loadMoreGames" class="btn btn-primary">
-                      Load More
-                    </button>
-                  </div>
+                
                   <LoadingSpinner v-if="isLoading"></LoadingSpinner>
                 </div>
               </div>
@@ -96,9 +72,7 @@
           </div>
         </div>
       </div>
-      <div class="back-to-top" style="display: none; right: 129px; top: 713px">
-        
-      </div>
+      <div class="back-to-top" style="display: none; right: 129px; top: 713px"></div>
     </div>
   </CasinoLayout>
 </template>
@@ -107,93 +81,48 @@
 // import CasinoL
 import CasinoLayout from '@/components/Shared/CasinoLayout.vue'
 import { ref, onBeforeMount } from 'vue'
-import { getGames, getTopGameCategories, gamesByTopCategory } from '@/helpers'
-import { useAuthStore } from '@/stores'
+import { getTopGameCategories, gamesByTopCategory, slugify } from '@/helpers'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { useRouter } from 'vue-router'
-import emitter from '@/plugins/emitter'
 
 const topGameCategories = ref([])
 const gamesList = ref([])
 const activeTopCategory = ref('all')
-const currentPage = ref(1)
-const scrollComponent = ref(null)
-const authStore = useAuthStore()
 const isLoading = ref(false)
 const hasNextPage = ref(false)
 const router = useRouter()
 
 async function getCasinoGames() {
   isLoading.value = true
-  currentPage.value++
-  const response = await getGames(1)
-  gamesList.value = response.games.data
-  hasNextPage.value = response.games.next_page_url !== null
+  const response = await gamesByTopCategory(1)
+  gamesList.value = response.games
   isLoading.value = false
-}
-
-// const handleScroll = () => {
-//   let element = scrollComponent.value
-//   if (element.getBoundingClientRect().bottom < window.innerHeight) {
-//     loadMoreGames()
-//   }
-// }
-
-async function loadMoreGames() {
-  isLoading.value = true
-  const nextPage = currentPage.value++ // Assuming you have a page parameter
-  const response = await getGames(nextPage)
-  isLoading.value = false
-  gamesList.value = [...gamesList.value, ...response.games.data]
-  hasNextPage.value = response.games.next_page_url !== null
 }
 
 async function getCategories() {
   const response = await getTopGameCategories()
   topGameCategories.value = response.data
+  activeTopCategory.value = response.data[0]
 }
 
 async function getGameByTopCategory(category) {
-  currentPage.value = 1
-  if (category == 'all') {
-    activeTopCategory.value = category
-    getCasinoGames()
-  } else {
-    isLoading.value = true
-    activeTopCategory.value = category
-    const res = await gamesByTopCategory(category.id)
-    isLoading.value = false
-    gamesList.value = res.data
-    hasNextPage.value = false
-  }
+  isLoading.value = true
+  activeTopCategory.value = category
+  const res = await gamesByTopCategory(category.id)
+  isLoading.value = false
+  gamesList.value = res.games
 }
 
 const getImagePath = (game) => {
-  const game_id = game.game_id
-  const provider = game.provider_id
-  let id = parseInt(game_id.match(/\d+$/)[0])
-  switch (provider) {
-    case 'tada-games':
-      return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Tada%2F500x500_EN_GAMEID_${id}.png?alt=media`
-    default:
-      return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/casino%2F${game.title}.png?alt=media`
-      break
-  }
+  return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/casino%2F${game.title}.png?alt=media`
 }
 
 async function redirectToGamePlay(game) {
-  if (authStore.token) {
-    return router.push({
-      name: 'game-play',
-      params: { provider: game.provider_id.toLowerCase(), game_id: game.game_id }
-    })
-  }else{
-    emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'login' })
-  }
-  // } else {
-  //   authStore.returnUrl = '/Games'
-  //   return router.push({ name: 'sign-in' })
-  // }
+  console.log(game)
+  return router.push({
+    name: 'game-play',
+    params: { game_name: slugify(game.title), game_id: game.id }
+  })
 }
 
 onBeforeMount(async () => {
