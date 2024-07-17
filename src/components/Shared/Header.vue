@@ -552,11 +552,11 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-phone,
 .c-header .x-login-bar .x-psd {
-  background: #1b1939;
+  background: #333;
 }
 .c-header .x-login-bar .x-phone input,
 .c-header .x-login-bar .x-psd input {
-  background: #1b1939;
+  background: #333;
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
