@@ -69,7 +69,10 @@
                       <div v-if="market.specifier !== ''" class="each-module">
                         {{ market.specifier }}
                       </div>
-                      <template v-for="(outcome, o) in _.sortBy(market.outcomes, 'outcomeID')">
+                      <template
+                        v-for="(outcome, o) in _.sortBy(market.outcomes, 'outcomeID')"
+                        :key="o"
+                      >
                         <div class="each-module">{{ outcome.outcomeName }}</div>
                       </template>
                     </div>
@@ -160,7 +163,7 @@ const { data, error, isLoading, refetch } = useQuery('liveData', getLiveHighligh
 const filteredLiveData = computed(() => {
   const res =
     completeData.value && !isEmptyResponse.value
-      ? completeData.value.filter((s) => s.sportID == activeSportID.value)
+      ? completeData.value.filter((s) => s.sportID == activeSportID.value).splice(0,5)
       : []
   return _.groupBy(res, 'tournament')
 })

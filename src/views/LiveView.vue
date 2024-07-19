@@ -21,7 +21,10 @@
                 </div>
                 <div
                   class="simple-select-wrap sport-simple-select"
-                  :class="MoreSportsLabel !== 'More Sports' ? 'sport-simple-select-active' : ''"
+                  :class="{
+                    'simple-select-wrap-expand': showMoreSportsMenu,
+                    'sport-simple-select-active': MoreSportsLabel !== 'More Sports'
+                  }"
                 >
                   <div class="select-title" @click="toggleMoreSports">
                     <p class="select-title__label">{{ MoreSportsLabel }}</p>
@@ -40,7 +43,10 @@
                   </div>
                 </div>
               </div>
-              <div class="match">
+              <div v-if="isLoading">
+                <LoadingSpinner />
+              </div>
+              <div v-else class="match">
                 <div
                   class="x-table match-table live-table"
                   v-if="Object.keys(filteredLiveData).length > 0"
@@ -84,18 +90,6 @@
                       :key="m"
                       :match="match"
                       :activeMarkets="activeSportMarkets"
-                      @click="
-                        $router.push({
-                          name: 'live-fixtures-specific-detail',
-                          params: {
-                            sport: slugify(match.sportName),
-                            category: slugify(match.categoryName),
-                            tournament: slugify(match.tournament),
-                            match: slugify(match.name),
-                            match_id: match.matchID
-                          }
-                        })
-                      "
                     ></Fixture>
                   </template>
                 </div>
@@ -113,6 +107,30 @@
       <div class="x-table-cell x-main-right" style="width: 235px; min-width: 235px">
         <div>
           <aside class="c-right">
+            <div class="x-item">
+              <div class="x-instant-reg x-instant-dark">
+                <div class="x-title">
+                  <span>Instant Registration</span>
+                </div>
+                <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
+                <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
+                  <div class="x-input-prepend"><span>+234</span></div>
+                  <span class="x-input-com">
+                    <input
+                      type="input"
+                      name=""
+                      placeholder="Mobile Number"
+                      onpaste="return true"
+                      class="x-input fs-exclude"
+                  /></span>
+                </div>
+                <div class="x-btn-wrapper">
+                  <button class="af-button af-button--primary">
+                    <span><span>Register</span></span>
+                  </button>
+                </div>
+              </div>
+            </div>
             <BetContainer></BetContainer>
           </aside>
         </div>
@@ -122,52 +140,29 @@
 </template>
 
 <script setup>
+import { defineComponent, ref, computed, onMounted } from 'vue'
+import { useQuery } from 'vue-query'
+import _ from 'lodash'
 import LiveLayout from '@/components/Shared/LiveLayout.vue'
 import BetContainer from '@/components/Shared/BetContainer.vue'
 import Fixture from '@/components/Live/Fixture.vue'
-
-import { useUtilstStore } from '@/stores'
-import LoadingError from '@/components/Loaders/LoadingError.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-import { useQuery } from 'vue-query'
-import { getLiveHighlights, slugify } from '@/helpers'
-import { defineComponent, onMounted, ref, computed, watch } from 'vue'
-import _ from 'lodash'
+import { useUtilstStore } from '@/stores'
+import { getLiveHighlights } from '@/helpers'
 
 const activeSportID = ref(1)
 const completeData = ref([])
 const marketGroup = ref([])
-
 const isEmptyResponse = ref(false)
 const showMoreSportsMenu = ref(false)
-
 const MoreSportsLabel = ref('More Sports')
-
 const utilsStore = useUtilstStore()
 
-async function getLiveFixtures() {
-  const res = await getLiveHighlights()
-  if (res.fxitures) {
-    completeData.value = res.fixtures
-    marketGroup.value = res.markets
-  } else {
-    isEmptyResponse.value = true
-  }
-}
-
-const {
-  data: completeLiveData,
-  error,
-  isLoading,
-  refetch
-} = useQuery('liveData', getLiveHighlights, {
-  refetchInterval: 25000, // 5 minutes in milliseconds
-  onError: (err) => {
-    console.error(err)
-  },
+const { data, error, isLoading, refetch } = useQuery('liveData', getLiveHighlights, {
+  refetchInterval: 25000, // 25 seconds in milliseconds
+  onError: (err) => console.error(err),
   onSuccess: (response) => {
     if (response.fixtures) {
-      // if the
       if (completeData.value.length === 0) {
         completeData.value = response.fixtures
         marketGroup.value = response.markets.filter((m) => m.specifier == '')
@@ -177,42 +172,28 @@ const {
             (oldFixture) => oldFixture.matchID === newFixture.matchID
           )
           if (index !== -1) {
-            // Replace the old fixture with the new one
             completeData.value[index] = newFixture
           } else {
-            // If the fixture does not exist in completeData.value, add it
             completeData.value.push(newFixture)
           }
         })
       }
     } else {
-      if (!completeData.value.length) {
-        isEmptyResponse.value = true
-      }
-      // sportsListData.value = []
-      // marketsGroup.value = []
+      isEmptyResponse.value = !completeData.value.length
     }
   }
 })
 
-// get sports list from store
-const sportList = computed(() => {
-  return utilsStore.sportsMenu
-})
-
-// get active sport data from completelive and group by tournament
+const sportList = computed(() => utilsStore.sportsMenu)
 const filteredLiveData = computed(() => {
-  const res =
-    completeData.value && !isEmptyResponse.value
-      ? completeData.value.filter((s) => s.sportID == activeSportID.value)
-      : []
-  return _.groupBy(res, 'tournament')
+  const filtered = completeData.value.filter((s) => s.sportID == activeSportID.value)
+  return _.groupBy(filtered, 'tournament')
 })
-
 const activeSportMarkets = computed(() => {
-  let data = marketGroup.value.filter((s) => s.sportID == activeSportID.value)
-  data = data.sort((a, b) => a.marketID - b.marketID)
-  return data ? data.slice(0, 2) : []
+  const data = marketGroup.value
+    .filter((s) => s.sportID == activeSportID.value)
+    .sort((a, b) => a.marketID - b.marketID)
+  return data.slice(0, 2)
 })
 
 function setActiveSport(sport) {
@@ -226,25 +207,16 @@ function setActiveSport(sport) {
   }
 }
 
-function filterOutcomesByMarketIDs(outcomes) {
-  const groupedOutcomes = {}
-  let marketIDs = activeSportMarkets.value.map((item) => parseInt(item.marketID))
-  const filteredOutcomes = outcomes.filter((outcome) => marketIDs.includes(outcome.marketID))
-  console.log(_.groupBy(filteredOutcomes, 'marketID'))
-  return _.groupBy(filteredOutcomes, 'marketID')
+const toggleMoreSports = () => {
+  showMoreSportsMenu.value = !showMoreSportsMenu.value
 }
-
 onMounted(async () => {
-  // No need to call getLive here, Vue Query handles data fetching and refreshing
+  // No need to call getLiveFixtures here, vue-query handles data fetching and refreshing
 })
 
 defineComponent({
-  components: {
-    LoadingError,
-    LoadingSpinner
-  },
+  components: { LoadingSpinner },
   methods: {
-    // Manually trigger a refetch without making a new network request
     handleManualRefetch() {
       refetch()
     }
@@ -298,9 +270,7 @@ defineComponent({
   white-space: nowrap;
   color: #fff;
 }
-.x-overview .sport-name .sport-name-item:hover {
-  /* border-bottom: 4px solid rgba(13, 151, 55, 0.7); */
-}
+
 .x-overview .sport-name .sport-name-item.active {
   font-weight: 700;
   border-bottom: 4px solid var(--brand-secondary);
@@ -314,9 +284,8 @@ defineComponent({
   margin-bottom: -1px;
   background-color: #353a45;
 }
-.x-overview .sport-name .sport-simple-select:hover {
-  /* border-bottom: 4px solid rgba(13, 151, 55, 0.7); */
-}
+
+
 .x-overview .sport-name .sport-simple-select .select-item {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -330,10 +299,7 @@ defineComponent({
   text-align: center;
   padding: 0 10px 10px 10px;
 }
-.x-overview .match .x-market > div {
-  /* -webkit-box-shadow: -1px 0px 0px 0px #1b1e25 inset;
-  box-shadow: -1px 0px 0px 0px #1b1e25 inset; */
-}
+
 .x-overview .match .af-select-title {
   -webkit-box-shadow: -1px 0px 0px 0px #1b1e25 inset !important;
   box-shadow: -1px 0px 0px 0px #1b1e25 inset !important;
@@ -381,7 +347,7 @@ defineComponent({
   -ms-flex: 0 1 auto;
   flex: 0 1 auto;
   font-size: 16px;
-  font-weight: bold;
+  /* font-weight: bold; */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -576,7 +542,6 @@ defineComponent({
   -ms-flex: 0 1 auto;
   flex: 0 1 auto;
   line-height: 1;
-  font-weight: 700;
   padding-left: 10px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -592,12 +557,12 @@ defineComponent({
 .x-overview .match .match-table .match-row .left-team-cell .left-team-table .teams {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: var(--brand-secondary);
+  /* color: #fca311; */
 }
 .x-overview .match .match-table .match-row .left-team-cell .left-team-table .teams > div {
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: 500;
+  /* font-weight: 500; */
   line-height: 1;
   white-space: nowrap;
   display: block;

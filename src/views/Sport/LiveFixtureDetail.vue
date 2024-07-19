@@ -19,7 +19,12 @@
                     class="x-item"
                   >
                     <div class="x-sport">
-                      <i class="x-icon-football x-icon-sport"></i>
+                      <img
+                        :src="getImageSrc(sport.sportID)"
+                        style="height: 20px; margin-right: 0.4rem; filter: invert(1)"
+                        alt=""
+                        srcset=""
+                      />
                       <span
                         ><span>{{ sport.sportName }}</span> <span></span
                       ></span>
@@ -35,7 +40,9 @@
                   <div class="x-live-wrapper">
                     <div class="x-result-wrapper">
                       <div class="x-result-title">
-                        <span>{{ eventDetail.eventTime.split(':')[0] }}'</span>
+                        <span>{{
+                          eventDetail.statusCode === 1 ? eventDetail.eventTime : 'Ended'
+                        }}</span>
                       </div>
                       <ul class="x-result-score">
                         <li>
@@ -59,60 +66,71 @@
                   </div>
                 </div>
                 <div class="x-detail-wrapper">
-                  <div
-                    v-for="(market, index) in eventDetail.markets"
-                    :key="index"
-                    class="x-table__wrapper"
-                  >
-                    <div class="x-table x-table-header">
-                      <div class="x-table-row">
-                        <div
-                          class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
-                        >
-                          <i class="x-icon--bg x-icon--fold"></i>
-                          <span class="x-table-header-title" style="text-transform: capitalize">{{
-                            market.marketName
-                          }}</span>
+                  <template v-if="eventDetail.markets && eventDetail.statusCode === 1">
+                    <div
+                      v-for="(market, index) in eventDetail.markets"
+                      :key="index"
+                      class="x-table__wrapper"
+                    >
+                      <div class="x-table x-table-header">
+                        <div class="x-table-row">
+                          <div
+                            class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
+                          >
+                            <i class="x-icon--bg x-icon--fold"></i>
+                            <span class="x-table-header-title">{{ market.marketName }}</span>
+                          </div>
+                          <div
+                            class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
+                          ></div>
                         </div>
+                      </div>
+                      <div class="x-table">
                         <div
-                          class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
-                        ></div>
+                          class="x-table-row x-outcome"
+                          v-for="(group, g) in _.chunk(market.outcomes, 3)"
+                          :key="g"
+                        >
+                          <div
+                            v-for="(outcome, o) in sortByKey(group, 'outcomeID')"
+                            :key="o"
+                            class="x-table-cell x-table-cell--responsive"
+                            :style="group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'"
+                            @click="addToBetslip(eventDetail, outcome)"
+                            :class="{
+                              'x-table-cell--checked': isSelected(
+                                createID(
+                                  eventDetail.gameID,
+                                  eventDetail.matchID,
+                                  outcome.outcomeName,
+                                  outcome.oddID,
+                                  eventDetail.name
+                                ),
+                                couponStore.coupon
+                              ),
+                              'x-table-cell--disable': outcome.odds <= 1
+                            }"
+                          >
+                            <span class="x-table-cell-item" style="text-transform: capitalize">
+                              {{
+                                market.specifier !== '' ? outcome.outcomeName : outcome.displayName
+                              }}
+                            </span>
+                            <span v-if="outcome.odds > 1" class="x-table-cell-item">{{
+                              outcome.odds.toFixed(2)
+                            }}</span>
+                            <span v-else class="x-table-cell-item x-icon-lock"></span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="x-table">
-                      <div
-                        class="x-table-row x-outcome"
-                        v-for="(group, g) in _.chunk(market.outcomes, 3)"
-                        :key="g"
+                  </template>
+                  <div v-else class="x-detail-error">
+                    <div>
+                      <span class="x-error-msg"
+                        >Sorry, there are no markets currently available in this<br />category.
+                        Please try later. Thank you.</span
                       >
-                        <div
-                          v-for="(outcome, o) in sortByKey(group, 'outcomeID')"
-                          :key="o"
-                          class="x-table-cell x-table-cell--responsive"
-                          :style="group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'"
-                          @click="addToBetslip(eventDetail, outcome)"
-                          :class="
-                            isSelected(
-                              createID(
-                                eventDetail.gameID,
-                                eventDetail.matchID,
-                                outcome.outcomeName,
-                                outcome.oddID,
-                                eventDetail.name
-                              ),
-                              couponStore.coupon
-                            )
-                              ? 'x-table-cell--checked'
-                              : ''
-                          "
-                        >
-                          <span class="x-table-cell-item" style="text-transform: capitalize">
-                            {{
-                              market.specifier !== '' ? outcome.outcomeName : outcome.displayName
-                            }} </span
-                          ><span class="x-table-cell-item">{{ outcome.odds.toFixed(2) }}</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -124,6 +142,30 @@
       <div class="x-table-cell x-main-right" style="width: 235px; min-width: 235px">
         <div>
           <aside class="c-right">
+            <div class="x-item">
+              <div class="x-instant-reg x-instant-dark">
+                <div class="x-title">
+                  <span>Instant Registration</span>
+                </div>
+                <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
+                <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
+                  <div class="x-input-prepend"><span>+234</span></div>
+                  <span class="x-input-com">
+                    <input
+                      type="input"
+                      name=""
+                      placeholder="Mobile Number"
+                      onpaste="return true"
+                      class="x-input fs-exclude"
+                  /></span>
+                </div>
+                <div class="x-btn-wrapper">
+                  <button class="af-button af-button--primary">
+                    <span><span>Register</span></span>
+                  </button>
+                </div>
+              </div>
+            </div>
             <BetContainer></BetContainer>
           </aside>
         </div>
@@ -169,7 +211,10 @@ watch(
   },
   { immediate: true } // Trigger the watch callback immediately on component mount
 )
-
+const getImageSrc = (sportId) => {
+  const imageUrl = new URL(`../../assets/images/sports/${sportId}.png`, import.meta.url)
+  return imageUrl
+}
 // get sports list from store
 const sportList = computed(() => {
   return utilsStore.sportsMenu
@@ -215,14 +260,8 @@ async function getLiveData() {
   }
 }
 
-function replaceCompetitorNames(inputString) {
-  const replacedString = inputString
-    .replace(new RegExp(homeTeam.value, 'g'), 'Home')
-    .replace(new RegExp(awayTeam.value, 'g'), 'Away')
-  return replacedString
-}
-
 function addToBetslip(market, outcome) {
+  if (outcome.odds < 1) return
   const id = createID(
     eventDetail.value.gameID,
     eventDetail.value.matchID,
@@ -245,7 +284,7 @@ function addToBetslip(market, outcome) {
   }
   // return couponStore.addToCoupon(data)
   const existsInBetslip = isSelected(id, couponStore.coupon)
-  return existsInBetslip ? couponStore.removeSelection(data) : couponStore.addToCoupon(data)
+  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
 }
 
 function showFixtureAnalysis(id) {
@@ -350,7 +389,7 @@ defineComponent({
 }
 .x-table-header .x-table-header-title {
   font-size: 14px;
-  font-weight: bold;
+  /* font-weight: bold; */
   margin-left: 6px;
   text-overflow: ellipsis;
   overflow: hidden;
