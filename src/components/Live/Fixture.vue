@@ -100,6 +100,7 @@ const getOdds = () => {
 }
 
 function addToBetslip(event, odd, market) {
+  if (odd.odds <= 1) return
   const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
   const data = {
     fixture: event,

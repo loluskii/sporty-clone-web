@@ -3141,9 +3141,9 @@
 }
 
 .x-market .x-outcome {
-  background-color: var(--brand-secondary);
+  background-color: var(--brand-prematch-odds-bg);
   border: 0px;
-  color: #fafafa;
+  color: var(--brand-prematch-odds-text);
   cursor: pointer;
   display: block;
   -webkit-box-flex: 1;

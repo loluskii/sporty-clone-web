@@ -47,7 +47,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUsersStore, useUtilstStore } from '@/stores'
-import { getOpenBets } from '@/helpers'
+import { getBets } from '@/helpers'
 import OpenBet from './OpenBet.vue'
 
 const openBets = ref([])
@@ -79,7 +79,7 @@ async function getBetHistory() {
   }
   try {
     isLoading.value = true
-    const response = await getOpenBets(payload)
+    const response = await getBets(payload)
     isLoading.value = false
     if (response.bets) {
       openBets.value = response.bets

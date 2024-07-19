@@ -74,7 +74,7 @@ const router = createRouter({
       component: CasinoView
     },
     {
-      path: '/Games/:provider/:game_id/Play',
+      path: '/Games/:game_name/:game_id/Play',
       name: 'game-play',
       component: PlayView
     },
