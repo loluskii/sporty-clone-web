@@ -18,7 +18,7 @@
                     $router.push({
                       name: 'top-tournament-fixtures',
                       params: {
-                        sport: 'Soccer',
+                        sport: top.sportName,
                         category: slugify(top.categoryName),
                         tournament: slugify(top.tournamentName),
                         tournament_id: top.tournamentID
