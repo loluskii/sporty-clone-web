@@ -15,7 +15,21 @@
           <div class="clock-time">{{ match.eventTime }}</div>
           <div class="game-id">{{ match.matchStatus }}</div>
         </div>
-        <div title="Australia vs Uzbekistan" class="teams">
+        <div
+          class="teams"
+          @click="
+            $router.push({
+              name: 'live-fixtures-specific-detail',
+              params: {
+                sport: slugify(match.sportName),
+                category: slugify(match.categoryName),
+                tournament: slugify(match.tournament),
+                match: slugify(match.name),
+                match_id: match.matchID
+              }
+            })
+          "
+        >
           <div class="home-team">{{ match.homeTeam }}</div>
           <div class="away-team">{{ match.awayTeam }}</div>
         </div>
@@ -31,26 +45,22 @@
         v-for="(market, i) in filterOutcomesByMarketIDs(match.outcomes)"
         :key="i"
       >
-        <div
-          class="x-outcome"
-          v-for="(odds, o) in market"
-          :key="o"
-          :class="
-            odds.odds <= 1
-              ? 'x-outcome--disabled'
-              : isSelected(
-                    createID(match.gameID, match.matchID, odds.outcomeName, odds.oddID, match.name),
-                    couponStore.coupon
-                  )
-                ? 'x-outcome--checked'
-                : ''
-          "
-          @click="addToBetslip(match, odds, market)"
-        >
-          <span class="x-outcome-odds" :class="odds.odds <= 1 ? 'x-icon-lock' : ''">{{
-            odds.odds <= 1 ? '' : odds.odds.toFixed(2)
-          }}</span>
-        </div>
+        <template v-if="market.length">
+          <Odds
+            v-for="(odds, o) in market"
+            :key="o"
+            :odds="odds"
+            :match="match"
+            @click="addToBetslip(match, odds, market)"
+          >
+          </Odds>
+        </template>
+        <template v-else>
+          <EmptyOdds
+            v-for="outcome in getOutcomeCountForMarket(i)"
+            :key="outcome.outcomeID"
+          ></EmptyOdds>
+        </template>
       </div>
     </div>
     <div class="x-table-cell market-size">+{{ match.activeMarkets }}</div>
@@ -62,6 +72,8 @@ import _ from 'lodash'
 import { slugify, sortArr, createID, isSelected } from '@/helpers'
 import { useCouponStore } from '@/stores'
 const couponStore = useCouponStore()
+import EmptyOdds from '../EmptyOdds.vue'
+import Odds from './Odds.vue'
 
 const props = defineProps({
   match: Object,
@@ -69,34 +81,27 @@ const props = defineProps({
 })
 
 function filterOutcomesByMarketIDs(outcomes) {
-  const groupedOutcomes = {}
   outcomes = outcomes.sort((a, b) => a.outcomeID - b.outcomeID)
   let marketIDs = props.activeMarkets.map((item) => parseInt(item.marketID))
   const filteredOutcomes = outcomes.filter((outcome) => marketIDs.includes(outcome.marketID))
-  return _.groupBy(filteredOutcomes, 'marketID')
+  const groupedOutcomes = _.groupBy(filteredOutcomes, 'marketID')
+  // Ensure all marketIDs are present in the grouped result
+  marketIDs.forEach((marketID) => {
+    if (!groupedOutcomes[marketID]) {
+      groupedOutcomes[marketID] = []
+    }
+  })
+
+  return groupedOutcomes
 }
 
-const getOdds = () => {
-  // Find and return the odds based on marketID and outcomeID
-  if (props.activeMarkets && props.match.activeMarkets > 0) {
-    if (props.match.outcomes) {
-      const odds = props.match.outcomes
-      let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
-      if (props.activeMarkets.specifier && props.activeMarkets.specifier !== '') {
-        let defaultSpecifier = filtered[0]?.specifier
-        if (defaultSpecifier) {
-          filtered = filtered.filter((item) => item.specifier === defaultSpecifier)
-          activeSpecifier.value = defaultSpecifier.split('=')[1]
-        }
-      }
-      if (filtered.length) {
-        // console.log(_.sortBy(filtered, 'outcomeID'))
-        outcomes.value = sortArr(filtered, 'outcomeID')
-      } else {
-        outcomes.value = []
-      }
-    }
+function getOutcomeCountForMarket(marketID) {
+  const activeMarket = props.activeMarkets.find((market) => market.marketID === marketID)
+  console.log(activeMarket.outcomes)
+  if (activeMarket) {
+    return activeMarket.outcomes.length
   }
+  return 0
 }
 
 function addToBetslip(event, odd, market) {
@@ -115,8 +120,6 @@ function addToBetslip(event, odd, market) {
     event_id: event.gameID,
     specifier: odd.specifier
   }
-
-  // return couponStore.addToCoupon(data)
 
   const existsInBetslip = isSelected(id, couponStore.coupon)
   return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
