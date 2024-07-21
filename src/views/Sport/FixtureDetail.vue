@@ -45,7 +45,7 @@
                   <div class="x-table-row">
                     <div class="x-table-cell x-table-cell--responsive x-table-cell--transparent">
                       <i class="x-icon--bg x-icon--fold"></i>
-                      <span class="x-table-header-title" style="text-transform: capitalize">{{
+                      <span class="x-table-header-title" >{{
                         market.marketName
                       }}</span>
                     </div>
@@ -148,6 +148,7 @@ function replaceCompetitorNames(inputString) {
 }
 
 function addToBetslip(event, odd) {
+  if (odd.odds < 1) return
   const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
   const data = {
     fixture: event,

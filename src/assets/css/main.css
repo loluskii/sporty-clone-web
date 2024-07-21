@@ -1682,46 +1682,19 @@
   color: #fff !important;
 }
 
-.x-instant-reg .x-third-party {
-  font-size: 12px;
-  margin-top: 10px;
-  margin-bottom: 13px;
+.x-instant-dark {
+  background: #353A45;
 }
 
-.x-instant-reg .x-third-party:hover {
-  cursor: pointer;
+.x-instant-black {
+  background: #1B1E25;
 }
 
-.x-instant-reg .x-third-party .x-icon-fb,
-.x-instant-reg .x-third-party span {
-  display: inline-block;
-  vertical-align: top;
+.x-instant-white {
+  background: #fff;
+  border: 1px solid #EAECEF;
 }
 
-.x-instant-reg .x-third-party .x-icon-fb {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  background: #3656A3;
-  color: #fff;
-  vertical-align: middle;
-}
-
-.x-instant-reg .x-third-party .x-icon-fb::before {
-  content: '\e6e2';
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-style: normal;
-}
-
-.x-instant-reg .x-third-party .x-icon-fb:before {
-  font-size: 14px;
-  display: inline-block;
-  -webkit-transform: translate3d(2px, -2px, 0);
-  transform: translate3d(2px, -2px, 0);
-}
 
 .x-main .x-main-top .home-top .x-proAds-wrapper {
   cursor: pointer;

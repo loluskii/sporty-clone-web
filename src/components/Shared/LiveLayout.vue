@@ -51,7 +51,6 @@ import LiveHeaderItems from './LiveHeaderItems.vue'
 .c-page .x-main-top > div {
   font-size: 36px;
   color: #fff;
-  font-weight: bold;
 }
 .c-page .x-main-bottom {
   width: 1000px;

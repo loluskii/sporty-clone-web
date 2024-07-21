@@ -73,7 +73,7 @@
       <div class="x-table-cell x-main-right" style="width: 235px; min-width: 235px">
         <div>
           <aside class="s-right">
-            <!-- <div class="x-item">
+            <div class="x-item">
               <div class="x-instant-reg x-instant-white">
                 <div class="x-title">
                   <span>Instant Registration</span>
@@ -96,7 +96,7 @@
                   </button>
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- Betslip -->
             <BetContainer></BetContainer>
           </aside>
@@ -474,5 +474,9 @@ onMounted(async () => {
   display: inline-block;
   text-align: right;
   vertical-align: middle;
+}
+
+.x-instant-reg .x-title {
+  color: unset;
 }
 </style>

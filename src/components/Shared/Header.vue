@@ -224,12 +224,19 @@
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
+            
             <a
               id="header_nav_jackpot"
               href="/"
               class="x-flex-item"
               :class="activeClass('jackpot') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="jackpot">Jackpot</span></a
+            >
+            <a
+              id="header_nav_livescore"
+              class="x-flex-item"
+              @click.prevent="goToLiveScore"
+              ><span data-cms-key="live_betting">Livescore</span></a
             >
             <a
               id="header_nav_promotions"
@@ -308,6 +315,10 @@ function getTimezone() {
   const formattedTimezone = `GMT${sign}${hours.toString().padStart(2, '0')}:${formattedMinutes}`
 
   document.getElementById('j_timezone').innerText = formattedTimezone
+}
+
+const goToLiveScore = () => {
+  return window.open(`https://ls.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
 }
 
 defineComponent({
