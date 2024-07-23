@@ -147,7 +147,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  const mobileUrl = 'https://mobile.cubebet.ng'
+  const mobileUrl = import.meta.env.VITE_MOBILE_URL;
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     window.location.href = mobileUrl
   } else {
