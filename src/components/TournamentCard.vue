@@ -100,11 +100,11 @@ const activeMarket = ref(props.markets[0])
 const toggleOtherMarkets = ref(false)
 
 const shownMarkets = computed(() => {
-  return props.markets.length > 5 ? props.markets.slice(0, 5) : props.markets
+  return props.markets.length > 5 ? props.markets.slice(0, 6) : props.markets
 })
 
 const hiddenMarkets = computed(() => {
-  return props.markets.length > 0 ? props.markets.slice(5) : []
+  return props.markets.length > 0 ? props.markets.slice(6) : []
 })
 
 function showOtherMarkets() {
