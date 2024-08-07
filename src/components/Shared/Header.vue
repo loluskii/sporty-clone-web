@@ -65,48 +65,50 @@
               </div>
               <div class="x-opt">
                 <div class="x-error-toast"></div>
-                <div class="x-phone-wrapper">
-                  <div class="x-phone">
-                    <span>+234</span
-                    ><input
-                      type="text"
-                      name="phone"
-                      value=""
-                      autocomplete="off"
-                      placeholder="Mobile Number"
-                      class="fs-exclude"
-                    />
+                <div style="display: flex">
+                  <div class="x-phone-wrapper">
+                    <div class="x-phone">
+                      <span>+234</span
+                      ><input
+                        type="text"
+                        name="phone"
+                        value=""
+                        autocomplete="off"
+                        placeholder="Mobile Number"
+                        class="fs-exclude"
+                      />
+                    </div>
+                    <div class="x-error-wrapper"></div>
                   </div>
-                  <div class="x-error-wrapper"></div>
-                </div>
-                <div class="x-psd-wrapper">
-                  <div class="x-psd">
-                    <input
-                      type="password"
-                      name="psd"
-                      value=""
-                      autocomplete="off"
-                      placeholder="Password"
-                      class="fs-exclude"
-                    /><button
-                      type="button"
-                      name="logIn"
-                      class="x-btn x-btn-login"
-                      data-cms-key="log_in"
-                    >
-                      Login
-                    </button>
+                  <div class="x-psd-wrapper">
+                    <div class="x-psd">
+                      <input
+                        type="password"
+                        name="psd"
+                        value=""
+                        autocomplete="off"
+                        placeholder="Password"
+                        class="fs-exclude"
+                      /><button
+                        type="button"
+                        name="logIn"
+                        class="x-btn x-btn-login"
+                        data-cms-key="log_in"
+                      >
+                        Login
+                      </button>
+                    </div>
+                    <div class="x-error-wrapper"></div>
                   </div>
-                  <div class="x-error-wrapper"></div>
+                  <button
+                    type="button"
+                    name="register"
+                    class="x-btn x-btn-register"
+                    data-cms-key="register"
+                  >
+                    Register
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  name="register"
-                  class="x-btn x-btn-register"
-                  data-cms-key="register"
-                >
-                  Register
-                </button>
                 <div class="x-operation">
                   <a href="/ng/profile/reset_password" class="x-forgetPsd"
                     ><span data-cms-key="forgot_password">Forgot Password</span>?</a
@@ -361,6 +363,7 @@ onMounted(() => {
   height: 34px;
   line-height: 34px;
   position: relative;
+  display: flex;
 }
 .c-header .x-login-bar:after {
   clear: both;
@@ -845,7 +848,7 @@ onMounted(() => {
   display: inline-block;
   height: 34px;
   vertical-align: middle;
-  /* width: 173px; */
+  width: 173px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;
