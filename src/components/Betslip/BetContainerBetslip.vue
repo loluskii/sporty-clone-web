@@ -168,7 +168,7 @@
             <div v-if="showConfirmationModal" class="x-comfirm-wrapper" style="top: -46px">
               <div>
                 <div class="x-content-wrapper">
-                  <div class="x-label bold">About to pay</div>
+                  <div class="x-label">About to pay</div>
                   <div class="x-value">
                     NGN<span class="x-money"> {{ totalStake }}</span>
                   </div>
@@ -396,7 +396,6 @@ async function placeBet(e) {
 .x-betslips .x-comfirm-wrapper .x-content-wrapper .x-label,
 .x-betslips .x-comfirm-wrapper .x-content-wrapper .x-value {
   font-size: 12px;
-  font-weight: 500;
   line-height: 26px;
   text-align: center;
 }

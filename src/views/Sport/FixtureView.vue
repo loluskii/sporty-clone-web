@@ -18,6 +18,7 @@
           <span class="pageNum icon-prev"></span>
           <span
             v-for="pageNumber in getPageRange()"
+            :key="pageNumber"
             @click="moveToSpecificPage(pageNumber)"
             class="pageNum"
             :class="pageNumber === activePage ? 'selected' : ''"
@@ -47,11 +48,11 @@ import { defineComponent, ref, watch, onMounted, computed } from 'vue'
 import LoadingError from '@/components/Loaders/LoadingError.vue'
 import _ from 'lodash'
 import { getFixturesByTournamentId, formatDate } from '@/helpers'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import $ from 'jquery'
 import emitter from '@/plugins/emitter'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const route = useRoute()
 const fixturesList = ref([])
 const marketsGroup = ref({})

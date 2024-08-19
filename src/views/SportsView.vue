@@ -144,10 +144,10 @@ import { useRoute } from 'vue-router'
 import { ref, watch, onMounted } from 'vue'
 import _ from 'lodash'
 import { getFixturesByTournamentId, formatDate } from '@/helpers'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 // import $ from 'jquery'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const route = useRoute()
 const fixturesList = ref([])
 

@@ -46,7 +46,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useUsersStore, useUtilstStore } from '@/stores'
+import { useUsersStore, useUtilsStore } from '@/stores'
 import { getBets } from '@/helpers'
 import OpenBet from './OpenBet.vue'
 
@@ -54,7 +54,7 @@ const openBets = ref([])
 const usersStore = useUsersStore()
 const isLoading = ref(false)
 const openSelections = ref([])
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 
 const selectionIsOpen = (id) => {
   return openSelections.value.includes(id)
@@ -227,7 +227,7 @@ onMounted(async () => {
 .m-cashout .m-cashout-detail .m-text-main {
   color: #353a45;
   font-size: 12px;
-  font-weight: bold;
+  /* font-weight:500; */
   line-height: 16px;
 }
 .m-cashout .m-cashout-detail .m-text-min,

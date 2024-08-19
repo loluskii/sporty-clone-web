@@ -2,7 +2,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import { getSplitPropsData } from '@/helpers'
 import { brandDetails } from '/branding'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { brandDetails as defBrandDetails } from '/branding-template'
 
 export const applyBranding = async () => {
@@ -14,7 +14,7 @@ export const applyBranding = async () => {
       defConfig = defBrandDetails
     }
     const config = defConfig
-    const utilsStore = useUtilstStore()
+    const utilsStore = useUtilsStore()
     const loadFont = (url) => {
       const link = document.createElement('link')
       link.rel = 'stylesheet'

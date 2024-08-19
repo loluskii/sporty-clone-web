@@ -10,7 +10,7 @@
             ><span data-cms-key="home">Home</span>
           </Router-Link>
           <Router-Link
-            v-for="(sport, s) in sportsList.slice(0, 10)"
+            v-for="(sport, s) in sportsList.slice(0, 11)"
             :to="{ name: 'fixtures-by-sport', params: { sport: slugify(sport.sportName) } }"
             :key="s"
             class="x-flex-item"
@@ -47,12 +47,12 @@
   </div>
 </template>
 <script setup>
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { getSportsMenu, slugify } from '@/helpers'
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const showMoreSports = ref(false)
 const route = useRoute()
 

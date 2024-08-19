@@ -109,13 +109,13 @@
 import BaseLayout from '@/components/Shared/BaseLayout.vue'
 import BetContainer from './BetContainer.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { computed, onMounted, ref } from 'vue'
 import { getCategoriesBySport, getTournamentsByCategories } from '@/helpers'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 import emitter from '@/plugins/emitter'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const categories = ref([])
 const router = useRouter()
 

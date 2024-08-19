@@ -27,7 +27,7 @@
         </div> -->
         <div
           tabindex="0"
-          v-if="markets.length >= 5"
+          v-if="markets.length > 5"
           @click="showOtherMarkets"
           :class="toggleOtherMarkets ? 'show-item' : ''"
           class="market-item x-select-market"
