@@ -387,6 +387,7 @@ onBeforeRouteLeave((to, from) => {
     margin-bottom: -1px;
     padding: 0 13px;
     text-align: center;
+    width: calc(100% / 6);
   }
   .import-match .match-league .market-group .market-item.active {
     border-bottom: 4px solid var(--brand-secondary);
