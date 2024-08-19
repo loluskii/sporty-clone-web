@@ -227,14 +227,10 @@
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
 
-            <a
-              id="header_nav_liveBetting"
-              href="/Sport/Live"
-              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
-              class="x-flex-item"
+            <a id="header_nav_liveBetting" @click.prevent="goToVirtuals" class="x-flex-item"
               ><span data-cms-key="live_betting">Virtuals</span></a
             >
-            
+
             <a
               id="header_nav_jackpot"
               href="/"
@@ -242,10 +238,7 @@
               :class="activeClass('jackpot') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="jackpot">Jackpot</span></a
             >
-            <a
-              id="header_nav_livescore"
-              class="x-flex-item"
-              @click.prevent="goToLiveScore"
+            <a id="header_nav_livescore" class="x-flex-item" @click.prevent="goToLiveScore"
               ><span data-cms-key="live_betting">Livescore</span></a
             >
             <a
@@ -274,6 +267,8 @@
 <script setup>
 import { defineComponent, computed, ref, onMounted } from 'vue'
 import { useAuthStore, useUsersStore } from '@/stores'
+import MD5 from 'crypto-js/md5'
+
 import { formatNumber } from '@/helpers'
 import emitter from '@/plugins/emitter'
 import { useRoute } from 'vue-router'
@@ -289,6 +284,9 @@ const date = new Date()
 const offset = date.getTimezoneOffset()
 const sign = offset >= 0 ? '-' : '+'
 const offsetHours = Math.abs(offset / 60)
+const token = ref('111111')
+const group = ref(import.meta.env.VITE_APP_KEY)
+const mode = ref(0)
 
 const currentUser = computed(() => {
   return usersStore.currentUser
@@ -336,6 +334,24 @@ function getTimezone() {
 
 const goToLiveScore = () => {
   return window.open(`https://ls.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
+}
+
+const hashStr = computed(() => {
+  return MD5(
+    `${token.value}10100${import.meta.env.VITE_SITE_URL}${mode.value}${group.value}mobile${
+      import.meta.env.VITE_XPRESS_PRIVATE_KEY
+    }`
+  ).toString()
+})
+
+const generatedURL = computed(() => {
+  return `${import.meta.env.VITE_XPRESS_LAUNCH_URL}?token=${token.value}&game=10100&backurl=${
+    import.meta.env.VITE_SITE_URL
+  }&mode=${mode.value}&group=${group.value}&clientPlatform=website&h=${hashStr.value}`
+})
+
+function goToVirtuals() {
+  window.location.href = generatedURL.value
 }
 
 defineComponent({
