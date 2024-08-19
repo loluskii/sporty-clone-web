@@ -3,7 +3,7 @@ import { RouterView } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import DialogBox from '@/components/Shared/DialogBox.vue'
 import emitter from '@/plugins/emitter'
-import { useCouponStore, useUsersStore, useUtilstStore } from '@/stores'
+import { useCouponStore, useUsersStore, useUtilsStore } from '@/stores'
 import { getBets } from '@/helpers'
 
 const dialogType = ref('')
@@ -11,7 +11,7 @@ const isDialogShown = ref(false)
 const dialogData = ref({})
 const usersStore = useUsersStore()
 const couponStore = useCouponStore()
-const utilstStore = useUtilstStore()
+const utilstStore = useUtilsStore()
 
 function handleshowDialog(data) {
   console.log(data)

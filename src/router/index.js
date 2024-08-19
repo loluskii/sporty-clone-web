@@ -20,7 +20,7 @@ import AboutUs from '@/views/CMS/AboutUs.vue'
 import ResponsibleGaming from '@/views/CMS/ResponsibleGaming.vue'
 import BettingRules from '@/views/CMS/BettingRules.vue'
 
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { unslugify } from '@/helpers'
 // import LiveFixtureDetail from '@/views/Sport/LiveFixtureDetail.vue'
 
@@ -138,7 +138,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const utilsStore = useUtilstStore()
+  const utilsStore = useUtilsStore()
 
   if (to.params.sport) {
     let sport = utilsStore.sportsMenu.find((x) => x.sportName == unslugify(to.params.sport))
@@ -147,7 +147,7 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  const mobileUrl = import.meta.env.VITE_MOBILE_URL;
+  const mobileUrl = import.meta.env.VITE_MOBILE_URL
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     window.location.href = mobileUrl
   } else {

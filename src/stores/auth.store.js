@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 import { login } from '@/helpers'
 import { getActivePinia } from 'pinia'
-import { useUsersStore } from '@/stores'
+import { useUsersStore, useUtilsStore } from '@/stores'
 import router from '../router'
 import emitter from '@/plugins/emitter'
 
@@ -42,6 +42,7 @@ export const useAuthStore = defineStore({
       } catch (error) {
         this.loading = false
         this.authError = error
+        alert(error)
       }
     },
     clearStores() {
@@ -49,6 +50,8 @@ export const useAuthStore = defineStore({
       authStore.$reset()
       const userStore = useUsersStore()
       userStore.$reset()
+      const utilsStore = useUtilsStore()
+      utilsStore.openBetCount = 0
       // map through that list and use the **$reset** fn to reset the state
       // getActivePinia()._s.forEach((store) => store.$reset())
     },

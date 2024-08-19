@@ -226,6 +226,14 @@
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
+
+            <a
+              id="header_nav_liveBetting"
+              href="/Sport/Live"
+              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
+              class="x-flex-item"
+              ><span data-cms-key="live_betting">Virtuals</span></a
+            >
             
             <a
               id="header_nav_jackpot"
@@ -297,9 +305,16 @@ const activeClass = (name) => {
 function showRegisterModal() {
   emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
 }
+
+const formattedPhoneNumber = (phoneNumber) => {
+  const pNumber = phoneNumber.toString()
+  const first = pNumber.charAt(0)
+  return first === '0' ? pNumber.substring(1) : pNumber
+}
+
 async function doLogin() {
   let payload = {
-    username: phoneNumber.value,
+    username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
     clientId: import.meta.env.VITE_CLIENT_ID
   }
@@ -611,7 +626,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-balance {
   color: yellow;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .c-header .x-login-bar a:hover {
   text-decoration: none;

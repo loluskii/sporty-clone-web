@@ -162,7 +162,7 @@ export const getSportHighlights = async (sid, hours, page) => {
 export const getHighlights2 = async (sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=25&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=15&timeoffset=${sign}${offsetHours}`
     )
   )
 }

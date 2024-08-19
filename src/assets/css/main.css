@@ -3256,7 +3256,7 @@
   -webkit-box-shadow: -1px 0px 0px 0px rgba(255, 255, 255, 0.3) inset;
   box-shadow: -1px 0px 0px 0px rgba(255, 255, 255, 0.3) inset;
   color: #fff;
-  font-weight: 700;
+  /* font-weight: 700; */
   height: 34px;
   line-height: 34px;
   text-align: center;
@@ -3279,7 +3279,7 @@
 }
 
 .x-market .af-select .af-select-title:hover {
-  background: var(--brand-primary);
+  background: var(--brand-secondary);
 }
 
 .c-header .x-nav-bar {
