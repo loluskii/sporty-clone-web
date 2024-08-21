@@ -56,7 +56,7 @@
               <div class="each-module-table">
                 <div
                   v-if="activeMarket.specifier !== ''"
-                  style="text-transform: capitalize;"
+                  style="text-transform: capitalize"
                   class="each-module is-multiline"
                 >
                   {{ activeMarket.specifier }}
@@ -87,9 +87,9 @@
 <script setup>
 import _ from 'lodash'
 import { ref, computed } from 'vue'
-import { formatDate } from '@/helpers'
+import { formatDate, sortArr } from '@/helpers'
 import Prematch from './Prematch/Prematch.vue'
-import emitter from '@/plugins/emitter';
+import emitter from '@/plugins/emitter'
 const props = defineProps({
   tournamentName: String,
   events: Array,
@@ -112,6 +112,7 @@ function showOtherMarkets() {
 }
 
 async function setActiveMarket(market) {
+  market = { ...market, outcomes: sortArr(market.outcomes, 'outcomeID') }
   activeMarket.value = market
   emitter.emit('activeMarketChange')
 }

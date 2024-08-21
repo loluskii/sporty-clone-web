@@ -72,11 +72,9 @@
         >
           <span class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
         </div>
-        <EmptyOdds
-          v-for="(odd, index) in activeMarket.outcomes"
-          :key="index"
-          v-if="!getOdds"
-        ></EmptyOdds>
+        <template v-if="!outcomes.length">
+          <EmptyOdds v-for="(odd, index) in activeMarket.outcomes" :key="index"></EmptyOdds>
+        </template>
       </div>
     </div>
     <div class="x-table-cell market-size">+{{ match.activeMarkets }}</div>
@@ -140,6 +138,8 @@ const getOdds = () => {
       if (filtered.length) {
         // console.log(_.sortBy(filtered, 'outcomeID'))
         outcomes.value = sortArr(filtered, 'outcomeID')
+      } else {
+        outcomes.value = []
       }
     }
   }

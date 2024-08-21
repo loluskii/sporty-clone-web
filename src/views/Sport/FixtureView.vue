@@ -1,30 +1,35 @@
 <template>
   <SportsLayout>
     <!-- <template #left-content>
-      
     </template> -->
     <template #fixtures-list>
-      <!-- <LiveInplay></LiveInplay> -->
-
       <div id="importMatch" v-if="!isLoading" class="import-match" style="position: relative">
-        <TournamentCard
-          v-for="(tournament, index) in fixturesList"
-          :key="index"
-          :tournamentName="index"
-          :events="tournament"
-          :markets="marketsGroup"
-        ></TournamentCard>
-        <div v-if="lastPage" class="pagination pagination">
-          <span class="pageNum icon-prev"></span>
-          <span
-            v-for="pageNumber in getPageRange()"
-            :key="pageNumber"
-            @click="moveToSpecificPage(pageNumber)"
-            class="pageNum"
-            :class="pageNumber === activePage ? 'selected' : ''"
-            >{{ pageNumber }}</span
-          >
-          <span class="pageNum icon-next"></span>
+        <template v-if="Object.keys(fixturesList).length">
+          <TournamentCard
+            v-for="(tournament, index) in fixturesList"
+            :key="index"
+            :tournamentName="index"
+            :events="tournament"
+            :markets="marketsGroup"
+          ></TournamentCard>
+          <div v-if="lastPage" class="pagination pagination">
+            <span class="pageNum icon-prev"></span>
+            <span
+              v-for="pageNumber in getPageRange()"
+              :key="pageNumber"
+              @click="moveToSpecificPage(pageNumber)"
+              class="pageNum"
+              :class="pageNumber === activePage ? 'selected' : ''"
+              >{{ pageNumber }}</span
+            >
+            <span class="pageNum icon-next"></span>
+          </div>
+        </template>
+        <div v-else class="x-sport-bet-no-data">
+          <div style="white-space: pre-line">
+            Sorry, there are no games currently<br />available in this category. Please try
+            later.<br />Thank you.
+          </div>
         </div>
       </div>
       <LoadingSpinner v-else></LoadingSpinner>
