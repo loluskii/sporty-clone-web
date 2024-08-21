@@ -245,7 +245,7 @@ onMounted(async () => {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: bold;
   font-size: 14px;
 }

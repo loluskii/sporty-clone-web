@@ -70,11 +70,10 @@
 
 <script setup>
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUsersStore } from '@/stores'
 import { getPaymentMethods, getDepositURL } from '@/helpers'
-import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import emitter from '@/plugins/emitter'
 
 const activeTab = ref('')
@@ -84,12 +83,6 @@ const router = useRouter()
 const amount = ref('')
 const isLoading = ref(false)
 const btnDisabled = ref(false)
-
-const usersStore = useUsersStore()
-
-const balance = computed(() => {
-  return usersStore.balance
-})
 
 function setActiveTab(method) {
   activeTab.value = method
@@ -226,7 +219,7 @@ onMounted(async () => {
   width: 170px;
 }
 .x-dp-ng .f-line .af-button--primary {
-  background: var(--brand-primary) !important;
+  background: var(--brand-secondary) !important;
   color: #fff !important;
 }
 .x-dp-ng .f-line .is-disabled {
@@ -310,7 +303,7 @@ onMounted(async () => {
 }
 .x-dp-nav .f-item.f-item--active {
   font-weight: bold;
-  border-bottom: 3px solid var(--brand-primary);
+  border-bottom: 3px solid var(--brand-secondary);
 }
 
 .bank-transfer-card {
