@@ -59,12 +59,14 @@
         <button
           :disabled="!bet.cashOutAmount || cashingOut"
           @click.prevent="handleCashout(bet)"
-          :class="!bet.cashOutAmount || cashingOut ? 'is-disabled' : ''"
+          :class="!bet.cashOutAmount || cashingOut || !isBonusBet ? 'is-disabled' : ''"
           class="af-button af-button--opt af-button--primary"
         >
           <span v-if="!cashingOut">
             {{
-              bet.cashOutAmount && bet.cashOutAmount > 0 ? `Cashout` : 'Cashout Unavailable'
+              bet.cashOutAmount && bet.cashOutAmount > 0 && !isBonusBet
+                ? `Cashout`
+                : 'Cashout Unavailable'
             }}</span
           >
           <img v-else src="/loader.gif" height="24" width="24" alt="" srcset="" />
