@@ -522,3 +522,17 @@ export const sortArr = (arr, field) => {
     return arr
   }
 }
+
+export const extractIdsFromURL = (str, type) => {
+  const parts = str.split('_')
+  // Map through parts and extract IDs
+  const ids = parts.map((part) => {
+    // Split each part by colon to get the ID
+    const segments = part.split(':')
+    const id = segments[segments.length - 1] // Get the last segment as ID
+    // Return the object based on the type
+    return type === 'category' ? { categoryID: id } : { tournamentID: id }
+  })
+
+  return ids
+}

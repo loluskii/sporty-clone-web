@@ -116,7 +116,7 @@ export const getTournamentsByCategories = async (categoryId) => {
 export const getFixturesByCategories = async (categoryId, sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/get-fixtures-by-categories/${categoryId}?timeoffset=${sign}${offsetHours}&sportID=${sid}&limit=50&source=website`
+      `${NEW_BASE_API}/sports/get-fixtures-by-category/${categoryId}?timeoffset=${sign}${offsetHours}&sportID=${sid}`
     )
   )
 }

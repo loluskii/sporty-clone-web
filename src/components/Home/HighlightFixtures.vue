@@ -162,7 +162,6 @@ const toggleList = () => {
 
 function getDefaultSpecifier(outcomes) {
   const outcomeWithSpecifier = outcomes.find((outcome) => outcome.specifier !== '')
-  console.log('specifier', outcomeWithSpecifier)
   activeSpecifier.value = outcomeWithSpecifier?.specifier.split('=')[1]
   return outcomeWithSpecifier ? outcomeWithSpecifier.specifier : ''
 }

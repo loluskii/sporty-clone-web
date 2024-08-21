@@ -16,12 +16,11 @@
                   class="top-link"
                   @click.prevent="
                     $router.push({
-                      name: 'top-tournament-fixtures',
+                      name: 'fixtures-by-tournaments',
                       params: {
                         sport: top.sportName,
-                        category: slugify(top.categoryName),
-                        tournament: slugify(top.tournamentName),
-                        tournament_id: top.tournamentID
+                        categories: `sr:category:${top.categoryID}`,
+                        tournaments: `sr:tournament:${top.tournamentID}`
                       }
                     })
                   "

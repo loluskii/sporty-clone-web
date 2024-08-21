@@ -16,7 +16,6 @@ const utilstStore = useUtilsStore()
 const showCasinoDialog = ref(false)
 
 function handleshowDialog(data) {
-  console.log(data)
   dialogType.value = data.dialogType
   dialogData.value = data.dialogData
   isDialogShown.value = true

@@ -346,7 +346,7 @@ onMounted(async () => {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
-    white-space: nowrap;
+    white-space: nowrap; margin-left: 10px;
   }
   .import-match .match-league.hide .league-title .dis-icon {
     -webkit-transform: rotate(-90deg);

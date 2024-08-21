@@ -54,13 +54,18 @@ const router = createRouter({
       component: FixtureView
     },
     {
-      path: '/Sports/Prematch/:sport/Upcoming',
-      name: 'upcoming-fixtures-by-sport',
+      path: '/Sports/Prematch/:sport/:categories',
+      name: 'fixtures-by-categories',
       component: FixtureView
     },
     {
-      path: '/Sports/Prematch/:sport/:category/:tournament/:tournament_id',
-      name: 'top-tournament-fixtures',
+      path: '/Sports/Prematch/:sport/:categories/:tournaments',
+      name: 'fixtures-by-tournaments',
+      component: FixtureView
+    },
+    {
+      path: '/Sports/Prematch/:sport/Upcoming',
+      name: 'upcoming-fixtures-by-sport',
       component: FixtureView
     },
     {

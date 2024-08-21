@@ -246,7 +246,6 @@ async function getEventDetail(id) {
   } catch (error) {
     eventDetail.value = null
     // errorMessage.value = res.message
-    console.log('match is live')
     isLoading.value = false
   }
 }

@@ -97,7 +97,6 @@ function filterOutcomesByMarketIDs(outcomes) {
 
 function getOutcomeCountForMarket(marketID) {
   const activeMarket = props.activeMarkets.find((market) => market.marketID === marketID)
-  console.log(activeMarket.outcomes)
   if (activeMarket) {
     return activeMarket.outcomes.length
   }

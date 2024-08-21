@@ -186,7 +186,6 @@ function sortByKey(array, key, ascending = true) {
 
 onMounted(async () => {
   await fetchMatchDetails()
-  console.log('here')
 })
 </script>
 

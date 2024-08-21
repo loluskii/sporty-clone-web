@@ -47,10 +47,8 @@ const bonus = computed(() => {
 })
 
 async function verifyPaymentRef(method, ref) {
-  console.log(method, ref);
   isLoading.value = true
   const res = await verifyDeposit(method, ref);
-  console.log(res);
   isLoading.value = false
   if (res.success) {
     isPaymentSuccess.value = true

@@ -243,12 +243,8 @@
             <a id="header_nav_livescore" class="x-flex-item" @click.prevent="goToLiveScore"
               ><span data-cms-key="live_betting">Livescore</span></a
             >
-            <a
-              id="header_nav_promotions"
-              href="/"
-              class="x-flex-item"
-              :class="activeClass('promotions') ? 'x-flex-item--active' : ''"
-              ><span data-cms-key="promotions">Promotions</span></a
+            <a id="header_nav_promotions" @click.prevent="goToStatistics" class="x-flex-item"
+              ><span data-cms-key="promotions">Statistics</span></a
             >
             <a
               id="header_nav_mobile"
@@ -304,6 +300,10 @@ const viewIsCasino = computed(() => {
 
 const activeClass = (name) => {
   return route.name === name
+}
+
+const goToStatistics = () => {
+  return window.open(`https://s5.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
 }
 
 function showRegisterModal() {
