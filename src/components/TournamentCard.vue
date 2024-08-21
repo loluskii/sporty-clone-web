@@ -91,7 +91,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['fetch-fixtures'])
 
-const isShown = ref(false)
+const isShown = ref(true)
 
 const activeMarket = ref({})
 
@@ -139,7 +139,7 @@ async function setActiveMarket(market) {
 }
 
 const fetchFixtures = () => {
-  isShown.value = !isShown.value
+  if (!isShown.value) isShown.value = true
   if (props.events.length) return
   emit('fetch-fixtures', props.tournamentID)
 }

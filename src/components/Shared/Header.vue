@@ -223,8 +223,8 @@
             >
             <a
               id="header_nav_liveBetting"
-              href="/Sport/Live"
-              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
+              href="/Sport/LiveList"
+              :class="viewIsLive ? 'x-flex-item--active' : ''"
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
@@ -296,6 +296,10 @@ const balance = computed(() => {
 
 const viewIsCasino = computed(() => {
   return route.name === 'game-view' || route.name === 'game-play'
+})
+
+const viewIsLive = computed(() => {
+  return route.name === 'live-view' || route.name === 'live-fixtures-one-detail'
 })
 
 const activeClass = (name) => {
