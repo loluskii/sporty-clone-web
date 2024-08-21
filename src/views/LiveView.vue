@@ -147,7 +147,7 @@ import LiveLayout from '@/components/Shared/LiveLayout.vue'
 import BetContainer from '@/components/Shared/BetContainer.vue'
 import Fixture from '@/components/Live/Fixture.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { getLiveHighlights } from '@/helpers'
 
 const activeSportID = ref(1)
@@ -156,7 +156,7 @@ const marketGroup = ref([])
 const isEmptyResponse = ref(false)
 const showMoreSportsMenu = ref(false)
 const MoreSportsLabel = ref('More Sports')
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 
 const { data, error, isLoading, refetch } = useQuery('liveData', getLiveHighlights, {
   refetchInterval: 25000, // 25 seconds in milliseconds
@@ -284,7 +284,6 @@ defineComponent({
   margin-bottom: -1px;
   background-color: #353a45;
 }
-
 
 .x-overview .sport-name .sport-simple-select .select-item {
   overflow: hidden;

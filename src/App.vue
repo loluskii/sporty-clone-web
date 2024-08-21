@@ -3,18 +3,19 @@ import { RouterView } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import DialogBox from '@/components/Shared/DialogBox.vue'
 import emitter from '@/plugins/emitter'
-import { useCouponStore, useUsersStore, useUtilstStore } from '@/stores'
+import { useCouponStore, useUsersStore, useUtilsStore } from '@/stores'
 import { getBets } from '@/helpers'
+import CasinoDialog from '@/components/Dialog/CasinoDialog.vue'
 
 const dialogType = ref('')
 const isDialogShown = ref(false)
 const dialogData = ref({})
 const usersStore = useUsersStore()
 const couponStore = useCouponStore()
-const utilstStore = useUtilstStore()
+const utilstStore = useUtilsStore()
+const showCasinoDialog = ref(false)
 
 function handleshowDialog(data) {
-  console.log(data)
   dialogType.value = data.dialogType
   dialogData.value = data.dialogData
   isDialogShown.value = true
@@ -49,6 +50,9 @@ onMounted(async () => {
   emitter.on('hideDialog', toggleDialog)
   emitter.on('clearBetslip', clearBetslip)
   emitter.on('refreshOpenBets', getBetsData)
+  emitter.on('toggleCasinoDialog', () => {
+    showCasinoDialog.value = true
+  })
   if (usersStore.currentUser) {
     Promise.all([usersStore.loadCurrentUser(), getBetsData()])
       .then(() => {})
@@ -60,6 +64,7 @@ onMounted(async () => {
 <template>
   <RouterView />
   <DialogBox v-if="isDialogShown" :dialog-type="dialogType" :dialog-data="dialogData"></DialogBox>
+  <CasinoDialog v-if="showCasinoDialog" @hide-dialogue="showCasinoDialog = false"></CasinoDialog>
 </template>
 
 <style scoped></style>

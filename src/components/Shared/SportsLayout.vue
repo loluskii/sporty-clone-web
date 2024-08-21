@@ -48,10 +48,10 @@
                       <input
                         type="checkbox"
                         @change="selectCategory(country.categoryID)"
-                        :checked="activeCategories.includes(country.categoryID)"
+                        :checked="isCategorySelected(country.categoryID)"
                         name=""
                         id=""
-                        style="margin-right: 5px"
+                        style="margin-right: 5px; accent-color: var(--brand-secondary)"
                       />
                       <span>{{ country.categoryName }}</span>
                     </div>
@@ -109,25 +109,20 @@
 import BaseLayout from '@/components/Shared/BaseLayout.vue'
 import BetContainer from './BetContainer.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useUtilstStore } from '@/stores'
-import { computed, onMounted, ref } from 'vue'
-import { getCategoriesBySport, getTournamentsByCategories } from '@/helpers'
+import { useUtilsStore } from '@/stores'
+import { computed, onMounted, ref, watch } from 'vue'
+import { getCategoriesBySport, extractIdsFromURL } from '@/helpers'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 import emitter from '@/plugins/emitter'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const categories = ref([])
 const router = useRouter()
+const route = useRoute()
 
 const activeSport = computed(() => {
   return utilsStore.activeSport
 })
-const countriesList = computed(() => {
-  return utilsStore.sportsMenu.filter((sport) => sport.sportID == activeSport.value.sportID)
-})
-const getSportbyName = (name) => {
-  return utilsStore.sportsMenu.find((x) => x.sportName == name)
-}
 
 const activeCategories = computed(() => {
   return utilsStore.activeCategories
@@ -138,15 +133,42 @@ async function getCategories() {
 }
 
 function selectCategory(id) {
-  const index = utilsStore.activeCategories.indexOf(id)
-  if (index !== -1) {
-    utilsStore.activeCategories.splice(index, 1) // Remove from activeCategories
+  let categories = `sr:category:${id}`
+  let currentCategories = route.params.categories || ''
+  let categoryArray = currentCategories ? currentCategories.split('_') : []
+  let categoryExists = categoryArray.includes(categories)
+  if (categoryExists) {
+    categoryArray = categoryArray.filter((category) => category !== categories)
   } else {
-    utilsStore.activeCategories.push(id) // Add to activeCategories
-    emitter.emit('newActiveCategory', id)
-    router.push({ name: 'fixtures-by-sport', query: { type: 'byCategory' } })
+    categoryArray.push(categories)
   }
+  if (categoryArray.length === 0) {
+    return router.push({
+      name: 'fixtures-by-sport',
+      params: { sport: activeSport.value.sportName }
+    })
+  }
+
+  const updatedCategories = categoryArray.join('_')
+  return router.push({ name: 'fixtures-by-categories', params: { categories: updatedCategories } })
 }
+
+const isCategorySelected = (category) => {
+  if (!route.params.categories) {
+    return false
+  }
+  const categoriesArray = route.params.categories.split('_')
+  const categoryToCheck = `sr:category:${category}`
+  return categoriesArray.includes(categoryToCheck)
+}
+
+watch(
+  () => route.params.sport,
+  async () => {
+    await getCategories()
+  },
+  { immediate: true } // Trigger the watch callback immediately on component mount
+)
 
 onMounted(async () => {
   await getCategories()
@@ -275,7 +297,7 @@ onMounted(async () => {
 #sportList .titles .sportList-subtitle {
   cursor: pointer;
   line-height: 16px;
-  font-size: 13px;
+  font-size: 12px;
   padding: 14px 10px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -354,128 +376,6 @@ onMounted(async () => {
   box-shadow: -1px 1px 2px 0px rgba(0, 0, 0, 0.3);
   border-left-color: #ffffff;
 }
-#sportList .game-list .popular-list .tournament-list,
-#sportList .game-list .sport-list .tournament-list {
-  cursor: pointer;
-  display: none;
-  background-color: #ffffff;
-  border: 1px solid #b4b4b4;
-  position: absolute;
-  left: 100%;
-  margin-left: -2px;
-  top: -1px;
-  z-index: 888;
-  width: 412px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding: 2px 0px 2px 3px;
-  height: auto;
-  -webkit-box-shadow: -1px 1px 2px 0px rgba(0, 0, 0, 0.3);
-  box-shadow: -1px 1px 2px 0px rgba(0, 0, 0, 0.3);
-}
-#sportList .game-list .popular-list .tournament-list--one,
-#sportList .game-list .sport-list .tournament-list--one {
-  width: auto;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-err,
-#sportList .game-list .sport-list .tournament-list .tournament-err {
-  color: #e41827;
-  font-size: 12px;
-  padding-top: 6px;
-  padding-bottom: 10px;
-  line-height: 1;
-  clear: both;
-  padding-left: 10px;
-}
-#sportList .game-list .popular-list .tournament-list::before,
-#sportList .game-list .sport-list .tournament-list::before {
-  position: absolute;
-  display: block;
-  top: 0px;
-  left: -4px;
-  height: 22px;
-  width: 5px;
-  background-color: #ffffff;
-  content: ' ';
-}
-#sportList .game-list .popular-list .tournament-list > ul,
-#sportList .game-list .sport-list .tournament-list > ul {
-  width: 100%;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item {
-  cursor: pointer;
-  width: 200px;
-  height: 25px;
-  float: left;
-  line-height: 1;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  padding-top: 5px;
-  white-space: nowrap;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item .checkbox,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item .checkbox {
-  width: 15px;
-  height: 15px;
-  border: 1px solid #dcdee5;
-  display: inline-block;
-  border-radius: 2px;
-  vertical-align: top;
-  margin-top: -2px;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item .checkbox.active,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item .checkbox.active {
-  background-color: var(--brand-secondary);
-  border: 1px solid var(--brand-secondary);
-  color: #ffffff;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item .checkbox.active:after,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item .checkbox.active:after {
-  content: ' ';
-  width: 9px;
-  height: 4px;
-  margin-left: 2px;
-  margin-top: -2px;
-  display: inline-block;
-  border: 2px solid #fcfff4;
-  border-top: none;
-  border-right: none;
-  background: transparent;
-  -webkit-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item.disabled,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item.disabled {
-  cursor: not-allowed;
-  pointer-events: none;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item.disabled .checkbox,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item.disabled .checkbox {
-  background-color: #dcdee5;
-  border: 1px solid #dcdee5;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item .tournament-name,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item .tournament-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 120px;
-  padding-left: 6px;
-  display: inline-block;
-  vertical-align: middle;
-}
-#sportList .game-list .popular-list .tournament-list .tournament-list-item .event-size,
-#sportList .game-list .sport-list .tournament-list .tournament-list-item .event-size {
-  width: 30px;
-  display: inline-block;
-  text-align: right;
-  vertical-align: middle;
-}
-
 .x-instant-reg .x-title {
   color: unset;
 }

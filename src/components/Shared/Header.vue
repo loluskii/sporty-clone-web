@@ -65,48 +65,50 @@
               </div>
               <div class="x-opt">
                 <div class="x-error-toast"></div>
-                <div class="x-phone-wrapper">
-                  <div class="x-phone">
-                    <span>+234</span
-                    ><input
-                      type="text"
-                      name="phone"
-                      value=""
-                      autocomplete="off"
-                      placeholder="Mobile Number"
-                      class="fs-exclude"
-                    />
+                <div style="display: flex">
+                  <div class="x-phone-wrapper">
+                    <div class="x-phone">
+                      <span>+234</span
+                      ><input
+                        type="text"
+                        name="phone"
+                        value=""
+                        autocomplete="off"
+                        placeholder="Mobile Number"
+                        class="fs-exclude"
+                      />
+                    </div>
+                    <div class="x-error-wrapper"></div>
                   </div>
-                  <div class="x-error-wrapper"></div>
-                </div>
-                <div class="x-psd-wrapper">
-                  <div class="x-psd">
-                    <input
-                      type="password"
-                      name="psd"
-                      value=""
-                      autocomplete="off"
-                      placeholder="Password"
-                      class="fs-exclude"
-                    /><button
-                      type="button"
-                      name="logIn"
-                      class="x-btn x-btn-login"
-                      data-cms-key="log_in"
-                    >
-                      Login
-                    </button>
+                  <div class="x-psd-wrapper">
+                    <div class="x-psd">
+                      <input
+                        type="password"
+                        name="psd"
+                        value=""
+                        autocomplete="off"
+                        placeholder="Password"
+                        class="fs-exclude"
+                      /><button
+                        type="button"
+                        name="logIn"
+                        class="x-btn x-btn-login"
+                        data-cms-key="log_in"
+                      >
+                        Login
+                      </button>
+                    </div>
+                    <div class="x-error-wrapper"></div>
                   </div>
-                  <div class="x-error-wrapper"></div>
+                  <button
+                    type="button"
+                    name="register"
+                    class="x-btn x-btn-register"
+                    data-cms-key="register"
+                  >
+                    Register
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  name="register"
-                  class="x-btn x-btn-register"
-                  data-cms-key="register"
-                >
-                  Register
-                </button>
                 <div class="x-operation">
                   <a href="/ng/profile/reset_password" class="x-forgetPsd"
                     ><span data-cms-key="forgot_password">Forgot Password</span>?</a
@@ -139,57 +141,59 @@
                     <div class="dropDown-wraper"></div>
                   </div>
                 </div>
-                <div class="x-opt">
-                  <div class="x-error-toast"></div>
-                  <div class="x-phone-wrapper">
-                    <div class="x-phone">
-                      <span>+234</span
-                      ><input
-                        type="text"
-                        name="phone"
-                        value=""
-                        autocomplete="off"
-                        placeholder="Mobile Number"
-                        class="fs-exclude"
-                        v-model="phoneNumber"
-                      />
+                <form action="">
+                  <div class="x-opt">
+                    <div class="x-error-toast"></div>
+                    <div class="x-phone-wrapper">
+                      <div class="x-phone">
+                        <span>+234</span
+                        ><input
+                          type="text"
+                          name="phone"
+                          value=""
+                          autocomplete="off"
+                          placeholder="Mobile Number"
+                          class="fs-exclude"
+                          v-model="phoneNumber"
+                        />
+                      </div>
+                      <div class="x-error-wrapper"></div>
                     </div>
-                    <div class="x-error-wrapper"></div>
-                  </div>
-                  <div class="x-psd-wrapper">
-                    <div class="x-psd">
-                      <input
-                        type="password"
-                        name="psd"
-                        value=""
-                        autocomplete="off"
-                        placeholder="Password"
-                        class="fs-exclude"
-                        v-model="password"
-                      /><button
-                        type="button"
-                        @click.prevent="doLogin"
-                        name="logIn"
-                        class="x-btn x-btn-login"
-                        :class="phoneNumber && password ? '' : 'disabled'"
-                      >
-                        Login
-                      </button>
+                    <div class="x-psd-wrapper">
+                      <div class="x-psd">
+                        <input
+                          type="password"
+                          name="psd"
+                          value=""
+                          autocomplete="off"
+                          placeholder="Password"
+                          class="fs-exclude"
+                          v-model="password"
+                        /><button
+                          type="button"
+                          @click.prevent="doLogin"
+                          name="logIn"
+                          class="x-btn x-btn-login"
+                          :class="phoneNumber && password ? '' : 'disabled'"
+                        >
+                          Login
+                        </button>
+                      </div>
+                      <div class="x-error-wrapper"></div>
                     </div>
-                    <div class="x-error-wrapper"></div>
+                    <button
+                      @click.prevent="showRegisterModal"
+                      type="button"
+                      name="register"
+                      class="x-btn x-btn-register"
+                    >
+                      Register
+                    </button>
+                    <div class="x-operation">
+                      <a href="" class="x-forgetPsd"><span>Forgot Password</span>?</a>
+                    </div>
                   </div>
-                  <button
-                    @click.prevent="showRegisterModal"
-                    type="button"
-                    name="register"
-                    class="x-btn x-btn-register"
-                  >
-                    Register
-                  </button>
-                  <div class="x-operation">
-                    <a href="" class="x-forgetPsd"><span>Forgot Password</span>?</a>
-                  </div>
-                </div>
+                </form>
               </div>
             </template>
           </div>
@@ -214,7 +218,7 @@
               id="header_nav_games"
               href="/Games"
               class="x-flex-item"
-              :class="activeClass('game-view') ? 'x-flex-item--active' : ''"
+              :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
             >
             <a
@@ -224,7 +228,11 @@
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
-            
+
+            <a id="header_nav_liveBetting" @click.prevent="goToVirtuals" class="x-flex-item"
+              ><span data-cms-key="live_betting">Virtuals</span></a
+            >
+
             <a
               id="header_nav_jackpot"
               href="/"
@@ -232,18 +240,11 @@
               :class="activeClass('jackpot') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="jackpot">Jackpot</span></a
             >
-            <a
-              id="header_nav_livescore"
-              class="x-flex-item"
-              @click.prevent="goToLiveScore"
+            <a id="header_nav_livescore" class="x-flex-item" @click.prevent="goToLiveScore"
               ><span data-cms-key="live_betting">Livescore</span></a
             >
-            <a
-              id="header_nav_promotions"
-              href="/"
-              class="x-flex-item"
-              :class="activeClass('promotions') ? 'x-flex-item--active' : ''"
-              ><span data-cms-key="promotions">Promotions</span></a
+            <a id="header_nav_promotions" @click.prevent="goToStatistics" class="x-flex-item"
+              ><span data-cms-key="promotions">Statistics</span></a
             >
             <a
               id="header_nav_mobile"
@@ -264,6 +265,8 @@
 <script setup>
 import { defineComponent, computed, ref, onMounted } from 'vue'
 import { useAuthStore, useUsersStore } from '@/stores'
+import MD5 from 'crypto-js/md5'
+
 import { formatNumber } from '@/helpers'
 import emitter from '@/plugins/emitter'
 import { useRoute } from 'vue-router'
@@ -279,6 +282,9 @@ const date = new Date()
 const offset = date.getTimezoneOffset()
 const sign = offset >= 0 ? '-' : '+'
 const offsetHours = Math.abs(offset / 60)
+const token = ref('111111')
+const group = ref(import.meta.env.VITE_APP_KEY)
+const mode = ref(0)
 
 const currentUser = computed(() => {
   return usersStore.currentUser
@@ -288,37 +294,70 @@ const balance = computed(() => {
   return usersStore.balance
 })
 
+const viewIsCasino = computed(() => {
+  return route.name === 'game-view' || route.name === 'game-play'
+})
+
 const activeClass = (name) => {
   return route.name === name
+}
+
+const goToStatistics = () => {
+  return window.open(`https://s5.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
 }
 
 function showRegisterModal() {
   emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
 }
+
+const formattedPhoneNumber = (phoneNumber) => {
+  const pNumber = phoneNumber.toString()
+  const first = pNumber.charAt(0)
+  return first === '0' ? pNumber.substring(1) : pNumber
+}
+
 async function doLogin() {
   let payload = {
-    username: phoneNumber.value,
+    username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
     clientId: import.meta.env.VITE_CLIENT_ID
   }
   await authStore.doLogin(payload)
 }
 
-function getTimezone() {
-  const date = new Date()
-  const timezoneOffset = -date.getTimezoneOffset()
-  const sign = timezoneOffset > 0 ? '+' : '-'
-  const hours = Math.floor(Math.abs(timezoneOffset / 60))
-  const minutes = Math.abs(timezoneOffset % 60)
-  const formattedMinutes = minutes.toString().padStart(2, '0')
+// function getTimezone() {
+//   const date = new Date()
+//   const timezoneOffset = -date.getTimezoneOffset()
+//   const sign = timezoneOffset > 0 ? '+' : '-'
+//   const hours = Math.floor(Math.abs(timezoneOffset / 60))
+//   const minutes = Math.abs(timezoneOffset % 60)
+//   const formattedMinutes = minutes.toString().padStart(2, '0')
 
-  const formattedTimezone = `GMT${sign}${hours.toString().padStart(2, '0')}:${formattedMinutes}`
+//   const formattedTimezone = `GMT${sign}${hours.toString().padStart(2, '0')}:${formattedMinutes}`
 
-  document.getElementById('j_timezone').innerText = formattedTimezone
-}
+//   document.getElementById('j_timezone').innerText = formattedTimezone
+// }
 
 const goToLiveScore = () => {
   return window.open(`https://ls.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
+}
+
+const hashStr = computed(() => {
+  return MD5(
+    `${token.value}10100${import.meta.env.VITE_SITE_URL}${mode.value}${group.value}mobile${
+      import.meta.env.VITE_XPRESS_PRIVATE_KEY
+    }`
+  ).toString()
+})
+
+const generatedURL = computed(() => {
+  return `${import.meta.env.VITE_XPRESS_LAUNCH_URL}?token=${token.value}&game=10100&backurl=${
+    import.meta.env.VITE_SITE_URL
+  }&mode=${mode.value}&group=${group.value}&clientPlatform=website&h=${hashStr.value}`
+})
+
+function goToVirtuals() {
+  window.location.href = generatedURL.value
 }
 
 defineComponent({
@@ -361,6 +400,7 @@ onMounted(() => {
   height: 34px;
   line-height: 34px;
   position: relative;
+  display: flex;
 }
 .c-header .x-login-bar:after {
   clear: both;
@@ -608,7 +648,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-balance {
   color: yellow;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .c-header .x-login-bar a:hover {
   text-decoration: none;
@@ -845,7 +885,7 @@ onMounted(() => {
   display: inline-block;
   height: 34px;
   vertical-align: middle;
-  /* width: 173px; */
+  width: 173px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;

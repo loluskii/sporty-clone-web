@@ -10,6 +10,7 @@ import CasinoView from '@/views/Games/CasinoView.vue'
 import PlayView from '@/views/Games/PlayView.vue'
 
 import DepositView from '@/views/Account/DepositView.vue'
+import VerifyPaymentView from '@/views/Account/VerifyPaymentView.vue'
 import WithDrawalView from '@/views/Account/WithdrawalView.vue'
 import BetHistoryView from '@/views/Account/BetHistoryView.vue'
 import BetHistoryDetail from '@/views/Account/BetHistoryDetail.vue'
@@ -20,7 +21,7 @@ import AboutUs from '@/views/CMS/AboutUs.vue'
 import ResponsibleGaming from '@/views/CMS/ResponsibleGaming.vue'
 import BettingRules from '@/views/CMS/BettingRules.vue'
 
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { unslugify } from '@/helpers'
 // import LiveFixtureDetail from '@/views/Sport/LiveFixtureDetail.vue'
 
@@ -53,13 +54,18 @@ const router = createRouter({
       component: FixtureView
     },
     {
-      path: '/Sports/Prematch/:sport/Upcoming',
-      name: 'upcoming-fixtures-by-sport',
+      path: '/Sports/Prematch/:sport/:categories',
+      name: 'fixtures-by-categories',
       component: FixtureView
     },
     {
-      path: '/Sports/Prematch/:sport/:category/:tournament/:tournament_id',
-      name: 'top-tournament-fixtures',
+      path: '/Sports/Prematch/:sport/:categories/:tournaments',
+      name: 'fixtures-by-tournaments',
+      component: FixtureView
+    },
+    {
+      path: '/Sports/Prematch/:sport/Upcoming',
+      name: 'upcoming-fixtures-by-sport',
       component: FixtureView
     },
     {
@@ -89,11 +95,11 @@ const router = createRouter({
       name: 'account-deposit',
       component: DepositView
     },
-    // {
-    //   path: '/payment-verification/:method',
-    //   name: 'verify-deposit',
-    //   component: VerifyPaymentView
-    // },
+    {
+      path: '/payment-verification/:method',
+      name: 'verify-deposit',
+      component: VerifyPaymentView
+    },
     {
       path: '/Account/Withdraw',
       name: 'account-withdraw',
@@ -138,7 +144,7 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const utilsStore = useUtilstStore()
+  const utilsStore = useUtilsStore()
 
   if (to.params.sport) {
     let sport = utilsStore.sportsMenu.find((x) => x.sportName == unslugify(to.params.sport))
@@ -146,6 +152,7 @@ router.beforeEach(async (to, from, next) => {
       utilsStore.activeSport = sport
     }
   }
+
 
   const mobileUrl = import.meta.env.VITE_MOBILE_URL;
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {

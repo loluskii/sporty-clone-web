@@ -1,7 +1,7 @@
 <template>
   <div class="important-match">
     <div class="banner">
-      <!-- <span class="circle"></span> -->
+      <span class="circle"></span>
       <span class="text">Highlights</span>
     </div>
     <div class="print-container-wrapper">
@@ -46,7 +46,7 @@
       </div>
 
       <div id="print-container" style="position: relative">
-        <div v-if="!isLoading" class="match">
+        <div v-if="!isLoading && highlightsData.length > 0" class="match">
           <div class="tour-name-wrap">
             <div
               v-for="(group, g) in highlightsData.slice(0, 5)"
@@ -85,101 +85,22 @@
                       {{ market.outcomeName }}
                     </div>
                   </div>
-                  <!-- <div class="each-module-table two-markets">
-                    <div class="each-module">1X</div>
-                    <div class="each-module">12</div>
-                    <div class="each-module">X2</div>
-                  </div> -->
                 </div>
                 <div class="x-table-cell"></div>
               </div>
-              <div
+              <HighlightFixtures
                 v-for="(game, g) in matches"
                 :key="g"
-                class="x-table-row m-content-row match-row"
-              >
-                <div class="x-table-cell left-team-cell">
-                  <div class="left-team-table">
-                    <div class="time">
-                      <div class="clock-time">{{ game.eventTime }}&nbsp;&nbsp;</div>
-                      <div class="game-id">
-                        <span class="game-id-label">ID: </span>{{ game.gameID }}
-                      </div>
-                    </div>
-                    <div
-                      title=""
-                      class="teams"
-                      @click="
-                        $router.push({
-                          name: 'fixtures-detail',
-                          params: {
-                            sport: slugify(game.sportName),
-                            category: slugify(game.categoryName),
-                            tournament_name: slugify(game.tournament),
-                            event_name: slugify(game.name),
-                            event_id: game.matchID
-                          }
-                        })
-                      "
-                    >
-                      <div class="home-team">{{ game.homeTeam }}</div>
-                      <div class="away-team">{{ game.awayTeam }}</div>
-                    </div>
-                    <div class="lmt-icon" @click="showFixtureAnalysis(game.matchID)">
-                      <em class="icon"></em>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="x-table-cell market-cell"
-                  :class="getFilteredOutcomes(game.outcomes).length > 1 ? 'two-markets' : ''"
-                >
-                  <div
-                    class="x-market market"
-                    v-for="(market, m) in getFilteredOutcomes(game.outcomes)"
-                    :key="m"
-                  >
-                    <!-- <div
-                      v-if="market.specifier !== '' && market.outcomes.length"
-                      class="x-outcome specifiers-select"
-                    >
-                      <div tabindex="0" class="af-select">
-                        <div class="af-select-title">
-                          <span class="af-select-input">{{ market.specifier.split('=')[1] }}</span>
-                          <span class="af-select-icon-item"><em class="icon">^</em></span>
-                        </div>
-                      </div>
-                    </div> -->
-                    <template
-                      v-for="(k, l) in sortArr(market.outcomes, 'outcomeID')"
-                      :key="l"
-                      v-if="market.outcomes.length"
-                    >
-                      <!-- {{ k }} -->
-                      <div
-                        @click="addToBetslip(game, k, market)"
-                        class="x-outcome"
-                        :class="
-                          isSelected(
-                            createID(game.gameID, game.matchID, k.outcomeName, k.oddID, game.name),
-                            couponStore.coupon
-                          )
-                            ? 'x-outcome--checked'
-                            : ''
-                        "
-                      >
-                        <span class="x-outcome-odds">{{ k.odds.toFixed(2) }}</span>
-                      </div>
-                    </template>
-                    <EmptyOdds v-else></EmptyOdds>
-                  </div>
-                </div>
-                <div class="x-table-cell market-size">+{{ game.activeMarkets }}</div>
-              </div>
+                :game="game"
+                :selected-markets="selectedMarketIDs"
+                :active-sport-markets="activeSportMarkets"
+              />
             </template>
           </div>
-
-          <!-- <div class="print-footer">Footer</div> -->
+        </div>
+        <div v-else-if="!isLoading && !highlightsData.length" class="x-sport-bet-no-data">
+          Sorry, there are no games currently available in this sport for now.<br />Please try
+          later. Thank you.
         </div>
         <LoadingSpinner v-else></LoadingSpinner>
       </div>
@@ -188,17 +109,14 @@
 </template>
 
 <script setup>
-import { useUtilstStore, useCouponStore } from '@/stores'
-import EmptyOdds from '../EmptyOdds.vue'
+import { useUtilsStore } from '@/stores'
+import HighlightFixtures from './HighlightFixtures.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-
-import { getHighlights2, formatDate, slugify, createID, isSelected, sortArr } from '@/helpers'
+import { getHighlights2, formatDate } from '@/helpers'
 import { onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 
-const utilsStore = useUtilstStore()
-const couponStore = useCouponStore()
-
+const utilsStore = useUtilsStore()
 const sportList = computed(() => {
   return utilsStore.sportsMenu
 })
@@ -206,82 +124,44 @@ const sportList = computed(() => {
 const activeSportID = ref(1)
 const prevSportID = ref(1)
 const activeSportMarkets = ref([])
-const activeSportMarketOutcomes = ref([])
-
 const highlightsData = ref([])
 const activeTournament = ref({})
 const activeTournamentEvents = ref([])
-
 const selectedMarketIDs = ref([])
-
 const MoreSportsLabel = ref('More Sports')
 const isMoreSportsDropdownShown = ref(false)
 const sportSimpleSelectActive = ref(false)
-
 const isLoading = ref(false)
-const loadingError = ref(false)
 
 async function getHighlightGames() {
+  if (prevSportID.value === activeSportID.value && highlightsData.value.length) return
   isLoading.value = true
-  if (!Object.keys(highlightsData.value).length || prevSportID.value !== activeSportID.value) {
-    const response = await getHighlights2(activeSportID.value, 10)
-    if (response.fixtures) {
-      let transformedHighlights = transformHighlights(response.fixtures)
-      highlightsData.value = transformedHighlights
-      activeTournament.value = transformedHighlights[0]
-      activeTournamentEvents.value = _.groupBy(
-        transformedHighlights[0].events,
-        (fixture) => fixture.date.split(' ')[0]
-      )
-      // get active sports first two markets
-      let m = response.markets.filter((market) => market.specifier === '')
-      activeSportMarkets.value = m.slice(0, 2)
-
-      // extract market ids from markets
-      selectedMarketIDs.value = m.slice(0, 2).map((market) => ({
-        marketID: parseInt(market.marketID),
-        marketName: market.marketName,
-        specifier: market.specifier
-      }))
-    } else {
-      highlightsData.value = []
-
-      // marketsGroup.value = []
-    }
+  const response = await getHighlights2(activeSportID.value, 10)
+  if (response.fixtures && response.markets) {
+    const transformedHighlights = transformHighlights(response.fixtures)
+    const [firstTournament] = transformedHighlights
+    highlightsData.value = transformedHighlights
+    activeTournament.value = firstTournament
+    activeTournamentEvents.value = _.groupBy(
+      firstTournament.events,
+      (fixture) => fixture.date.split(' ')[0]
+    )
+    const markets = response.markets.filter((market) => market.specifier === '')
+    activeSportMarkets.value = markets.slice(0, 2)
+    selectedMarketIDs.value = markets.slice(0, 2).map((market) => ({
+      marketID: parseInt(market.marketID),
+      marketName: market.marketName,
+      specifier: market.specifier
+    }))
+    prevSportID.value = activeSportID.value
+  } else {
+    highlightsData.value = []
+    activeTournament.value = {}
+    activeTournamentEvents.value = {}
+    isLoading.value = false
+    return
   }
   isLoading.value = false
-}
-
-function showFixtureAnalysis(id) {
-  return window.open(
-    `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
-    'stats',
-    'width=1078,height=768'
-  )
-}
-
-function getFilteredOutcomes(outcomes) {
-  const groupedOutcomes = _.groupBy(outcomes, 'marketID')
-  const filteredOutcomes = selectedMarketIDs.value.map((marketIDObj) => {
-    const marketID = marketIDObj.marketID
-    let foundOutcomes = outcomes.filter((outcome) => outcome.marketID === marketID)
-    const outcomeWithSpecifier = foundOutcomes.find((outcome) => outcome.specifier !== '')
-    let defaultSpecifier = ''
-    if (outcomeWithSpecifier) {
-      defaultSpecifier = outcomeWithSpecifier.specifier
-      foundOutcomes = foundOutcomes.filter((outcome) => outcome.specifier === defaultSpecifier)
-    }
-    return {
-      ...marketIDObj,
-      specifier: defaultSpecifier,
-      outcomes: foundOutcomes.map((outcome) => ({
-        ...outcome,
-        marketID: undefined // Omit 'marketID' from each outcome
-      }))
-    }
-  })
-
-  return filteredOutcomes
 }
 
 function toggleMoreSportsDropdown() {
@@ -289,28 +169,21 @@ function toggleMoreSportsDropdown() {
 }
 
 function transformHighlights(arr) {
-  const transformedArray = arr.reduce((accumulator, item) => {
+  const tournamentMap = new Map()
+  for (const item of arr) {
     const { tournament, categoryName, tournamentID } = item
-
-    const existingEntry = accumulator.find(
-      (entry) => entry.tournamentName === tournament && entry.category === categoryName
-    )
-
-    if (existingEntry) {
-      existingEntry.events.push(item)
-    } else {
-      accumulator.push({
+    const key = `${tournament}-${categoryName}`
+    if (!tournamentMap.has(key)) {
+      tournamentMap.set(key, {
         id: tournamentID,
         tournamentName: tournament,
         category: categoryName,
-        events: [item]
+        events: []
       })
     }
-
-    return accumulator
-  }, [])
-
-  return transformedArray
+    tournamentMap.get(key).events.push(item)
+  }
+  return Array.from(tournamentMap.values())
 }
 
 function setActiveHighlight(group) {
@@ -332,30 +205,6 @@ async function setActiveSport(sid, name = null) {
     MoreSportsLabel.value = 'More Sports'
   }
   await getHighlightGames()
-}
-
-function addToBetslip(event, odd, market) {
-  if (odd.odds < 1) return
-  const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
-  const data = {
-    fixture: event,
-    market_name: market.marketName,
-    market_id: market.marketID,
-    ele_id: id,
-    outcome: odd,
-    odds: odd.odds,
-    odd_id: odd.oddID,
-    odd_name: odd.outcomeName,
-    type: 'prematch',
-    event_id: event.gameID,
-    specifier: odd.specifier
-  }
-
-  // console.log(data)
-  // return couponStore.addToCoupon(data)
-
-  const existsInBetslip = isSelected(id, couponStore.coupon)
-  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
 }
 
 onMounted(async () => {
@@ -452,9 +301,9 @@ onMounted(async () => {
   cursor: pointer;
 }
 .simple-select-wrap .select-item:hover {
-  background-color: var(--brand-primary);
+  background-color: var(--brand-secondary);
 }
 .simple-select-wrap .select-item.select-item-active {
-  background-color: var(--brand-primary);
+  background-color: var(--brand-secondary);
 }
 </style>

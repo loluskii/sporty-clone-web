@@ -116,7 +116,7 @@ export const getTournamentsByCategories = async (categoryId) => {
 export const getFixturesByCategories = async (categoryId, sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/get-fixtures-by-categories/${categoryId}?timeoffset=${sign}${offsetHours}&sportID=${sid}&limit=50&source=website`
+      `${NEW_BASE_API}/sports/get-fixtures-by-category/${categoryId}?timeoffset=${sign}${offsetHours}&sportID=${sid}`
     )
   )
 }
@@ -132,7 +132,7 @@ export const getFixturesBySport = async () => {
 export const getToday2 = async (sid, page) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?today=1&page=${page}&perPage=25&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?today=1&page=${page}&perPage=15&timeoffset=${sign}${offsetHours}`
     )
   )
 }
@@ -147,13 +147,13 @@ export const getSportHighlights = async (sid, hours, page) => {
   if (hours) {
     return parseData(
       fetchWrapper.get(
-        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&hours=${hours}&page=1&perPage=25&timeoffset=${sign}${offsetHours}`
+        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&hours=${hours}&page=1&perPage=15&timeoffset=${sign}${offsetHours}`
       )
     )
   } else {
     return parseData(
       fetchWrapper.get(
-        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=${page}&perPage=25&timeoffset=${sign}${offsetHours}`
+        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=${page}&perPage=15&timeoffset=${sign}${offsetHours}`
       )
     )
   }
@@ -162,7 +162,7 @@ export const getSportHighlights = async (sid, hours, page) => {
 export const getHighlights2 = async (sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=25&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=15&timeoffset=${sign}${offsetHours}`
     )
   )
 }

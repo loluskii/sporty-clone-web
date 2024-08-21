@@ -42,12 +42,12 @@
 import { ref } from 'vue'
 import BetContainerBetslip from '@/components/Betslip/BetContainerBetslip.vue'
 import BetContainerOpenBets from '@/components/Betslip/BetContainerOpenBets.vue'
-import { useCouponStore, useUtilstStore } from '@/stores'
+import { useCouponStore, useUtilsStore } from '@/stores'
 
 defineEmits(['toggle-betslip'])
 const currentView = ref('betslip')
 const couponStore = useCouponStore()
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 
 function switchBetContainerView(view) {
   currentView.value = view
@@ -370,11 +370,8 @@ function switchBetContainerView(view) {
 .x-betslips .x-stake .x-label {
   color: #353a45;
   font-size: 12px;
-  font-weight: 500;
 }
-.x-betslips .x-stake .x-label.bold {
-  font-weight: bold;
-}
+
 .x-betslips .x-stake .x-stake-tips {
   background: #ffffff;
   -webkit-box-sizing: border-box;

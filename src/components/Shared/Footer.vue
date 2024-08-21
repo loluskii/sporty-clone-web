@@ -171,9 +171,9 @@
 
 <script setup>
 import { defineComponent } from 'vue'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 
 defineComponent({
   name: 'footer-component'

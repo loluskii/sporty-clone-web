@@ -62,7 +62,7 @@
                     <span><span data-cms-key="transactions">Transactions</span> </span>
                   </li>
                   <li class="x-list-item m-text-main">
-                    <span><span data-cms-key="gifts">Gifts</span> </span>
+                    <span><span data-cms-key="gifts">Safety & Security</span> </span>
                   </li>
                 </ul>
               </div>
@@ -78,13 +78,13 @@
   </div>
 </template>
 <script setup>
-import BaseLayout from '@/components/Shared/BaseLayout.vue'
-import BetContainer from './BetContainer.vue'
+// import BaseLayout from '@/components/Shared/BaseLayout.vue'
+// import BetContainer from './BetContainer.vue'
 import Header from './Header.vue'
 import Footer from './Footer.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useUsersStore } from '@/stores'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const route = useRoute()
 
@@ -280,7 +280,7 @@ const activeClass = (name) => {
   width: 5px;
 }
 .x-user-center .x-list-item--active {
-  background: var(--brand-primary);
+  background: var(--brand-secondary);
   color: #fff;
   margin: 0 -1px 0 -1px;
 }

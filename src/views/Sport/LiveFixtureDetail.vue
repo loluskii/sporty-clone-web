@@ -183,7 +183,7 @@ import BetContainer from '@/components/Shared/BetContainer.vue'
 import _ from 'lodash'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 
-import { useCouponStore, useUtilstStore } from '@/stores'
+import { useCouponStore, useUtilsStore } from '@/stores'
 const activeSportID = ref(1)
 
 const eventMarkets = ref()
@@ -192,7 +192,7 @@ const isLoading = ref(false)
 const route = useRoute()
 // const errorMessage = ref()
 const couponStore = useCouponStore()
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const homeTeam = ref()
 const awayTeam = ref()
 
@@ -246,7 +246,6 @@ async function getEventDetail(id) {
   } catch (error) {
     eventDetail.value = null
     // errorMessage.value = res.message
-    console.log('match is live')
     isLoading.value = false
   }
 }
@@ -617,7 +616,7 @@ defineComponent({
   margin-top: 1px;
 }
 .x-outcome .x-table-cell--checked {
-  background: var(--brand-active-prematch-odds-bg);;
+  background: var(--brand-active-prematch-odds-bg);
 }
 .x-outcome .x-table-cell--responsive:hover {
   background: #051c9e;

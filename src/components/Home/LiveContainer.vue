@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { computed, ref } from 'vue'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 import { useQuery } from 'vue-query'
@@ -111,7 +111,7 @@ import { getLiveHighlights } from '@/helpers'
 import Fixture from '@/components/Live/Fixture.vue'
 import _ from 'lodash'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const sportList = computed(() => {
   return utilsStore.sportsMenu
 })
@@ -163,7 +163,7 @@ const { data, error, isLoading, refetch } = useQuery('liveData', getLiveHighligh
 const filteredLiveData = computed(() => {
   const res =
     completeData.value && !isEmptyResponse.value
-      ? completeData.value.filter((s) => s.sportID == activeSportID.value).splice(0,5)
+      ? completeData.value.filter((s) => s.sportID == activeSportID.value).splice(0, 5)
       : []
   return _.groupBy(res, 'tournament')
 })

@@ -144,10 +144,10 @@ import { useRoute } from 'vue-router'
 import { ref, watch, onMounted } from 'vue'
 import _ from 'lodash'
 import { getFixturesByTournamentId, formatDate } from '@/helpers'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 // import $ from 'jquery'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const route = useRoute()
 const fixturesList = ref([])
 
@@ -346,7 +346,7 @@ onMounted(async () => {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
-    white-space: nowrap;
+    white-space: nowrap; margin-left: 10px;
   }
   .import-match .match-league.hide .league-title .dis-icon {
     -webkit-transform: rotate(-90deg);
@@ -400,6 +400,7 @@ onMounted(async () => {
     margin-bottom: -1px;
     padding: 0 13px;
     text-align: center;
+    width: calc(100%/6);
   }
   .import-match .match-league .market-group .market-item.active {
     border-bottom: 4px solid var(--brand-secondary);

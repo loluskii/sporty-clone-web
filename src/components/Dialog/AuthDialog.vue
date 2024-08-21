@@ -44,36 +44,38 @@
                           </div>
                         </div>
                         <div v-if="activeStep === 1" class="x-page-opt without-error">
-                          <div
-                            tabindex="6"
-                            class="x-input-wrapper x-input-group x-input-group--prepend"
-                          >
-                            <div class="x-input-prepend"><span>+234</span></div>
-                            <span class="x-input-com"
-                              ><i
-                                class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
-                              ></i>
-                              <input
-                                type="input"
-                                input-mode=""
-                                name=""
-                                placeholder="Mobile Number"
-                                onpaste="return true"
-                                class="x-input fs-exclude"
-                                v-model="phoneNumber"
-                            /></span>
-                          </div>
-                          <div tabindex="8" class="x-input-wrapper">
-                            <span class="x-input-com">
-                              <input
-                                type="password"
-                                name=""
-                                placeholder="Password"
-                                onpaste="return true"
-                                class="x-input fs-exclude"
-                                v-model="password"
-                            /></span>
-                          </div>
+                          <form action="">
+                            <div
+                              tabindex="6"
+                              class="x-input-wrapper x-input-group x-input-group--prepend"
+                            >
+                              <div class="x-input-prepend"><span>+234</span></div>
+                              <span class="x-input-com"
+                                ><i
+                                  class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
+                                ></i>
+                                <input
+                                  type="input"
+                                  input-mode=""
+                                  name=""
+                                  placeholder="Mobile Number"
+                                  onpaste="return true"
+                                  class="x-input fs-exclude"
+                                  v-model="phoneNumber"
+                              /></span>
+                            </div>
+                            <div tabindex="8" class="x-input-wrapper">
+                              <span class="x-input-com">
+                                <input
+                                  type="password"
+                                  name=""
+                                  placeholder="Password"
+                                  onpaste="return true"
+                                  class="x-input fs-exclude"
+                                  v-model="password"
+                              /></span>
+                            </div>
+                          </form>
 
                           <div class="x-btn-wrap">
                             <button
@@ -106,7 +108,6 @@
                                 <form>
                                   <v-otp-input
                                     ref="otpInput"
-                                    v-model:value="bindModal"
                                     input-classes="x-pin-code-input fs-exclude"
                                     separator="  "
                                     :num-inputs="6"
@@ -116,14 +117,20 @@
                                   />
                                 </form>
                               </div>
-                              <div>
-                                <span class="darkGray not-allowed">Didn't get the code? </span
-                                >&nbsp;<span class="sec-left"> Send Again</span>
-
-                                <LoadingSpinner v-if="authStore.loading"></LoadingSpinner>
-
-                                <!-- <div class="darkGray mg-t-16" style="cursor: pointer;" @click="toLogin">Cancel</div> -->
+                              <div v-if="!authStore.loading">
+                                <span class="darkGray not-allowed">Didn't get the code? </span>
+                                <span
+                                  class="sec-left"
+                                  @click="resendOtp"
+                                  :disabled="isDisabled"
+                                  :style="{ cursor: isDisabled ? 'not-allowed' : 'pointer' }"
+                                >
+                                  {{
+                                    isDisabled ? `Send Again in ${remainingTime}s` : 'Send Again'
+                                  }}</span
+                                >
                               </div>
+                              <LoadingSpinner v-if="authStore.loading"></LoadingSpinner>
                             </div>
                           </div>
                         </div>
@@ -163,6 +170,10 @@ const buttonText = ref('Create Your Account')
 const registerError = ref(false)
 const registerErrorMessage = ref('')
 const activeStep = ref(1)
+const remainingTime = ref(60)
+const isDisabled = ref(false)
+let timer
+
 // const OTP = ref('')
 
 function setAuthType(type) {
@@ -204,9 +215,41 @@ const registerUser = async () => {
   authStore.loading = false
   if (res.status) {
     activeStep.value = 2
+    startTimer()
   } else {
     registerError.value = true
     registerErrorMessage.value = res.message
+  }
+}
+
+const startTimer = () => {
+  isDisabled.value = true
+  remainingTime.value = 60
+
+  if (timer) clearInterval(timer) // Clear any existing timer
+
+  timer = setInterval(() => {
+    remainingTime.value -= 1
+    if (remainingTime.value === 0) {
+      clearInterval(timer)
+      isDisabled.value = false
+    }
+  }, 1000)
+}
+
+const resendOtp = async () => {
+  if (!isDisabled.value && remainingTime.value === 0) {
+    let phone = phoneNumber.value.replace(/^0/, '')
+    const internationalNumber = `234${phone}`
+    let payload = {
+      clientID: import.meta.env.VITE_CLIENT_ID,
+      phoneNumber: internationalNumber
+    }
+
+    const res = await sendOTP(payload)
+    if (res.data.status) {
+      startTimer()
+    }
   }
 }
 
@@ -248,7 +291,7 @@ const doRegistration = async () => {
 
   try {
     const res = await register(payload)
-    if (res.data.success) {
+    if (!res.data.error) {
       await authStore.doLogin(payload)
       authStore.loading = false
     } else {

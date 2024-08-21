@@ -2,7 +2,7 @@ import moment from 'moment'
 import _ from 'lodash'
 import { getSplitPropsData } from '@/helpers'
 import { brandDetails } from '/branding'
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore } from '@/stores'
 import { brandDetails as defBrandDetails } from '/branding-template'
 
 export const applyBranding = async () => {
@@ -14,7 +14,7 @@ export const applyBranding = async () => {
       defConfig = defBrandDetails
     }
     const config = defConfig
-    const utilsStore = useUtilstStore()
+    const utilsStore = useUtilsStore()
     const loadFont = (url) => {
       const link = document.createElement('link')
       link.rel = 'stylesheet'
@@ -521,4 +521,18 @@ export const sortArr = (arr, field) => {
   } else {
     return arr
   }
+}
+
+export const extractIdsFromURL = (str, type) => {
+  const parts = str.split('_')
+  // Map through parts and extract IDs
+  const ids = parts.map((part) => {
+    // Split each part by colon to get the ID
+    const segments = part.split(':')
+    const id = segments[segments.length - 1] // Get the last segment as ID
+    // Return the object based on the type
+    return type === 'category' ? { categoryID: id } : { tournamentID: id }
+  })
+
+  return ids
 }

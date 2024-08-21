@@ -47,17 +47,35 @@
   </div>
 </template>
 <script setup>
-import { useUtilstStore } from '@/stores'
+import { useUtilsStore, useUsersStore } from '@/stores'
 import { getSportsMenu, slugify } from '@/helpers'
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-const utilsStore = useUtilstStore()
+const utilsStore = useUtilsStore()
 const showMoreSports = ref(false)
 const route = useRoute()
+const usersStore = useUsersStore()
+const token = ref('111111')
+const group = ref(import.meta.env.VITE_APP_KEY)
+const mode = ref(0)
 
 const sportsList = computed(() => {
   return utilsStore.sportsMenu
+})
+
+const hashStr = computed(() => {
+  return MD5(
+    `${token.value}10100${import.meta.env.VITE_SITE_URL}${mode.value}${group.value}mobile${
+      import.meta.env.VITE_XPRESS_PRIVATE_KEY
+    }`
+  ).toString()
+})
+
+const generatedURL = computed(() => {
+  return `${import.meta.env.VITE_XPRESS_LAUNCH_URL}?token=${token.value}&game=10100&backurl=${
+    import.meta.env.VITE_SITE_URL
+  }&mode=${mode.value}&group=${group.value}&clientPlatform=website&h=${hashStr.value}`
 })
 
 const activeSport = computed(() => {
@@ -73,6 +91,10 @@ const isMoreSportsActive = computed(() => {
   let result = utilsStore.sportsMenu.slice(10).map((a) => a.sportID)
   return result.indexOf(utilsStore.activeSport.sportID) !== -1
 })
+
+function openVirtual() {
+  window.location.href = generatedURL.value
+}
 
 onMounted(async () => {
   getSports()
