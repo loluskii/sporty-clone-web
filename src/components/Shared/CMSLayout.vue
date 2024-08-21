@@ -36,7 +36,7 @@
 <script setup>
 import Header from './Header.vue'
 import Footer from './Footer.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
@@ -198,9 +198,6 @@ const activeClass = (name) => {
   background: #fff;
   margin-top: 10px;
 }
-.x-user .x-user-center .x-list-item:active {
-  background: #261da0;
-}
 
 .x-user-center .x-list-item {
   -webkit-box-sizing: border-box;
@@ -245,7 +242,7 @@ const activeClass = (name) => {
   width: 5px;
 }
 .x-user-center .x-list-item--active {
-  background: var(--brand-primary);
+  background: var(--brand-secondary);
   color: #fff;
   margin: 0 -1px 0 -1px;
 }

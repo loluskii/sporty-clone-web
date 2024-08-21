@@ -1,11 +1,11 @@
 /* roboto-condensed-regular - latin */
 @font-face {
-  font-family: 'Roboto Condensed';
+  font-family: 'Poppins';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src:
-    local('Roboto Condensed'),
+    local('Poppins'),
     local('RobotoCondensed-Regular'),
     url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.woff2') format('woff2'),
     url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.woff') format('woff'),
@@ -14,12 +14,12 @@
 
 /* roboto-condensed-700 - latin */
 @font-face {
-  font-family: 'Roboto Condensed Bolder';
+  font-family: 'Poppins Bolder';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src:
-    local('Roboto Condensed Bold'),
+    local('Poppins Bold'),
     local('RobotoCondensed-Bold'),
     url('../fonts/roboto-condensed-v18-latin-ext_latin-700.woff2') format('woff2'),
     url('../fonts/roboto-condensed-v18-latin-ext_latin-700.woff') format('woff'),

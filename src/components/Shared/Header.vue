@@ -141,57 +141,59 @@
                     <div class="dropDown-wraper"></div>
                   </div>
                 </div>
-                <div class="x-opt">
-                  <div class="x-error-toast"></div>
-                  <div class="x-phone-wrapper">
-                    <div class="x-phone">
-                      <span>+234</span
-                      ><input
-                        type="text"
-                        name="phone"
-                        value=""
-                        autocomplete="off"
-                        placeholder="Mobile Number"
-                        class="fs-exclude"
-                        v-model="phoneNumber"
-                      />
+                <form action="">
+                  <div class="x-opt">
+                    <div class="x-error-toast"></div>
+                    <div class="x-phone-wrapper">
+                      <div class="x-phone">
+                        <span>+234</span
+                        ><input
+                          type="text"
+                          name="phone"
+                          value=""
+                          autocomplete="off"
+                          placeholder="Mobile Number"
+                          class="fs-exclude"
+                          v-model="phoneNumber"
+                        />
+                      </div>
+                      <div class="x-error-wrapper"></div>
                     </div>
-                    <div class="x-error-wrapper"></div>
-                  </div>
-                  <div class="x-psd-wrapper">
-                    <div class="x-psd">
-                      <input
-                        type="password"
-                        name="psd"
-                        value=""
-                        autocomplete="off"
-                        placeholder="Password"
-                        class="fs-exclude"
-                        v-model="password"
-                      /><button
-                        type="button"
-                        @click.prevent="doLogin"
-                        name="logIn"
-                        class="x-btn x-btn-login"
-                        :class="phoneNumber && password ? '' : 'disabled'"
-                      >
-                        Login
-                      </button>
+                    <div class="x-psd-wrapper">
+                      <div class="x-psd">
+                        <input
+                          type="password"
+                          name="psd"
+                          value=""
+                          autocomplete="off"
+                          placeholder="Password"
+                          class="fs-exclude"
+                          v-model="password"
+                        /><button
+                          type="button"
+                          @click.prevent="doLogin"
+                          name="logIn"
+                          class="x-btn x-btn-login"
+                          :class="phoneNumber && password ? '' : 'disabled'"
+                        >
+                          Login
+                        </button>
+                      </div>
+                      <div class="x-error-wrapper"></div>
                     </div>
-                    <div class="x-error-wrapper"></div>
+                    <button
+                      @click.prevent="showRegisterModal"
+                      type="button"
+                      name="register"
+                      class="x-btn x-btn-register"
+                    >
+                      Register
+                    </button>
+                    <div class="x-operation">
+                      <a href="" class="x-forgetPsd"><span>Forgot Password</span>?</a>
+                    </div>
                   </div>
-                  <button
-                    @click.prevent="showRegisterModal"
-                    type="button"
-                    name="register"
-                    class="x-btn x-btn-register"
-                  >
-                    Register
-                  </button>
-                  <div class="x-operation">
-                    <a href="" class="x-forgetPsd"><span>Forgot Password</span>?</a>
-                  </div>
-                </div>
+                </form>
               </div>
             </template>
           </div>
@@ -216,7 +218,7 @@
               id="header_nav_games"
               href="/Games"
               class="x-flex-item"
-              :class="activeClass('game-view') ? 'x-flex-item--active' : ''"
+              :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
             >
             <a
@@ -296,6 +298,10 @@ const balance = computed(() => {
   return usersStore.balance
 })
 
+const viewIsCasino = computed(() => {
+  return route.name === 'game-view' || route.name === 'game-play'
+})
+
 const activeClass = (name) => {
   return route.name === name
 }
@@ -319,18 +325,18 @@ async function doLogin() {
   await authStore.doLogin(payload)
 }
 
-function getTimezone() {
-  const date = new Date()
-  const timezoneOffset = -date.getTimezoneOffset()
-  const sign = timezoneOffset > 0 ? '+' : '-'
-  const hours = Math.floor(Math.abs(timezoneOffset / 60))
-  const minutes = Math.abs(timezoneOffset % 60)
-  const formattedMinutes = minutes.toString().padStart(2, '0')
+// function getTimezone() {
+//   const date = new Date()
+//   const timezoneOffset = -date.getTimezoneOffset()
+//   const sign = timezoneOffset > 0 ? '+' : '-'
+//   const hours = Math.floor(Math.abs(timezoneOffset / 60))
+//   const minutes = Math.abs(timezoneOffset % 60)
+//   const formattedMinutes = minutes.toString().padStart(2, '0')
 
-  const formattedTimezone = `GMT${sign}${hours.toString().padStart(2, '0')}:${formattedMinutes}`
+//   const formattedTimezone = `GMT${sign}${hours.toString().padStart(2, '0')}:${formattedMinutes}`
 
-  document.getElementById('j_timezone').innerText = formattedTimezone
-}
+//   document.getElementById('j_timezone').innerText = formattedTimezone
+// }
 
 const goToLiveScore = () => {
   return window.open(`https://ls.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')

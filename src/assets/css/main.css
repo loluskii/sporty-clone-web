@@ -2946,7 +2946,7 @@
 
 .print-container-wrapper .sport-name .filter-control .range {
   border-right: 1px solid var(--brand-secondary);
-  font-family: "Roboto Condensed", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: bold;
   margin-right: 8px;
   padding: 0 8px;
@@ -3241,7 +3241,7 @@
 }
 
 .x-market .x-outcome .x-outcome-odds.filter {
-  /* font-family: 'Roboto Condensed Bold'; */
+  /* font-family: 'Poppins Bold'; */
 }
 
 .x-market .af-select {
