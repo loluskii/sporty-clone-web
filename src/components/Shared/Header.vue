@@ -200,7 +200,7 @@
           <div class="x-left">
             <div class="x-logo-wrapper">
               <a href="/" class="x-image-wrapper"
-                ><img src="@/assets/images/logo.png" alt="cubebet" class="x-img x-img--logo"
+                ><img src="/logo.png" alt="cubebet" class="x-img x-img--logo"
               /></a>
             </div>
           </div>
