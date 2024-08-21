@@ -17,59 +17,21 @@
         </div>
       </div>
       <div class="main-section">
-        <div class="lobby-home">
-          <div class="">
-            <div class="lobby-an-test">
-              <div class="row no-gutters" style="">
-                <div class="col">
-                  <div id="" class="align-items-center list-container no-gutters row">
-                    <template v-for="(game, index) in gamesList" :key="index">
-                      <div
-                        id="game_item19"
-                        data-id="34"
-                        class="list-item text-center col-3 row-last-item"
-                        style="padding: 0.5rem"
-                        @click="redirectToGamePlay(game)"
-                      >
-                        <div class="row game-item no-gutters user-logged-in">
-                          <div class="main-game-box col" style="--listContainerWidth: 824px">
-                            <div class="game-holder">
-                              <div class="main-image" style="--listContainerWidth: 824px">
-                                <div class="banner_fail"></div>
-                                <div class="image-holder">
-                                  <img
-                                    :src="getImagePath(game)"
-                                    alt=""
-                                    width="100%"
-                                    loading="lazy"
-                                    class="banner_image"
-                                  />
-                                </div>
-                              </div>
-                              <div
-                                class="row desktop-option-container option-container no-gutters align-items-center is-heart-showing"
-                              >
-                                <div class="main-option-container col">
-                                  <div class="name-container col">
-                                    <div class="scroll-div">
-                                      <span class="name">{{ game.title }}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="row bottom-layer w-100 no-gutters"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </template>
-                  </div>
-                
-                  <LoadingSpinner v-if="isLoading"></LoadingSpinner>
+        <div class="p-3">
+          <div class="grid-container">
+            <div class="grid-item" v-for="(game, index) in gamesList" :key="index">
+              <div class="card" @click="redirectToGamePlay(game)" style="cursor: pointer;">
+                <div
+                  class="card-image"
+                  :style="{ backgroundImage: `url(${getImagePath(game)})` }"
+                ></div>
+                <div class="card-body">
+                  <h5 class="card-title">{{ game.title }}</h5>
                 </div>
               </div>
             </div>
           </div>
+          <LoadingSpinner v-if="isLoading"></LoadingSpinner>
         </div>
       </div>
       <div class="back-to-top" style="display: none; right: 129px; top: 713px"></div>
@@ -84,6 +46,7 @@ import { ref, onBeforeMount } from 'vue'
 import { getTopGameCategories, gamesByTopCategory, slugify } from '@/helpers'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { useRouter } from 'vue-router'
+import emitter from '@/plugins/emitter'
 
 const topGameCategories = ref([])
 const gamesList = ref([])
@@ -118,7 +81,7 @@ const getImagePath = (game) => {
 }
 
 async function redirectToGamePlay(game) {
-  console.log(game)
+  emitter.emit('toggleCasinoDialog')
   return router.push({
     name: 'game-play',
     params: { game_name: slugify(game.title), game_id: game.id }
@@ -134,6 +97,44 @@ onBeforeMount(async () => {
 @import url('@/assets/css/casino/index.css');
 body {
   font-size: 9rem !important;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Four items per row */
+  /* grid-template-rows: repeat(auto-fill, 200px); */
+  gap: 16px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  background-color: #000; /* Card background color */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-image {
+  background-size: cover;
+  background-position: center;
+  background-color: #ccc; /* Temporary background color */
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.card-body {
+  padding: 16px;
+  text-align: center;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
 }
 </style>
 

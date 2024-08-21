@@ -5,7 +5,7 @@
       <iframe
         v-if="!isLoading"
         title="casino"
-        style="border-style: none; width: 100vw; height: calc(100vh - 122px); overflow: scroll"
+        style="border-style: none; width: 100%; height: 100vh; overflow: scroll"
         :src="gameURL"
       />
     </div>
@@ -13,46 +13,40 @@
 </template>
 
 <script setup>
-import { watch, ref } from 'vue'
+import { watch, ref, onMounted } from 'vue'
 import { getCasinoStartUrl } from '@/helpers'
+import CasinoLayout from '@/components/Shared/CasinoLayout.vue'
 import { useRoute } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { useUsersStore } from '@/stores'
+import emitter from '@/plugins/emitter'
 
 const route = useRoute()
 const gameURL = ref('')
 const isLoading = ref(false)
 const { currentUser } = useUsersStore()
 
-watch(
-  () => route.params.game_id,
-  async (game_id) => {
-    await getCasinoURL(game_id)
-  },
-  { immediate: true } // Trigger the watch callback immediately on component mount
-)
-
-async function getCasinoURL(game_id) {
+async function getCasinoURL(data) {
   isLoading.value = true
-  let payload = {
-    gameId: parseInt(game_id),
-    username: 'guest',
-    userId: 0,
-    demo: true,
-    isMobile: true,
+  const game_id = parseInt(route.params.game_id)
+  const payload = {
+    gameId: game_id,
+    username: currentUser?.username || 'guest',
+    userId: currentUser?.id || 0,
+    demo: !!currentUser && data !== 'demo' ? false : !!currentUser && data === 'demo',
+    isMobile: false,
     homeUrl: import.meta.env.VITE_SITE_URL,
-    authCode: 'demo'
+    authCode: currentUser?.authCode || 'demo',
+    balanceType: data
   }
-  if (currentUser) {
-    payload.username = currentUser.username
-    payload.userId = currentUser.id
-    payload.demo = false
-    payload.authCode = currentUser.authCode
-  }
-  const res = await getCasinoStartUrl(payload, game_id)
+  const res = await getCasinoStartUrl(payload)
   isLoading.value = false
   gameURL.value = res.url
 }
+
+onMounted(() => {
+  emitter.on('setBalanceType', getCasinoURL)
+})
 </script>
 
 <style>

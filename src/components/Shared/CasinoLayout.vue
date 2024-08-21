@@ -18,19 +18,7 @@ import Footer from '@/components/Shared/Footer.vue'
   background: #1b1e25;
 }
 #games-lobby-wrapper {
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  height: 100vh;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  
   position: relative;
 }
 </style>

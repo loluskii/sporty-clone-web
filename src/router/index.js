@@ -10,6 +10,7 @@ import CasinoView from '@/views/Games/CasinoView.vue'
 import PlayView from '@/views/Games/PlayView.vue'
 
 import DepositView from '@/views/Account/DepositView.vue'
+import VerifyPaymentView from '@/views/Account/VerifyPaymentView.vue'
 import WithDrawalView from '@/views/Account/WithdrawalView.vue'
 import BetHistoryView from '@/views/Account/BetHistoryView.vue'
 import BetHistoryDetail from '@/views/Account/BetHistoryDetail.vue'
@@ -89,11 +90,11 @@ const router = createRouter({
       name: 'account-deposit',
       component: DepositView
     },
-    // {
-    //   path: '/payment-verification/:method',
-    //   name: 'verify-deposit',
-    //   component: VerifyPaymentView
-    // },
+    {
+      path: '/payment-verification/:method',
+      name: 'verify-deposit',
+      component: VerifyPaymentView
+    },
     {
       path: '/Account/Withdraw',
       name: 'account-withdraw',
