@@ -241,8 +241,9 @@ async function getCategoryFixtures() {
 
 async function getTournamentFixtures(tid) {
   const sid = activeSport.value.sportID
+  tid = tid.tournamentID || tid
   try {
-    const res = await getFixturesByTournamentId(tid.tournamentID, sid, activePage.value)
+    const res = await getFixturesByTournamentId(tid, sid, activePage.value)
     const index = fixturesList.value.findIndex((t) => t.tournamentID === tid)
     if (res.fixtures && res.markets && res.fixtures.length > 0) {
       if (index !== -1) {
