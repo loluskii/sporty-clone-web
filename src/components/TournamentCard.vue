@@ -79,7 +79,7 @@
 </template>
 <script setup>
 import _ from 'lodash'
-import { ref, computed, defineEmits } from 'vue'
+import { ref, computed, defineEmits, watch } from 'vue'
 import { formatDate, sortArr } from '@/helpers'
 import Prematch from './Prematch/Prematch.vue'
 import emitter from '@/plugins/emitter'
@@ -93,7 +93,24 @@ const emit = defineEmits(['fetch-fixtures'])
 
 const isShown = ref(false)
 
-const activeMarket = ref(props.markets.length ? props.markets[0] : {})
+const activeMarket = ref({})
+
+watch(
+  () => props.markets,
+  (newMarkets) => {
+    activeMarket.value = newMarkets.length ? newMarkets[0] : {}
+  },
+  { immediate: true }
+)
+
+watch(
+  () => props.events,
+  (newEvents) => {
+    isShown.value = newEvents.length
+  },
+  { immediate: true }
+)
+
 const cardIsShown = computed(() => {
   return isShown.value && props.events.length
 })
