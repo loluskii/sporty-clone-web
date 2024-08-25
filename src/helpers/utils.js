@@ -25,7 +25,6 @@ export const applyBranding = async () => {
     utilsStore.brandName = config.name
 
     loadFont(config.fonts.primaryFontURL)
-    loadFont(config.fonts.secondaryFontURL)
 
     document.documentElement.style.setProperty('--brand-primary', config.colors.primaryColor)
     document.documentElement.style.setProperty('--brand-secondary', config.colors.secondaryColor)

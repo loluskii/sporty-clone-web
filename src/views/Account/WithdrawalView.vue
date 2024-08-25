@@ -573,7 +573,7 @@ onMounted(async () => {
 #withdraw-pin-notify {
   background: rgba(250, 253, 0, 0.1);
   color: #353a45;
-  font-family: Roboto;
+  font-family: Inter;
   font-size: 12px;
   padding: 14px;
 }

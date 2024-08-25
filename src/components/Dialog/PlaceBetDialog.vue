@@ -229,7 +229,7 @@ defineProps({
   clip-path: polygon(0 1%, 91% 1%, 70% 100%, 0% 100%);
   color: #ffffff;
   display: inline-block;
-  font-family: Roboto;
+  font-family: Inter;
   height: 16px;
   line-height: 16px;
   overflow: hidden;

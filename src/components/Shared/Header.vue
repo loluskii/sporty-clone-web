@@ -200,7 +200,7 @@
           <div class="x-left">
             <div class="x-logo-wrapper">
               <a href="/" class="x-image-wrapper"
-                ><img src="/logo.png" alt="cubebet" class="x-img x-img--logo"
+                ><img src="/logo.png" alt="frapapa" class="x-img x-img--logo"
               /></a>
             </div>
           </div>
@@ -603,15 +603,15 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-phone,
 .c-header .x-login-bar .x-psd {
-  background: #333;
+  background: #fff;
 }
 .c-header .x-login-bar .x-phone input,
 .c-header .x-login-bar .x-psd input {
-  background: #333;
+  background: #fff;
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #000;
   font-size: 12px;
   height: 100%;
   outline: none;
@@ -625,7 +625,7 @@ onMounted(() => {
 .c-header .x-login-bar .x-phone > span {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #000;
   font-size: 12px;
   padding: 0 0 0 15px;
 }
@@ -821,12 +821,13 @@ onMounted(() => {
   width: 65px;
 }
 .c-header .x-btn-login {
-  background: #7b0911;
+  background: var(--brand-secondary);
   border: none;
   border-radius: 2px;
 }
 .c-header .x-btn-login.disabled {
-  background: rgba(123, 9, 17, 0.8);
+  background: var(--brand-secondary);
+  opacity: 0.5;
   color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
 }
@@ -883,9 +884,9 @@ onMounted(() => {
 }
 .c-header .x-logo-bar .x-image-wrapper {
   display: inline-block;
-  height: 34px;
+  height: 100%;
   vertical-align: middle;
-  width: 173px;
+  width: 130px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;
