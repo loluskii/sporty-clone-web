@@ -42,7 +42,7 @@ export const fetchGlobalVars = async () => {
 }
 
 export const fetchBanners = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/sports/mobile/sliders?banner_type=mobile`))
+  return parseData(fetchWrapper.get(`${BASE_API}/api/sports/mobile/sliders?banner_type=web`))
 }
 
 export const fetchBonusList = async () => {
