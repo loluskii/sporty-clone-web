@@ -32,48 +32,70 @@
     </div>
     <div class="x-table-cell market-cell">
       <div class="x-market market">
-        <div v-if="activeMarket.specifier !== ''" class="x-outcome specifiers-select">
-          <div tabindex="0" class="af-select" @click="toggleList">
-            <div class="af-select-title">
-              <span class="af-select-input">{{ activeSpecifier }}</span>
-              <span class="af-select-icon-item"><em class="icon">^</em></span>
-              <div
-                class="af-select-list animate-core"
-                v-if="specifierOpen"
-                :class="'af-select-list-' + match.matchID"
-                style="opacity: 1; width: 100%"
-              >
-                <span
-                  class="af-select-item"
-                  @click="setActiveSpecifier(item)"
-                  v-for="(item, i) in getSpecifiers"
-                  :key="i"
-                  >{{ item.value }}</span
-                >
+        <template v-if="match.outcomes && match.activeMarkets">
+          <template v-if="outcomes.length">
+            <div
+              v-if="activeMarket && activeMarket.specifier !== ''"
+              class="x-outcome specifiers-select"
+            >
+              <div tabindex="0" class="af-select" @click="toggleList">
+                <div class="af-select-title">
+                  <span class="af-select-input">{{ activeSpecifier }}</span>
+                  <span class="af-select-icon-item"><em class="icon">^</em></span>
+                  <div
+                    class="af-select-list animate-core"
+                    v-if="specifierOpen"
+                    :class="'af-select-list-' + match.matchID"
+                    style="opacity: 1; width: 100%"
+                  >
+                    <span
+                      class="af-select-item"
+                      @click="setActiveSpecifier(item)"
+                      v-for="(item, i) in getSpecifiers"
+                      :key="i"
+                      >{{ item.value }}</span
+                    >
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          class="x-outcome"
-          v-for="(odds, odd) in outcomes"
-          @click="addToBetslip(match, odds)"
-          :key="odd"
-          :class="
-            odds.odds <= 1
-              ? 'x-outcome--disabled'
-              : isSelected(
-                    createID(match.gameID, match.matchID, odds.outcomeName, odds.oddID, match.name),
-                    couponStore.coupon
-                  )
-                ? 'x-outcome--checked'
-                : ''
-          "
-        >
-          <span class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
-        </div>
-        <template v-if="!outcomes.length">
-          <EmptyOdds v-for="(odd, index) in activeMarket.outcomes" :key="index"></EmptyOdds>
+            <div
+              class="x-outcome"
+              v-for="(odds, odd) in outcomes"
+              @click="addToBetslip(match, odds)"
+              :key="odd"
+              :class="
+                odds.odds <= 1
+                  ? 'x-outcome--disabled'
+                  : isSelected(
+                        createID(
+                          match.gameID,
+                          match.matchID,
+                          odds.outcomeName,
+                          odds.oddID,
+                          match.name
+                        ),
+                        couponStore.coupon
+                      )
+                    ? 'x-outcome--checked'
+                    : ''
+              "
+            >
+              <span class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <div
+              v-if="activeMarket && activeMarket.specifier !== ''"
+              class="x-outcome x-outcome--disabled specifiers-select"
+            >
+              <span class="x-icon-lock"></span>
+            </div>
+            <EmptyOdds v-for="(odd, index) in activeMarket?.outcomes" :key="index"></EmptyOdds>
+          </template>
+        </template>
+        <template v-else>
+          <EmptyOdds></EmptyOdds>
         </template>
       </div>
     </div>

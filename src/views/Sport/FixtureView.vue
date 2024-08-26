@@ -245,33 +245,33 @@ async function getTournamentFixtures(tid) {
   try {
     const res = await getFixturesByTournamentId(tid, sid, activePage.value)
     const index = fixturesList.value.findIndex((t) => t.tournamentID === tid)
-    if (res.fixtures && res.markets && res.fixtures.length > 0) {
-      if (index !== -1) {
-        let tournament = fixturesList.value[index]
-        // Update the tournament object
-        tournament.events = res.fixtures
-        tournament.categoryName = res.fixtures[0].categoryName
-        tournament.categoryID = res.fixtures[0].categoryID
-        tournament.markets = res.markets
-        // Put the updated object back into fixturesList
-        fixturesList.value[index] = tournament
-        // Update markets and pagination
-        // marketsGroup.value = res.markets
-        lastPage.value = res.lastPage
-      } else {
-        fixturesList.value.push({
-          tournamentName: res.fixtures[0].tournament,
-          tournamentID: res.fixtures[0].tournamentID,
-          categoryName: res.fixtures[0].categoryName,
-          categoryID: res.fixtures[0].categoryID,
-          events: res.fixtures,
-          markets: res.markets
-        })
-      }
+    if (index !== -1) {
+      let tournament = fixturesList.value[index]
+      // Update the tournament object
+      tournament.events = res.fixtures
+      tournament.categoryName = res.fixtures[0].categoryName
+      tournament.categoryID = res.fixtures[0].categoryID
+      tournament.markets = res.markets
+      // Put the updated object back into fixturesList
+      fixturesList.value[index] = tournament
+      // Update markets and pagination
+      // marketsGroup.value = res.markets
+      lastPage.value = res.lastPage
     } else {
-      console.warn('No fixtures returned for this tournament')
-      // tournament.events = [] // Ensure events is an empty array if no fixtures are returned
+      fixturesList.value.push({
+        tournamentName: res.fixtures[0].tournament,
+        tournamentID: res.fixtures[0].tournamentID,
+        categoryName: res.fixtures[0].categoryName,
+        categoryID: res.fixtures[0].categoryID,
+        events: res.fixtures,
+        markets: res.markets
+      })
     }
+    // if (res.fixtures && res.markets && res.fixtures.length > 0) {
+    // } else {
+    //   console.warn('No fixtures returned for this tournament')
+    //   // tournament.events = [] // Ensure events is an empty array if no fixtures are returned
+    // }
 
     isLoading.value = false
   } catch (error) {

@@ -19,7 +19,7 @@
           </div>
           <div
             tabindex="0"
-            v-if="markets.length > 7"
+            v-if="markets && markets.length > 7"
             @click="showOtherMarkets"
             :class="toggleOtherMarkets ? 'show-item' : ''"
             class="market-item x-select-market"
@@ -98,7 +98,7 @@ const activeMarket = ref({})
 watch(
   () => props.markets,
   (newMarkets) => {
-    activeMarket.value = newMarkets.length ? newMarkets[0] : {}
+    activeMarket.value = newMarkets && newMarkets.length ? newMarkets[0] : {}
   },
   { immediate: true }
 )
@@ -117,7 +117,11 @@ const cardIsShown = computed(() => {
 const toggleOtherMarkets = ref(false)
 
 const shownMarkets = computed(() => {
-  return props.markets.length > 5 ? props.markets.slice(0, 6) : props.markets
+  return props.markets && props.markets.length > 5
+    ? props.markets.slice(0, 6)
+    : !props.markets
+      ? {}
+      : props.markets
 })
 
 const hiddenMarkets = computed(() => {
