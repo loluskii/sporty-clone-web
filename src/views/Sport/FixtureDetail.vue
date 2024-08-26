@@ -83,7 +83,7 @@
                     >
                       <span class="x-table-cell-item" style="text-transform: capitalize"
                         >{{
-                          market.specifier !== '' ? outcome.outcomeName : outcome.displayName
+                          market.specifier !== '' ? outcome.outcomeName : outcome.displayName ?? outcome.outcomeName
                         }} </span
                       ><span class="x-table-cell-item">{{ outcome.odds.toFixed(2) }}</span>
                     </div>
