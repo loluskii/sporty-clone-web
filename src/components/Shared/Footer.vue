@@ -67,7 +67,7 @@
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
-            <div data-cms-key="tell_phone_number">Telephone: +2347003727272 </div>
+            <div data-cms-key="tell_phone_number">Telephone: +2347003727272</div>
             <div data-cms-key="mail_to">Email: support@frapapa.com</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
@@ -131,8 +131,9 @@
             </div>
           </div>
           <p class="x-right" data-cms-key="licence">
-            {{ utilsStore.brandName }} is licensed by the Oyo State Gaming Board, according to the
-            License No: OYSGB/SPB/232975 issued by the Oyo State Gaming Board.
+            {{ utilsStore.brandName }} is operated by Soloti gaming Limited (RC 1687373). Soloti Gaming Limited is licensed by: (i) The Nigerian Lottery
+          Regulatory Commission (under Licence number 0001042) , (ii) Lagos
+          State Lotteries and Gaming Authority (under Licence number 005310)
           </p>
         </li>
       </ul>
