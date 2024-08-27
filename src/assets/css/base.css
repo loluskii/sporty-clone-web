@@ -1727,9 +1727,9 @@ textarea {
   width: 46px;
 }
 
-.c-footer .x-footer-mid .x-col-wrapper .x-forum {
-  margin-right: 28px;
-}
+/* .c-footer .x-footer-mid .x-col-wrapper .x-forum {
+  margin-right: 14px;
+} */
 
 .c-footer .x-footer-mid .x-col-wrapper .x-forum+.x-right {
   color: hsla(0, 0%, 100%, 0.86);
@@ -1737,9 +1737,9 @@ textarea {
 
 .c-footer .x-footer-mid .x-col-wrapper .x-forum .x-image-wrapper {
   display: inline-block;
-  height: 42px;
+  height: 32px;
   vertical-align: middle;
-  width: 42px;
+  width: 32px;
 }
 
 .c-footer .x-footer-mid .x-col-wrapper .x-right {
@@ -1891,63 +1891,6 @@ textarea {
   height: 15px;
   margin-right: 23px;
   width: 48px;
-}
-
-.c-footer .x-footer-bottom .i-access {
-  height: 11px;
-  margin-right: 22px;
-  width: 80px;
-}
-
-.c-footer .x-footer-bottom .i-diamond {
-  height: 25px;
-  margin-right: 25px;
-  width: 90px;
-}
-
-.c-footer .x-footer-bottom .i-fidelity {
-  height: 17px;
-  margin-right: 23px;
-  width: 71px;
-}
-
-.c-footer .x-footer-bottom .i-gtbank {
-  height: 18px;
-  margin-right: 23px;
-  width: 18px;
-}
-
-.c-footer .x-footer-bottom .i-zenith {
-  height: 18px;
-  width: 20px;
-}
-
-.c-footer .x-footer-bottom .i-tiGo {
-  height: 28px;
-  margin-right: 41px;
-  width: 40px;
-}
-
-.c-footer .x-footer-bottom .i-mtn {
-  height: 26px;
-  margin-right: 41px;
-  width: 60px;
-}
-
-.c-footer .x-footer-bottom .i-airtel {
-  height: 20px;
-  margin-right: 41px;
-  width: 64px;
-}
-
-.c-footer .x-footer-bottom .i-vodafone {
-  height: 17px;
-  width: 68px;
-}
-
-.c-footer .x-footer-bottom .i-vodacom {
-  margin-right: 41px;
-  width: 100px;
 }
 
 .c-footer .x-content {

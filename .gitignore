@@ -29,5 +29,6 @@ coverage
 
 *.tsbuildinfo
 
+.env
 .env.*
 public/site.webmanifest
