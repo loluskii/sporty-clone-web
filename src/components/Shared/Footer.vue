@@ -106,7 +106,7 @@
     </div>
     <div class="x-footer-mid">
       <ul class="x-content d-flex">
-        <li class="x-col-wrapper flex-1 d-flex">
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;">
           <div class="x-left x-forum">
             <div class="x-image-wrapper">
               <img
@@ -120,8 +120,8 @@
             Responsibly. Betting is addictive and can be psychologically harmful.
           </p>
         </li>
-        <li style="padding: 20px"></li>
-        <li class="x-col-wrapper flex-1 d-flex">
+        <!-- <li style="padding: 20px"></li> -->
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;">
           <div class="x-left x-licence">
             <div class="x-image-wrapper" style="height: auto !important">
               <img
