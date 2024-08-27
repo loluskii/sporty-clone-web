@@ -106,9 +106,9 @@
     </div>
     <div class="x-footer-mid">
       <ul class="x-content d-flex">
-        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;">
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;align-items: center;">
           <div class="x-left x-forum">
-            <div class="x-image-wrapper">
+            <div class="x-image-wrapper" style="height: auto">
               <img
                 src="//s.sporty.net/global/main/modules/main/desktop/common/core/image/forum@2x.c05a82e567.svg"
                 alt="18+"
@@ -120,8 +120,12 @@
             Responsibly. Betting is addictive and can be psychologically harmful.
           </p>
         </li>
+      </ul>
+    </div>
+    <div class="x-footer-mid">
+      <ul class="x-content d-flex">
         <!-- <li style="padding: 20px"></li> -->
-        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;">
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex">
           <div class="x-left x-licence">
             <div class="x-image-wrapper" style="height: auto !important">
               <img
@@ -131,9 +135,10 @@
             </div>
           </div>
           <p class="x-right" data-cms-key="licence">
-            {{ utilsStore.brandName }} is operated by Soloti gaming Limited (RC 1687373). Soloti Gaming Limited is licensed by: (i) The Nigerian Lottery
-          Regulatory Commission (under Licence number 0001042) , (ii) Lagos
-          State Lotteries and Gaming Authority (under Licence number 005310)
+            {{ utilsStore.brandName }} is operated by Soloti gaming Limited (RC 1687373). Soloti
+            Gaming Limited is licensed by: (i) The Nigerian Lottery Regulatory Commission (under
+            Licence number 0001042) , (ii) Lagos State Lotteries and Gaming Authority (under Licence
+            number 005310)
           </p>
         </li>
       </ul>
@@ -234,7 +239,7 @@ defineComponent({
 }
 .brand-col .logo {
   margin-right: 8px;
-  width: 110px;
+  width: 145px;
 }
 .brand-col .country-flag {
   width: 100px;
