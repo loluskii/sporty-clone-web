@@ -20,6 +20,7 @@ import TermsandConditions from '@/views/CMS/TermsandConditions.vue'
 import AboutUs from '@/views/CMS/AboutUs.vue'
 import ResponsibleGaming from '@/views/CMS/ResponsibleGaming.vue'
 import BettingRules from '@/views/CMS/BettingRules.vue'
+import ForgotPassword from '@/views/Account/ForgotPassword.vue'
 
 import { useUtilsStore } from '@/stores'
 import { unslugify } from '@/helpers'
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/Account/ResetPassword',
+      name: 'reset-password',
+      component: ForgotPassword
     },
     {
       path: '/Sport/LiveList',
