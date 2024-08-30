@@ -110,7 +110,7 @@
                   </button>
                 </div>
                 <div class="x-operation">
-                  <a href="/ng/profile/reset_password" class="x-forgetPsd"
+                  <a href="/forgot-password" class="x-forgetPsd"
                     ><span data-cms-key="forgot_password">Forgot Password</span>?</a
                   >
                 </div>
@@ -190,7 +190,7 @@
                       Register
                     </button>
                     <div class="x-operation">
-                      <a href="" class="x-forgetPsd"><span>Forgot Password</span>?</a>
+                      <a href="/Account/ResetPassword" class="x-forgetPsd"><span>Forgot Password</span>?</a>
                     </div>
                   </div>
                 </form>
