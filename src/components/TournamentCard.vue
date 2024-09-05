@@ -19,7 +19,7 @@
           </div>
           <div
             tabindex="0"
-            v-if="markets.length > 7"
+            v-if="markets && markets.length > 7"
             @click="showOtherMarkets"
             :class="toggleOtherMarkets ? 'show-item' : ''"
             class="market-item x-select-market"
@@ -79,7 +79,7 @@
 </template>
 <script setup>
 import _ from 'lodash'
-import { ref, computed, defineEmits } from 'vue'
+import { ref, computed, defineEmits, watch } from 'vue'
 import { formatDate, sortArr } from '@/helpers'
 import Prematch from './Prematch/Prematch.vue'
 import emitter from '@/plugins/emitter'
@@ -91,16 +91,37 @@ const props = defineProps({
 })
 const emit = defineEmits(['fetch-fixtures'])
 
-const isShown = ref(false)
+const isShown = ref(true)
 
-const activeMarket = ref(props.markets.length ? props.markets[0] : {})
+const activeMarket = ref({})
+
+watch(
+  () => props.markets,
+  (newMarkets) => {
+    activeMarket.value = newMarkets && newMarkets.length ? newMarkets[0] : {}
+  },
+  { immediate: true }
+)
+
+watch(
+  () => props.events,
+  (newEvents) => {
+    isShown.value = newEvents.length
+  },
+  { immediate: true }
+)
+
 const cardIsShown = computed(() => {
   return isShown.value && props.events.length
 })
 const toggleOtherMarkets = ref(false)
 
 const shownMarkets = computed(() => {
-  return props.markets.length > 5 ? props.markets.slice(0, 6) : props.markets
+  return props.markets && props.markets.length > 5
+    ? props.markets.slice(0, 6)
+    : !props.markets
+      ? {}
+      : props.markets
 })
 
 const hiddenMarkets = computed(() => {
@@ -118,7 +139,7 @@ async function setActiveMarket(market) {
 }
 
 const fetchFixtures = () => {
-  isShown.value = !isShown.value
+  if (!isShown.value) isShown.value = true
   if (props.events.length) return
   emit('fetch-fixtures', props.tournamentID)
 }

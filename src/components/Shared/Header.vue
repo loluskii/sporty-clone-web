@@ -110,7 +110,7 @@
                   </button>
                 </div>
                 <div class="x-operation">
-                  <a href="/ng/profile/reset_password" class="x-forgetPsd"
+                  <a href="/forgot-password" class="x-forgetPsd"
                     ><span data-cms-key="forgot_password">Forgot Password</span>?</a
                   >
                 </div>
@@ -190,7 +190,7 @@
                       Register
                     </button>
                     <div class="x-operation">
-                      <a href="" class="x-forgetPsd"><span>Forgot Password</span>?</a>
+                      <a href="/Account/ResetPassword" class="x-forgetPsd"><span>Forgot Password</span>?</a>
                     </div>
                   </div>
                 </form>
@@ -223,8 +223,8 @@
             >
             <a
               id="header_nav_liveBetting"
-              href="/Sport/Live"
-              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
+              href="/Sport/LiveList"
+              :class="viewIsLive ? 'x-flex-item--active' : ''"
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
@@ -296,6 +296,10 @@ const balance = computed(() => {
 
 const viewIsCasino = computed(() => {
   return route.name === 'game-view' || route.name === 'game-play'
+})
+
+const viewIsLive = computed(() => {
+  return route.name === 'live-view' || route.name === 'live-fixtures-one-detail'
 })
 
 const activeClass = (name) => {

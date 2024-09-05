@@ -113,7 +113,7 @@
                           >
                             <span class="x-table-cell-item" style="text-transform: capitalize">
                               {{
-                                market.specifier !== '' ? outcome.outcomeName : outcome.displayName
+                                market.specifier !== '' ? outcome.outcomeName : outcome.displayName ?? outcome.outcomeName
                               }}
                             </span>
                             <span v-if="outcome.odds > 1" class="x-table-cell-item">{{

@@ -755,15 +755,15 @@
   border-color: var(--brand-secondary);
   border-color: var(--brand-secondary);
   color: #ffffff;
-  color: var(--brand-tertiary);
+  /* color: var(--brand-tertiary); */
 }
 
 .af-button--success:focus,
 .af-button--success:hover:not(.is-disabled) {
-  background-color: #42d885;
-  border-color: #42d885;
+  /* background-color: #42d885;
+  border-color: #42d885; */
   color: #ffffff;
-  color: var(--brand-tertiary);
+  /* color: var(--brand-tertiary); */
 }
 
 .af-button--success.is-active,
