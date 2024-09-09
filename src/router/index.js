@@ -158,14 +158,6 @@ router.beforeEach(async (to, from, next) => {
       utilsStore.activeSport = sport
     }
   }
-
-
-  const mobileUrl = import.meta.env.VITE_MOBILE_URL;
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    window.location.href = mobileUrl
-  } else {
-    next() // Proceed to the next route
-  }
 })
 
 export default router
