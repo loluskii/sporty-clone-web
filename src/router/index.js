@@ -158,6 +158,7 @@ router.beforeEach(async (to, from, next) => {
       utilsStore.activeSport = sport
     }
   }
+  next()
 })
 
 export default router
