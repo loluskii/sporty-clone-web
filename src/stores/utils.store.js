@@ -20,8 +20,7 @@ export const useUtilsStore = defineStore({
     showMobileNavigation: true,
     errorMessage: null,
     activeCategories: [],
-    openBetCount: 0,
-    clickId: null
+    openBetCount: 0
   }),
   getters: {},
   actions: {},

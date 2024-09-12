@@ -156,8 +156,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const utilsStore = useUtilsStore()
-  const clickid = to.query.clickid
-
   if (to.params.sport) {
     let sport = utilsStore.sportsMenu.find((x) => x.sportName == unslugify(to.params.sport))
     if (sport) {
@@ -165,9 +163,6 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  if (clickid) {
-    utilsStore.clickId = clickid
-  }
   next()
 })
 

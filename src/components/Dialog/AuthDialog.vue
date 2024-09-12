@@ -158,6 +158,7 @@ import emitter from '@/plugins/emitter'
 import { useAuthStore } from '@/stores'
 import { sendOTP, verifyOTP, register } from '@/helpers'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
+import { useRoute } from 'vue-router'
 
 const props = defineProps({
   authType: String
@@ -172,6 +173,7 @@ const registerErrorMessage = ref('')
 const activeStep = ref(1)
 const remainingTime = ref(60)
 const isDisabled = ref(false)
+const route = useRoute()
 let timer
 
 // const OTP = ref('')
@@ -287,6 +289,10 @@ const doRegistration = async () => {
     password: password.value,
     phone: `234${formattedPhoneNumber(phoneNumber.value)}`,
     clientID: import.meta.env.VITE_CLIENT_ID
+  }
+
+  if (route.query.clickid) {
+    payload.trackingId = route.query.clickid
   }
 
   try {
