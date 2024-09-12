@@ -145,12 +145,18 @@ const router = createRouter({
       path: '/CMS/BettingRules',
       name: 'betting-rules',
       component: BettingRules
+    },
+    // Catch-all route to redirect to home
+    {
+      path: '/:pathMatch(.*)*', // Catch-all pattern
+      redirect: '/'
     }
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
   const utilsStore = useUtilsStore()
+  const clickid = to.query.clickid
 
   if (to.params.sport) {
     let sport = utilsStore.sportsMenu.find((x) => x.sportName == unslugify(to.params.sport))
@@ -159,13 +165,10 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-
-  const mobileUrl = import.meta.env.VITE_MOBILE_URL;
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    window.location.href = mobileUrl
-  } else {
-    next() // Proceed to the next route
+  if (clickid) {
+    utilsStore.clickId = clickid
   }
+  next()
 })
 
 export default router

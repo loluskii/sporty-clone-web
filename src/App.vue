@@ -6,6 +6,7 @@ import emitter from '@/plugins/emitter'
 import { useCouponStore, useUsersStore, useUtilsStore } from '@/stores'
 import { getBets } from '@/helpers'
 import CasinoDialog from '@/components/Dialog/CasinoDialog.vue'
+import { useRoute } from 'vue-router'
 
 const dialogType = ref('')
 const isDialogShown = ref(false)
@@ -14,6 +15,7 @@ const usersStore = useUsersStore()
 const couponStore = useCouponStore()
 const utilstStore = useUtilsStore()
 const showCasinoDialog = ref(false)
+const route = useRoute()
 
 function handleshowDialog(data) {
   dialogType.value = data.dialogType
@@ -57,6 +59,15 @@ onMounted(async () => {
     Promise.all([usersStore.loadCurrentUser(), getBetsData()])
       .then(() => {})
       .catch(() => {})
+  }
+
+  if (route.query.clickid) {
+    const url = new URL(window.location)
+    url.searchParams.delete('clickid')
+    window.history.replaceState({}, '', url)
+
+    // Emit the call to open the register modal
+    emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
   }
 })
 </script>
