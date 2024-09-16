@@ -1,16 +1,5 @@
-const redirectToMobileIfNeeded = () => {
-  const mobileUrl = import.meta.env.VITE_MOBILE_URL;
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  
-  if (isMobile) {
-    window.location.replace(mobileUrl); // Faster and avoids extra page history entry
-  }
-};
-
-// Call the redirection function as early as possible
-redirectToMobileIfNeeded();
-
 import './assets/css/main.css'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
