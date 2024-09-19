@@ -156,7 +156,7 @@
 import { onMounted, ref, toRef } from 'vue'
 import emitter from '@/plugins/emitter'
 import { useAuthStore } from '@/stores'
-import { sendOTP, verifyOTP, register } from '@/helpers'
+import { sendOTP, verifyOTP, register, verifyUsername } from '@/helpers'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 
 const props = defineProps({
@@ -206,19 +206,26 @@ async function login() {
 
 const registerUser = async () => {
   authStore.loading = true
-  let payload = {
-    clientID: import.meta.env.VITE_CLIENT_ID,
-    phoneNumber: `234${formattedPhoneNumber(phoneNumber.value)}`
-  }
-
-  const res = await sendOTP(payload)
-  authStore.loading = false
-  if (res.status) {
-    activeStep.value = 2
-    startTimer()
+  const userExists = await verifyUsername({
+    username: formattedPhoneNumber(phoneNumber.value),
+    clientId: import.meta.env.VITE_CLIENT_ID
+  })
+  if (userExists.responseMessage === 'SUCCESSFUL') {
+    authStore.authError = 'An account already exists with this number'
+    authStore.loading = false
+    return
   } else {
-    registerError.value = true
-    registerErrorMessage.value = res.message
+    const res = await sendOTP({
+      clientID: import.meta.env.VITE_CLIENT_ID,
+      phoneNumber: `234${formattedPhoneNumber(phoneNumber.value)}`
+    })
+    authStore.loading = false
+    if (res.status) {
+      activeStep.value = 2
+      startTimer()
+    } else {
+      authStore.authError = res.message
+    }
   }
 }
 
