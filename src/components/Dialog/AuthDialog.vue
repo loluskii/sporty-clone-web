@@ -295,7 +295,7 @@ const doRegistration = async () => {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
     phone: `234${formattedPhoneNumber(phoneNumber.value)}`,
-    clientID: import.meta.env.VITE_CLIENT_ID
+    clientId: import.meta.env.VITE_CLIENT_ID
   }
 
   if (route.query.clickid) {
