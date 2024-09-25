@@ -225,6 +225,15 @@ export const loadBetslip = async (betslipId) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/find-bet?code=${betslipId}`))
 }
 
+export const loadBetslipByCode = async (betslipId) => {
+  return parseData(
+    fetchWrapper.post(`${NEW_BASE_API}/bets/find-bet`, {
+      betslipId: betslipId,
+      clientId: CLIENT_ID
+    })
+  )
+}
+
 export const getGames = async (page) => {
   return parseData(fetchWrapper.get(`${BASE_API}/api/casino/web-games?paginate=1&page=${page}`))
 }
@@ -270,7 +279,9 @@ export const verifyDeposit = async (channel, ref) => {
 }
 
 export const withdrawalRequest = async (payload) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/user/wallet/withdraw?source=website`, payload))
+  return parseData(
+    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/withdraw?source=website`, payload)
+  )
 }
 
 export const getUserBonus = async () => {

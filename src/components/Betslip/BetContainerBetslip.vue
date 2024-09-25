@@ -303,25 +303,19 @@ async function book(e) {
     if (totalStake.value < 1) {
       return
     }
-
     e.target.classList.add('loading-icon')
     couponStore.isBetslipBooking = true
 
     const res = await couponStore.placeBet(e, 'book')
     couponStore.isBetslipBooking = false
-    e.target.classList.remove('loading-icon')
 
     if (res.success) {
-      emit('book-bet', res)
+      emitter.emit('showDialog', { dialogType: 'book-bet', dialogData: res })
     } else {
-      // Handle error display or other actions as needed
-      emit('toggle-betslip')
-      emitter.emit('showErrorMessage', res.message)
+      emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: res.message } })
     }
   } catch (error) {
-    emit('toggle-betslip')
-    // Handle error display or other actions as needed
-    emitter.emit('showErrorMessage', error)
+    emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: error } })
   }
 }
 

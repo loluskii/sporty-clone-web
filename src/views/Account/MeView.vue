@@ -4,12 +4,12 @@
       <form class="x-fm-wrap" style="position: relative">
         <div class="x-fm-row" style="padding: 15px 0px 0px">
           <div class="x-fm-left" data-cms-key="mobile_number">Mobile Number</div>
-          <div class="x-fm-right">{{ details.username }}</div>
+          <div class="x-fm-right">+234 {{ currentUser.username }}</div>
         </div>
         <div class="x-fm-row">
           <div class="x-fm-left">First Name</div>
           <div class="x-fm-right">
-            <div tabindex="6" class="x-input-wrapper m-input-wrapper--disabled">
+            <div tabindex="6" class="x-input-wrapper">
               <span class="x-input-com">
                 <input
                   type="input"
@@ -17,8 +17,8 @@
                   placeholder=""
                   maxlength="60"
                   class="x-input fs-exclude"
-                  v-model="details.firstName"
-                  :disabled="details.firstName !== ''"
+                  v-model="firstName"
+                  :disabled="currentUser.firstName !== ''"
               /></span>
             </div>
           </div>
@@ -26,7 +26,7 @@
         <div class="x-fm-row">
           <div class="x-fm-left" data-cms-key="last_name">Last Name</div>
           <div class="x-fm-right">
-            <div tabindex="6" class="x-input-wrapper m-input-wrapper--disabled">
+            <div tabindex="6" class="x-input-wrapper">
               <span class="x-input-com">
                 <input
                   type="input"
@@ -34,16 +34,14 @@
                   placeholder=""
                   maxlength="60"
                   class="x-input fs-exclude"
-                  v-model="details.lastName"
-                  :disabled="details.lastName !== ''"
+                  v-model="lastName"
+                  :disabled="currentUser.lastName !== ''"
               /></span>
             </div>
           </div>
         </div>
         <!-- <div class="x-fm-row">
-          <div class="x-fm-left" data-cms-key="date_of_birth" >
-            Date of Birth
-          </div>
+          <div class="x-fm-left" data-cms-key="date_of_birth">Date of Birth</div>
           <div class="x-fm-right">
             <div class="flex flex-align-stretch">
               <Datepicker />
@@ -54,8 +52,22 @@
         <div class="x-fm-row">
           <div class="x-fm-left" data-cms-key="gender">Gender</div>
           <div class="x-fm-right">
-            <em class="x-fm-radio" data-cms-key="male">Male</em>
-            <em class="x-fm-radio" data-cms-key="female">Female</em>
+            <em
+              class="x-fm-radio"
+              @click="gender = 'male'"
+              :class="{ 'x-fm-radio-selected': gender === 'male' }"
+              >Male</em
+            >
+            <input type="radio" v-model="gender" value="male" style="visibility: hidden" />
+            <!--  -->
+            <em
+              class="x-fm-radio"
+              data-cms-key="female"
+              :class="{ 'x-fm-radio-selected': gender === 'female' }"
+              @click="gender = 'female'"
+              >Female</em
+            >
+            <input type="radio" v-model="gender" value="female" style="visibility: hidden" />
           </div>
         </div>
         <div class="x-fm-row">
@@ -73,8 +85,8 @@
                     onpaste="return true"
                     data-op=""
                     class="x-input fs-exclude"
-                    v-model="details.email"
-                    :disabled="details.email !== ''"
+                    v-model="email"
+                    :disabled="currentUser.email !== ''"
                 /></span>
               </div>
               <!-- <i class="icon-check mg-l-8"></i> -->
@@ -86,7 +98,12 @@
           <div class="x-fm-left">&nbsp;</div>
           <div class="x-fm-right">
             <div class="x-btn-wrapper">
-              <button class="af-button af-button--success" style="width: 100%">
+              <button
+                @click.prevent="updateUserDetails"
+                class="af-button af-button--success"
+                style="width: 100%"
+                type="button"
+              >
                 <span><span data-cms-key="save">Save</span></span>
               </button>
             </div>
@@ -100,12 +117,36 @@
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
 import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useUsersStore } from '@/stores'
+import { updateProfile } from '@/helpers'
 const usersStore = useUsersStore()
 
-const details = computed(() => {
-  return usersStore.details
+const currentUser = computed(() => {
+  return usersStore.currentUser
+})
+
+const firstName = ref(currentUser.value?.firstName)
+const lastName = ref(currentUser.value?.lastName)
+const email = ref(currentUser.value?.email)
+const gender = ref(currentUser.value?.gender)
+
+async function updateUserDetails() {
+  let payload = {
+    userID: currentUser.value.id,
+    roleId: currentUser.value.roleId,
+    email: email.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    gender: gender.value
+  }
+
+  const res = await updateProfile(payload)
+  console.log(res)
+}
+
+onMounted(() => {
+  usersStore.loadCurrentUser()
 })
 </script>
 
