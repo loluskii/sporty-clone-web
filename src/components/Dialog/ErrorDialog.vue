@@ -14,7 +14,7 @@
               />
             </div>
             <div class="m-pop-main">
-              <p>{{ props.data.data.message }}</p>
+              <p>{{ props.data.data.message || props.data.data }}</p>
               <div class="m-btn-wrapper">
                 <button class="af-button af-button--primary" @click="nextAction">
                   <span><span data-cms-key="ok">OK</span></span>
