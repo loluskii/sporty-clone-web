@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import { createID, isSelected, sortArr } from '@/helpers'
+import { createID, isSelected, sortArr, slugify } from '@/helpers'
 import { useCouponStore } from '@/stores'
 import { computed, ref } from 'vue'
 
