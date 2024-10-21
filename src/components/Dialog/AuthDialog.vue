@@ -299,7 +299,7 @@ const doRegistration = async () => {
   }
 
   if (route.query.clickid) {
-    payload.trackingId = route.query.clickid
+    payload.trackingToken = route.query.clickid
   }
 
   try {
