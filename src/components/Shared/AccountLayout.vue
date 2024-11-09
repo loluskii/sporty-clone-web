@@ -11,8 +11,8 @@
                 <div class="x-user-info">
                   <div class="x-account">
                     <div class="x-user-txt">
-                      <em>{{ details.firstName + ' ' + details.lastName }}</em
-                      >{{ details.username }}
+                      <!-- <em>{{ details.firstName + ' ' + details.lastName }}</em -->
+                      {{ details.username }}
                     </div>
                   </div>
                   <div class="x-user-items">
