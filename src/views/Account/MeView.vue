@@ -18,7 +18,7 @@
                   maxlength="60"
                   class="x-input fs-exclude"
                   v-model="firstName"
-                  :disabled="currentUser.firstName !== ''"
+                  :disabled="currentUser?.firstName !== ''"
               /></span>
             </div>
           </div>
@@ -35,7 +35,7 @@
                   maxlength="60"
                   class="x-input fs-exclude"
                   v-model="lastName"
-                  :disabled="currentUser.lastName !== ''"
+                  :disabled="currentUser?.lastName !== ''"
               /></span>
             </div>
           </div>
@@ -86,7 +86,7 @@
                     data-op=""
                     class="x-input fs-exclude"
                     v-model="email"
-                    :disabled="currentUser.email !== ''"
+                    :disabled="currentUser?.email !== ''"
                 /></span>
               </div>
               <!-- <i class="icon-check mg-l-8"></i> -->
