@@ -8,6 +8,7 @@
           :key="index"
           class="item"
           :class="currentIndex === index ? 'active' : ''"
+          @click="goToSlide(image)"
         >
           <img :src="image.image_path" />
         </div>
@@ -38,6 +39,12 @@ function nextSlide() {
   } else {
     currentIndex.value = 0
   }
+}
+
+function goToSlide(image) {
+  if(image.link){
+    window.location.href = image.link
+  }else return
 }
 
 onMounted(async () => {
