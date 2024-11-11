@@ -75,7 +75,7 @@ const router = createRouter({
       component: FixtureView
     },
     {
-      path: '/Sports/Prematch/:sport/:category/:tournament_name/:event_name/:event_id',
+      path: '/Sports/Prematch/:sport/:tournament_name/:event_name/:event_id',
       name: 'fixtures-detail',
       component: FixtureDetail
     },
