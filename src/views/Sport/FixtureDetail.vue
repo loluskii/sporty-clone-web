@@ -9,7 +9,7 @@
           <div class="crumb">
             <span>{{ unslugify(route.params.sport) }} / </span
             ><span
-              >{{ unslugify(route.params.category) }} /
+              >
               {{ unslugify(route.params.tournament_name) }} / </span
             ><span>{{ unslugify(route.params.event_name) }}</span>
           </div>
