@@ -234,8 +234,8 @@
             >
             <a
               id="header_nav_liveBetting"
-              href="/Sport/Live"
-              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
+              href="/Sport/LiveList"
+              :class="viewIsLive ? 'x-flex-item--active' : ''"
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
