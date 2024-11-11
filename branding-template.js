@@ -3,7 +3,7 @@ export const brandDetails = {
   url: '',
   title: 'SportsBook Engine',
   colors: {
-    primaryColor: '#2c3538',
+    primaryColor: '#e41827',
     secondaryColor: '#0D9737',
     tertiaryColor: '#C5C5C5',
 

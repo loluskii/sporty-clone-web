@@ -5,7 +5,7 @@
         <li class="x-col-wrapper brand-col">
           <div class="d-flex flex-direction-column">
             <div class="d-flex">
-              <img src="/logo.png" alt="{{ utilsStore.brandName }}" class="logo" />
+              <img src="/default.png" alt="{{ utilsStore.brandName }}" class="logo" />
             </div>
           </div>
         </li>
@@ -134,12 +134,12 @@
               />
             </div>
           </div>
-          <p class="x-right" data-cms-key="licence">
+          <!-- <p class="x-right" data-cms-key="licence">
             {{ utilsStore.brandName }} is operated by Soloti gaming Limited (RC 1687373). Soloti
             Gaming Limited is licensed by: (i) The Nigerian Lottery Regulatory Commission (under
             Licence number 0001042) , (ii) Lagos State Lotteries and Gaming Authority (under Licence
             number 005310)
-          </p>
+          </p> -->
         </li>
       </ul>
     </div>
