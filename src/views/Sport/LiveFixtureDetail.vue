@@ -277,6 +277,13 @@ const getChunks = (outcomes, n) => {
   return _.chunk(x, n);
 };
 
+const uniqueOutcomes = (outcomes) => {
+  let x = outcomes.filter(
+    (outcome, index, self) => index === self.findIndex((o) => o.outcomeID === outcome.outcomeID)
+  )
+  return x
+}
+
 async function getLiveData() {
   isLoading.value = true;
   const res = await getLiveHighlights();
