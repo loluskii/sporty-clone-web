@@ -17,9 +17,9 @@
           >
             {{ market.marketName }}
           </div>
-          <div
+          <!-- <div
             tabindex="0"
-            v-if="markets && markets.length > 7"
+            v-if="markets && markets.length > 5"
             @click="showOtherMarkets"
             :class="toggleOtherMarkets ? 'show-item' : ''"
             class="market-item x-select-market"
@@ -35,7 +35,7 @@
                 {{ market.marketName }}
               </li>
             </ul>
-          </div>
+          </div> -->
         </div>
         <div class="x-table match-table">
           <template
@@ -118,7 +118,7 @@ const toggleOtherMarkets = ref(false)
 
 const shownMarkets = computed(() => {
   return props.markets && props.markets.length > 5
-    ? props.markets.slice(0, 6)
+    ? props.markets.filter((market) => market.marketID !== '36' && market.marketID !== '547')
     : !props.markets
       ? {}
       : props.markets

@@ -36,7 +36,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  font-family: Inter, sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 14px;
   height: 45px
 }
@@ -100,7 +100,7 @@
 .game-category {
   color: #fff;
   display: inline-block;
-  font-family: Inter, sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 20px;
   padding: 1rem 1.2rem .2rem
 }
@@ -147,7 +147,7 @@
   -webkit-box-flex: 0;
   -ms-flex: 0 0 calc(25% - 12px);
   flex: 0 0 calc(25% - 12px);
-  font-family: Inter, sans-serif;
+  font-family: 'Avenir', sans-serif;
   height: 200px;
   position: relative;
   background-image: url(data:image/png;base64,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);
@@ -273,7 +273,7 @@
 
 .game-category-title, .search-you-like-title {
   color: #fff;
-  font-family: Inter, sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 18px;
   font-weight: 700;
   margin-left: 24px;
@@ -318,7 +318,7 @@
   border: 1px solid #454952;
   border-radius: 8px;
   color: #fff;
-  font-family: Inter, sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 14px;
   height: 45px;
   overflow: scroll;

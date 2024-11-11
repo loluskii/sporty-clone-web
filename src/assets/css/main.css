@@ -1,81 +1,6 @@
 @import './base.css';
 
 :root {
-  /* Common Colors */
-  --brand-primary: var(--brand-primary);
-  --brand-text-secondary: var(--brand-secondary);
-  --brand-background-primary: #ffffff;
-  --brand-background-secondary: #E0E0F5;
-  --brand-primary-font-family: 'Montserrat';
-  --brand-text-secondary-font-family: 'Poppins';
-
-  /* Light Mode */
-  --light-text-primary: #353a45;
-  --light-text-secondary: var(--brand-primary);
-  --light-text-tertiary: var(--brand-secondary);
-  --light-background-primary: #f2f3f5;
-  --light-background-secondary: #fafafa;
-  --light-background-tertiary: #eaecef;
-
-  /* Text */
-  --brand-text-primary: #353a45;
-  --brand-text-secondary: #757575;
-  /* Added */
-  --brand-text-live: #f1f1f1;
-  --brand-text-error: #e41827;
-  --brand-text-success: #0d9737;
-
-  /* Buttons */
-  --brand-button-primary: var(--brand-primary);
-  --brand-button-secondary: var(--brand-secondary);
-  --brand-button-disabled: #9ca0ab;
-  --brand-button-border-radius: 4px;
-  --brand-button-outline-border: var(--brand-primary);
-
-  /* Specific Section Styling */
-  --dark-section-background: #121212;
-  --dark-section-text-primary: #e0e0e0;
-  --dark-section-text-secondary: #b0b0b0;
-
-  /* Common Elements */
-  --brand-button-primary: var(--brand-primary);
-  --brand-button-secondary: var(--brand-text-secondary);
-  --brand-button-disabled: #9ca0ab;
-  --brand-button-border-radius: 4px;
-  --brand-button-outline-border: var(--brand-primary);
-
-  --brand-shadow-default: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --brand-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-  --brand-spacing-small: 4px;
-  --brand-spacing-medium: 8px;
-  --brand-spacing-large: 16px;
-
-  --brand-transition-default: all 0.3s ease-in-out;
-
-  --brand-font-size-small: 12px;
-  --brand-font-size-medium: 16px;
-  --brand-font-size-large: 20px;
-
-  --brand-font-weight-regular: 400;
-  --brand-font-weight-bold: 700;
-
-  --brand-z-index-dropdown: 1000;
-  --brand-z-index-modal: 1050;
-  --brand-z-index-tooltip: 1070;
-
-  --brand-opacity-disabled: 0.5;
-  --brand-opacity-hover: 0.8;
-
-  --brand-border-type1: #eaecef;
-  --brand-border-type2: #f2f3f5;
-  --brand-border-type3: #dcdee5;
-
-
-  --brand-live-disabled: #ffffff1a;
-}
-
-:root {
   --brand-type1-secondary: #d6ebdc;
   --brand-type2-secondary: #096b27;
   --brand-type3-secondary: #var(--brand-secondary);
@@ -2946,7 +2871,7 @@
 
 .print-container-wrapper .sport-name .filter-control .range {
   border-right: 1px solid var(--brand-secondary);
-  font-family: "Inter", sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-weight: bold;
   margin-right: 8px;
   padding: 0 8px;
@@ -3206,7 +3131,7 @@
 }
 
 .x-market .x-outcome:hover .af-select-title {
-  background: #261da1;
+  background: var(--brand-prematch-odd-bg-hover);
 }
 
 .x-market .x-outcome:active {
@@ -3249,7 +3174,7 @@
 }
 
 .x-market .af-select .af-select-title {
-  background: var(--brand-secondary);
+  background: var(--brand-primary);
   border: none;
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
@@ -3257,8 +3182,8 @@
   box-shadow: -1px 0px 0px 0px rgba(255, 255, 255, 0.3) inset;
   color: #fff;
   /* font-weight: 700; */
-  height: 34px;
-  line-height: 34px;
+  height: 36px;
+  line-height: 36px;
   text-align: center;
 }
 
@@ -3276,10 +3201,6 @@
 .x-market .af-select .af-select-title .af-select-icon-item .icon {
   display: none;
   font-size: 0px;
-}
-
-.x-market .af-select .af-select-title:hover {
-  background: var(--brand-secondary);
 }
 
 .c-header .x-nav-bar {
@@ -3396,5 +3317,5 @@
 }
 
 .c-header .x-nav-bar .x-flex-item--active {
-  border-bottom: 3px solid var(--brand-primary) !important;
+  border-bottom: 3px solid var(--brand-secondary) !important;
 }

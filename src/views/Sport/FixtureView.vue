@@ -240,6 +240,7 @@ async function getCategoryFixtures() {
 }
 
 async function getTournamentFixtures(tid) {
+  isLoading.value = true
   const sid = activeSport.value.sportID
   tid = tid.tournamentID || tid
   try {
@@ -502,7 +503,7 @@ onMounted(() => {
     margin-bottom: -1px;
     padding: 0 13px;
     text-align: center;
-    width: calc(100% / 6);
+   /* // width: calc(100% / 6); */
   }
   .import-match .match-league .market-group .market-item.active {
     border-bottom: 4px solid var(--brand-secondary);

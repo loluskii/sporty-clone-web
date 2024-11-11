@@ -201,7 +201,7 @@ onMounted(() => {})
   color: var(--brand-text-secondary);
   cursor: pointer;
   display: inline-block;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-size: 1.16666667rem;
   font-weight: 700;
   height: 3rem;

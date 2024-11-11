@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.cdnfonts.com/css/avenir');
 
 html {
   color: #000;
@@ -7,7 +7,7 @@ html {
   -moz-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', sans-serif;
 }
 
 article,
@@ -1426,7 +1426,7 @@ only screen and (min-width: 2560px) {
 
 @font-face {
   font-display: swap;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-style: normal;
   font-weight: 400;
   src: url('../fonts/Inter-Regular-webfont.woff') format('truetype');
@@ -1454,7 +1454,7 @@ input,
 select,
 textarea {
   font-size: 12px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Avenir', sans-serif;
 }
 
 .x-text-second {

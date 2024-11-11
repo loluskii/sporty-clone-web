@@ -104,7 +104,7 @@
 </template>
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue'
-import { slugify, sortArr, createID, isSelected } from '@/helpers'
+import { slugify, sortArr, createID, isSelected, uniqueOdds } from '@/helpers'
 import _ from 'lodash'
 import EmptyOdds from '../EmptyOdds.vue'
 import { useCouponStore } from '@/stores'
@@ -156,6 +156,8 @@ const getOdds = () => {
           filtered = filtered.filter((item) => item.specifier === defaultSpecifier)
           activeSpecifier.value = defaultSpecifier.split('=')[1]
         }
+      }else{
+        filtered = uniqueOdds(filtered)
       }
       if (filtered.length) {
         // console.log(_.sortBy(filtered, 'outcomeID'))
@@ -176,11 +178,13 @@ function showFixtureAnalysis(id) {
 }
 
 const setActiveSpecifier = (spec) => {
+  console.log(spec)
   if (props.match.outcomes) {
     const odds = props.match.outcomes
     let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
     filtered = filtered.filter((item) => item.specifier === spec.specifier)
     outcomes.value = filtered
+    activeSpecifier.value = spec.value
   }
 }
 const toggleList = () => {

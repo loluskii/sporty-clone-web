@@ -545,3 +545,10 @@ export const formattedPhoneNumber = (phoneNumber) => {
   }
   return pNumber
 }
+
+export const uniqueOdds = (odds) => {
+  return Array.from(
+    new Map(odds.map((item) => [item.outcomeID, item])).values()
+  );
+}
+
