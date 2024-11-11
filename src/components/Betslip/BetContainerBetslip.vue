@@ -5,14 +5,22 @@
         <div class="x-table-row">
           <div
             class="x-table-cell"
-            :class="betSlipType !== 'Combo' && betType === 'Single' ? 'x-table-cell--active' : ''"
+            :class="
+              betSlipType !== 'Combo' && betType === 'Single'
+                ? 'x-table-cell--active'
+                : ''
+            "
             @click="couponStore.setBetType('Single')"
           >
             <span data-cms-key="singles">Single</span>
           </div>
           <div
             class="x-table-cell"
-            :class="betSlipType !== 'Combo' && betType === 'Multiple' ? 'x-table-cell--active' : ''"
+            :class="
+              betSlipType !== 'Combo' && betType === 'Multiple'
+                ? 'x-table-cell--active'
+                : ''
+            "
             @click="couponStore.setBetType('Multiple')"
           >
             <span data-cms-key="multiple">Multiple</span>
@@ -141,7 +149,9 @@
               <div>
                 <div class="x-label x-label-one-cut-fix">
                   <span class="flex"
-                    ><span class="no-warp" data-cms-key="potential_win">Potential Win</span>
+                    ><span class="no-warp" data-cms-key="potential_win"
+                      >Potential Win</span
+                    >
                     &nbsp;
                   </span>
                 </div>
@@ -152,20 +162,22 @@
               <button
                 @click.prevent="toggleConfirmation"
                 class="af-button af-button--primary"
-                :class="
-                  couponStore.coupon.totalStake < 100
-                    ? 'is-disabled'
-                    : couponStore.isBetslipLoading
-                      ? 'is-disabled'
-                      : ''
-                "
-                :disabled="couponStore.coupon.totalStake < 100 || couponStore.isBetslipLoading"
+                :class="placeBetDisabled ? 'is-disabled' : ''"
+                :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
               >
-                <span><span data-cms-key="place_bet">Place Bet</span></span>
+                <span
+                  ><span data-cms-key="place_bet">{{
+                    placeBetDisabled ? "Loading" : "Place Bet"
+                  }}</span></span
+                >
               </button>
             </div>
             <!-- Bet Confirmation Modal -->
-            <div v-if="showConfirmationModal" class="x-comfirm-wrapper" style="top: -46px">
+            <div
+              v-if="showConfirmationModal"
+              class="x-comfirm-wrapper"
+              style="top: -46px"
+            >
               <div>
                 <div class="x-content-wrapper">
                   <div class="x-label">About to pay</div>
@@ -175,7 +187,10 @@
                 </div>
 
                 <div class="x-btn-wrapper">
-                  <button @click.prevent="toggleConfirmation" class="af-button af-button--text">
+                  <button
+                    @click.prevent="toggleConfirmation"
+                    class="af-button af-button--text"
+                  >
                     <span><span data-cms-key="cancel">Cancel</span></span>
                   </button>
                   <button @click.prevent="placeBet" class="af-button af-button--primary">
@@ -231,114 +246,128 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
-import { useCouponStore, useUsersStore } from '@/stores'
-import { formatNumber } from '@/helpers'
-import emitter from '@/plugins/emitter'
-import BetListEvent from '@/components/Betslip/BetListEvent.vue'
+import { computed, ref } from "vue";
+import { useCouponStore, useUsersStore } from "@/stores";
+import { formatNumber } from "@/helpers";
+import emitter from "@/plugins/emitter";
+import BetListEvent from "@/components/Betslip/BetListEvent.vue";
 
-const couponStore = useCouponStore()
-const bookingCode = ref('')
-const placeBetStatus = ref(false)
-const isPlaceBetSuccessful = ref(false)
-const isBookBetSuccessful = ref(false)
-const placeBetResponse = ref({})
-const bookBetResponse = ref({})
-const usersStore = useUsersStore()
-const showConfirmationModal = ref(false)
+const couponStore = useCouponStore();
+const bookingCode = ref("");
+const placeBetStatus = ref(false);
+const isPlaceBetSuccessful = ref(false);
+const isBookBetSuccessful = ref(false);
+const placeBetResponse = ref({});
+const bookBetResponse = ref({});
+const usersStore = useUsersStore();
+const showConfirmationModal = ref(false);
 const betSlipType = computed(() => {
-  return couponStore.coupon.betslip_type
-})
+  return couponStore.coupon.betslip_type;
+});
 
 const betType = computed(() => {
-  return couponStore.coupon.bet_type
-})
+  return couponStore.coupon.bet_type;
+});
 
 const totalOdds = computed(() => {
-  return couponStore.coupon.totalOdds
-})
+  return couponStore.coupon.totalOdds;
+});
 
 const betslipSelections = computed(() => {
-  return couponStore.coupon.selections
-})
+  return couponStore.coupon.selections;
+});
 
 const updateStake = (e) => {
-  couponStore.coupon.stake = e.target.value
+  couponStore.coupon.stake = e.target.value;
   return couponStore.updateWinnings({
     stake: e.target.value,
-    id: 'all'
-  })
-}
+    id: "all",
+  });
+};
 
 const maxBonus = computed(() => {
-  return formatNumber(couponStore.coupon.maxBonus)
-})
+  return formatNumber(couponStore.coupon.maxBonus);
+});
 
 const selectionsLength = computed(() => {
-  return couponStore.coupon.selections.length
-})
+  return couponStore.coupon.selections.length;
+});
 
 const maxWin = computed(() => {
-  return formatNumber(couponStore.coupon.maxWin)
-})
+  return formatNumber(couponStore.coupon.maxWin);
+});
 
 const totalStake = computed(() => {
-  return couponStore.coupon.totalStake === '' ? 0.0 : formatNumber(couponStore.coupon.totalStake)
-})
+  return couponStore.coupon.totalStake === ""
+    ? 0.0
+    : formatNumber(couponStore.coupon.totalStake);
+});
 
+const placeBetDisabled = computed(() => {
+  return (
+    couponStore.isBetslipBooking ||
+    couponStore.isBetslipLoading ||
+    couponStore.coupon.totalStake < 100
+  );
+});
 function clearBetslip() {
-  return couponStore.clearBetslip()
+  return couponStore.clearBetslip();
 }
 
 function toggleConfirmation() {
   if (!usersStore.currentUser) {
-    emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'login' })
+    emitter.emit("showDialog", { dialogType: "auth", dialogData: "login" });
+  } else if (couponStore.isBetslipLoading) {
+    return;
   } else {
-    showConfirmationModal.value = !showConfirmationModal.value
+    showConfirmationModal.value = !showConfirmationModal.value;
   }
 }
 
 async function book(e) {
   try {
     if (totalStake.value < 1) {
-      return
+      return;
     }
-    e.target.classList.add('loading-icon')
-    couponStore.isBetslipBooking = true
+    e.target.classList.add("loading-icon");
+    couponStore.isBetslipBooking = true;
 
-    const res = await couponStore.placeBet(e, 'book')
-    couponStore.isBetslipBooking = false
+    const res = await couponStore.placeBet(e, "book");
+    couponStore.isBetslipBooking = false;
 
     if (res.success) {
-      emitter.emit('showDialog', { dialogType: 'book-bet', dialogData: res })
+      emitter.emit("showDialog", { dialogType: "book-bet", dialogData: res });
     } else {
-      emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: res.message } })
+      emitter.emit("showDialog", {
+        dialogType: "error",
+        dialogData: { data: res.message },
+      });
     }
   } catch (error) {
-    emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: error } })
+    emitter.emit("showDialog", { dialogType: "error", dialogData: { data: error } });
   }
 }
 
 async function placeBet(e) {
-  showConfirmationModal.value = false
-  couponStore.isBetslipLoading = true
+  showConfirmationModal.value = false;
+  couponStore.isBetslipLoading = true;
   if (!usersStore.currentUser) {
-    emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'login' })
+    emitter.emit("showDialog", { dialogType: "auth", dialogData: "login" });
   }
   try {
-    const res = await couponStore.placeBet(e, 'bet')
-    couponStore.isBetslipLoading = false
+    const res = await couponStore.placeBet(e, "bet");
+    couponStore.isBetslipLoading = false;
     if (res.success) {
-      await usersStore.loadCurrentUser()
-      isPlaceBetSuccessful.value = true
-      placeBetResponse.value = res.data
-      emitter.emit('showDialog', { dialogType: 'place-bet', dialogData: res })
+      await usersStore.loadCurrentUser();
+      isPlaceBetSuccessful.value = true;
+      placeBetResponse.value = res.data;
+      emitter.emit("showDialog", { dialogType: "place-bet", dialogData: res });
     } else {
-      emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: res } })
+      emitter.emit("showDialog", { dialogType: "error", dialogData: { data: res } });
     }
   } catch (error) {
-    couponStore.isBetslipLoading = false
-    emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: error } })
+    couponStore.isBetslipLoading = false;
+    emitter.emit("showDialog", { dialogType: "error", dialogData: { data: error } });
   }
 }
 </script>

@@ -73,7 +73,7 @@
       <div class="x-table-cell x-main-right" style="width: 235px; min-width: 235px">
         <div>
           <aside class="s-right">
-            <div v-if="!currentUser" class="x-item">
+            <div v-if="!userStore.currentUser" class="x-item">
               <div class="x-instant-reg x-instant-white">
                 <div class="x-title">
                   <span>Instant Registration</span>
@@ -94,7 +94,10 @@
                   /></span>
                 </div>
                 <div class="x-btn-wrapper">
-                  <button class="af-button af-button--primary">
+                  <button
+                    class="af-button af-button--primary"
+                    @click.prevent="showRegisterModal"
+                  >
                     <span><span>Register</span></span>
                   </button>
                 </div>
@@ -119,7 +122,7 @@ import LoadingSpinner from "../Loaders/LoadingSpinner.vue";
 import emitter from "@/plugins/emitter";
 
 const utilsStore = useUtilsStore();
-const { currentUser } = useUsersStore();
+const userStore = useUsersStore();
 const categories = ref([]);
 const router = useRouter();
 const route = useRoute();
@@ -168,6 +171,10 @@ const isCategorySelected = (category) => {
   const categoryToCheck = `sr:category:${category}`;
   return categoriesArray.includes(categoryToCheck);
 };
+
+function showRegisterModal() {
+  emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
+}
 
 watch(
   () => route.params.sport,

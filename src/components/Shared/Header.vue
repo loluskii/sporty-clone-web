@@ -7,16 +7,19 @@
             <template v-if="currentUser">
               <div class="x-info on">
                 <div class="x-bablance-wrapper">
-                  <span id="j_balance" class="x-text x-balance">NGN{{ formatNumber(balance) }}</span
+                  <span id="j_balance" class="x-text x-balance"
+                    >NGN{{ formatNumber(balance) }}</span
                   ><!-- <i id="j_toggleBalance" class="x-icon-toggle on"></i -->
-                  ><i
+                  <i
                     @click="usersStore.loadCurrentUser()"
                     id="j_refreshBalance"
                     class="x-icon-refresh"
                     :class="usersStore.isLoadingCurrentUser ? 'loading' : ''"
                   ></i>
                 </div>
-                <a href="/Account/Deposit" class="x-text x-deposit"><span>Deposit</span></a>
+                <a href="/Account/Deposit" class="x-text x-deposit"
+                  ><span>Deposit</span></a
+                >
                 <div id="j_betHistory" class="x-text x-history">
                   <a href="/Account/BetHistory"><span>Bet History</span></a>
                 </div>
@@ -27,7 +30,9 @@
                       class="x-list-item x-text-main"
                       @click="$router.push({ name: 'account-me' })"
                     >
-                      <span><span data-cms-key="my_account_info">My Account Info</span> </span>
+                      <span
+                        ><span data-cms-key="my_account_info">My Account Info</span>
+                      </span>
                     </li>
 
                     <li
@@ -57,7 +62,11 @@
                     <li class="x-list-item x-text-main">
                       <span><span data-cms-key="gifts">Bonus</span> </span>
                     </li>
-                    <li class="x-list-bar" @click="authStore.logout" data-cms-key="log_out">
+                    <li
+                      class="x-list-bar"
+                      @click="authStore.logout"
+                      data-cms-key="log_out"
+                    >
                       Logout
                     </li>
                   </ul>
@@ -190,7 +199,9 @@
                       Register
                     </button>
                     <div class="x-operation">
-                      <a href="/Account/ResetPassword" class="x-forgetPsd"><span>Forgot Password</span>?</a>
+                      <a href="/Account/ResetPassword" class="x-forgetPsd"
+                        ><span>Forgot Password</span>?</a
+                      >
                     </div>
                   </div>
                 </form>
@@ -229,7 +240,10 @@
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
 
-            <a id="header_nav_liveBetting" @click.prevent="goToVirtuals" class="x-flex-item"
+            <a
+              id="header_nav_liveBetting"
+              @click.prevent="goToVirtuals"
+              class="x-flex-item"
               ><span data-cms-key="live_betting">Virtuals</span></a
             >
 
@@ -240,10 +254,16 @@
               :class="activeClass('jackpot') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="jackpot">Jackpot</span></a
             >
-            <a id="header_nav_livescore" class="x-flex-item" @click.prevent="goToLiveScore"
+            <a
+              id="header_nav_livescore"
+              class="x-flex-item"
+              @click.prevent="goToLiveScore"
               ><span data-cms-key="live_betting">Livescore</span></a
             >
-            <a id="header_nav_promotions" @click.prevent="goToStatistics" class="x-flex-item"
+            <a
+              id="header_nav_promotions"
+              @click.prevent="goToStatistics"
+              class="x-flex-item"
               ><span data-cms-key="promotions">Statistics</span></a
             >
             <a
@@ -263,70 +283,74 @@
 </template>
 
 <script setup>
-import { defineComponent, computed, ref, onMounted } from 'vue'
-import { useAuthStore, useUsersStore } from '@/stores'
-import MD5 from 'crypto-js/md5'
+import { defineComponent, computed, ref, onMounted } from "vue";
+import { useAuthStore, useUsersStore } from "@/stores";
+import MD5 from "crypto-js/md5";
 
-import { formatNumber } from '@/helpers'
-import emitter from '@/plugins/emitter'
-import { useRoute } from 'vue-router'
-const usersStore = useUsersStore()
-const authStore = useAuthStore()
+import { formatNumber } from "@/helpers";
+import emitter from "@/plugins/emitter";
+import { useRoute } from "vue-router";
+const usersStore = useUsersStore();
+const authStore = useAuthStore();
 
-const route = useRoute()
+const route = useRoute();
 
-const phoneNumber = ref()
-const password = ref()
+const phoneNumber = ref();
+const password = ref();
 
-const date = new Date()
-const offset = date.getTimezoneOffset()
-const sign = offset >= 0 ? '-' : '+'
-const offsetHours = Math.abs(offset / 60)
-const token = ref('111111')
-const group = ref(import.meta.env.VITE_APP_KEY)
-const mode = ref(0)
+const date = new Date();
+const offset = date.getTimezoneOffset();
+const sign = offset >= 0 ? "-" : "+";
+const offsetHours = Math.abs(offset / 60);
+const token = ref("111111");
+const group = ref(import.meta.env.VITE_APP_KEY);
+const mode = ref(0);
 
 const currentUser = computed(() => {
-  return usersStore.currentUser
-})
+  return usersStore.currentUser;
+});
 
 const balance = computed(() => {
-  return usersStore.balance
-})
+  return usersStore.balance;
+});
 
 const viewIsCasino = computed(() => {
-  return route.name === 'game-view' || route.name === 'game-play'
-})
+  return route.name === "game-view" || route.name === "game-play";
+});
 
 const viewIsLive = computed(() => {
   return route.name === 'live-view' || route.name === 'live-fixtures-one-detail'
 })
 
 const activeClass = (name) => {
-  return route.name === name
-}
+  return route.name === name;
+};
 
 const goToStatistics = () => {
-  return window.open(`https://s5.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
-}
+  return window.open(
+    `https://s5.sir.sportradar.com/bematrics`,
+    "stats",
+    "width=1078,height=768"
+  );
+};
 
 function showRegisterModal() {
-  emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
+  emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
 }
 
 const formattedPhoneNumber = (phoneNumber) => {
-  const pNumber = phoneNumber.toString()
-  const first = pNumber.charAt(0)
-  return first === '0' ? pNumber.substring(1) : pNumber
-}
+  const pNumber = phoneNumber.toString();
+  const first = pNumber.charAt(0);
+  return first === "0" ? pNumber.substring(1) : pNumber;
+};
 
 async function doLogin() {
   let payload = {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
-    clientId: import.meta.env.VITE_CLIENT_ID
-  }
-  await authStore.doLogin(payload)
+    clientId: import.meta.env.VITE_CLIENT_ID,
+  };
+  await authStore.doLogin(payload);
 }
 
 // function getTimezone() {
@@ -343,34 +367,40 @@ async function doLogin() {
 // }
 
 const goToLiveScore = () => {
-  return window.open(`https://ls.sir.sportradar.com/bematrics`, 'stats', 'width=1078,height=768')
-}
+  return window.open(
+    `https://ls.sir.sportradar.com/bematrics`,
+    "stats",
+    "width=1078,height=768"
+  );
+};
 
 const hashStr = computed(() => {
   return MD5(
-    `${token.value}10100${import.meta.env.VITE_SITE_URL}${mode.value}${group.value}mobile${
-      import.meta.env.VITE_XPRESS_PRIVATE_KEY
-    }`
-  ).toString()
-})
+    `${token.value}10100${import.meta.env.VITE_SITE_URL}${mode.value}${
+      group.value
+    }mobile${import.meta.env.VITE_XPRESS_PRIVATE_KEY}`
+  ).toString();
+});
 
 const generatedURL = computed(() => {
-  return `${import.meta.env.VITE_XPRESS_LAUNCH_URL}?token=${token.value}&game=10100&backurl=${
-    import.meta.env.VITE_SITE_URL
-  }&mode=${mode.value}&group=${group.value}&clientPlatform=website&h=${hashStr.value}`
-})
+  return `${import.meta.env.VITE_XPRESS_LAUNCH_URL}?token=${
+    token.value
+  }&game=10100&backurl=${import.meta.env.VITE_SITE_URL}&mode=${mode.value}&group=${
+    group.value
+  }&clientPlatform=website&h=${hashStr.value}`;
+});
 
 function goToVirtuals() {
-  window.location.href = generatedURL.value
+  window.location.href = generatedURL.value;
 }
 
 defineComponent({
-  name: 'hea-der'
-})
+  name: "hea-der",
+});
 
 onMounted(() => {
   // getTimezone()
-})
+});
 </script>
 
 <style>
@@ -408,7 +438,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar:after {
   clear: both;
-  content: '.';
+  content: ".";
   display: block;
   height: 0;
   visibility: hidden;
@@ -437,8 +467,8 @@ onMounted(() => {
   vertical-align: top;
 }
 .c-header .x-login-bar .x-info .x-icon-toggle::before {
-  content: '\e76b';
-  font-family: 'iconfont' !important;
+  content: "\e76b";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -448,8 +478,8 @@ onMounted(() => {
   font-size: 14px;
 }
 .c-header .x-login-bar .x-info .x-icon-toggle.on::before {
-  content: '\e641';
-  font-family: 'iconfont' !important;
+  content: "\e641";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -462,8 +492,8 @@ onMounted(() => {
   vertical-align: top;
 }
 .c-header .x-login-bar .x-info .x-icon-refresh::before {
-  content: '\e645';
-  font-family: 'iconfont' !important;
+  content: "\e645";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -527,7 +557,7 @@ onMounted(() => {
   border-bottom: 6px solid #fff;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  content: '';
+  content: "";
   height: 0;
   left: 6px;
   position: absolute;
@@ -549,7 +579,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-bablance-wrapper:after {
   background: #fff;
-  content: '';
+  content: "";
   display: inline-block;
   height: 14px;
   margin: 0 8px 0 16px;
@@ -559,7 +589,7 @@ onMounted(() => {
 .c-header .x-login-bar .x-deposit:after,
 .c-header .x-login-bar .x-history:after {
   background: #fff;
-  content: '';
+  content: "";
   display: inline-block;
   height: 14px;
   margin: 0 0 0 16px;
@@ -675,8 +705,8 @@ onMounted(() => {
   color: var(--brand-primary);
 }
 .c-header .x-login-bar .x-error-wrapper .x-icon-tips::before {
-  content: '\e623';
-  font-family: 'iconfont' !important;
+  content: "\e623";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -707,8 +737,8 @@ onMounted(() => {
   display: none;
 }
 .c-header .x-login-bar .x-userInfo::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -850,8 +880,8 @@ onMounted(() => {
   width: 30px;
 }
 .c-header .x-third-party::before {
-  content: '\e6e2';
-  font-family: 'iconfont' !important;
+  content: "\e6e2";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -936,7 +966,7 @@ onMounted(() => {
 }
 .c-header .x-nav-main .x-timezone:after {
   clear: both;
-  content: '.';
+  content: ".";
   display: block;
   height: 0;
   visibility: hidden;

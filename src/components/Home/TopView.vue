@@ -9,9 +9,11 @@
               <div class="popular-text" data-cms-key="popular">Popular</div>
               <div class="popular-list">
                 <a href="/Sports/Prematch/Soccer?period=today" class="top-link"
-                  ><span class="top-link-item">Today's Football</span><span class="arrow"></span></a
+                  ><span class="top-link-item">Today's Football</span
+                  ><span class="arrow"></span></a
                 ><a href="/Sports/Prematch/Soccer/Upcoming" class="top-link"
-                  ><span class="top-link-item">Upcoming Games</span><span class="arrow"></span></a
+                  ><span class="top-link-item">Upcoming Games</span
+                  ><span class="arrow"></span></a
                 ><a
                   class="top-link"
                   @click.prevent="
@@ -20,8 +22,8 @@
                       params: {
                         sport: top.sportName,
                         categories: `sr:category:${top.categoryID}`,
-                        tournaments: `sr:tournament:${top.tournamentID}`
-                      }
+                        tournaments: `sr:tournament:${top.tournamentID}`,
+                      },
                     })
                   "
                   href=""
@@ -40,7 +42,10 @@
                 >
               </div>
               <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
-              <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
+              <div
+                tabindex="6"
+                class="x-input-wrapper x-input-group x-input-group--prepend"
+              >
                 <div class="x-input-prepend"><span>+234</span></div>
                 <span class="x-input-com">
                   <input
@@ -54,7 +59,7 @@
                 /></span>
               </div>
               <div class="x-btn-wrapper">
-                <button class="af-button af-button--primary">
+                <button class="af-button af-button--primary" @click="showRegisterModal">
                   <span><span data-cms-key="register">Register</span></span>
                 </button>
               </div>
@@ -70,26 +75,31 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { getTopBets, slugify } from '@/helpers'
-import Carousel from '../Carousel.vue'
+import { ref, onMounted, computed } from "vue";
+import { getTopBets, slugify } from "@/helpers";
+import Carousel from "../Carousel.vue";
+import emitter from "@/plugins/emitter";
 
-const isLoading = ref(false)
+const isLoading = ref(false);
 
-const featuredTournaments = ref([])
+const featuredTournaments = ref([]);
 
 async function getFeaturedGames() {
-  const res = await getTopBets()
-  featuredTournaments.value = res.data?.splice(0, 4)
+  const res = await getTopBets();
+  featuredTournaments.value = res.data?.splice(0, 4);
+}
+
+function showRegisterModal() {
+  emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
 }
 
 onMounted(async () => {
   Promise.all([getFeaturedGames()])
     .then(() => {})
     .catch((error) => {
-      console.error('An error occurred:', error)
-    })
-})
+      console.error("An error occurred:", error);
+    });
+});
 </script>
 
 <style scoped></style>
