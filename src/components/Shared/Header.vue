@@ -247,13 +247,13 @@
               ><span data-cms-key="live_betting">Virtuals</span></a
             >
 
-            <a
+            <!-- <a
               id="header_nav_jackpot"
               href="/"
               class="x-flex-item"
               :class="activeClass('jackpot') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="jackpot">Jackpot</span></a
-            >
+            > -->
             <a
               id="header_nav_livescore"
               class="x-flex-item"
@@ -268,10 +268,10 @@
             >
             <a
               id="header_nav_mobile"
-              href="/"
+              href="/CMS/AboutUs"
               class="x-flex-item"
-              :class="activeClass('app') ? 'x-flex-item--active' : ''"
-              ><span data-cms-key="app">App</span></a
+              :class="activeClass('cms') ? 'x-flex-item--active' : ''"
+              ><span data-cms-key="app">Promotions</span></a
             >
           </nav>
           <div id="j_timezone" class="x-timezone">GMT {{ sign }}{{ offsetHours }}:00</div>
