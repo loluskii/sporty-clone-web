@@ -5,7 +5,7 @@
       <div class="x-lay-mid">
         <div class="x-lay-mid">
           <div class="x-item-play">
-            <i class="x-icon-sport x-icon--football"></i>
+            <i class="x-icon-sport" :class="'x-icon--'+selection.sport.toLowerCase()"></i>
             <span>{{ selection.outcomeName }}</span>
             <i class="x-icon-delete" @click="removeSelection(selection.element_id)"></i>
           </div>
