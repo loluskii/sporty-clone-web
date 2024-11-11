@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url('https://fonts.cdnfonts.com/css/avenir');
 html {
   color: #000;
   background: #fff;
@@ -1989,7 +1988,7 @@ only screen and (min-width: 2560px) {
 
 @font-face {
   font-display: swap;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-style: normal;
   font-weight: 400;
   src: url('../fonts/Roboto-Regular-webfont.woff') format('truetype');
@@ -2017,7 +2016,7 @@ input,
 select,
 textarea {
   font-size: 12px;
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Avenir', sans-serif;
 }
 
 .x-text-second {

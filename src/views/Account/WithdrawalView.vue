@@ -5,14 +5,17 @@
         <section>
           <div id="j_ngBank" class="x-bank">
             <div class="f-line">
-              <span class="f-label" data-cms-key="bank_account_info" data-cms-page="page_withdraw"
+              <span
+                class="f-label"
+                data-cms-key="bank_account_info"
+                data-cms-page="page_withdraw"
                 >Bank Account Info</span
               >
               <div class="f-line-item i-bank">
                 <div tabindex="9" class="f-list-wrapper" :class="showBanks ? 'on' : ''">
                   <div class="f-content" @click="toggleShowBanks">
                     <span class="f-btn" :class="selectedBank ? 'f-btn--fixed' : ''">{{
-                      selectedBank ? selectedBank.name : 'Please select a Bank'
+                      selectedBank ? selectedBank.name : "Please select a Bank"
                     }}</span>
                     <i class="i-icon--more" :class="showBanks ? 'on' : ''"></i>
                   </div>
@@ -22,7 +25,9 @@
                       :key="index"
                       @click="selectBank(bank)"
                       class="l-item"
-                      :class="{ 'l-item--checked': selectedBank && selectedBank.code == bank.code }"
+                      :class="{
+                        'l-item--checked': selectedBank && selectedBank.code == bank.code,
+                      }"
                     >
                       <div class="x-bank-item">
                         <span class="f-text">{{ bank.name }}</span>
@@ -106,50 +111,50 @@
 </template>
 
 <script setup>
-import AccountLayout from '@/components/Shared/AccountLayout.vue'
-import { ref, onMounted, computed } from 'vue'
-import emitter from '../../plugins/emitter'
-import { useRouter } from 'vue-router'
-import { useUsersStore } from '../../stores'
+import AccountLayout from "@/components/Shared/AccountLayout.vue";
+import { ref, onMounted, computed } from "vue";
+import emitter from "../../plugins/emitter";
+import { useRouter } from "vue-router";
+import { useUsersStore } from "../../stores";
 import {
   CLIENT_ID,
   fetchBankAssets,
   getBanksList,
   verifyAccount,
-  withdrawalRequest
-} from '@/helpers'
+  withdrawalRequest,
+} from "@/helpers";
 
-const showBanks = ref(false)
+const showBanks = ref(false);
 // const showBanksAssets = ref(false)
-const { currentUser } = useUsersStore()
-const router = useRouter()
+const { currentUser } = useUsersStore();
+const router = useRouter();
 
-const banksList = ref([])
-const bankAssets = ref([])
-const selectedBank = ref(null)
-const accountNumber = ref(null)
-const withdrawalAmount = ref()
-const isLoading = ref(false)
-const buttonLoader = ref(false)
+const banksList = ref([]);
+const bankAssets = ref([]);
+const selectedBank = ref(null);
+const accountNumber = ref(null);
+const withdrawalAmount = ref();
+const isLoading = ref(false);
+const buttonLoader = ref(false);
 
-const withdrawalSuccess = ref(false)
-const withdrawalSuccessData = ref({})
+const withdrawalSuccess = ref(false);
+const withdrawalSuccessData = ref({});
 
-const accountError = ref(false)
-const accountErrorMessage = ref('')
+const accountError = ref(false);
+const accountErrorMessage = ref("");
 
-const amountError = ref(false)
-const amountErrorMessage = ref('')
+const amountError = ref(false);
+const amountErrorMessage = ref("");
 
 async function getBanks() {
-  isLoading.value = true
-  const res = await getBanksList()
-  isLoading.value = false
-  banksList.value = res.data
+  isLoading.value = true;
+  const res = await getBanksList();
+  isLoading.value = false;
+  banksList.value = res.data;
 }
 
 function toggleShowBanks() {
-  showBanks.value = !showBanks.value
+  showBanks.value = !showBanks.value;
 }
 
 const isFormComplete = computed(() => {
@@ -159,8 +164,8 @@ const isFormComplete = computed(() => {
     withdrawalAmount.value !== undefined &&
     !amountError.value &&
     !accountError.value
-  )
-})
+  );
+});
 
 const checkWithdrawableAmount = () => {
   // if (withdrawalAmount.value > currentUser.availableBalance) {
@@ -173,60 +178,61 @@ const checkWithdrawableAmount = () => {
   //   amountError.value = false
   //   amountErrorMessage.value = null
   // }
-}
+};
 
 const balance = computed(() => {
-  return currentUser ? currentUser.availableBalance : 0
-})
+  return currentUser ? currentUser.availableBalance : 0;
+});
 
 function selectBank(bank) {
-  selectedBank.value = bank
-  showBanks.value = !showBanks.value
+  selectedBank.value = bank;
+  showBanks.value = !showBanks.value;
 }
 
 async function submit() {
-  buttonLoader.value = true
+  buttonLoader.value = true;
   let payload = {
     accountNumber: accountNumber.value,
     bankCode: selectedBank.value.code,
-    clientId: CLIENT_ID
-  }
+    clientId: CLIENT_ID,
+  };
 
   if (
     bankAssets.value.length &&
     bankAssets.value.filter((bank) => bank.bankCode === selectedBank.value.code)
   ) {
     let data = {
-      dialogType: 'withdrawal',
+      dialogType: "withdrawal",
       dialogData: {
         account_name: selectedBank.value.accountName,
         bank_name: selectedBank.value.name,
         account_number: accountNumber.value,
         amount: withdrawalAmount.value,
-        remaining_balance: parseFloat(balance.value) - parseFloat(withdrawalAmount.value)
-      }
-    }
-    emitter.emit('showDialog', data)
+        remaining_balance: parseFloat(balance.value) - parseFloat(withdrawalAmount.value),
+      },
+    };
+    emitter.emit("showDialog", data);
   } else {
-    accountError.value = false
-    accountErrorMessage.value = ''
-    const res = await verifyAccount(payload)
-    buttonLoader.value = false
+    accountError.value = false;
+    accountErrorMessage.value = "";
+    const res = await verifyAccount(payload);
+    buttonLoader.value = false;
     if (res.success) {
       let data = {
-        dialogType: 'withdrawal',
+        dialogType: "withdrawal",
         dialogData: {
           account_name: res.message,
           bank_name: selectedBank.value.name,
           account_number: accountNumber.value,
           amount: withdrawalAmount.value,
-          remaining_balance: parseFloat(balance.value) - parseFloat(withdrawalAmount.value)
-        }
-      }
-      emitter.emit('showDialog', data)
+          remaining_balance:
+            parseFloat(balance.value) - parseFloat(withdrawalAmount.value),
+        },
+      };
+      emitter.emit("showDialog", data);
     } else {
-      accountError.value = true
-      accountErrorMessage.value = res.message
+      accountError.value = true;
+      accountErrorMessage.value = res.message;
     }
   }
 }
@@ -240,47 +246,47 @@ async function submitWithdrawalRequest(data) {
     bankCode: selectedBank.value.code,
     clientId: CLIENT_ID,
     // bank_id: selectedBank.value.bank_id,
-    type: 'online'
-  }
-  document.querySelector('.layout.mask').click()
-  buttonLoader.value = true
-  const res = await withdrawalRequest(payload)
-  buttonLoader.value = false
+    type: "online",
+  };
+  document.querySelector(".layout.mask").click();
+  buttonLoader.value = true;
+  const res = await withdrawalRequest(payload);
+  buttonLoader.value = false;
   if (res.success) {
-    withdrawalSuccessData.value = payload
-    withdrawalSuccess.value = true
+    withdrawalSuccessData.value = payload;
+    withdrawalSuccess.value = true;
   } else {
-    amountError.value = true
-    amountErrorMessage.value = res.message
+    amountError.value = true;
+    amountErrorMessage.value = res.message;
   }
 }
 
 async function checkUserBankAssets() {
   try {
-    const userAssetRes = await fetchBankAssets()
+    const userAssetRes = await fetchBankAssets();
     if (userAssetRes.data) {
-      bankAssets.value = userAssetRes.data
+      bankAssets.value = userAssetRes.data;
       selectedBank.value = {
         name: userAssetRes.data[0].name,
         code: userAssetRes.data[0].bankCode,
         accountName: userAssetRes.data[0].accountName,
-        accountNumber: userAssetRes.data[0].accountNumber
-      }
-      accountNumber.value = userAssetRes.data[0].accountNumber
+        accountNumber: userAssetRes.data[0].accountNumber,
+      };
+      accountNumber.value = userAssetRes.data[0].accountNumber;
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
 onMounted(async () => {
-  emitter.on('confirmWithdrawalAction', submitWithdrawalRequest)
+  emitter.on("confirmWithdrawalAction", submitWithdrawalRequest);
   if (!currentUser) {
-    return router.push({ name: 'sign-in' })
+    return router.push({ name: "sign-in" });
   } else {
-    Promise.all([checkUserBankAssets(), getBanks()])
+    Promise.all([checkUserBankAssets(), getBanks()]);
   }
-})
+});
 </script>
 
 <style>
@@ -418,8 +424,8 @@ onMounted(async () => {
   padding: 24px 24px 0;
 }
 .x-dialog--tips .x-pop-header > span::before {
-  content: '\e623';
-  font-family: 'iconfont' !important;
+  content: "\e623";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -484,8 +490,8 @@ onMounted(async () => {
   animation: logoLoading 1s infinite cubic-bezier(0.4, 0, 1, 1) alternate;
 }
 .x-wd-ng .x-error-wrapper .x-icon-loading::before {
-  content: '\e610';
-  font-family: 'iconfont' !important;
+  content: "\e610";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -559,8 +565,8 @@ onMounted(async () => {
   margin-right: 1rem;
 }
 .withdraw-notification .tip-icon::before {
-  content: '\e651';
-  font-family: 'iconfont' !important;
+  content: "\e651";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -573,7 +579,7 @@ onMounted(async () => {
 #withdraw-pin-notify {
   background: rgba(250, 253, 0, 0.1);
   color: #353a45;
-  font-family: Roboto;
+  /* // font-family: Roboto; */
   font-size: 12px;
   padding: 14px;
 }
@@ -662,8 +668,8 @@ onMounted(async () => {
   text-align: center;
 }
 .x-bank .f-line .i-icon--more::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -780,8 +786,8 @@ onMounted(async () => {
   color: var(--brand-primary);
 }
 .x-bank .f-list .l-item--checked .i-icon-checked::before {
-  content: '\e622';
-  font-family: 'iconfont' !important;
+  content: "\e622";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -934,7 +940,7 @@ onMounted(async () => {
   cursor: pointer;
 }
 .x-bank-list .i-icon-check:before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -966,8 +972,8 @@ onMounted(async () => {
 }
 
 .x-bank-list .l-item-checked .i-icon-check::before {
-  content: '\e60b';
-  font-family: 'iconfont' !important;
+  content: "\e60b";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1005,12 +1011,9 @@ onMounted(async () => {
   line-height: 14px;
   width: 180px;
   background: #fff;
-  -webkit-box-shadow:
-    0 2px 5px -1px rgba(0, 0, 0, 0.08),
+  -webkit-box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.08),
     2px 0 5px -1px rgba(0, 0, 0, 0.08);
-  box-shadow:
-    0 2px 5px -1px rgba(0, 0, 0, 0.08),
-    2px 0 5px -1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.08), 2px 0 5px -1px rgba(0, 0, 0, 0.08);
 }
 .x-bank-list .f-del-wrapper .f-pop-arrow {
   width: 8px;
@@ -1018,12 +1021,9 @@ onMounted(async () => {
   position: absolute;
   border: 1px solid #eaecef;
   background: #fff;
-  -webkit-box-shadow:
-    0 2px 5px -1px rgba(0, 0, 0, 0.04),
+  -webkit-box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.04),
     2px 0 5px -1px rgba(0, 0, 0, 0.04);
-  box-shadow:
-    0 2px 5px -1px rgba(0, 0, 0, 0.04),
-    2px 0 5px -1px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 5px -1px rgba(0, 0, 0, 0.04), 2px 0 5px -1px rgba(0, 0, 0, 0.04);
   border-top-color: transparent;
   border-left-color: transparent;
   top: 10%;
@@ -1113,8 +1113,8 @@ onMounted(async () => {
   text-align: center;
 }
 .x-bank-list .f-line .i-icon--more::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1231,8 +1231,8 @@ onMounted(async () => {
   color: var(--brand-primary);
 }
 .x-bank-list .f-list .l-item--checked .i-icon-checked::before {
-  content: '\e622';
-  font-family: 'iconfont' !important;
+  content: "\e622";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
