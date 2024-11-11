@@ -21,7 +21,7 @@
           <div v-if="!isLoading">
             <p class="x-t-info">
               <span class="game-time"
-                >{{ moment(matchDetails.date).format('dddd DD/MM  hh:mm') }}
+                >{{ moment(matchDetails.date).format("dddd DD/MM  hh:mm") }}
               </span>
 
               <span class="event-id"> ID:{{ matchDetails.gameID }}</span>
@@ -43,11 +43,11 @@
               >
                 <div class="x-table x-table-header">
                   <div class="x-table-row">
-                    <div class="x-table-cell x-table-cell--responsive x-table-cell--transparent">
+                    <div
+                      class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
+                    >
                       <i class="x-icon--bg x-icon--fold"></i>
-                      <span class="x-table-header-title" >{{
-                        market.marketName
-                      }}</span>
+                      <span class="x-table-header-title">{{ market.marketName }}</span>
                     </div>
                     <div
                       class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
@@ -57,7 +57,7 @@
                 <div class="x-table">
                   <div
                     class="x-table-row x-outcome"
-                    v-for="(group, g) in _.chunk(market.outcomes, 3)"
+                    v-for="(group, g) in getChunks(market.outcomes, 3)"
                     :key="g"
                   >
                     <div
@@ -83,9 +83,13 @@
                     >
                       <span class="x-table-cell-item" style="text-transform: capitalize"
                         >{{
-                          market.specifier !== '' ? outcome.outcomeName : outcome.displayName ?? outcome.outcomeName
+                          market.specifier !== ""
+                            ? outcome.outcomeName
+                            : outcome.displayName ?? outcome.outcomeName
                         }} </span
-                      ><span class="x-table-cell-item">{{ outcome.odds.toFixed(2) }}</span>
+                      ><span class="x-table-cell-item">{{
+                        outcome.odds.toFixed(2)
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -99,57 +103,88 @@
   </SportsLayout>
 </template>
 <script setup>
-import SportsLayout from '@/components/Shared/SportsLayout.vue'
-import { useRoute, useRouter } from 'vue-router'
-import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-import { ref, onMounted, computed } from 'vue'
-import { useCouponStore } from '@/stores'
-import emitter from '@/plugins/emitter'
+import SportsLayout from "@/components/Shared/SportsLayout.vue";
+import { useRoute, useRouter } from "vue-router";
+import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
+import { ref, onMounted, computed } from "vue";
+import { useCouponStore } from "@/stores";
+import emitter from "@/plugins/emitter";
 
-import _ from 'lodash'
-import { getFixtureMarkets, unslugify, createID, isSelected } from '@/helpers'
-import moment from 'moment'
+import _ from "lodash";
+import { getFixtureMarkets, unslugify, createID, isSelected } from "@/helpers";
+import moment from "moment";
 // import LiveInplay from '@/components/LiveInplay.vue'
-import $ from 'jquery'
+import $ from "jquery";
 
-const couponStore = useCouponStore()
-const route = useRoute()
-const isLoading = ref(false)
-const matchDetails = ref({})
+const couponStore = useCouponStore();
+const route = useRoute();
+const isLoading = ref(false);
+const matchDetails = ref({});
 
-const competitor1 = ref()
-const competitor2 = ref()
+const competitor1 = ref();
+const competitor2 = ref();
 
 async function fetchMatchDetails() {
-  isLoading.value = true
-  const id = route.params.event_id
-  const res = await getFixtureMarkets(id)
-  isLoading.value = false
+  isLoading.value = true;
+  const id = route.params.event_id;
+  const res = await getFixtureMarkets(id);
+  isLoading.value = false;
   if (res && !_.isEmpty(res) && res.markets) {
-    matchDetails.value = res
-    competitor1.value = res.competitor1
-    competitor2.value = res.competitor2
+    matchDetails.value = res;
+    competitor1.value = res.competitor1;
+    competitor2.value = res.competitor2;
   } else {
-    emitter.emit('showDialog', {
-      dialogType: 'error',
+    emitter.emit("showDialog", {
+      dialogType: "error",
       dialogData: {
-        data: { message: 'This event is no longer available' },
-        nextRoute: '/'
-      }
-    })
+        data: { message: "This event is no longer available" },
+        nextRoute: "/",
+      },
+    });
   }
 }
 
+const getChunks = (outcomes, n) => {
+  let x = uniqueOutcomes(outcomes);
+  return _.chunk(x, n);
+};
+
+const uniqueMarkets = (markets) => {
+  console.log(markets);
+  let x = markets.filter(
+    (market, index, self) =>
+      index ===
+      self.findIndex(
+        (o) => o.marketID === market.marketID && o.specifier === market.specifier
+      )
+  );
+  return x;
+};
+
+const uniqueOutcomes = (outcomes) => {
+  let x = outcomes.filter(
+    (outcome, index, self) =>
+      index === self.findIndex((o) => o.outcomeID === outcome.outcomeID)
+  );
+  return x;
+};
+
 function replaceCompetitorNames(inputString) {
   const replacedString = inputString
-    .replace(new RegExp(competitor1.value, 'g'), 'Home')
-    .replace(new RegExp(competitor2.value, 'g'), 'Away')
-  return replacedString
+    .replace(new RegExp(competitor1.value, "g"), "Home")
+    .replace(new RegExp(competitor2.value, "g"), "Away");
+  return replacedString;
 }
 
 function addToBetslip(event, odd) {
-  if (odd.odds < 1) return
-  const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
+  if (odd.odds < 1) return;
+  const id = createID(
+    event.gameID,
+    event.matchID,
+    odd.outcomeName,
+    odd.oddID,
+    event.name
+  );
   const data = {
     fixture: event,
     market_name: odd.marketName,
@@ -159,34 +194,36 @@ function addToBetslip(event, odd) {
     odds: odd.odds,
     odd_id: odd.oddID,
     odd_name: odd.outcomeName,
-    type: 'prematch',
+    type: "prematch",
     event_id: event.gameID,
-    specifier: odd.specifier
-  }
+    specifier: odd.specifier,
+  };
 
   // return couponStore.addToCoupon(data)
 
-  const existsInBetslip = isSelected(id, couponStore.coupon)
-  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
+  const existsInBetslip = isSelected(id, couponStore.coupon);
+  return existsInBetslip
+    ? couponStore.removeSelection(id)
+    : couponStore.addToCoupon(data);
 }
 
 function sortByKey(array, key, ascending = true) {
   return array.slice().sort((a, b) => {
-    const valA = parseInt(a[key], 10)
-    const valB = parseInt(b[key], 10)
+    const valA = parseInt(a[key], 10);
+    const valB = parseInt(b[key], 10);
 
     if (isNaN(valA) || isNaN(valB)) {
       // Handle cases where parsing fails
-      return 0
+      return 0;
     }
 
-    return ascending ? valA - valB : valB - valA
-  })
+    return ascending ? valA - valB : valB - valA;
+  });
 }
 
 onMounted(async () => {
-  await fetchMatchDetails()
-})
+  await fetchMatchDetails();
+});
 </script>
 
 <style scoped>
@@ -280,8 +317,8 @@ onMounted(async () => {
   width: 60px;
 }
 .x-detail-wrapper .x-detail-loading .x-icon-loading::before {
-  content: '\e610';
-  font-family: 'iconfont' !important;
+  content: "\e610";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -371,16 +408,16 @@ onMounted(async () => {
   word-spacing: 8px;
 }
 .x-eventDetail .x-t-info .game-time::before {
-  content: '\e668';
-  font-family: 'iconfont' !important;
+  content: "\e668";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 .x-eventDetail .x-t-info .game-time::before {
-  content: '\e68e';
-  font-family: 'iconfont' !important;
+  content: "\e68e";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -394,8 +431,8 @@ onMounted(async () => {
   margin-right: 8px;
 }
 .x-eventDetail .x-t-info .live-in-play::before {
-  content: '\e64e';
-  font-family: 'iconfont' !important;
+  content: "\e64e";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -423,7 +460,7 @@ onMounted(async () => {
 }
 .x-eventDetail .x-title-wrapper .x-right:after {
   clear: both;
-  content: '.';
+  content: ".";
   display: block;
   height: 0;
   visibility: hidden;
@@ -463,16 +500,16 @@ onMounted(async () => {
   margin-top: -10px;
 }
 .x-eventDetail .x-title-wrapper .x-icon-unpack::before {
-  content: '\e62d';
-  font-family: 'iconfont' !important;
+  content: "\e62d";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 .x-eventDetail .x-title-wrapper .x-icon-pack::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -502,8 +539,8 @@ onMounted(async () => {
   color: #353a45;
 }
 .x-eventDetail .x-title-wrapper .x-icon-h2h::before {
-  content: '\e61d';
-  font-family: 'iconfont' !important;
+  content: "\e61d";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -513,8 +550,8 @@ onMounted(async () => {
   color: var(--brand-secondary);
 }
 .x-eventDetail .x-title-wrapper .x-icon-h2h.active em::before {
-  content: '\e62d';
-  font-family: 'iconfont' !important;
+  content: "\e62d";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -568,7 +605,7 @@ onMounted(async () => {
   position: absolute;
   top: 0;
   right: -6px;
-  content: '';
+  content: "";
   width: 0;
   height: 0;
   border-top: 7px solid #33ea6a;
@@ -627,7 +664,13 @@ onMounted(async () => {
   margin-right: 10px;
 }
 .x-eventDetail .x-list-wrapper .x-list .x-info-wrapper .x-score > div > span:last-of-type,
-.x-eventDetail .x-list-wrapper .x-list .x-info-wrapper .x-score > div > span:only-of-type {
+.x-eventDetail
+  .x-list-wrapper
+  .x-list
+  .x-info-wrapper
+  .x-score
+  > div
+  > span:only-of-type {
   margin-right: 0;
 }
 .x-eventDetail .x-list-wrapper .x-list .x-info-wrapper .x-icon-more {
@@ -637,8 +680,8 @@ onMounted(async () => {
   line-height: 16px;
 }
 .x-eventDetail .x-list-wrapper .x-list .x-info-wrapper .x-icon-more::before {
-  content: '\e608';
-  font-family: 'iconfont' !important;
+  content: "\e608";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -805,8 +848,8 @@ onMounted(async () => {
   animation: logoLoading 1s infinite cubic-bezier(0.4, 0, 1, 1) alternate;
 }
 .x-eventDetail .x-error-wrapper .x-icon-loading::before {
-  content: '\e610';
-  font-family: 'iconfont' !important;
+  content: "\e610";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -989,8 +1032,8 @@ onMounted(async () => {
   cursor: pointer;
 }
 .x-table-header .x-icon--unfold::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1001,8 +1044,8 @@ onMounted(async () => {
   transform: translate3d(0, -2px, 0) rotate(-90deg);
 }
 .x-table-header .x-icon--fold::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1023,8 +1066,8 @@ onMounted(async () => {
   background: rgba(234, 236, 239, 0.15);
 }
 .x-table-header .x-icon-priority::before {
-  content: '\e60c';
-  font-family: 'iconfont' !important;
+  content: "\e60c";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1049,8 +1092,8 @@ onMounted(async () => {
   display: inline-block;
 }
 .x-table-header .x-icon-priority--checked::before {
-  content: '\e60c';
-  font-family: 'iconfont' !important;
+  content: "\e60c";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1077,8 +1120,8 @@ onMounted(async () => {
   cursor: pointer;
 }
 .x-table-header .x-icon-tips::before {
-  content: '\e651';
-  font-family: 'iconfont' !important;
+  content: "\e651";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1116,7 +1159,7 @@ onMounted(async () => {
   padding: 7px 10px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: var(--brand-secondary);
+  background: var(--brand-prematch-odds-bg);
   color: #fff;
   border-radius: 4px;
 }
@@ -1148,16 +1191,16 @@ onMounted(async () => {
   right: 2px;
 }
 .x-outcome .x-table-cell-item.x-icon-arrow--up::before {
-  content: '\e609';
-  font-family: 'iconfont' !important;
+  content: "\e609";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 .x-outcome .x-table-cell-item.x-icon-arrow--down::before {
-  content: '\e605';
-  font-family: 'iconfont' !important;
+  content: "\e605";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1180,8 +1223,8 @@ onMounted(async () => {
   min-width: 100%;
 }
 .x-outcome .x-icon-lock::before {
-  content: '\e647';
-  font-family: 'iconfont' !important;
+  content: "\e647";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

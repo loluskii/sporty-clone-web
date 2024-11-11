@@ -537,7 +537,7 @@ defineComponent({
   padding: 7px 10px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: var(--brand-secondary);
+  background: var(--brand-prematch-odds-bg);
   color: #fff;
   border-radius: 4px;
 }
