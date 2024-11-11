@@ -10,7 +10,7 @@
             ><span data-cms-key="home">Home</span>
           </Router-Link>
           <Router-Link
-            v-for="(sport, s) in sportsList.slice(0, 10)"
+            v-for="(sport, s) in sportsList.slice(0, 9)"
             :to="{ name: 'fixtures-by-sport', params: { sport: slugify(sport.sportName) } }"
             :key="s"
             class="x-flex-item"
@@ -31,7 +31,7 @@
             <span class="arrow-icon">
               <div class="dropdown-menu" v-show="showMoreSports">
                 <Router-Link
-                  v-for="(sport, t) in sportsList.slice(10)"
+                  v-for="(sport, t) in sportsList.slice(9)"
                   :key="t"
                   class="x-flex-item dropdown"
                   :to="{ name: 'fixtures-by-sport', params: { sport: slugify(sport.sportName) } }"
