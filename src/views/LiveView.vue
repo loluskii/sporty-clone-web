@@ -80,6 +80,7 @@
                               {{ market.specifier }}
                             </div>
                             <template
+                              :key="o"
                               v-for="(outcome, o) in _.sortBy(
                                 market.outcomes,
                                 'outcomeID'
