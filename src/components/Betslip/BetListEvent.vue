@@ -5,7 +5,10 @@
       <div class="x-lay-mid">
         <div class="x-lay-mid">
           <div class="x-item-play">
-            <i class="x-icon-sport" :class="'x-icon--'+selection.sport.toLowerCase()"></i>
+            <i
+              class="x-icon-sport"
+              :class="'x-icon--' + selection.sport.toLowerCase()"
+            ></i>
             <span>{{ selection.outcomeName }}</span>
             <i class="x-icon-delete" @click="removeSelection(selection.element_id)"></i>
           </div>
@@ -19,7 +22,9 @@
             <span class="x-item-market">{{ selection.marketName }}</span>
 
             <div class="x-item-odds">
-              <span v-if="!selectionIsExpired" class="x-text-main">{{ selection.odds }}</span>
+              <span v-if="!selectionIsExpired" class="x-text-main">{{
+                parseFloat(selection.odds).toFixed(2)
+              }}</span>
               <span v-else class="x-text-min x-text-btn">Unavailable</span>
             </div>
           </div>
@@ -30,28 +35,28 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useCouponStore } from '@/stores'
+import { computed } from "vue";
+import { useCouponStore } from "@/stores";
 
-const couponStore = useCouponStore()
+const couponStore = useCouponStore();
 
-defineEmits(['toggle-betslip'])
+defineEmits(["toggle-betslip"]);
 const props = defineProps({
-  selection: Object
-})
+  selection: Object,
+});
 
 const selectionIsExpired = computed(() => {
-  const parsedDate = new Date(props.selection.eventDate)
+  const parsedDate = new Date(props.selection.eventDate);
   // Get the current date and time
-  const currentDate = new Date()
+  const currentDate = new Date();
   // Calculate the difference in milliseconds
-  const difference = currentDate - parsedDate
-  const hoursDifference = difference / (1000 * 60 * 60)
-  return hoursDifference >= 3
-})
+  const difference = currentDate - parsedDate;
+  const hoursDifference = difference / (1000 * 60 * 60);
+  return hoursDifference >= 3;
+});
 
 async function removeSelection(element_id) {
-  await couponStore.removeSelection(element_id)
+  await couponStore.removeSelection(element_id);
 }
 </script>
 
@@ -147,7 +152,7 @@ async function removeSelection(element_id) {
   position: absolute;
   top: 0;
   right: -2px;
-  content: '';
+  content: "";
   width: 0;
   height: 0;
   border-top: 8px solid var(--brand-secondary);
@@ -169,8 +174,8 @@ async function removeSelection(element_id) {
   float: right;
 }
 .x-list .x-item-play .x-icon-delete::before {
-  content: '\e69a';
-  font-family: 'iconfont' !important;
+  content: "\e69a";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -222,8 +227,8 @@ async function removeSelection(element_id) {
   color: var(--brand-secondary);
 }
 .x-list .x-icon-up::before {
-  content: '\e609';
-  font-family: 'iconfont' !important;
+  content: "\e609";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -237,8 +242,8 @@ async function removeSelection(element_id) {
   color: #e41827;
 }
 .x-list .x-icon-down::before {
-  content: '\e605';
-  font-family: 'iconfont' !important;
+  content: "\e605";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
