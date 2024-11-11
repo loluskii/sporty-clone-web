@@ -41,7 +41,7 @@
                     <div class="x-result-wrapper">
                       <div class="x-result-title">
                         <span>{{
-                          eventDetail.statusCode === 1 ? eventDetail.eventTime : 'Ended'
+                          eventDetail.statusCode === 1 ? eventDetail.eventTime : "Ended"
                         }}</span>
                       </div>
                       <ul class="x-result-score">
@@ -78,7 +78,9 @@
                             class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
                           >
                             <i class="x-icon--bg x-icon--fold"></i>
-                            <span class="x-table-header-title">{{ market.marketName }}</span>
+                            <span class="x-table-header-title">{{
+                              market.marketName
+                            }}</span>
                           </div>
                           <div
                             class="x-table-cell x-table-cell--responsive x-table-cell--transparent"
@@ -88,14 +90,16 @@
                       <div class="x-table">
                         <div
                           class="x-table-row x-outcome"
-                          v-for="(group, g) in _.chunk(market.outcomes, 3)"
+                          v-for="(group, g) in getChunks(market.outcomes, 3)"
                           :key="g"
                         >
                           <div
                             v-for="(outcome, o) in sortByKey(group, 'outcomeID')"
                             :key="o"
                             class="x-table-cell x-table-cell--responsive"
-                            :style="group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'"
+                            :style="
+                              group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'
+                            "
                             @click="addToBetslip(eventDetail, outcome)"
                             :class="{
                               'x-table-cell--checked': isSelected(
@@ -108,12 +112,17 @@
                                 ),
                                 couponStore.coupon
                               ),
-                              'x-table-cell--disable': outcome.odds <= 1
+                              'x-table-cell--disable': outcome.odds <= 1,
                             }"
                           >
-                            <span class="x-table-cell-item" style="text-transform: capitalize">
+                            <span
+                              class="x-table-cell-item"
+                              style="text-transform: capitalize"
+                            >
                               {{
-                                market.specifier !== '' ? outcome.outcomeName : outcome.displayName ?? outcome.outcomeName
+                                market.specifier !== ""
+                                  ? outcome.outcomeName
+                                  : outcome.displayName ?? outcome.outcomeName
                               }}
                             </span>
                             <span v-if="outcome.odds > 1" class="x-table-cell-item">{{
@@ -148,7 +157,10 @@
                   <span>Instant Registration</span>
                 </div>
                 <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
-                <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
+                <div
+                  tabindex="6"
+                  class="x-input-wrapper x-input-group x-input-group--prepend"
+                >
                   <div class="x-input-prepend"><span>+234</span></div>
                   <span class="x-input-com">
                     <input
@@ -175,99 +187,110 @@
 </template>
 
 <script setup>
-import { defineComponent, watch, ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { getFixtureMarkets, chunks, createID, isSelected, getLiveHighlights } from '@/helpers'
-import LiveLayout from '@/components/Shared/LiveLayout.vue'
-import BetContainer from '@/components/Shared/BetContainer.vue'
-import _ from 'lodash'
-import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
+import { defineComponent, watch, ref, computed } from "vue";
+import { useRoute } from "vue-router";
+import {
+  getFixtureMarkets,
+  chunks,
+  createID,
+  isSelected,
+  getLiveHighlights,
+} from "@/helpers";
+import LiveLayout from "@/components/Shared/LiveLayout.vue";
+import BetContainer from "@/components/Shared/BetContainer.vue";
+import _ from "lodash";
+import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
 
-import { useCouponStore, useUtilsStore } from '@/stores'
-const activeSportID = ref(1)
+import { useCouponStore, useUtilsStore } from "@/stores";
+const activeSportID = ref(1);
 
-const eventMarkets = ref()
-const eventDetail = ref()
-const isLoading = ref(false)
-const route = useRoute()
+const eventMarkets = ref();
+const eventDetail = ref();
+const isLoading = ref(false);
+const route = useRoute();
 // const errorMessage = ref()
-const couponStore = useCouponStore()
-const utilsStore = useUtilsStore()
-const homeTeam = ref()
-const awayTeam = ref()
+const couponStore = useCouponStore();
+const utilsStore = useUtilsStore();
+const homeTeam = ref();
+const awayTeam = ref();
 
 watch(
   () => [route.name, route.params.match_id],
   async ([routeName, eventId]) => {
     switch (routeName) {
-      case 'live-fixtures-specific-detail':
-        await getEventDetail(eventId)
-        break
+      case "live-fixtures-specific-detail":
+        await getEventDetail(eventId);
+        break;
 
       default:
-        await getLiveData()
-        break
+        await getLiveData();
+        break;
     }
   },
   { immediate: true } // Trigger the watch callback immediately on component mount
-)
+);
 const getImageSrc = (sportId) => {
-  const imageUrl = new URL(`../../assets/images/sports/${sportId}.png`, import.meta.url)
-  return imageUrl
-}
+  const imageUrl = new URL(`../../assets/images/sports/${sportId}.png`, import.meta.url);
+  return imageUrl;
+};
 // get sports list from store
 const sportList = computed(() => {
-  return utilsStore.sportsMenu
-})
+  return utilsStore.sportsMenu;
+});
 
 function sortByKey(array, key, ascending = true) {
   return array.slice().sort((a, b) => {
-    const valA = parseInt(a[key], 10)
-    const valB = parseInt(b[key], 10)
+    const valA = parseInt(a[key], 10);
+    const valB = parseInt(b[key], 10);
 
     if (isNaN(valA) || isNaN(valB)) {
       // Handle cases where parsing fails
-      return 0
+      return 0;
     }
 
-    return ascending ? valA - valB : valB - valA
-  })
+    return ascending ? valA - valB : valB - valA;
+  });
 }
 
 async function getEventDetail(id) {
-  isLoading.value = true
+  isLoading.value = true;
   try {
-    const res = await getFixtureMarkets(id)
-    eventDetail.value = res
-    eventMarkets.value = res.markets
-    homeTeam.value = res.competitor1
-    awayTeam.value = res.competitor2
-    isLoading.value = false
+    const res = await getFixtureMarkets(id);
+    eventDetail.value = res;
+    eventMarkets.value = res.markets;
+    homeTeam.value = res.competitor1;
+    awayTeam.value = res.competitor2;
+    isLoading.value = false;
   } catch (error) {
-    eventDetail.value = null
+    eventDetail.value = null;
     // errorMessage.value = res.message
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
+const getChunks = (outcomes, n) => {
+  let x = uniqueOutcomes(outcomes);
+  return _.chunk(x, n);
+};
+
 async function getLiveData() {
-  isLoading.value = true
-  const res = await getLiveHighlights()
-  const selectedMatch = res.fixtures.find((match) => match.sportID == 1)
+  isLoading.value = true;
+  const res = await getLiveHighlights();
+  const selectedMatch = res.fixtures.find((match) => match.sportID == 1);
   if (selectedMatch) {
-    await getEventDetail(selectedMatch.matchID)
+    await getEventDetail(selectedMatch.matchID);
   }
 }
 
 function addToBetslip(market, outcome) {
-  if (outcome.odds < 1) return
+  if (outcome.odds < 1) return;
   const id = createID(
     eventDetail.value.gameID,
     eventDetail.value.matchID,
     outcome.outcomeName,
     outcome.oddID,
     eventDetail.value.name
-  )
+  );
   const data = {
     fixture: eventDetail.value,
     market_name: market.marketName,
@@ -277,30 +300,32 @@ function addToBetslip(market, outcome) {
     odds: outcome.odds,
     odd_id: outcome.oddID,
     odd_name: outcome.outcomeName,
-    type: 'live',
+    type: "live",
     event_id: eventDetail.value.gameID,
-    specifier: outcome.specifier
-  }
+    specifier: outcome.specifier,
+  };
   // return couponStore.addToCoupon(data)
-  const existsInBetslip = isSelected(id, couponStore.coupon)
-  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
+  const existsInBetslip = isSelected(id, couponStore.coupon);
+  return existsInBetslip
+    ? couponStore.removeSelection(id)
+    : couponStore.addToCoupon(data);
 }
 
 function showFixtureAnalysis(id) {
   return window.open(
     `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
-    'stats',
-    'width=1078,height=768'
-  )
+    "stats",
+    "width=1078,height=768"
+  );
 }
 
 defineComponent({
-  name: 'fixture-detail'
-})
+  name: "fixture-detail",
+});
 </script>
 
 <style scoped>
-@import url('@/assets/css/live.css');
+@import url("@/assets/css/live.css");
 
 .x-text-second {
   font-size: 13px;
@@ -410,8 +435,8 @@ defineComponent({
   cursor: pointer;
 }
 .x-table-header .x-icon--unfold::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -422,8 +447,8 @@ defineComponent({
   transform: translate3d(0, -2px, 0) rotate(-90deg);
 }
 .x-table-header .x-icon--fold::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -444,8 +469,8 @@ defineComponent({
   background: rgba(234, 236, 239, 0.15);
 }
 .x-table-header .x-icon-priority::before {
-  content: '\e60c';
-  font-family: 'iconfont' !important;
+  content: "\e60c";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -470,8 +495,8 @@ defineComponent({
   display: inline-block;
 }
 .x-table-header .x-icon-priority--checked::before {
-  content: '\e60c';
-  font-family: 'iconfont' !important;
+  content: "\e60c";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -498,8 +523,8 @@ defineComponent({
   cursor: pointer;
 }
 .x-table-header .x-icon-tips::before {
-  content: '\e651';
-  font-family: 'iconfont' !important;
+  content: "\e651";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -569,16 +594,16 @@ defineComponent({
   right: 2px;
 }
 .x-outcome .x-table-cell-item.x-icon-arrow--up::before {
-  content: '\e609';
-  font-family: 'iconfont' !important;
+  content: "\e609";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 .x-outcome .x-table-cell-item.x-icon-arrow--down::before {
-  content: '\e605';
-  font-family: 'iconfont' !important;
+  content: "\e605";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -601,8 +626,8 @@ defineComponent({
   min-width: 100%;
 }
 .x-outcome .x-icon-lock::before {
-  content: '\e647';
-  font-family: 'iconfont' !important;
+  content: "\e647";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

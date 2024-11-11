@@ -4,7 +4,9 @@
       <div class="left-team-table">
         <div class="time">
           <div class="clock-time">{{ match.eventTime }}&nbsp;&nbsp;</div>
-          <div class="game-id"><span class="game-id-label">ID: </span>{{ match.gameID }}</div>
+          <div class="game-id">
+            <span class="game-id-label">ID: </span>{{ match.gameID }}
+          </div>
         </div>
         <div
           title=""
@@ -17,8 +19,8 @@
                 category: slugify(match.categoryName),
                 tournament_name: slugify(match.tournament),
                 event_name: slugify(match.name),
-                event_id: match.matchID
-              }
+                event_id: match.matchID,
+              },
             })
           "
         >
@@ -68,17 +70,17 @@
                 odds.odds <= 1
                   ? 'x-outcome--disabled'
                   : isSelected(
-                        createID(
-                          match.gameID,
-                          match.matchID,
-                          odds.outcomeName,
-                          odds.oddID,
-                          match.name
-                        ),
-                        couponStore.coupon
-                      )
-                    ? 'x-outcome--checked'
-                    : ''
+                      createID(
+                        match.gameID,
+                        match.matchID,
+                        odds.outcomeName,
+                        odds.oddID,
+                        match.name
+                      ),
+                      couponStore.coupon
+                    )
+                  ? 'x-outcome--checked'
+                  : ''
               "
             >
               <span class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
@@ -91,7 +93,10 @@
             >
               <span class="x-icon-lock"></span>
             </div>
-            <EmptyOdds v-for="(odd, index) in activeMarket?.outcomes" :key="index"></EmptyOdds>
+            <EmptyOdds
+              v-for="(odd, index) in activeMarket?.outcomes"
+              :key="index"
+            ></EmptyOdds>
           </template>
         </template>
         <template v-else>
@@ -103,105 +108,119 @@
   </div>
 </template>
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue'
-import { slugify, sortArr, createID, isSelected, uniqueOdds } from '@/helpers'
-import _ from 'lodash'
-import EmptyOdds from '../EmptyOdds.vue'
-import { useCouponStore } from '@/stores'
+import { computed, ref, onMounted, watch } from "vue";
+import { slugify, sortArr, createID, isSelected, uniqueOdds } from "@/helpers";
+import _ from "lodash";
+import EmptyOdds from "../EmptyOdds.vue";
+import { useCouponStore } from "@/stores";
 
-const couponStore = useCouponStore()
-import emitter from '@/plugins/emitter'
+const couponStore = useCouponStore();
+import emitter from "@/plugins/emitter";
 const props = defineProps({
   activeMarket: Object,
-  match: Object
-})
+  match: Object,
+});
 
-const activeSpecifier = ref()
-const specifierOpen = ref(false)
+const activeSpecifier = ref();
+const specifierOpen = ref(false);
 
-const outcomes = ref([])
+const outcomes = ref([]);
 
 const getSpecifiers = computed(() => {
-  if (props.activeMarket && props.activeMarket.specifier && props.activeMarket.specifier !== '') {
-    const result = []
+  if (
+    props.activeMarket &&
+    props.activeMarket.specifier &&
+    props.activeMarket.specifier !== ""
+  ) {
+    const result = [];
 
-    const outcomes = props.match.outcomes
+    const outcomes = props.match.outcomes;
     if (outcomes.length > 0) {
       const filtered = outcomes.filter(
         (item) => item.marketID === parseInt(props.activeMarket.marketID)
-      )
+      );
 
       filtered.forEach((outcome) => {
-        let specifier = outcome.specifier
-        let found = result.find((item) => item.specifier === specifier)
+        let specifier = outcome.specifier;
+        let found = result.find((item) => item.specifier === specifier);
         if (!found)
           // check if specifier has been listed
-          result.push({ specifier, value: specifier.split('=')[1] }) //push value to array
-      })
+          result.push({ specifier, value: specifier.split("=")[1] }); //push value to array
+      });
     }
-    return result.sort((a, b) => a.value - b.value)
+    return result.sort((a, b) => a.value - b.value);
   } else {
-    return []
+    return [];
   }
-})
+});
 const getOdds = () => {
   // Find and return the odds based on marketID and outcomeID
   if (props.activeMarket && props.match.activeMarkets > 0) {
     if (props.match.outcomes) {
-      const odds = props.match.outcomes
-      let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
-      if (props.activeMarket.specifier && props.activeMarket.specifier !== '') {
-        let defaultSpecifier = filtered[0]?.specifier
+      const odds = props.match.outcomes;
+      let filtered = odds.filter(
+        (item) => item.marketID === parseInt(props.activeMarket.marketID)
+      );
+      if (props.activeMarket.specifier && props.activeMarket.specifier !== "") {
+        let defaultSpecifier = filtered[0]?.specifier;
         if (defaultSpecifier) {
-          filtered = filtered.filter((item) => item.specifier === defaultSpecifier)
-          activeSpecifier.value = defaultSpecifier.split('=')[1]
+          filtered = filtered.filter((item) => item.specifier === defaultSpecifier);
+          activeSpecifier.value = defaultSpecifier.split("=")[1];
         }
-      }else{
-        filtered = uniqueOdds(filtered)
+      } else {
+        filtered = uniqueOdds(filtered);
       }
       if (filtered.length) {
         // console.log(_.sortBy(filtered, 'outcomeID'))
-        outcomes.value = sortArr(filtered, 'outcomeID')
+        outcomes.value = sortArr(filtered, "outcomeID");
       } else {
-        outcomes.value = []
+        outcomes.value = [];
       }
     }
   }
-}
+};
 
 function showFixtureAnalysis(id) {
   return window.open(
     `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
-    'stats',
-    'width=1078,height=768'
-  )
+    "stats",
+    "width=1078,height=768"
+  );
 }
 
 const setActiveSpecifier = (spec) => {
-  console.log(spec)
+  console.log(spec);
   if (props.match.outcomes) {
-    const odds = props.match.outcomes
-    let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
-    filtered = filtered.filter((item) => item.specifier === spec.specifier)
-    outcomes.value = filtered
-    activeSpecifier.value = spec.value
+    const odds = props.match.outcomes;
+    let filtered = odds.filter(
+      (item) => item.marketID === parseInt(props.activeMarket.marketID)
+    );
+    filtered = filtered.filter((item) => item.specifier === spec.specifier);
+    outcomes.value = filtered;
+    activeSpecifier.value = spec.value;
   }
-}
+};
 const toggleList = () => {
-  specifierOpen.value = !specifierOpen.value
-}
+  specifierOpen.value = !specifierOpen.value;
+};
 
 watch(
   () => props.activeMarket,
   () => {
-    getOdds()
+    getOdds();
   },
   { immediate: true }
-)
+);
 
 function addToBetslip(event, odd) {
-  if (odd.odds < 1) return
-  const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
+  if (odd.odds < 1) return;
+  const id = createID(
+    event.gameID,
+    event.matchID,
+    odd.outcomeName,
+    odd.oddID,
+    event.name
+  );
   const data = {
     fixture: event,
     market_name: props.activeMarket.marketName,
@@ -211,20 +230,22 @@ function addToBetslip(event, odd) {
     odds: odd.odds,
     odd_id: odd.oddID,
     odd_name: odd.outcomeName,
-    type: 'prematch',
+    type: "prematch",
     event_id: event.gameID,
-    specifier: odd.specifier
-  }
+    specifier: odd.specifier,
+  };
 
   // return couponStore.addToCoupon(data)
 
-  const existsInBetslip = isSelected(id, couponStore.coupon)
-  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
+  const existsInBetslip = isSelected(id, couponStore.coupon);
+  return existsInBetslip
+    ? couponStore.removeSelection(id)
+    : couponStore.addToCoupon(data);
 }
 
 onMounted(() => {
-  getOdds()
-})
+  getOdds();
+});
 </script>
 <style>
 .af-select-item {

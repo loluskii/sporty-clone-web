@@ -30,7 +30,7 @@
               <div class="x-left">
                 <span class="x-against">{{ matchDetails.name }}</span>
               </div>
-              <div class="x-right">
+              <div class="x-right" @click="showFixtureAnalysis(matchDetails.matchID)">
                 <i class="x-icon-h2h"><em></em></i>
               </div>
             </div>
@@ -149,17 +149,13 @@ const getChunks = (outcomes, n) => {
   return _.chunk(x, n);
 };
 
-const uniqueMarkets = (markets) => {
-  console.log(markets);
-  let x = markets.filter(
-    (market, index, self) =>
-      index ===
-      self.findIndex(
-        (o) => o.marketID === market.marketID && o.specifier === market.specifier
-      )
+function showFixtureAnalysis(id) {
+  return window.open(
+    `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
+    "stats",
+    "width=1078,height=768"
   );
-  return x;
-};
+}
 
 const uniqueOutcomes = (outcomes) => {
   let x = outcomes.filter(
