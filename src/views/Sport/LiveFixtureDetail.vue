@@ -172,7 +172,10 @@
                   /></span>
                 </div>
                 <div class="x-btn-wrapper">
-                  <button class="af-button af-button--primary">
+                  <button
+                    class="af-button af-button--primary"
+                    @click.prevent="showRegisterModal"
+                  >
                     <span><span>Register</span></span>
                   </button>
                 </div>
@@ -200,6 +203,7 @@ import LiveLayout from "@/components/Shared/LiveLayout.vue";
 import BetContainer from "@/components/Shared/BetContainer.vue";
 import _ from "lodash";
 import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
+import emitter from "@/plugins/emitter";
 
 import { useCouponStore, useUtilsStore } from "@/stores";
 const activeSportID = ref(1);
@@ -317,6 +321,10 @@ function showFixtureAnalysis(id) {
     "stats",
     "width=1078,height=768"
   );
+}
+
+function showRegisterModal() {
+  emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
 }
 
 defineComponent({
