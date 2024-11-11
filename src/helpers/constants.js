@@ -1,7 +1,10 @@
 // let baseApi = import.meta.env.VITE_BASE_API;
-export const BASE_API = 'https://api.cubebet.ng'
-export const NEW_BASE_API = 'https://api.prod.etechdigital.com.ng/api/v2'
+export const BASE_API = import.meta.env.VITE_BASE_API
+export const NEW_BASE_API = import.meta.env.VITE_NEW_BASE_API
+
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
+export const BASE_URL = import.meta.env.VITE_BASE_URL
+
 export const AUTH_EXCLUDE_LIST = []
 export const WTH_PERC = 0
 

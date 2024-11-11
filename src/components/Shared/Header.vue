@@ -211,7 +211,7 @@
           <div class="x-left">
             <div class="x-logo-wrapper">
               <a href="/" class="x-image-wrapper"
-                ><img src="/logo.png" alt="cubebet" class="x-img x-img--logo"
+                ><img src="/default.png" alt="frapapa" class="x-img x-img--logo"
               /></a>
             </div>
           </div>
