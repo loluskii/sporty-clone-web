@@ -4,7 +4,7 @@
       <!-- <span class="circle"></span> -->
       <span class="text" data-cms-key="live_betting">Live Betting</span>
       <div class="config" style="">
-        <span class="refresh" @click="refetch">Refresh</span>
+        <span class="refresh" @click="handleRefresh">Refresh</span>
       </div>
     </div>
     <div id="print-container-live">
@@ -39,153 +39,178 @@
           </div>
         </div>
       </div>
-      <div v-if="!isLoading" style="position: relative">
-        <div class="match">
-          <div
-            class="x-table match-table live-table"
-            v-if="Object.keys(filteredLiveData).length > 0"
-          >
-            <template v-for="(liveGroup, g) in filteredLiveData" :key="g">
-              <div class="x-table-row league-row">
-                <div class="x-table-cell league">{{ liveGroup[0].categoryName }} {{ g }}</div>
-                <div class="x-table-cell each-module-wrap each-module-two-line">
-                  <div class="market-desc-wrap">
-                    <div
-                      v-for="(market, m) in activeSportMarkets"
-                      :key="m"
-                      class="market-desc"
-                      :style="activeSportMarkets.length > 1 ? 'width: 50%' : 'width: 100%'"
-                    >
-                      {{ market.marketName }}
-                    </div>
+      <div v-if="isLoading" class="loading-spinner-container">
+        <LoadingSpinner />
+      </div>
+      <div v-else-if="isManualRefetching" class="loading-spinner-container">
+        <LoadingSpinner />
+      </div>
+      <template v-else>
+        <div style="position: relative">
+          <div class="match">
+            <div
+              class="x-table match-table live-table"
+              v-if="Object.keys(filteredLiveData).length > 0"
+            >
+              <template v-for="(liveGroup, g) in filteredLiveData" :key="g">
+                <div class="x-table-row league-row">
+                  <div class="x-table-cell league">
+                    {{ liveGroup[0].categoryName }} {{ g }}
                   </div>
-                  <div>
-                    <div
-                      v-for="(market, m) in activeSportMarkets"
-                      :key="m"
-                      class="each-module-table"
-                      :class="activeSportMarkets.length > 1 ? 'two-markets' : ''"
-                    >
-                      <div v-if="market.specifier !== ''" class="each-module">
-                        {{ market.specifier }}
-                      </div>
-                      <template
-                        v-for="(outcome, o) in _.sortBy(market.outcomes, 'outcomeID')"
-                        :key="o"
+                  <div class="x-table-cell each-module-wrap each-module-two-line">
+                    <div class="market-desc-wrap">
+                      <div
+                        v-for="(market, m) in activeSportMarkets"
+                        :key="m"
+                        class="market-desc"
+                        :style="
+                          activeSportMarkets.length > 1 ? 'width: 50%' : 'width: 100%'
+                        "
                       >
-                        <div class="each-module">{{ outcome.outcomeName }}</div>
-                      </template>
+                        {{ market.marketName }}
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        v-for="(market, m) in activeSportMarkets"
+                        :key="m"
+                        class="each-module-table"
+                        :class="activeSportMarkets.length > 1 ? 'two-markets' : ''"
+                      >
+                        <div v-if="market.specifier !== ''" class="each-module">
+                          {{ market.specifier }}
+                        </div>
+                        <template
+                          v-for="(outcome, o) in _.sortBy(market.outcomes, 'outcomeID')"
+                          :key="o"
+                        >
+                          <div class="each-module">{{ outcome.outcomeName }}</div>
+                        </template>
+                      </div>
                     </div>
                   </div>
+                  <div class="x-table-cell"></div>
                 </div>
-                <div class="x-table-cell"></div>
+                <Fixture
+                  v-for="(match, m) in liveGroup"
+                  :key="m"
+                  :match="match"
+                  :activeMarkets="activeSportMarkets"
+                ></Fixture>
+              </template>
+              <div class="view-all" @click="$router.push({ name: 'live-view' })">
+                View All
               </div>
-              <Fixture
-                v-for="(match, m) in liveGroup"
-                :key="m"
-                :match="match"
-                :activeMarkets="activeSportMarkets"
-              ></Fixture>
-            </template>
-            <div class="view-all" @click="$router.push({ name: 'live-view' })">View All</div>
-          </div>
-          <div v-else class="x-sport-bet-no-data">
-            <div style="white-space: pre-line">
-              Sorry, there are no games currently<br />available in this category. Please try
-              later.<br />Thank you.
+            </div>
+            <div v-else class="x-sport-bet-no-data">
+              <div style="white-space: pre-line">
+                Sorry, there are no games currently<br />available in this category.
+                Please try later.<br />Thank you.
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <LoadingSpinner v-else></LoadingSpinner>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useUtilsStore } from '@/stores'
-import { computed, ref } from 'vue'
-import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
-import { useQuery } from 'vue-query'
-import { getLiveHighlights } from '@/helpers'
-import Fixture from '@/components/Live/Fixture.vue'
-import _ from 'lodash'
+import { useUtilsStore } from "@/stores";
+import { computed, ref } from "vue";
+import LoadingSpinner from "../Loaders/LoadingSpinner.vue";
+import { useQuery } from "vue-query";
+import { getLiveHighlights } from "@/helpers";
+import Fixture from "@/components/Live/Fixture.vue";
+import _ from "lodash";
 
-const utilsStore = useUtilsStore()
+const utilsStore = useUtilsStore();
 const sportList = computed(() => {
-  return utilsStore.sportsMenu
-})
+  return utilsStore.sportsMenu;
+});
 
-const showMoreSportsMenu = ref(false)
+const showMoreSportsMenu = ref(false);
 
-const activeSportID = ref(1)
-const marketGroup = ref([])
-const isEmptyResponse = ref(false)
-const completeData = ref([])
+const activeSportID = ref(1);
+const marketGroup = ref([]);
+const isEmptyResponse = ref(false);
+const completeData = ref([]);
 
-const MoreSportsLabel = ref('More Sports')
+const MoreSportsLabel = ref("More Sports");
+const isManualRefetching = ref(false);
 
-const { data, error, isLoading, refetch } = useQuery('liveData', getLiveHighlights, {
-  refetchInterval: 60000, // 25 seconds in milliseconds
-  refetchOnWindowFocus: true,
-  onError: (err) => {
-    console.error(err)
-  },
-  onSuccess: (response) => {
-    if (response.fixtures) {
-      // if the
-      if (completeData.value.length === 0) {
-        completeData.value = response.fixtures.slice(0, 15)
-        marketGroup.value = response.markets.filter((m) => m.specifier == '')
+const handleRefresh = () => {
+  isManualRefetching.value = true;
+  refetch().finally(() => {
+    isManualRefetching.value = false;
+  });
+};
+
+const { data, error, isLoading, refetch, isFetching } = useQuery(
+  "liveData",
+  getLiveHighlights,
+  {
+    refetchInterval: 60000, // 25 seconds in milliseconds
+    refetchOnWindowFocus: true,
+    onError: (err) => {
+      console.error(err);
+    },
+    onSuccess: (response) => {
+      if (response.fixtures) {
+        // if the
+        if (completeData.value.length === 0) {
+          completeData.value = response.fixtures.slice(0, 15);
+          marketGroup.value = response.markets.filter((m) => m.specifier == "");
+        } else {
+          response.fixtures.slice(0, 15).forEach((newFixture) => {
+            const index = completeData.value.findIndex(
+              (oldFixture) => oldFixture.matchID === newFixture.matchID
+            );
+            if (index !== -1) {
+              // Replace the old fixture with the new one
+              completeData.value[index] = newFixture;
+            } else {
+              // If the fixture does not exist in completeData.value, add it
+              completeData.value.push(newFixture);
+            }
+          });
+        }
       } else {
-        response.fixtures.slice(0, 15).forEach((newFixture) => {
-          const index = completeData.value.findIndex(
-            (oldFixture) => oldFixture.matchID === newFixture.matchID
-          )
-          if (index !== -1) {
-            // Replace the old fixture with the new one
-            completeData.value[index] = newFixture
-          } else {
-            // If the fixture does not exist in completeData.value, add it
-            completeData.value.push(newFixture)
-          }
-        })
+        if (!completeData.value.length) {
+          isEmptyResponse.value = true;
+        }
       }
-    } else {
-      if (!completeData.value.length) {
-        isEmptyResponse.value = true
-      }
-    }
+    },
   }
-})
+);
 
 // get active sport data from completelive and group by tournament
 const filteredLiveData = computed(() => {
   const res =
     completeData.value && !isEmptyResponse.value
       ? completeData.value.filter((s) => s.sportID == activeSportID.value).splice(0, 5)
-      : []
-  return _.groupBy(res, 'tournament')
-})
+      : [];
+  return _.groupBy(res, "tournament");
+});
 
 const activeSportMarkets = computed(() => {
-  let data = marketGroup.value.filter((s) => s.sportID == activeSportID.value)
-  data = data.sort((a, b) => a.marketID - b.marketID)
-  return data ? data.slice(0, 2) : []
-})
+  let data = marketGroup.value.filter((s) => s.sportID == activeSportID.value);
+  data = data.sort((a, b) => a.marketID - b.marketID);
+  return data ? data.slice(0, 2) : [];
+});
 
 function toggleMoreSports() {
-  showMoreSportsMenu.value = !showMoreSportsMenu.value
+  showMoreSportsMenu.value = !showMoreSportsMenu.value;
 }
 
 function setActiveSport(sport) {
-  if (typeof sport === 'object') {
-    MoreSportsLabel.value = sport.sportName
-    activeSportID.value = sport.sportID
-    showMoreSportsMenu.value = false
+  if (typeof sport === "object") {
+    MoreSportsLabel.value = sport.sportName;
+    activeSportID.value = sport.sportID;
+    showMoreSportsMenu.value = false;
   } else {
-    activeSportID.value = sport
-    MoreSportsLabel.value = 'More Sports'
+    activeSportID.value = sport;
+    MoreSportsLabel.value = "More Sports";
   }
 }
 </script>
