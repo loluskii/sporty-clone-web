@@ -50,7 +50,7 @@ const router = createRouter({
       component: LiveFixtureDetail
     },
     {
-      path: '/Sports/Live/:sport/:category/:tournament/:match/:match_id',
+      path: '/Sports/Live/:sport/:tournament/:match/:match_id',
       name: 'live-fixtures-specific-detail',
       component: LiveFixtureDetail
     },
@@ -75,7 +75,7 @@ const router = createRouter({
       component: FixtureView
     },
     {
-      path: '/Sports/Prematch/:sport/:category/:tournament_name/:event_name/:event_id',
+      path: '/Sports/Prematch/:sport/:tournament_name/:event_name/:event_id',
       name: 'fixtures-detail',
       component: FixtureDetail
     },

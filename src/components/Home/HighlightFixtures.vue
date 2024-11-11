@@ -14,7 +14,6 @@
               name: 'fixtures-detail',
               params: {
                 sport: slugify(game.sportName),
-                category: slugify(game.categoryName),
                 tournament_name: slugify(game.tournament),
                 event_name: slugify(game.name),
                 event_id: game.matchID

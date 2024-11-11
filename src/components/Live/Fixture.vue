@@ -22,7 +22,6 @@
               name: 'live-fixtures-specific-detail',
               params: {
                 sport: slugify(match.sportName),
-                category: slugify(match.categoryName),
                 tournament: slugify(match.tournament),
                 match: slugify(match.name),
                 match_id: match.matchID
