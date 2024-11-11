@@ -24,8 +24,8 @@
                 sport: slugify(match.sportName),
                 tournament: slugify(match.tournament),
                 match: slugify(match.name),
-                match_id: match.matchID
-              }
+                match_id: match.matchID,
+              },
             })
           "
         >
@@ -38,7 +38,10 @@
         </div>
       </div>
     </div>
-    <div class="x-table-cell market-cell" :class="activeMarkets.length > 1 ? 'two-markets' : ''">
+    <div
+      class="x-table-cell market-cell"
+      :class="activeMarkets.length > 1 ? 'two-markets' : ''"
+    >
       <div
         class="x-market market"
         v-for="(market, i) in filterOutcomesByMarketIDs(match.outcomes)"
@@ -62,49 +65,72 @@
         </template>
       </div>
     </div>
-    <div class="x-table-cell market-size">+{{ match.activeMarkets }}</div>
+    <div
+      class="x-table-cell market-size"
+      @click="
+        $router.push({
+          name: 'live-fixtures-specific-detail',
+          params: {
+            sport: slugify(match.sportName),
+            tournament: slugify(match.tournament),
+            match: slugify(match.name),
+            match_id: match.matchID,
+          },
+        })
+      "
+    >
+      +{{ match.activeMarkets }}
+    </div>
   </div>
 </template>
 
 <script setup>
-import _ from 'lodash'
-import { slugify, sortArr, createID, isSelected } from '@/helpers'
-import { useCouponStore } from '@/stores'
-const couponStore = useCouponStore()
-import EmptyOdds from '../EmptyOdds.vue'
-import Odds from './Odds.vue'
+import _ from "lodash";
+import { slugify, sortArr, createID, isSelected } from "@/helpers";
+import { useCouponStore } from "@/stores";
+const couponStore = useCouponStore();
+import EmptyOdds from "../EmptyOdds.vue";
+import Odds from "./Odds.vue";
 
 const props = defineProps({
   match: Object,
-  activeMarkets: Array
-})
+  activeMarkets: Array,
+});
 
 function filterOutcomesByMarketIDs(outcomes) {
-  outcomes = outcomes.sort((a, b) => a.outcomeID - b.outcomeID)
-  let marketIDs = props.activeMarkets.map((item) => parseInt(item.marketID))
-  const filteredOutcomes = outcomes.filter((outcome) => marketIDs.includes(outcome.marketID))
-  const groupedOutcomes = _.groupBy(filteredOutcomes, 'marketID')
+  outcomes = outcomes.sort((a, b) => a.outcomeID - b.outcomeID);
+  let marketIDs = props.activeMarkets.map((item) => parseInt(item.marketID));
+  const filteredOutcomes = outcomes.filter((outcome) =>
+    marketIDs.includes(outcome.marketID)
+  );
+  const groupedOutcomes = _.groupBy(filteredOutcomes, "marketID");
   // Ensure all marketIDs are present in the grouped result
   marketIDs.forEach((marketID) => {
     if (!groupedOutcomes[marketID]) {
-      groupedOutcomes[marketID] = []
+      groupedOutcomes[marketID] = [];
     }
-  })
+  });
 
-  return groupedOutcomes
+  return groupedOutcomes;
 }
 
 function getOutcomeCountForMarket(marketID) {
-  const activeMarket = props.activeMarkets.find((market) => market.marketID === marketID)
+  const activeMarket = props.activeMarkets.find((market) => market.marketID === marketID);
   if (activeMarket) {
-    return activeMarket.outcomes.length
+    return activeMarket.outcomes.length;
   }
-  return 0
+  return 0;
 }
 
 function addToBetslip(event, odd, market) {
-  if (odd.odds <= 1) return
-  const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
+  if (odd.odds <= 1) return;
+  const id = createID(
+    event.gameID,
+    event.matchID,
+    odd.outcomeName,
+    odd.oddID,
+    event.name
+  );
   const data = {
     fixture: event,
     market_name: market.marketName,
@@ -114,12 +140,14 @@ function addToBetslip(event, odd, market) {
     odds: odd.odds,
     odd_id: odd.oddID,
     odd_name: odd.outcomeName,
-    type: 'live',
+    type: "live",
     event_id: event.gameID,
-    specifier: odd.specifier
-  }
+    specifier: odd.specifier,
+  };
 
-  const existsInBetslip = isSelected(id, couponStore.coupon)
-  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
+  const existsInBetslip = isSelected(id, couponStore.coupon);
+  return existsInBetslip
+    ? couponStore.removeSelection(id)
+    : couponStore.addToCoupon(data);
 }
 </script>
