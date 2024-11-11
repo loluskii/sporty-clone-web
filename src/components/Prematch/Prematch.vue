@@ -103,7 +103,22 @@
         </template>
       </div>
     </div>
-    <div class="x-table-cell market-size">+{{ match.activeMarkets }}</div>
+    <div
+      class="x-table-cell market-size"
+      @click="
+        $router.push({
+          name: 'fixtures-detail',
+          params: {
+            sport: slugify(match.sportName),
+            tournament_name: slugify(match.tournament),
+            event_name: slugify(match.name),
+            event_id: match.matchID,
+          },
+        })
+      "
+    >
+      +{{ match.activeMarkets }}
+    </div>
   </div>
 </template>
 <script setup>

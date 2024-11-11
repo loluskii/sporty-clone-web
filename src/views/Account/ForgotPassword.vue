@@ -2,7 +2,10 @@
   <DefaultLayout>
     <div>
       <p class="x-page-title">
-        <span class="x-icon-lock" data-cms-key="forgot_password" data-cms-page="common_functions"
+        <span
+          class="x-icon-lock"
+          data-cms-key="forgot_password"
+          data-cms-page="common_functions"
           >Forgot Password</span
         >
       </p>
@@ -12,13 +15,18 @@
             <span class="x-header-bar-title">Find Account</span>
           </header>
           <section class="x-page-main">
-            <p class="x-text-tips">To reset your password, please confirm your account first.</p>
+            <p class="x-text-tips">
+              To reset your password, please confirm your account first.
+            </p>
             <div class="x-page-opt">
               <div class="x-label">
                 <span class="x-text-label">Mobile Number</span>
               </div>
               <div class="x-opt-wrapper">
-                <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
+                <div
+                  tabindex="6"
+                  class="x-input-wrapper x-input-group x-input-group--prepend"
+                >
                   <div class="x-input-prepend"><span>+234</span></div>
                   <span class="x-input-com"
                     ><i
@@ -69,42 +77,42 @@
 </template>
 
 <script setup>
-import DefaultLayout from '@/components/Shared/DefaultLayout.vue'
-import StepHeader from '@/components/PasswordReset/Header.vue'
-import StepOne from '@/components/PasswordReset/StepOne.vue'
-import StepTwo from '@/components/PasswordReset/StepTwo.vue'
-import StepThree from '@/components/PasswordReset/StepThree.vue'
-import { ref } from 'vue'
-import { verifyUsername, CLIENT_ID, formattedPhoneNumber } from '@/helpers'
+import DefaultLayout from "@/components/Shared/DefaultLayout.vue";
+import StepHeader from "@/components/PasswordReset/Header.vue";
+import StepOne from "@/components/PasswordReset/StepOne.vue";
+import StepTwo from "@/components/PasswordReset/StepTwo.vue";
+import StepThree from "@/components/PasswordReset/StepThree.vue";
+import { ref } from "vue";
+import { verifyUsername, CLIENT_ID, formattedPhoneNumber } from "@/helpers";
 
-const activeStep = ref(0)
-const phoneNumber = ref('')
-const isLoading = ref(false)
-const phoneNumberError = ref(false)
+const activeStep = ref(0);
+const phoneNumber = ref("");
+const isLoading = ref(false);
+const phoneNumberError = ref(false);
 
 const beginPasswordReset = async () => {
-  isLoading.value = true
-  const phone = formattedPhoneNumber(phoneNumber.value)
+  isLoading.value = true;
+  const phone = formattedPhoneNumber(phoneNumber.value);
 
   try {
-    const res = await verifyUsername({ username: phone, clientId: CLIENT_ID })
-    isLoading.value = false
-    if (res.responseMessage === 'SUCCESSFUL') {
-      activeStep.value = activeStep.value + 1
+    const res = await verifyUsername({ username: phone, clientId: CLIENT_ID });
+    isLoading.value = false;
+    if (res.responseMessage === "SUCCESSFUL") {
+      activeStep.value = activeStep.value + 1;
     } else {
-      alert('Account with this phone number does not exist!')
+      alert("Account with this phone number does not exist!");
     }
   } catch (err) {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 function nextStep() {
-  activeStep.value = activeStep.value + 1
+  activeStep.value = activeStep.value + 1;
 }
 
 function returnToPreviousStep() {
-  activeStep.value = activeStep.value - 1
+  activeStep.value = activeStep.value - 1;
 }
 </script>
 
@@ -131,8 +139,8 @@ function returnToPreviousStep() {
   top: 170px;
 }
 .x-dialog-wrapper .x-holding-icon::before {
-  content: '\e654';
-  font-family: 'iconfont' !important;
+  content: "\e654";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -171,8 +179,8 @@ function returnToPreviousStep() {
   transform: translate3d(0, -50%, 0);
 }
 .x-dialog-wrapper .x-pop-header .x-icon-close::before {
-  content: '\e69a';
-  font-family: 'iconfont' !important;
+  content: "\e69a";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -191,8 +199,8 @@ function returnToPreviousStep() {
   padding: 20px 0 0;
 }
 .x-dialog-wrapper .x-pop-header-fix .x-icon-suc::before {
-  content: '\e60b';
-  font-family: 'iconfont' !important;
+  content: "\e60b";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -252,7 +260,7 @@ function returnToPreviousStep() {
   clip-path: polygon(0 1%, 91% 1%, 70% 100%, 0% 100%);
   color: #fff;
   display: inline-block;
-  font-family: Roboto;
+  /* // font-family: Roboto; */
   height: 16px;
   line-height: 16px;
   overflow: hidden;
@@ -323,7 +331,11 @@ function returnToPreviousStep() {
   width: -moz-fit-content;
   width: fit-content;
 }
-.x-dialog-wrapper .x-share-wrapper .booking-code-share .booking-code-share-code #content-copy {
+.x-dialog-wrapper
+  .x-share-wrapper
+  .booking-code-share
+  .booking-code-share-code
+  #content-copy {
   left: 100%;
   margin-left: 12px;
   margin-top: 4px;
@@ -342,7 +354,11 @@ function returnToPreviousStep() {
 .x-dialog-wrapper .x-share-wrapper .booking-code-share .zoom-image-container .zoom-image {
   height: 100px;
 }
-.x-dialog-wrapper .x-share-wrapper .booking-code-share .zoom-image-container .zoom-handler {
+.x-dialog-wrapper
+  .x-share-wrapper
+  .booking-code-share
+  .zoom-image-container
+  .zoom-handler {
   cursor: pointer;
   left: 50%;
   position: absolute;
@@ -403,8 +419,8 @@ function returnToPreviousStep() {
   padding: 30px 0 14px;
 }
 .x-page-wrapper .x-page-title .x-icon-lock::before {
-  content: '\e60e';
-  font-family: 'iconfont' !important;
+  content: "\e60e";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

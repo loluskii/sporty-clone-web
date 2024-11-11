@@ -231,11 +231,15 @@
 
       <button
         :disabled="bookingCode === ''"
+        :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
         class="af-button af-button--primary"
-        type="primary"
-        :class="{ 'is-disabled': bookingCode === '' }"
+        type="button"
+        :class="{ 'is-disabled': bookingCode === '' || placeBetDisabled }"
+        @click.prevent="loadBet"
       >
-        <span><span>Load</span></span>
+        <span
+          ><span>{{ placeBetDisabled ? "Loading" : "Load" }}</span></span
+        >
       </button>
     </div>
     <div>
@@ -248,7 +252,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useCouponStore, useUsersStore } from "@/stores";
-import { formatNumber } from "@/helpers";
+import { formatNumber, loadBetslipByCode } from "@/helpers";
 import emitter from "@/plugins/emitter";
 import BetListEvent from "@/components/Betslip/BetListEvent.vue";
 
@@ -365,6 +369,45 @@ async function placeBet(e) {
   } catch (error) {
     couponStore.isBetslipLoading = false;
     emitter.emit("showDialog", { dialogType: "error", dialogData: { data: error } });
+  }
+}
+
+async function loadBet() {
+  couponStore.isBetslipLoading = true;
+  try {
+    const res = await loadBetslipByCode(bookingCode.value);
+    couponStore.isBetslipLoading = false;
+    if (res.success) {
+      if (res.data.selections.length) {
+        couponStore.coupon.selections = res.data.selections;
+        couponStore.coupon.totalOdds = res.data.totalOdd;
+        couponStore.coupon.totalStake = res.data.stake;
+        couponStore.coupon.stake = res.data.stake;
+        couponStore.coupon.maxWin = res.data.possibleWin;
+        couponStore.coupon.source = "mobile";
+        if (res.data.selections.length === 1) {
+          couponStore.coupon.bet_type = "Single";
+          couponStore.coupon.betslip_type = "Single";
+        } else {
+          couponStore.coupon.bet_type = "Multiple";
+          couponStore.coupon.betslip_type = "Multiple";
+        }
+        // emitter.emit('openBetslip')
+        return router.push({ name: "home" });
+      } else {
+        emitter.emit("showDialog", {
+          dialogType: "error",
+          dialogData: { data: "All Selections have expired" },
+        });
+      }
+    } else {
+      throw Error(res.message);
+    }
+  } catch (error) {
+    emitter.emit("showDialog", {
+      dialogType: "error",
+      dialogData: { data: error },
+    });
   }
 }
 </script>
