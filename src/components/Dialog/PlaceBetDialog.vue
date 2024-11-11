@@ -29,7 +29,9 @@
                       style="display: none; min-width: 320px"
                     >
                       <div class="m-popOver">
-                        <p data-cms-key="input_this_code_in_betslip_to_restore_selections">
+                        <p
+                          data-cms-key="input_this_code_in_betslip_to_restore_selections"
+                        >
                           Input this code in betslip to restore selections.
                         </p>
                       </div>
@@ -49,7 +51,10 @@
               </ul>
 
               <div class="m-btn-wrapper m-ok-wrap">
-                <button class="af-button af-button--primary" @click="emitter.emit('clearBetslip')">
+                <button
+                  class="af-button af-button--primary"
+                  @click="emitter.emit('clearBetslip')"
+                >
                   <span><span>OK</span></span>
                 </button>
               </div>
@@ -75,11 +80,11 @@
 </template>
 
 <script setup>
-import emitter from '@/plugins/emitter'
+import emitter from "@/plugins/emitter";
 
 defineProps({
-  response: Object
-})
+  response: Object,
+});
 </script>
 
 <style>
@@ -108,8 +113,8 @@ defineProps({
   top: 170px;
 }
 .m-dialog-wrapper .m-holding-icon::before {
-  content: '\e654';
-  font-family: 'iconfont' !important;
+  content: "\e654";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -148,8 +153,8 @@ defineProps({
   transform: translate3d(0, -50%, 0);
 }
 .m-dialog-wrapper .m-pop-header .m-icon-close::before {
-  content: '\e69a';
-  font-family: 'iconfont' !important;
+  content: "\e69a";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -168,8 +173,8 @@ defineProps({
   padding: 20px 0 0;
 }
 .m-dialog-wrapper .m-pop-header-fix .m-icon-suc::before {
-  content: '\e60b';
-  font-family: 'iconfont' !important;
+  content: "\e60b";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -266,7 +271,7 @@ defineProps({
   font-weight: bold;
 }
 .m-dialog-wrapper .af-button--primary {
-  background: var(--brand-primary) !important;
+  background: var(--brand-secondary) !important;
   border: none;
   color: #ffffff !important;
   font-size: 12px;
@@ -300,7 +305,11 @@ defineProps({
   width: -moz-fit-content;
   width: fit-content;
 }
-.m-dialog-wrapper .m-share-wrapper .booking-code-share .booking-code-share-code #content-copy {
+.m-dialog-wrapper
+  .m-share-wrapper
+  .booking-code-share
+  .booking-code-share-code
+  #content-copy {
   left: 100%;
   margin-left: 12px;
   margin-top: 4px;
@@ -319,7 +328,11 @@ defineProps({
 .m-dialog-wrapper .m-share-wrapper .booking-code-share .zoom-image-container .zoom-image {
   height: 100px;
 }
-.m-dialog-wrapper .m-share-wrapper .booking-code-share .zoom-image-container .zoom-handler {
+.m-dialog-wrapper
+  .m-share-wrapper
+  .booking-code-share
+  .zoom-image-container
+  .zoom-handler {
   cursor: pointer;
   left: 50%;
   position: absolute;
@@ -393,8 +406,8 @@ defineProps({
   margin-left: 0;
 }
 .m-dialog-wrapper .m-share-wrapper .af-icon-faceBook::before {
-  content: '\e6e2';
-  font-family: 'iconfont' !important;
+  content: "\e6e2";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -414,11 +427,17 @@ defineProps({
   height: 28px;
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--error .m-input,
-.m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--error .m-input-append {
+.m-dialog-wrapper
+  .m-share-wrapper
+  .m-input-wrapper.m-input-wrapper--error
+  .m-input-append {
   border-color: #e41827 !important;
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--active .m-input,
-.m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--active .m-input-append {
+.m-dialog-wrapper
+  .m-share-wrapper
+  .m-input-wrapper.m-input-wrapper--active
+  .m-input-append {
   border-color: var(--brand-primary);
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper .m-input-append {
@@ -441,8 +460,8 @@ defineProps({
   padding: 10px 0 0;
 }
 .m-dialog-suc .m-pop-header .m-icon-suc::before {
-  content: '\e60b';
-  font-family: 'iconfont' !important;
+  content: "\e60b";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -450,7 +469,7 @@ defineProps({
 }
 .m-dialog-suc .m-pop-header .m-icon-suc:after {
   background: var(--brand-primary);
-  content: '';
+  content: "";
   display: inline-block;
   height: 25px;
   left: -24px;
@@ -522,8 +541,8 @@ defineProps({
   width: 48px;
 }
 .m-dialog-suc .share-code .m-label em::before {
-  content: '\e651';
-  font-family: 'iconfont' !important;
+  content: "\e651";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -577,8 +596,8 @@ defineProps({
   vertical-align: middle;
 }
 .m-dialog-suc .m-btn-text .m-icon-more::before {
-  content: '\e608';
-  font-family: 'iconfont' !important;
+  content: "\e608";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

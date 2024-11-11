@@ -451,9 +451,7 @@ export const useCouponStore = defineStore({
           this.isBetslipLoading = false
           return res
         } catch (error) {
-          ele.disabled = false
-          ele.innerHTML = 'Place Bet'
-          console.error(error)
+          throw Error(error)
         }
       }
     },
@@ -485,3 +483,4 @@ export const useCouponStore = defineStore({
     storage: localStorage
   }
 })
+

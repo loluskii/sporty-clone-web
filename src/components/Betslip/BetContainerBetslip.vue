@@ -333,17 +333,14 @@ async function book(e) {
     couponStore.isBetslipBooking = true;
 
     const res = await couponStore.placeBet(e, "book");
-    couponStore.isBetslipBooking = false;
-
     if (res.success) {
+      couponStore.isBetslipBooking = false;
       emitter.emit("showDialog", { dialogType: "book-bet", dialogData: res });
     } else {
-      emitter.emit("showDialog", {
-        dialogType: "error",
-        dialogData: { data: res.message },
-      });
+      throw Error(res.message);
     }
   } catch (error) {
+    couponStore.isBetslipBooking = false;
     emitter.emit("showDialog", { dialogType: "error", dialogData: { data: error } });
   }
 }
