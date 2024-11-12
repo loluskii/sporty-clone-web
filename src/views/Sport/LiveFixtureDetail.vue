@@ -100,7 +100,7 @@
                             :style="
                               group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'
                             "
-                            @click="addToBetslip(eventDetail, outcome)"
+                            @click="addToBetslip(eventDetail, outcome, market)"
                             :class="{
                               'x-table-cell--checked': isSelected(
                                 createID(
