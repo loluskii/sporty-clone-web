@@ -133,7 +133,9 @@
               <template v-if="selectionsLength > 1">
                 <div>
                   <div class="x-label">Odds</div>
-                  <div class="x-value x-value-fix x-value-too-long">{{ parseFloat(totalOdds).toFixed(2) }}</div>
+                  <div class="x-value x-value-fix x-value-too-long">
+                    {{ parseFloat(totalOdds).toFixed(2) }}
+                  </div>
                 </div>
                 <div class="">
                   <div class="x-label" data-cms-key="total_stake">Total Stake</div>

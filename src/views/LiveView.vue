@@ -182,6 +182,7 @@ const { data, error, isLoading, refetch } = useQuery("liveData", getLiveHighligh
       if (completeData.value.length === 0) {
         completeData.value = response.fixtures;
         marketGroup.value = response.markets.filter((m) => m.specifier == "");
+        utilsStore.liveListSingleMatch = response.fixtures[0].matchID
       } else {
         response.fixtures.forEach((newFixture) => {
           const index = completeData.value.findIndex(

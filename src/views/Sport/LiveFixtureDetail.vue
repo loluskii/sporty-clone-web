@@ -100,7 +100,7 @@
                             :style="
                               group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'
                             "
-                            @click="addToBetslip(eventDetail, outcome, market)"
+                            @click="addToBetslip(outcome, market)"
                             :class="{
                               'x-table-cell--checked': isSelected(
                                 createID(
@@ -279,21 +279,18 @@ const getChunks = (outcomes, n) => {
 
 const uniqueOutcomes = (outcomes) => {
   let x = outcomes.filter(
-    (outcome, index, self) => index === self.findIndex((o) => o.outcomeID === outcome.outcomeID)
-  )
-  return x
-}
+    (outcome, index, self) =>
+      index === self.findIndex((o) => o.outcomeID === outcome.outcomeID)
+  );
+  return x;
+};
 
 async function getLiveData() {
   isLoading.value = true;
-  const res = await getLiveHighlights();
-  const selectedMatch = res.fixtures.find((match) => match.sportID == 1);
-  if (selectedMatch) {
-    await getEventDetail(selectedMatch.matchID);
-  }
+  await getEventDetail(utilsStore.liveListSingleMatch);
 }
 
-function addToBetslip(market, outcome) {
+function addToBetslip(outcome, market) {
   if (outcome.odds < 1) return;
   const id = createID(
     eventDetail.value.gameID,
@@ -313,8 +310,10 @@ function addToBetslip(market, outcome) {
     odd_name: outcome.outcomeName,
     type: "live",
     event_id: eventDetail.value.gameID,
-    specifier: outcome.specifier,
+    specifier: market.specifier,
   };
+
+  console.log(data)
   // return couponStore.addToCoupon(data)
   const existsInBetslip = isSelected(id, couponStore.coupon);
   return existsInBetslip
@@ -659,7 +658,7 @@ defineComponent({
   background: var(--brand-active-prematch-odds-bg);
 }
 .x-outcome .x-table-cell--responsive:hover {
-  background: #051c9e;
+  background: var(--brand-prematch-odd-bg-hover);
   cursor: pointer;
 }
 
