@@ -395,7 +395,6 @@ async function loadBet() {
           couponStore.coupon.betslip_type = "Multiple";
         }
         // emitter.emit('openBetslip')
-        return router.push({ name: "home" });
       } else {
         emitter.emit("showDialog", {
           dialogType: "error",
