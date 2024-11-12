@@ -133,8 +133,8 @@ function addToBetslip(event, odd, market) {
   );
   const data = {
     fixture: event,
-    market_name: market.marketName,
-    market_id: market.marketID,
+    market_name: props.activeMarkets.find((m) => m.marketID == market[0].marketID).marketName,
+    market_id: market[0].marketID,
     ele_id: id,
     outcome: odd,
     odds: odd.odds,
@@ -144,6 +144,8 @@ function addToBetslip(event, odd, market) {
     event_id: event.gameID,
     specifier: odd.specifier,
   };
+
+  console.log(data);
 
   const existsInBetslip = isSelected(id, couponStore.coupon);
   return existsInBetslip

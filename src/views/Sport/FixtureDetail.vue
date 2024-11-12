@@ -65,7 +65,7 @@
                       :key="o"
                       class="x-table-cell x-table-cell--responsive"
                       :style="group.length === 2 ? 'width: 33.3333%' : 'width: 33.3333%'"
-                      @click="addToBetslip(matchDetails, outcome)"
+                      @click="addToBetslip(matchDetails, outcome, market)"
                       :class="
                         isSelected(
                           createID(
@@ -172,7 +172,7 @@ function replaceCompetitorNames(inputString) {
   return replacedString;
 }
 
-function addToBetslip(event, odd) {
+function addToBetslip(event, odd, market) {
   if (odd.odds < 1) return;
   const id = createID(
     event.gameID,
@@ -183,8 +183,8 @@ function addToBetslip(event, odd) {
   );
   const data = {
     fixture: event,
-    market_name: odd.marketName,
-    market_id: odd.marketID,
+    market_name: market.marketName,
+    market_id: market.marketID,
     ele_id: id,
     outcome: odd,
     odds: odd.odds,
@@ -192,9 +192,10 @@ function addToBetslip(event, odd) {
     odd_name: odd.outcomeName,
     type: "prematch",
     event_id: event.gameID,
-    specifier: odd.specifier,
+    specifier: market.specifier,
   };
 
+  
   // return couponStore.addToCoupon(data)
 
   const existsInBetslip = isSelected(id, couponStore.coupon);
