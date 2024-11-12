@@ -14,14 +14,17 @@
                 <ul id="j_sport_wrapper" class="x-item-wrap">
                   <li
                     v-for="(sport, index) in sportList"
-                    :class="sport.sportID === activeSportID ? 'active' : ''"
+                    :class="sport.sportID === activeSportID ? 'x-item--active' : ''"
                     :key="index"
                     class="x-item"
                   >
                     <div class="x-sport">
                       <img
                         :src="getImageSrc(sport.sportID)"
-                        style="height: 20px; margin-right: 0.4rem; filter: invert(1)"
+                        style="height: 20px; margin-right: 0.4rem"
+                        :style="
+                          sport.sportID === activeSportID ? '' : 'filter: invert(1)'
+                        "
                         alt=""
                         srcset=""
                       />
@@ -32,7 +35,7 @@
                   </li>
                 </ul>
               </aside>
-              <section v-if="!isLoading" class="x-eventDetail">
+              <section v-if="!isLoading || isRefreshing" class="x-eventDetail">
                 <div class="x-tracker">
                   <h4 class="x-tracker-title">
                     <span>{{ eventDetail.name }}</span>
@@ -68,7 +71,7 @@
                 <div class="x-detail-wrapper">
                   <template v-if="eventDetail.markets && eventDetail.statusCode === 1">
                     <div
-                      v-for="(market, index) in eventDetail.markets"
+                      v-for="(market, index) in eventMarkets"
                       :key="index"
                       class="x-table__wrapper"
                     >
@@ -190,8 +193,8 @@
 </template>
 
 <script setup>
-import { defineComponent, watch, ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { defineComponent, watch, ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import {
   getFixtureMarkets,
   chunks,
@@ -204,51 +207,32 @@ import BetContainer from "@/components/Shared/BetContainer.vue";
 import _ from "lodash";
 import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
 import emitter from "@/plugins/emitter";
-
 import { useCouponStore, useUtilsStore } from "@/stores";
-const activeSportID = ref(1);
 
+const activeSportID = ref(1);
 const eventMarkets = ref();
 const eventDetail = ref();
 const isLoading = ref(false);
+const intervalId = ref(null);
 const route = useRoute();
-// const errorMessage = ref()
+const router = useRouter();
 const couponStore = useCouponStore();
 const utilsStore = useUtilsStore();
 const homeTeam = ref();
 const awayTeam = ref();
+const isRefreshing = ref(false);
 
-watch(
-  () => [route.name, route.params.match_id],
-  async ([routeName, eventId]) => {
-    switch (routeName) {
-      case "live-fixtures-specific-detail":
-        await getEventDetail(eventId);
-        break;
-
-      default:
-        await getLiveData();
-        break;
-    }
-  },
-  { immediate: true } // Trigger the watch callback immediately on component mount
-);
-const getImageSrc = (sportId) => {
-  const imageUrl = new URL(`../../assets/images/sports/${sportId}.png`, import.meta.url);
-  return imageUrl;
-};
-// get sports list from store
 const sportList = computed(() => {
   return utilsStore.sportsMenu;
 });
 
+// Helper function to sort arrays by a key
 function sortByKey(array, key, ascending = true) {
   return array.slice().sort((a, b) => {
     const valA = parseInt(a[key], 10);
     const valB = parseInt(b[key], 10);
 
     if (isNaN(valA) || isNaN(valB)) {
-      // Handle cases where parsing fails
       return 0;
     }
 
@@ -256,6 +240,7 @@ function sortByKey(array, key, ascending = true) {
   });
 }
 
+// Function to fetch event details
 async function getEventDetail(id) {
   isLoading.value = true;
   try {
@@ -264,32 +249,118 @@ async function getEventDetail(id) {
     eventMarkets.value = res.markets;
     homeTeam.value = res.competitor1;
     awayTeam.value = res.competitor2;
+    activeSportID.value = res.sportID;
     isLoading.value = false;
   } catch (error) {
     eventDetail.value = null;
-    // errorMessage.value = res.message
     isLoading.value = false;
   }
 }
 
+async function refreshOutcomes(id) {
+  try {
+    const res = await getFixtureMarkets(id);
+    
+    // Update event details
+    eventDetail.value = res;
+    
+    // Handle markets update
+    if (res.markets) {
+      eventMarkets.value = res.markets;
+    } else if (res.statusCode !== 3 && eventMarkets.value) {
+      // Only update odds if markets exist and game is not ended (status 3)
+      eventMarkets.value = eventMarkets.value.map(market => ({
+        ...market,
+        outcomes: market.outcomes?.map(outcome => ({
+          ...outcome,
+          odds: 0
+        })) || []
+      }));
+    }
+  } catch (error) {
+    console.error('Error refreshing outcomes:', error);
+    // Don't null out eventDetail on every error - might be temporary
+    isLoading.value = false;
+  }
+}
+
+// Fetch data at 5-second intervals
+function startInterval(eventId) {
+  isRefreshing.value = true;
+  // Clear any existing interval before starting a new one
+  clearInterval(intervalId.value);
+  intervalId.value = setInterval(() => {
+    refreshOutcomes(eventId);
+  }, 5000);
+}
+
+// Stop the interval when the component is destroyed
+function stopInterval() {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+    intervalId.value = null;
+  }
+}
+
+// Function to get live data
+async function getLiveData() {
+  isLoading.value = true;
+  let eventId = utilsStore.liveListSingleMatch;
+  if (eventId) {
+    await getEventDetail(eventId);
+    startInterval(eventId); // Start fetching event details every 5 seconds
+  } else {
+    stopInterval(); // Stop the interval if there's no eventId
+    return router.push({ name: "live-view" });
+  }
+}
+
+const getImageSrc = (sportId) => {
+  const imageUrl = new URL(`../../assets/images/sports/${sportId}.png`, import.meta.url);
+  return imageUrl;
+};
+
+// Watch for route changes
+watch(
+  () => [route.name, route.params.match_id],
+  async ([routeName, eventId]) => {
+    switch (routeName) {
+      case "live-fixtures-specific-detail":
+        await getEventDetail(eventId);
+        startInterval(eventId);
+        break;
+      default:
+        await getLiveData();
+        break;
+    }
+  },
+  { immediate: true }
+);
+
+// Lifecycle hooks
+onMounted(() => {
+  getLiveData();
+});
+
+onBeforeUnmount(() => {
+  stopInterval();
+});
+
+// Chunk outcomes into smaller arrays
 const getChunks = (outcomes, n) => {
   let x = uniqueOutcomes(outcomes);
   return _.chunk(x, n);
 };
 
+// Filter unique outcomes based on outcomeID
 const uniqueOutcomes = (outcomes) => {
-  let x = outcomes.filter(
+  return outcomes.filter(
     (outcome, index, self) =>
       index === self.findIndex((o) => o.outcomeID === outcome.outcomeID)
   );
-  return x;
 };
 
-async function getLiveData() {
-  isLoading.value = true;
-  await getEventDetail(utilsStore.liveListSingleMatch);
-}
-
+// Add outcome to betslip
 function addToBetslip(outcome, market) {
   if (outcome.odds < 1) return;
   const id = createID(
@@ -313,14 +384,13 @@ function addToBetslip(outcome, market) {
     specifier: market.specifier,
   };
 
-  console.log(data)
-  // return couponStore.addToCoupon(data)
   const existsInBetslip = isSelected(id, couponStore.coupon);
   return existsInBetslip
     ? couponStore.removeSelection(id)
     : couponStore.addToCoupon(data);
 }
 
+// Open fixture analysis in a new window
 function showFixtureAnalysis(id) {
   return window.open(
     `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
@@ -329,6 +399,7 @@ function showFixtureAnalysis(id) {
   );
 }
 
+// Show register modal
 function showRegisterModal() {
   emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
 }
