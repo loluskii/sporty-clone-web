@@ -49,7 +49,7 @@
               <div v-else class="match">
                 <div
                   class="x-table match-table live-table"
-                  v-if="Object.keys(filteredLiveData).length > 0"
+                  v-if="Object.keys(filteredLiveData).length > 0 && !isLoading"
                 >
                   <template v-for="(liveGroup, g) in filteredLiveData" :key="g">
                     <div class="x-table-row league-row">
@@ -175,7 +175,7 @@ const utilsStore = useUtilsStore();
 const userStore = useUsersStore();
 
 const { data, error, isLoading, refetch } = useQuery("liveData", getLiveHighlights, {
-  refetchInterval: 25000, // 25 seconds in milliseconds
+  refetchInterval: 20000, // 25 seconds in milliseconds
   onError: (err) => console.error(err),
   onSuccess: (response) => {
     if (response.fixtures) {
