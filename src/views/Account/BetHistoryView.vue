@@ -50,26 +50,26 @@
 </template>
 
 <script setup>
-import BetHistoryLayout from '@/components/Shared/BetHistoryLayout.vue'
-import BetHistoryCard from '@/components/BetHistoryCard.vue'
-import { getBets } from '@/helpers'
-import { ref, onMounted } from 'vue'
-import { useUsersStore } from '@/stores'
-import { useRouter } from 'vue-router'
-import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
+import BetHistoryLayout from "@/components/Shared/BetHistoryLayout.vue";
+import BetHistoryCard from "@/components/BetHistoryCard.vue";
+import { getBets } from "@/helpers";
+import { ref, onMounted } from "vue";
+import { useUsersStore } from "@/stores";
+import { useRouter } from "vue-router";
+import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
 
-const currentPage = ref(1)
-const lastPage = ref(null)
-const settledBets = ref([])
-const isLoading = ref(false)
+const currentPage = ref(1);
+const lastPage = ref(null);
+const settledBets = ref([]);
+const isLoading = ref(false);
 const betStatus = [
-  { name: 'All', key: '' },
-  { name: 'Settled', key: 'settled' },
-  { name: 'Unsettled', key: '0' }
-]
-const activeBetStatus = ref('')
-const usersStore = useUsersStore()
-const router = useRouter()
+  { name: "All", key: "" },
+  { name: "Settled", key: "settled" },
+  { name: "Unsettled", key: "0" },
+];
+const activeBetStatus = ref("");
+const usersStore = useUsersStore();
+const router = useRouter();
 
 // const getDateWithoutTime = (dateString) => {
 //   const dateObject = new Date(dateString)
@@ -86,80 +86,80 @@ async function getBetHistory(key = null) {
   let payload = {
     clientId: import.meta.env.VITE_CLIENT_ID,
     // date: '',
-    status: key !== null ? key : 'settled',
-    userId: usersStore.currentUser.id
-  }
-  isLoading.value = true
+    status: key !== null ? key : "settled",
+    userId: usersStore.currentUser.id,
+  };
+  isLoading.value = true;
   await getBets(payload, currentPage.value)
     .then((response) => {
       if (response.bets) {
-        settledBets.value = response.bets
+        settledBets.value = response.bets;
       } else {
-        settledBets.value = []
+        settledBets.value = [];
       }
-      lastPage.value = response.lastPage
-      isLoading.value = false
+      lastPage.value = response.lastPage;
+      isLoading.value = false;
     })
     .catch(() => {
-      isLoading.value = false
-    })
+      isLoading.value = false;
+    });
 }
 
 const getPageRange = () => {
-  const thisPage = currentPage.value ?? 1
-  const totalPages = lastPage.value
-  const maxButtons = 5 // Maximum number of buttons to display
+  const thisPage = currentPage.value ?? 1;
+  const totalPages = lastPage.value;
+  const maxButtons = 5; // Maximum number of buttons to display
 
   // Calculate the starting and ending page numbers for the displayed range
-  let startPage = Math.max(thisPage - Math.floor(maxButtons / 2), 1)
-  let endPage = Math.min(startPage + maxButtons - 1, totalPages)
+  let startPage = Math.max(thisPage - Math.floor(maxButtons / 2), 1);
+  let endPage = Math.min(startPage + maxButtons - 1, totalPages);
 
   // Adjust the starting page number if the range exceeds the total pages
   if (endPage - startPage + 1 < maxButtons) {
-    startPage = Math.max(endPage - maxButtons + 1, 1)
+    startPage = Math.max(endPage - maxButtons + 1, 1);
   }
 
-  return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index)
-}
+  return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+};
 
 const nextPage = async () => {
   if (currentPage.value < lastPage.value) {
-    currentPage.value++
-    await getBetHistory()
+    currentPage.value++;
+    await getBetHistory();
   }
-}
+};
 
 const prevPage = async () => {
   if (currentPage.value > 1) {
-    currentPage.value--
-    await getBetHistory()
+    currentPage.value--;
+    await getBetHistory();
   }
-}
+};
 
 const moveToSpecificPage = async (page) => {
   if (page >= 1 && page <= lastPage.value) {
-    currentPage.value = page
-    await getBetHistory()
+    currentPage.value = page;
+    await getBetHistory();
   }
-}
+};
 
 function redirectToBet(bet) {
-  localStorage.setItem('betDetail', JSON.stringify(bet))
-  router.push({ name: 'account-bethistory-detail', params: { id: bet.betslipId } })
+  localStorage.setItem("betDetail", JSON.stringify(bet));
+  router.push({ name: "account-bethistory-detail", params: { id: bet.betslipId } });
 }
 
 async function setBetStatus(status) {
-  activeBetStatus.value = status
-  await getBetHistory(status)
+  activeBetStatus.value = status;
+  await getBetHistory(status);
 }
 
 onMounted(async () => {
   try {
-    await getBetHistory()
+    await getBetHistory();
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-})
+});
 </script>
 
 <style>
@@ -262,8 +262,8 @@ onMounted(async () => {
   color: var(--brand-primary);
 }
 #x-order-nav.x-nav-wrapper .x-wrap .x-date .date-label .arrow-icon::before {
-  content: '\e6a3';
-  font-family: 'iconfont' !important;
+  content: "\e6a3";
+  font-family: "iconfont" !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -296,8 +296,8 @@ onMounted(async () => {
 #x-order-nav.x-nav-wrapper .x-wrap .x-date .action.green {
   margin-right: 6px;
   color: #fff;
-  background-color: rgb(0, 193, 0);
-  border-color: rgb(0, 193, 0);
+  background-color: #0D9737;
+  border-color: #0D9737;
 }
 #x-order-nav.x-nav-wrapper .x-text-main {
   font-size: 15px;
