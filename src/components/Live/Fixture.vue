@@ -15,20 +15,7 @@
           <div class="clock-time">{{ match.eventTime }}</div>
           <div class="game-id">{{ match.matchStatus }}</div>
         </div>
-        <div
-          class="teams"
-          @click="
-            $router.push({
-              name: 'live-fixtures-specific-detail',
-              params: {
-                sport: slugify(match.sportName),
-                tournament: slugify(match.tournament),
-                match: slugify(match.name),
-                match_id: match.matchID,
-              },
-            })
-          "
-        >
+        <div class="teams" @click="goToMatchDetail">
           <div class="home-team">{{ match.homeTeam }}</div>
           <div class="away-team">{{ match.awayTeam }}</div>
         </div>
@@ -87,11 +74,14 @@
 <script setup>
 import _ from "lodash";
 import { slugify, sortArr, createID, isSelected } from "@/helpers";
-import { useCouponStore } from "@/stores";
-const couponStore = useCouponStore();
+import { useCouponStore, useUtilsStore } from "@/stores";
 import EmptyOdds from "../EmptyOdds.vue";
 import Odds from "./Odds.vue";
+import { useRouter } from "vue-router";
 
+const couponStore = useCouponStore();
+const router = useRouter();
+const utilsStore = useUtilsStore();
 const props = defineProps({
   match: Object,
   activeMarkets: Array,
@@ -114,6 +104,19 @@ function filterOutcomesByMarketIDs(outcomes) {
   return groupedOutcomes;
 }
 
+function goToMatchDetail() {
+  utilsStore.liveListSingleMatch = props.match.matchID;
+  return router.push({
+    name: "live-fixtures-specific-detail",
+    params: {
+      sport: slugify(props.match.sportName),
+      tournament: slugify(props.match.tournament),
+      match: slugify(props.match.name),
+      match_id: props.match.matchID,
+    },
+  });
+}
+
 function getOutcomeCountForMarket(marketID) {
   const activeMarket = props.activeMarkets.find((market) => market.marketID === marketID);
   if (activeMarket) {
@@ -133,7 +136,8 @@ function addToBetslip(event, odd, market) {
   );
   const data = {
     fixture: event,
-    market_name: props.activeMarkets.find((m) => m.marketID == market[0].marketID).marketName,
+    market_name: props.activeMarkets.find((m) => m.marketID == market[0].marketID)
+      .marketName,
     market_id: market[0].marketID,
     ele_id: id,
     outcome: odd,
