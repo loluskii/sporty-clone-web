@@ -147,7 +147,7 @@
                   <p class="team-label">{{ selection.eventName.split("vs.")[1] }}</p>
                 </div>
                 <div class="score-wrap">
-                  <span v-if="selection.score === ''" class="no-score">--</span>
+                  <span v-if="selection.score === undefined || selection.score === ''" class="no-score">--</span>
                   <div v-else class="score-pairs">
                     <div class="home-score main">
                       {{ selection.score.split(":")[0] }}
