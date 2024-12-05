@@ -1,10 +1,10 @@
 <template>
   <div class="live-match">
     <div class="banner">
-      <!-- <span class="circle"></span> -->
+      <span class="circle"></span>
       <span class="text" data-cms-key="live_betting">Live Betting</span>
       <div class="config" style="">
-        <span class="refresh" @click="handleRefresh">Refresh</span>
+        <!-- <span class="refresh" @click="handleRefresh">Refresh</span> -->
       </div>
     </div>
     <div id="print-container-live">
@@ -139,12 +139,7 @@ const completeData = ref([]);
 const MoreSportsLabel = ref("More Sports");
 const isManualRefetching = ref(false);
 
-const handleRefresh = () => {
-  isManualRefetching.value = true;
-  refetch().finally(() => {
-    isManualRefetching.value = false;
-  });
-};
+
 
 const { data, error, isLoading, refetch, isFetching } = useQuery(
   "liveData",
@@ -183,6 +178,17 @@ const { data, error, isLoading, refetch, isFetching } = useQuery(
     },
   }
 );
+
+const handleRefresh = () => {
+  // if(isManualRefetching.value) return
+  isManualRefetching.value = true;
+  refetch().then(() => {
+
+  })
+  setTimeout(() => {
+    isManualRefetching.value = false;
+  }, 5000)
+};
 
 // get active sport data from completelive and group by tournament
 const filteredLiveData = computed(() => {
