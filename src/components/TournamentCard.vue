@@ -1,61 +1,52 @@
 <template>
-  <div class="match-league-wrap" style="position: relative">
-    <div class="match-league" :class="cardIsShown ? '' : 'hide'">
+  <div class="match-league-wrap" :class="{ 'is-loading': isLoading }">
+    <div class="match-league" :class="{ 'hide': !cardIsShown }">
       <div class="league-title">
-        <span class="dis-icon" @click="fetchFixtures"><em></em></span>
-        <span class="text"> {{ tournamentName }}</span>
+        <div 
+          class="dis-icon" 
+          @click="fetchFixtures"
+          :disabled="isLoading"
+          :title="isShown ? 'Refresh fixtures' : 'Load fixtures'"
+        >
+          <em :class="{ 'is-loading': isLoading }"></em>
+      </div>
+        <span class="text">{{ tournamentName }}</span>
       </div>
 
       <template v-if="isShown">
-        <div class="market-group clearfix">
+        <!-- Markets Navigation -->
+        <div class="market-group">
           <div
-            v-for="(market, m) in shownMarkets"
-            :key="m"
+            v-for="market in shownMarkets"
+            :key="market.marketID"
             class="market-item"
-            :class="market.marketID == activeMarket.marketID ? 'active' : ''"
+            :class="{ 'active': market.marketID === activeMarket.marketID }"
             @click="setActiveMarket(market)"
+            :disabled="isLoading"
           >
             {{ market.marketName }}
-          </div>
-          <!-- <div
-            tabindex="0"
-            v-if="markets && markets.length > 5"
-            @click="showOtherMarkets"
-            :class="toggleOtherMarkets ? 'show-item' : ''"
-            class="market-item x-select-market"
-          >
-            <div class="select-value">Other Markets<i class="x-icon-fold"></i></div>
-            <ul class="select-list">
-              <li
-                v-for="(market, k) in hiddenMarkets"
-                :key="k"
-                style="text-transform: capitalize"
-                class=""
-              >
-                {{ market.marketName }}
-              </li>
-            </ul>
-          </div> -->
         </div>
+        </div>
+
+        <!-- Fixtures Table -->
         <div class="x-table match-table">
-          <template
-            v-for="(fixture, f) in _.groupBy(events, (fixture) => fixture.date.split(' ')[0])"
-            :key="f"
-          >
+          <template v-for="(fixtures, date) in groupedFixtures" :key="date">
+            <!-- Date Header -->
             <div class="x-table-row date-row">
-              <div class="x-table-cell date">{{ formatDate(f, 'DD/MM dddd') }}</div>
+              <div class="x-table-cell date">
+                {{ formatDate(date, 'DD/MM dddd') }}
+              </div>
               <div class="x-table-cell each-module-wrap">
                 <div class="each-module-table">
                   <div
-                    v-if="activeMarket.specifier !== ''"
-                    style="text-transform: capitalize"
+                    v-if="activeMarket.specifier"
                     class="each-module is-multiline"
                   >
                     {{ activeMarket.specifier }}
                   </div>
                   <div
-                    v-for="(outcome, o) in activeMarket.outcomes"
-                    :key="o"
+                    v-for="outcome in sortedOutcomes"
+                    :key="outcome.outcomeID"
                     class="each-module is-multiline"
                   >
                     {{ outcome.outcomeName }}
@@ -64,41 +55,90 @@
               </div>
               <div class="x-table-cell empty-cell"></div>
             </div>
-            <!-- {{ fixture }} -->
+
+            <!-- Fixtures -->
             <Prematch
-              v-for="(match, m) in fixture"
+              v-for="match in fixtures"
+              :key="match.id"
               :match="match"
-              :key="m"
               :activeMarket="activeMarket"
-            ></Prematch>
+            />
           </template>
         </div>
       </template>
+
+      <!-- Loading State -->
+      <div v-if="isLoading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+      </div>
     </div>
   </div>
 </template>
+
 <script setup>
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import _ from 'lodash'
-import { ref, computed, defineEmits, watch } from 'vue'
 import { formatDate, sortArr } from '@/helpers'
 import Prematch from './Prematch/Prematch.vue'
 import emitter from '@/plugins/emitter'
+
 const props = defineProps({
-  tournamentName: String,
-  events: Array,
-  markets: Array,
-  tournamentID: Number
+  tournamentName: {
+    type: String,
+    required: true
+  },
+  events: {
+    type: Array,
+    default: () => []
+  },
+  markets: {
+    type: Array,
+    default: () => []
+  },
+  tournamentID: {
+    type: Number,
+    required: true
+  }
 })
+
 const emit = defineEmits(['fetch-fixtures'])
 
+// State
 const isShown = ref(true)
-
+const isLoading = ref(false)
 const activeMarket = ref({})
+const error = ref(null)
 
+// Computed Properties
+const cardIsShown = computed(() => isShown.value && props.events.length > 0)
+
+const shownMarkets = computed(() => {
+  if (!props.markets?.length) return []
+  
+  return props.markets.length > 5
+    ? props.markets.filter(market => 
+        market.marketID !== '36' && market.marketID !== '547'
+      )
+    : props.markets
+})
+
+const groupedFixtures = computed(() => {
+  return _.groupBy(props.events, fixture => fixture.date.split(' ')[0])
+})
+
+const sortedOutcomes = computed(() => {
+  return activeMarket.value.outcomes 
+    ? sortArr(activeMarket.value.outcomes, 'outcomeID')
+    : []
+})
+
+// Watchers
 watch(
   () => props.markets,
   (newMarkets) => {
-    activeMarket.value = newMarkets && newMarkets.length ? newMarkets[0] : {}
+    if (newMarkets?.length) {
+      activeMarket.value = newMarkets[0]
+    }
   },
   { immediate: true }
 )
@@ -106,42 +146,55 @@ watch(
 watch(
   () => props.events,
   (newEvents) => {
-    isShown.value = newEvents.length
+    isShown.value = newEvents?.length > 0
   },
   { immediate: true }
 )
 
-const cardIsShown = computed(() => {
-  return isShown.value && props.events.length
-})
-const toggleOtherMarkets = ref(false)
-
-const shownMarkets = computed(() => {
-  return props.markets && props.markets.length > 5
-    ? props.markets.filter((market) => market.marketID !== '36' && market.marketID !== '547')
-    : !props.markets
-      ? {}
-      : props.markets
-})
-
-const hiddenMarkets = computed(() => {
-  return props.markets.length > 0 ? props.markets.slice(6) : []
-})
-
-function showOtherMarkets() {
-  toggleOtherMarkets.value = !toggleOtherMarkets.value
+// Methods
+const setActiveMarket = (market) => {
+  if (isLoading.value) return
+  
+  try {
+    const sortedMarket = {
+      ...market,
+      outcomes: sortArr(market.outcomes, 'outcomeID')
+    }
+    activeMarket.value = sortedMarket
+    emitter.emit('activeMarketChange')
+  } catch (err) {
+    console.error('Error setting active market:', err)
+    error.value = 'Failed to update market selection'
+  }
 }
 
-async function setActiveMarket(market) {
-  market = { ...market, outcomes: sortArr(market.outcomes, 'outcomeID') }
-  activeMarket.value = market
-  emitter.emit('activeMarketChange')
+const fetchFixtures = async () => {
+  if (isLoading.value) return
+  
+  try {
+    isLoading.value = true
+    error.value = null
+    
+    // Toggle isShown if we have events
+    if (props.events.length) {
+      isShown.value = !isShown.value
+      return
+    }
+    
+    // If no events, fetch them
+    emit('fetch-fixtures', props.tournamentID)
+    isShown.value = true
+  } catch (err) {
+    console.error('Error fetching fixtures:', err)
+    error.value = 'Failed to load fixtures'
+  } finally {
+    isLoading.value = false
+  }
 }
 
-const fetchFixtures = () => {
-  if (!isShown.value) isShown.value = true
-  if (props.events.length) return
-  emit('fetch-fixtures', props.tournamentID)
-}
+// Cleanup
+onUnmounted(() => {
+  // Cleanup any subscriptions or event listeners if needed
+})
 </script>
 <style lang=""></style>

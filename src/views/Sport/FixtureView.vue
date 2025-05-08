@@ -223,10 +223,10 @@ async function getCategoryFixtures() {
       }
     })
 
-    // Update fixturesList with new fixtures
+    // Update fixturesList with new fixtures and sort by tournamentID
     fixturesList.value = fixturesList.value.length
-      ? [...fixturesList.value, ...newFixtures]
-      : newFixtures
+      ? [...fixturesList.value, ...newFixtures].sort((a, b) => a.tournamentID - b.tournamentID)
+      : newFixtures.sort((a, b) => a.tournamentID - b.tournamentID)
 
     // Reset other states
     marketsGroup.value = []
@@ -288,17 +288,20 @@ async function fixturesByActiveSport() {
   try {
     const res = await getSportHighlights(sid, null, activePage.value)
     let result = _.groupBy(res.fixtures, 'tournament')
-    const tournamentsArray = Object.keys(result).map((tournamentName) => {
-      const details = result[tournamentName] || {}
-      return {
-        tournamentName: tournamentName,
-        tournamentID: details[0].tournamentID || '',
-        categoryName: details[0].categoryName || '',
-        categoryID: details[0].categoryID || '',
-        events: details,
-        markets: res.markets
-      }
-    })
+    const tournamentsArray = Object.keys(result)
+      .map((tournamentName) => {
+        const details = result[tournamentName] || {}
+        return {
+          tournamentName: tournamentName,
+          tournamentID: details[0].tournamentID || '',
+          categoryName: details[0].categoryName || '',
+          categoryID: details[0].categoryID || '',
+          events: details,
+          markets: res.markets
+        }
+      })
+      .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
+    
     fixturesList.value = tournamentsArray
     // marketsGroup.value = res.markets
     lastPage.value = res.lastPage
@@ -319,17 +322,20 @@ async function fetchActiveSportByPeriod(period) {
     } else {
       const res = await getSportHighlights(sid, period, activePage.value)
       let result = _.groupBy(res.fixtures, 'tournament')
-      const tournamentsArray = Object.keys(result).map((tournamentName) => {
-        const details = result[tournamentName] || {}
-        return {
-          tournamentName: tournamentName,
-          tournamentID: details[0].tournamentID || '',
-          categoryName: details[0].categoryName || '',
-          categoryID: details[0].categoryID || '',
-          events: details, // Use the original events array,
-          markets: res.markets
-        }
-      })
+      const tournamentsArray = Object.keys(result)
+        .map((tournamentName) => {
+          const details = result[tournamentName] || {}
+          return {
+            tournamentName: tournamentName,
+            tournamentID: details[0].tournamentID || '',
+            categoryName: details[0].categoryName || '',
+            categoryID: details[0].categoryID || '',
+            events: details,
+            markets: res.markets
+          }
+        })
+        .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
+      
       fixturesList.value = tournamentsArray
       lastPage.value = res.lastPage
       isLoading.value = false
@@ -345,17 +351,20 @@ async function fetchTodayActiveSport(id) {
   try {
     const res = await getToday2(id, activePage.value)
     let result = _.groupBy(res.fixtures, 'tournament')
-    const tournamentsArray = Object.keys(result).map((tournamentName) => {
-      const details = result[tournamentName] || {}
-      return {
-        tournamentName: tournamentName,
-        tournamentID: details[0].tournamentID || '',
-        categoryName: details[0].categoryName || '',
-        categoryID: details[0].categoryID || '',
-        events: details,
-        markets: res.markets
-      }
-    })
+    const tournamentsArray = Object.keys(result)
+      .map((tournamentName) => {
+        const details = result[tournamentName] || {}
+        return {
+          tournamentName: tournamentName,
+          tournamentID: details[0].tournamentID || '',
+          categoryName: details[0].categoryName || '',
+          categoryID: details[0].categoryID || '',
+          events: details,
+          markets: res.markets
+        }
+      })
+      .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
+    
     fixturesList.value = tournamentsArray
     lastPage.value = res.lastPage
     isLoading.value = false

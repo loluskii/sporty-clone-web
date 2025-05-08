@@ -3174,7 +3174,7 @@
 }
 
 .x-market .af-select .af-select-title {
-  background: var(--brand-primary);
+  background: var(--brand-secondary);
   border: none;
   border-bottom-left-radius: 4px;
   border-top-left-radius: 4px;
