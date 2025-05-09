@@ -27,44 +27,33 @@
     </div>
     <div
       class="x-table-cell market-cell"
-      :class="activeMarkets.length > 1 ? 'two-markets' : ''"
+      :class="{ 'two-markets': activeMarkets.length > 1 }"
     >
       <div
         class="x-market market"
-        v-for="(market, i) in filterOutcomesByMarketIDs(match.outcomes)"
+        v-for="(market, i) in groupedOutcomes"
         :key="i"
       >
         <template v-if="market.length">
           <Odds
-            v-for="(odds, o) in market"
-            :key="o"
+            v-for="odds in market"
+            :key="odds.outcomeID"
             :odds="odds"
             :match="match"
             @click="addToBetslip(match, odds, market)"
-          >
-          </Odds>
+          />
         </template>
         <template v-else>
           <EmptyOdds
             v-for="outcome in getOutcomeCountForMarket(i)"
             :key="outcome.outcomeID"
-          ></EmptyOdds>
+          />
         </template>
       </div>
     </div>
     <div
       class="x-table-cell market-size"
-      @click="
-        $router.push({
-          name: 'live-fixtures-specific-detail',
-          params: {
-            sport: slugify(match.sportName),
-            tournament: slugify(match.tournament),
-            match: slugify(match.name),
-            match_id: match.matchID,
-          },
-        })
-      "
+      @click="goToMatchDetail"
     >
       +{{ match.activeMarkets }}
     </div>
@@ -72,42 +61,55 @@
 </template>
 
 <script setup>
-import _ from "lodash";
-import { slugify, sortArr, createID, isSelected } from "@/helpers";
-import { useCouponStore, useUtilsStore } from "@/stores";
-import EmptyOdds from "../EmptyOdds.vue";
-import Odds from "./Odds.vue";
-import { useRouter } from "vue-router";
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
+import _ from 'lodash';
+import { slugify, createID, isSelected } from '@/helpers';
+import { useCouponStore, useUtilsStore } from '@/stores';
+import EmptyOdds from '../EmptyOdds.vue';
+import Odds from './Odds.vue';
 
+// Props
+const props = defineProps({
+  match: {
+    type: Object,
+    required: true
+  },
+  activeMarkets: {
+    type: Array,
+    required: true
+  }
+});
+
+// Store and Router
 const couponStore = useCouponStore();
 const router = useRouter();
 const utilsStore = useUtilsStore();
-const props = defineProps({
-  match: Object,
-  activeMarkets: Array,
-});
 
-function filterOutcomesByMarketIDs(outcomes) {
-  outcomes = outcomes.sort((a, b) => a.outcomeID - b.outcomeID);
-  let marketIDs = props.activeMarkets.map((item) => parseInt(item.marketID));
-  const filteredOutcomes = outcomes.filter((outcome) =>
-    marketIDs.includes(outcome.marketID)
-  );
-  const groupedOutcomes = _.groupBy(filteredOutcomes, "marketID");
-  // Ensure all marketIDs are present in the grouped result
-  marketIDs.forEach((marketID) => {
-    if (!groupedOutcomes[marketID]) {
-      groupedOutcomes[marketID] = [];
+// Memoized computed properties
+const groupedOutcomes = computed(() => {
+  const marketIDs = props.activeMarkets.map(item => parseInt(item.marketID));
+  const filteredOutcomes = props.match.outcomes
+    .filter(outcome => marketIDs.includes(outcome.marketID))
+    .sort((a, b) => a.outcomeID - b.outcomeID);
+  
+  const grouped = _.groupBy(filteredOutcomes, 'marketID');
+  
+  // Ensure all marketIDs are present
+  marketIDs.forEach(marketID => {
+    if (!grouped[marketID]) {
+      grouped[marketID] = [];
     }
   });
 
-  return groupedOutcomes;
-}
+  return grouped;
+});
 
-function goToMatchDetail() {
+// Methods
+const goToMatchDetail = () => {
   utilsStore.liveListSingleMatch = props.match.matchID;
-  return router.push({
-    name: "live-fixtures-specific-detail",
+  router.push({
+    name: 'live-fixtures-specific-detail',
     params: {
       sport: slugify(props.match.sportName),
       tournament: slugify(props.match.tournament),
@@ -115,18 +117,16 @@ function goToMatchDetail() {
       match_id: props.match.matchID,
     },
   });
-}
+};
 
-function getOutcomeCountForMarket(marketID) {
-  const activeMarket = props.activeMarkets.find((market) => market.marketID === marketID);
-  if (activeMarket) {
-    return activeMarket.outcomes.length;
-  }
-  return 0;
-}
+const getOutcomeCountForMarket = (marketID) => {
+  const activeMarket = props.activeMarkets.find(market => market.marketID === marketID);
+  return activeMarket?.outcomes.length || 0;
+};
 
-function addToBetslip(event, odd, market) {
+const addToBetslip = (event, odd, market) => {
   if (odd.odds <= 1) return;
+  
   const id = createID(
     event.gameID,
     event.matchID,
@@ -134,26 +134,27 @@ function addToBetslip(event, odd, market) {
     odd.oddID,
     event.name
   );
+
   const data = {
     fixture: event,
-    market_name: props.activeMarkets.find((m) => m.marketID == market[0].marketID)
-      .marketName,
+    market_name: props.activeMarkets.find(m => m.marketID == market[0].marketID)?.marketName,
     market_id: market[0].marketID,
     ele_id: id,
     outcome: odd,
     odds: odd.odds,
     odd_id: odd.oddID,
     odd_name: odd.outcomeName,
-    type: "live",
+    type: 'live',
     event_id: event.gameID,
     specifier: odd.specifier,
   };
 
-  console.log(data);
-
-  const existsInBetslip = isSelected(id, couponStore.coupon);
-  return existsInBetslip
+  isSelected(id, couponStore.coupon)
     ? couponStore.removeSelection(id)
     : couponStore.addToCoupon(data);
-}
+};
 </script>
+
+<style scoped>
+/* Add any component-specific styles here */
+</style>
