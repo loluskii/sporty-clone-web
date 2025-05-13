@@ -3,6 +3,7 @@ export const BASE_API = import.meta.env.VITE_BASE_API
 export const NEW_BASE_API = import.meta.env.VITE_NEW_BASE_API
 
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
+export const APP_KEY = import.meta.env.VITE_APP_KEY
 export const BASE_URL = import.meta.env.VITE_BASE_URL
 
 export const AUTH_EXCLUDE_LIST = []
