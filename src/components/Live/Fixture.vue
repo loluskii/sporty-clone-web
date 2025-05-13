@@ -20,8 +20,8 @@
           <div class="away-team">{{ match.awayTeam }}</div>
         </div>
         <div class="score">
-          <div class="score-item">{{ match.homeScore }}</div>
-          <div class="score-item">{{ match.awayScore }}</div>
+          <div class="score-item">{{ score.home }}</div>
+          <div class="score-item">{{ score.away }}</div>
         </div>
       </div>
     </div>
@@ -61,11 +61,12 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import _ from 'lodash';
 import { slugify, createID, isSelected } from '@/helpers';
 import { useCouponStore, useUtilsStore } from '@/stores';
+import { useMqttService } from '@/composables/useMqtt';
 import EmptyOdds from '../EmptyOdds.vue';
 import Odds from './Odds.vue';
 
@@ -85,6 +86,130 @@ const props = defineProps({
 const couponStore = useCouponStore();
 const router = useRouter();
 const utilsStore = useUtilsStore();
+
+// Score state
+const score = ref({
+  home: props.match.homeScore || '0',
+  away: props.match.awayScore || '0',
+  status: props.match.matchStatus || 0,
+});
+
+// MQTT Service
+const { subscribe, isConnected } = useMqttService();
+
+// MQTT Topics
+const oddsChangeTopic = `feeds/live/odds_change/${props.match.matchID}`;
+const betStopTopic = `feeds/live/bet_stop/${props.match.matchID}`;
+
+// MQTT Handlers
+const handleOddsChange = (data) => {
+  console.log(`[MQTT] Odds change received for match ${props.match.matchID}:`, data);
+
+  if (data.match_id === props.match.matchID) {
+    // Update match status if available
+    if (data.sport_event_status) {
+      const status = data.sport_event_status;
+      
+      // Update score object
+      score.value = {
+        home: status.home_score ,
+        away: status.away_score,
+      };
+    }
+
+    // Update markets and outcomes
+    if (data.markets) {
+      data.markets.forEach(market => {
+        // Skip markets with no outcomes or inactive status
+        if (!market.outcomes || market.status !== 0) return;
+
+        // Find matching market in activeMarkets
+        const activeMarket = props.activeMarkets.find(m => m.marketID == market.id);
+        if (!activeMarket) return;
+
+        // Update outcomes
+        market.outcomes.forEach(newOutcome => {
+          const existingOutcomeIndex = props.match.outcomes.findIndex(
+            o => o.outcomeID == newOutcome.id
+          );
+          
+          if (existingOutcomeIndex !== -1) {
+            props.match.outcomes[existingOutcomeIndex] = {
+              ...props.match.outcomes[existingOutcomeIndex],
+              odds: newOutcome.odds,
+              active: newOutcome.active,
+              probability: newOutcome.probability
+            };
+          }
+        });
+      });
+    }
+  }
+};
+
+const handleBetStop = (data) => {
+  console.log(`[MQTT] Bet stop received for match ${props.match.matchID}:`, {
+    matchID: data.matchID,
+    status: data.status,
+    outcomesCount: data.outcomes?.length,
+    timestamp: new Date().toISOString()
+  });
+
+  if (data.matchID === props.match.matchID) {
+    const oldStatus = props.match.matchStatus;
+    // Update match status
+    props.match.matchStatus = data.status;
+    console.log(`[MQTT] Updated match status:`, {
+      oldStatus,
+      newStatus: data.status
+    });
+    
+    // Update outcomes status if provided
+    if (data.outcomes) {
+      data.outcomes.forEach(outcome => {
+        const existingOutcomeIndex = props.match.outcomes.findIndex(
+          o => o.outcomeID === outcome.outcomeID
+        );
+        
+        if (existingOutcomeIndex !== -1) {
+          const oldStatus = props.match.outcomes[existingOutcomeIndex].status;
+          props.match.outcomes[existingOutcomeIndex].status = outcome.status;
+          console.log(`[MQTT] Updated outcome status:`, {
+            outcomeID: outcome.outcomeID,
+            oldStatus,
+            newStatus: outcome.status
+          });
+        } else {
+          console.log(`[MQTT] Outcome ${outcome.outcomeID} not found in match ${props.match.matchID}`);
+        }
+      });
+    }
+  } else {
+    console.log(`[MQTT] Received bet stop for different match:`, {
+      receivedMatchID: data.matchID,
+      currentMatchID: props.match.matchID
+    });
+  }
+};
+
+// Subscribe to MQTT topics
+onMounted(() => {
+  console.log(`[MQTT] Subscribing to topics for match ${props.match.matchID}:`, {
+    oddsChangeTopic,
+    betStopTopic,
+    isConnected: isConnected.value
+  });
+
+  const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange);
+  const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop);
+
+  // Cleanup subscriptions on unmount
+  onUnmounted(() => {
+    console.log(`[MQTT] Unsubscribing from topics for match ${props.match.matchID}`);
+    unsubscribeOdds();
+    unsubscribeBetStop();
+  });
+});
 
 // Memoized computed properties
 const groupedOutcomes = computed(() => {
