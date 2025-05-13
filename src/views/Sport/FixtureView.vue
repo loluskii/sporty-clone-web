@@ -3,38 +3,36 @@
     <!-- <template #left-content>
     </template> -->
     <template #fixtures-list>
-      <div id="importMatch" v-if="!isLoading" class="import-match" style="position: relative">
-        <template v-if="fixturesList.length !== 0">
-          <TournamentCard
-            v-for="(tournament, index) in fixturesList"
-            :key="index"
-            :tournamentName="tournament.tournamentName"
-            :tournamentID="tournament.tournamentID"
-            :events="tournament.events"
-            :markets="tournament.markets"
-            @fetch-fixtures="getTournamentFixtures"
-          ></TournamentCard>
-          <div v-if="lastPage" class="pagination pagination">
-            <span class="pageNum icon-prev" @click="prevPage"></span>
-            <span
-              v-for="pageNumber in getPageRange()"
-              :key="pageNumber"
-              @click="moveToSpecificPage(pageNumber)"
-              class="pageNum"
-              :class="pageNumber === activePage ? 'selected' : ''"
-              >{{ pageNumber }}</span
-            >
-            <span class="pageNum icon-next" @click="nextPage"></span>
+      <div id="importMatch" class="import-match">
+        <LoadingSpinner v-if="isLoading && !fixturesList.length" />
+        <template v-else>
+          <div v-if="loadingError" class="error-message">
+            <p>Sorry, something went wrong. Please try again later.</p>
+            <button @click="retryLastOperation" class="retry-button">Retry</button>
           </div>
+          
+          <template v-else-if="fixturesList.length">
+            <TournamentCard
+              v-for="tournament in fixturesList"
+              :key="tournament.tournamentID"
+              :tournamentName="tournament.tournamentName"
+              :tournamentID="tournament.tournamentID"
+              :events="tournament.events"
+              :markets="tournament.markets"
+              @fetch-fixtures="getTournamentFixtures"
+            />
+
+            <Pagination
+              v-if="lastPage"
+              v-model:currentPage="activePage"
+              :total-pages="lastPage"
+              :is-loading="isLoading"
+              @update:currentPage="handlePageChange"
+            />
+          </template>
+          <NoDataMessage v-else />
         </template>
-        <div v-else class="x-sport-bet-no-data">
-          <div style="white-space: pre-line">
-            Sorry, there are no games currently<br />available in this category. Please try
-            later.<br />Thank you.
-          </div>
-        </div>
       </div>
-      <LoadingSpinner v-else-if="isLoading && !fixturesList.length"></LoadingSpinner>
     </template>
   </SportsLayout>
 </template>
@@ -47,10 +45,12 @@ import {
 } from '@/helpers'
 import { useRoute } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-import { ref, watch, onMounted, computed } from 'vue'
+import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import _ from 'lodash'
 import { getFixturesByTournamentId, getTournamentsByCategories, extractIdsFromURL } from '@/helpers'
 import { useUtilsStore } from '@/stores'
+import Pagination from '@/components/Pagination.vue'
+import NoDataMessage from '@/components/NoDataMessage.vue'
 
 const utilsStore = useUtilsStore()
 const route = useRoute()
@@ -223,10 +223,10 @@ async function getCategoryFixtures() {
       }
     })
 
-    // Update fixturesList with new fixtures
+    // Update fixturesList with new fixtures and sort by tournamentID
     fixturesList.value = fixturesList.value.length
-      ? [...fixturesList.value, ...newFixtures]
-      : newFixtures
+      ? [...fixturesList.value, ...newFixtures].sort((a, b) => a.tournamentID - b.tournamentID)
+      : newFixtures.sort((a, b) => a.tournamentID - b.tournamentID)
 
     // Reset other states
     marketsGroup.value = []
@@ -288,17 +288,20 @@ async function fixturesByActiveSport() {
   try {
     const res = await getSportHighlights(sid, null, activePage.value)
     let result = _.groupBy(res.fixtures, 'tournament')
-    const tournamentsArray = Object.keys(result).map((tournamentName) => {
-      const details = result[tournamentName] || {}
-      return {
-        tournamentName: tournamentName,
-        tournamentID: details[0].tournamentID || '',
-        categoryName: details[0].categoryName || '',
-        categoryID: details[0].categoryID || '',
-        events: details,
-        markets: res.markets
-      }
-    })
+    const tournamentsArray = Object.keys(result)
+      .map((tournamentName) => {
+        const details = result[tournamentName] || {}
+        return {
+          tournamentName: tournamentName,
+          tournamentID: details[0].tournamentID || '',
+          categoryName: details[0].categoryName || '',
+          categoryID: details[0].categoryID || '',
+          events: details,
+          markets: res.markets
+        }
+      })
+      .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
+    
     fixturesList.value = tournamentsArray
     // marketsGroup.value = res.markets
     lastPage.value = res.lastPage
@@ -319,17 +322,20 @@ async function fetchActiveSportByPeriod(period) {
     } else {
       const res = await getSportHighlights(sid, period, activePage.value)
       let result = _.groupBy(res.fixtures, 'tournament')
-      const tournamentsArray = Object.keys(result).map((tournamentName) => {
-        const details = result[tournamentName] || {}
-        return {
-          tournamentName: tournamentName,
-          tournamentID: details[0].tournamentID || '',
-          categoryName: details[0].categoryName || '',
-          categoryID: details[0].categoryID || '',
-          events: details, // Use the original events array,
-          markets: res.markets
-        }
-      })
+      const tournamentsArray = Object.keys(result)
+        .map((tournamentName) => {
+          const details = result[tournamentName] || {}
+          return {
+            tournamentName: tournamentName,
+            tournamentID: details[0].tournamentID || '',
+            categoryName: details[0].categoryName || '',
+            categoryID: details[0].categoryID || '',
+            events: details,
+            markets: res.markets
+          }
+        })
+        .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
+      
       fixturesList.value = tournamentsArray
       lastPage.value = res.lastPage
       isLoading.value = false
@@ -345,17 +351,20 @@ async function fetchTodayActiveSport(id) {
   try {
     const res = await getToday2(id, activePage.value)
     let result = _.groupBy(res.fixtures, 'tournament')
-    const tournamentsArray = Object.keys(result).map((tournamentName) => {
-      const details = result[tournamentName] || {}
-      return {
-        tournamentName: tournamentName,
-        tournamentID: details[0].tournamentID || '',
-        categoryName: details[0].categoryName || '',
-        categoryID: details[0].categoryID || '',
-        events: details,
-        markets: res.markets
-      }
-    })
+    const tournamentsArray = Object.keys(result)
+      .map((tournamentName) => {
+        const details = result[tournamentName] || {}
+        return {
+          tournamentName: tournamentName,
+          tournamentID: details[0].tournamentID || '',
+          categoryName: details[0].categoryName || '',
+          categoryID: details[0].categoryID || '',
+          events: details,
+          markets: res.markets
+        }
+      })
+      .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
+    
     fixturesList.value = tournamentsArray
     lastPage.value = res.lastPage
     isLoading.value = false

@@ -7,10 +7,10 @@
     <div class="print-container-wrapper">
       <div class="sport-name">
         <div
-          v-for="(sport, index) in sportList.slice(0, 6)"
+          v-for="sport in visibleSports"
           @click="setActiveSport(sport.sportID)"
-          :key="index"
-          :class="activeSportID == sport.sportID ? 'active' : ''"
+          :key="sport.sportID"
+          :class="{ 'active': activeSportID === sport.sportID }"
           class="sport-name-item"
           style="max-width: 17%"
         >
@@ -19,24 +19,21 @@
 
         <div
           class="simple-select-wrap sport-simple-select"
-          :class="
-            isMoreSportsDropdownShown
-              ? 'simple-select-wrap-expand'
-              : sportSimpleSelectActive
-                ? 'sport-simple-select-active'
-                : ''
-          "
+          :class="{
+            'simple-select-wrap-expand': isMoreSportsDropdownShown,
+            'sport-simple-select-active': sportSimpleSelectActive
+          }"
         >
           <div @click="toggleMoreSportsDropdown" class="select-title">
             <p class="select-title__label">{{ MoreSportsLabel }}</p>
             <span class="arrow-icon arrow-icon-down"></span>
           </div>
-          <div class="select-list" v-show="isMoreSportsDropdownShown">
+          <div v-show="isMoreSportsDropdownShown" class="select-list">
             <div
-              v-for="(sport, index) in sportList.slice(7)"
+              v-for="sport in moreSports"
               @click="setActiveSport(sport.sportID, sport.sportName)"
-              :key="index"
-              :class="activeSportID == sport.sportID ? 'select-item-active' : ''"
+              :key="sport.sportID"
+              :class="{ 'select-item-active': activeSportID === sport.sportID }"
               class="select-item"
             >
               {{ sport.sportName }}
@@ -46,63 +43,66 @@
       </div>
 
       <div id="print-container" style="position: relative">
-        <div v-if="!isLoading && highlightsData.length > 0" class="match">
-          <div class="tour-name-wrap">
-            <div
-              v-for="(group, g) in highlightsData.slice(0, 5)"
-              @click="setActiveHighlight(group)"
-              :key="g"
-              class="tour-item"
-              :class="group.id === activeTournament.id ? 'active' : ''"
-            >
-              <div class="category-name">{{ group.category }}</div>
-              <div class="tour-name">{{ group.tournamentName }}</div>
+        <template v-if="!isLoading">
+          <div v-if="highlightsData.length" class="match">
+            <div class="tour-name-wrap">
+              <div
+                v-for="group in visibleHighlights"
+                @click="setActiveHighlight(group)"
+                :key="group.id"
+                class="tour-item"
+                :class="{ 'active': group.id === activeTournament.id }"
+              >
+                <div class="category-name">{{ group.category }}</div>
+                <div class="tour-name">{{ group.tournamentName }}</div>
+              </div>
             </div>
-          </div>
-          <div class="x-table important-table match-table">
-            <template v-for="(matches, m) in activeTournamentEvents" :key="m">
-              <div class="x-table-row date-row">
-                <div class="x-table-cell date">{{ formatDate(m, 'DD/MM dddd') }}</div>
-                <div class="x-table-cell each-module-wrap">
-                  <div
-                    v-for="group in activeSportMarkets"
-                    :key="group"
-                    class="each-module-table"
-                    :class="activeSportMarkets.length > 1 ? 'two-markets' : ''"
-                  >
+            
+            <div class="x-table important-table match-table">
+              <template v-for="(matches, date) in activeTournamentEvents" :key="date">
+                <div class="x-table-row date-row">
+                  <div class="x-table-cell date">{{ formatDate(date, 'DD/MM dddd') }}</div>
+                  <div class="x-table-cell each-module-wrap">
                     <div
-                      v-if="group.specifier !== ''"
-                      class="each-module"
-                      style="text-transform: capitalize"
+                      v-for="group in activeSportMarkets"
+                      :key="group.marketID"
+                      class="each-module-table"
+                      :class="{ 'two-markets': activeSportMarkets.length > 1 }"
                     >
-                      {{ group.specifier }}
-                    </div>
-                    <div
-                      v-for="market in _.sortBy(group.outcomes, 'outcomeID')"
-                      :key="market"
-                      class="each-module"
-                    >
-                      {{ market.outcomeName }}
+                      <div
+                        v-if="group.specifier"
+                        class="each-module"
+                        style="text-transform: capitalize"
+                      >
+                        {{ group.specifier }}
+                      </div>
+                      <div
+                        v-for="market in sortedOutcomes(group)"
+                        :key="market.outcomeID"
+                        class="each-module"
+                      >
+                        {{ market.outcomeName }}
+                      </div>
                     </div>
                   </div>
+                  <div class="x-table-cell"></div>
                 </div>
-                <div class="x-table-cell"></div>
-              </div>
-              <HighlightFixtures
-                v-for="(game, g) in matches"
-                :key="g"
-                :game="game"
-                :selected-markets="selectedMarketIDs"
-                :active-sport-markets="activeSportMarkets"
-              />
-            </template>
+                <HighlightFixtures
+                  v-for="game in matches"
+                  :key="game.matchID"
+                  :game="game"
+                  :selected-markets="selectedMarketIDs"
+                  :active-sport-markets="activeSportMarkets"
+                />
+              </template>
+            </div>
           </div>
-        </div>
-        <div v-else-if="!isLoading && !highlightsData.length" class="x-sport-bet-no-data">
-          Sorry, there are no games currently available in this sport for now.<br />Please try
-          later. Thank you.
-        </div>
-        <LoadingSpinner v-else></LoadingSpinner>
+          <div v-else class="x-sport-bet-no-data">
+            Sorry, there are no games currently available in this sport for now.<br />Please try
+            later. Thank you.
+          </div>
+        </template>
+        <LoadingSpinner v-else />
       </div>
     </div>
   </div>
@@ -113,103 +113,139 @@ import { useUtilsStore } from '@/stores'
 import HighlightFixtures from './HighlightFixtures.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { getHighlights2, formatDate } from '@/helpers'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import _ from 'lodash'
 
 const utilsStore = useUtilsStore()
-const sportList = computed(() => {
-  return utilsStore.sportsMenu
-})
+const sportList = computed(() => utilsStore.sportsMenu)
 
+// State
 const activeSportID = ref(1)
 const prevSportID = ref(1)
 const activeSportMarkets = ref([])
 const highlightsData = ref([])
 const activeTournament = ref({})
-const activeTournamentEvents = ref([])
+const activeTournamentEvents = ref({})
 const selectedMarketIDs = ref([])
 const MoreSportsLabel = ref('More Sports')
 const isMoreSportsDropdownShown = ref(false)
 const sportSimpleSelectActive = ref(false)
 const isLoading = ref(false)
 
-async function getHighlightGames() {
-  if (prevSportID.value === activeSportID.value && highlightsData.value.length) return
-  isLoading.value = true
-  const response = await getHighlights2(activeSportID.value, 10)
-  if (response.fixtures && response.markets) {
-    const transformedHighlights = transformHighlights(response.fixtures)
-    const [firstTournament] = transformedHighlights
-    highlightsData.value = transformedHighlights
-    activeTournament.value = firstTournament
-    activeTournamentEvents.value = _.groupBy(
-      firstTournament.events,
-      (fixture) => fixture.date.split(' ')[0]
-    )
-    const markets = response.markets.filter((market) => market.specifier === '')
-    activeSportMarkets.value = markets.slice(0, 2)
-    selectedMarketIDs.value = markets.slice(0, 2).map((market) => ({
-      marketID: parseInt(market.marketID),
-      marketName: market.marketName,
-      specifier: market.specifier
-    }))
-    prevSportID.value = activeSportID.value
-  } else {
-    highlightsData.value = []
-    activeTournament.value = {}
-    activeTournamentEvents.value = {}
-    isLoading.value = false
-    return
-  }
-  isLoading.value = false
-}
+// First, create a ref to store the raw highlights data
+const rawHighlights = ref([])
 
-function toggleMoreSportsDropdown() {
-  isMoreSportsDropdownShown.value = !isMoreSportsDropdownShown.value
-}
-
-function transformHighlights(arr) {
+// Then create a computed property that will memoize the transformed data
+const transformedHighlights = computed(() => {
+  if (!rawHighlights.value.length) return []
+  
   const tournamentMap = new Map()
-  for (const item of arr) {
-    const { tournament, categoryName, tournamentID } = item
-    const key = `${tournament}-${categoryName}`
+  for (const item of rawHighlights.value) {
+    const key = `${item.tournament}-${item.categoryName}`
     if (!tournamentMap.has(key)) {
       tournamentMap.set(key, {
-        id: tournamentID,
-        tournamentName: tournament,
-        category: categoryName,
+        id: item.tournamentID,
+        tournamentName: item.tournament,
+        category: item.categoryName,
         events: []
       })
     }
     tournamentMap.get(key).events.push(item)
   }
   return Array.from(tournamentMap.values())
-}
-
-function setActiveHighlight(group) {
-  activeTournament.value = group
-  activeTournamentEvents.value = _.groupBy(group.events, (fixture) => fixture.date.split(' ')[0])
-}
-
-async function setActiveSport(sid, name = null) {
-  // set the active sport id
-  isLoading.value = true
-  prevSportID.value = activeSportID.value
-  activeSportID.value = sid
-  if (name) {
-    toggleMoreSportsDropdown()
-    MoreSportsLabel.value = name
-    sportSimpleSelectActive.value = true
-  } else {
-    sportSimpleSelectActive.value = false
-    MoreSportsLabel.value = 'More Sports'
-  }
-  await getHighlightGames()
-}
-
-onMounted(async () => {
-  await getHighlightGames()
 })
+
+// Computed
+const visibleSports = computed(() => sportList.value.slice(0, 6))
+const moreSports = computed(() => sportList.value.slice(7))
+const visibleHighlights = computed(() => highlightsData.value.slice(0, 5))
+
+// Methods
+const sortedOutcomes = (group) => _.sortBy(group.outcomes, 'outcomeID')
+
+const getHighlightGames = async () => {
+  if (prevSportID.value === activeSportID.value && rawHighlights.value.length) return
+  
+  try {
+    isLoading.value = true
+    const response = await getHighlights2(activeSportID.value, 10)
+    
+    if (response.fixtures && response.markets) {
+      rawHighlights.value = response.fixtures // Store raw data
+      const [firstTournament] = transformedHighlights.value // Use computed value
+      
+      highlightsData.value = transformedHighlights.value
+      activeTournament.value = firstTournament
+      activeTournamentEvents.value = _.groupBy(
+        firstTournament.events,
+        fixture => fixture.date.split(' ')[0]
+      )
+      
+      const markets = response.markets.filter(market => market.specifier === '')
+      activeSportMarkets.value = markets.slice(0, 2)
+      selectedMarketIDs.value = markets.slice(0, 2).map(market => ({
+        marketID: parseInt(market.marketID),
+        marketName: market.marketName,
+        specifier: market.specifier
+      }))
+      
+      prevSportID.value = activeSportID.value
+    } else {
+      rawHighlights.value = []
+      highlightsData.value = []
+      activeTournament.value = {}
+      activeTournamentEvents.value = {}
+    }
+  } catch (error) {
+    console.error('Error fetching highlights:', error)
+    rawHighlights.value = []
+    highlightsData.value = []
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const toggleMoreSportsDropdown = () => {
+  isMoreSportsDropdownShown.value = !isMoreSportsDropdownShown.value
+}
+
+const setActiveHighlight = (group) => {
+  activeTournament.value = group
+  activeTournamentEvents.value = _.groupBy(group.events, fixture => fixture.date.split(' ')[0])
+}
+
+const setActiveSport = async (sid, name = null) => {
+  if (isLoading.value) return
+  
+  try {
+    isLoading.value = true
+    prevSportID.value = activeSportID.value
+    activeSportID.value = sid
+    
+    if (name) {
+      toggleMoreSportsDropdown()
+      MoreSportsLabel.value = name
+      sportSimpleSelectActive.value = true
+    } else {
+      sportSimpleSelectActive.value = false
+      MoreSportsLabel.value = 'More Sports'
+    }
+    
+    await getHighlightGames()
+  } catch (error) {
+    console.error('Error setting active sport:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+// Lifecycle
+onMounted(() => {
+  getHighlightGames()
+})
+
+// Cleanup
+
 </script>
 
 <style>

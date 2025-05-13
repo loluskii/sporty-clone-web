@@ -11,9 +11,9 @@
             <div class="x-overview">
               <div class="sport-name">
                 <div
-                  v-for="(sport, index) in sportList.slice(0, 5)"
-                  :key="index"
-                  :class="sport.sportID === activeSportID ? 'active' : ''"
+                  v-for="sport in visibleSports"
+                  :key="sport.sportID"
+                  :class="{ 'active': sport.sportID == activeSportID }"
                   class="sport-name-item"
                   @click="setActiveSport(sport.sportID)"
                 >
@@ -30,11 +30,10 @@
                     <p class="select-title__label">{{ MoreSportsLabel }}</p>
                     <span class="arrow-icon arrow-icon-down"></span>
                   </div>
-                  <div class="select-list" v-if="showMoreSportsMenu">
+                  <div v-show="showMoreSportsMenu" class="select-list">
                     <div
-                      :data-index="s"
-                      v-for="(sport, s) in sportList.slice(5)"
-                      :key="s"
+                      v-for="sport in moreSports"
+                      :key="sport.sportID"
                       @click="setActiveSport(sport)"
                       class="select-item"
                     >
@@ -59,8 +58,8 @@
                       <div class="x-table-cell each-module-wrap each-module-two-line">
                         <div class="market-desc-wrap">
                           <div
-                            v-for="(market, m) in activeSportMarkets"
-                            :key="m"
+                            v-for="market in activeSportMarkets"
+                            :key="market.marketID"
                             class="market-desc"
                             :style="
                               activeSportMarkets.length > 1 ? 'width: 50%' : 'width: 100%'
@@ -71,33 +70,31 @@
                         </div>
                         <div>
                           <div
-                            v-for="(market, m) in activeSportMarkets"
-                            :key="m"
+                            v-for="market in activeSportMarkets"
+                            :key="market.marketID"
                             class="each-module-table"
-                            :class="activeSportMarkets.length > 1 ? 'two-markets' : ''"
+                            :class="{ 'two-markets': activeSportMarkets.length > 1 }"
                           >
-                            <div v-if="market.specifier !== ''" class="each-module">
+                            <div v-if="market.specifier" class="each-module">
                               {{ market.specifier }}
                             </div>
-                            <template
-                              :key="o"
-                              v-for="(outcome, o) in _.sortBy(
-                                market.outcomes,
-                                'outcomeID'
-                              )"
+                            <div
+                              v-for="outcome in _.sortBy(market.outcomes, 'outcomeID')"
+                              :key="outcome.outcomeID"
+                              class="each-module"
                             >
-                              <div class="each-module">{{ outcome.outcomeName }}</div>
-                            </template>
+                              {{ outcome.outcomeName }}
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="x-table-cell"></div>
                     </div>
                     <Fixture
-                      v-for="(match, m) in liveGroup"
-                      :key="m"
+                      v-for="match in liveGroup"
+                      :key="match.matchID"
                       :match="match"
-                      :activeMarkets="activeSportMarkets"
+                      :active-markets="activeSportMarkets"
                     ></Fixture>
                   </template>
                 </div>
@@ -154,7 +151,7 @@
 </template>
 
 <script setup>
-import { defineComponent, ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useQuery } from "vue-query";
 import _ from "lodash";
 import LiveLayout from "@/components/Shared/LiveLayout.vue";
@@ -165,35 +162,49 @@ import { useUsersStore, useUtilsStore } from "@/stores";
 import { getLiveHighlights } from "@/helpers";
 import emitter from "@/plugins/emitter";
 
+// State
 const activeSportID = ref(1);
 const completeData = ref([]);
 const marketGroup = ref([]);
 const isEmptyResponse = ref(false);
 const showMoreSportsMenu = ref(false);
 const MoreSportsLabel = ref("More Sports");
+
+// Store
 const utilsStore = useUtilsStore();
 const userStore = useUsersStore();
 
+// Memoized computed properties
+const sportList = computed(() => utilsStore.sportsMenu);
+const visibleSports = computed(() => sportList.value.slice(0, 5));
+const moreSports = computed(() => sportList.value.slice(5));
+
+// Optimize the query with better caching
 const { data, error, isLoading, refetch } = useQuery("liveData", getLiveHighlights, {
-  refetchInterval: 20000, // 25 seconds in milliseconds
-  onError: (err) => console.error(err),
+  refetchInterval: 20000,
+  staleTime: 15000, // Add stale time
+  cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
+  onError: (err) => {
+    console.error(err);
+    isEmptyResponse.value = true;
+  },
   onSuccess: (response) => {
     if (response.fixtures) {
       if (completeData.value.length === 0) {
         completeData.value = response.fixtures;
         marketGroup.value = response.markets.filter((m) => m.specifier == "");
-        utilsStore.liveListSingleMatch = response.fixtures[0].matchID
+        utilsStore.liveListSingleMatch = response.fixtures[0].matchID;
       } else {
+        // Use Map for faster lookups
+        const fixtureMap = new Map(
+          completeData.value.map(fixture => [fixture.matchID, fixture])
+        );
+        
         response.fixtures.forEach((newFixture) => {
-          const index = completeData.value.findIndex(
-            (oldFixture) => oldFixture.matchID === newFixture.matchID
-          );
-          if (index !== -1) {
-            completeData.value[index] = newFixture;
-          } else {
-            completeData.value.push(newFixture);
-          }
+          fixtureMap.set(newFixture.matchID, newFixture);
         });
+        
+        completeData.value = Array.from(fixtureMap.values());
       }
     } else {
       isEmptyResponse.value = !completeData.value.length;
@@ -201,19 +212,27 @@ const { data, error, isLoading, refetch } = useQuery("liveData", getLiveHighligh
   },
 });
 
-const sportList = computed(() => utilsStore.sportsMenu);
+// Memoized filtered data
 const filteredLiveData = computed(() => {
-  const filtered = completeData.value.filter((s) => s.sportID == activeSportID.value);
+  if (!completeData.value.length || isEmptyResponse.value) return {};
+  
+  const filtered = completeData.value
+    .filter(s => s.sportID == activeSportID.value);
+    
   return _.groupBy(filtered, "tournament");
 });
+
+// Memoized active sport markets
 const activeSportMarkets = computed(() => {
   const data = marketGroup.value
-    .filter((s) => s.sportID == activeSportID.value)
+    .filter(s => s.sportID == activeSportID.value)
     .sort((a, b) => a.marketID - b.marketID);
+    
   return data.slice(0, 2);
 });
 
-function setActiveSport(sport) {
+// Optimized methods
+const setActiveSport = (sport) => {
   if (typeof sport === "object") {
     MoreSportsLabel.value = sport.sportName;
     activeSportID.value = sport.sportID;
@@ -222,27 +241,19 @@ function setActiveSport(sport) {
     activeSportID.value = sport;
     MoreSportsLabel.value = "More Sports";
   }
-}
+};
 
 const toggleMoreSports = () => {
   showMoreSportsMenu.value = !showMoreSportsMenu.value;
 };
 
-function showRegisterModal() {
+const showRegisterModal = () => {
   emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
-}
+};
 
-onMounted(async () => {
-  // No need to call getLiveFixtures here, vue-query handles data fetching and refreshing
-});
-
-defineComponent({
-  components: { LoadingSpinner },
-  methods: {
-    handleManualRefetch() {
-      refetch();
-    },
-  },
+// Cleanup
+onUnmounted(() => {
+  // Cleanup any subscriptions if needed
 });
 </script>
 

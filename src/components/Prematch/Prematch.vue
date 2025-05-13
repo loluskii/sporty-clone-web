@@ -82,7 +82,8 @@
                   : ''
               "
             >
-              <span class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
+              <span v-if="odds.odds > 1" class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
+              <span v-else class="x-icon-lock"></span>
             </div>
           </template>
           <template v-else>
@@ -179,6 +180,7 @@ const getOdds = () => {
         let defaultSpecifier = filtered[0]?.specifier;
         if (defaultSpecifier) {
           filtered = filtered.filter((item) => item.specifier === defaultSpecifier);
+          
           activeSpecifier.value = defaultSpecifier.split("=")[1];
         }
       } else {
@@ -186,7 +188,7 @@ const getOdds = () => {
       }
       if (filtered.length) {
         // console.log(_.sortBy(filtered, 'outcomeID'))
-        outcomes.value = sortArr(filtered, "outcomeID");
+        outcomes.value = sortArr(uniqueOdds(filtered), "outcomeID");
       } else {
         outcomes.value = [];
       }
@@ -203,14 +205,13 @@ function showFixtureAnalysis(id) {
 }
 
 const setActiveSpecifier = (spec) => {
-  console.log(spec);
   if (props.match.outcomes) {
     const odds = props.match.outcomes;
     let filtered = odds.filter(
       (item) => item.marketID === parseInt(props.activeMarket.marketID)
     );
     filtered = filtered.filter((item) => item.specifier === spec.specifier);
-    outcomes.value = filtered;
+    outcomes.value = sortArr(uniqueOdds(filtered), "outcomeID");
     activeSpecifier.value = spec.value;
   }
 };
@@ -227,7 +228,7 @@ watch(
 );
 
 function addToBetslip(event, odd) {
-  if (odd.odds < 1) return;
+  if (odd.odds <= 1) return;
   const id = createID(
     event.gameID,
     event.matchID,

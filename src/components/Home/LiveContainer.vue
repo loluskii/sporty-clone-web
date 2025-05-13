@@ -10,27 +10,27 @@
     <div id="print-container-live">
       <div class="sport-name">
         <div
-          v-for="(sport, index) in sportList.slice(0, 6)"
-          :key="index"
-          :class="sport.sportID === activeSportID ? 'active' : ''"
+          v-for="sport in visibleSports"
+          :key="sport.sportID"
+          :class="{ 'active': sport.sportID === activeSportID }"
           class="sport-name-item"
           @click="setActiveSport(sport.sportID)"
         >
           <div class="text">{{ sport.sportName }}</div>
         </div>
+        
         <div
           class="simple-select-wrap sport-simple-select"
-          :class="MoreSportsLabel !== 'More Sports' ? 'sport-simple-select-active' : ''"
+          :class="{ 'sport-simple-select-active': MoreSportsLabel !== 'More Sports' }"
         >
           <div class="select-title" @click="toggleMoreSports">
             <p class="select-title__label">{{ MoreSportsLabel }}</p>
             <span class="arrow-icon arrow-icon-down"></span>
           </div>
-          <div class="select-list" v-if="showMoreSportsMenu">
+          <div v-show="showMoreSportsMenu" class="select-list">
             <div
-              :data-index="s"
-              v-for="(sport, s) in sportList.slice(5, 10)"
-              :key="s"
+              v-for="sport in moreSports"
+              :key="sport.sportID"
               @click="setActiveSport(sport)"
               class="select-item"
             >
@@ -125,91 +125,99 @@ import Fixture from "@/components/Live/Fixture.vue";
 import _ from "lodash";
 
 const utilsStore = useUtilsStore();
-const sportList = computed(() => {
-  return utilsStore.sportsMenu;
-});
 
+// Memoize sportList
+const sportList = computed(() => utilsStore.sportsMenu);
+
+// Memoize visible sports
+const visibleSports = computed(() => sportList.value.slice(0, 6));
+const moreSports = computed(() => sportList.value.slice(5, 10));
+
+// State
 const showMoreSportsMenu = ref(false);
-
 const activeSportID = ref(1);
 const marketGroup = ref([]);
 const isEmptyResponse = ref(false);
 const completeData = ref([]);
-
 const MoreSportsLabel = ref("More Sports");
 const isManualRefetching = ref(false);
 
-
-
+// Optimize the query with better caching and error handling
 const { data, error, isLoading, refetch, isFetching } = useQuery(
   "liveData",
   getLiveHighlights,
   {
-    refetchInterval: 60000, // 25 seconds in milliseconds
+    refetchInterval: 60000,
     refetchOnWindowFocus: true,
+    staleTime: 30000, // Add stale time to prevent unnecessary refetches
+    cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
     onError: (err) => {
       console.error(err);
+      isEmptyResponse.value = true;
     },
     onSuccess: (response) => {
       if (response.fixtures) {
-        // if the
         if (completeData.value.length === 0) {
           completeData.value = response.fixtures.slice(0, 15);
-          marketGroup.value = response.markets.filter((m) => m.specifier == "");
+          marketGroup.value = response.markets.filter((m) => m.specifier === "");
         } else {
+          // Use Map for faster lookups
+          const fixtureMap = new Map(
+            completeData.value.map(fixture => [fixture.matchID, fixture])
+          );
+          
           response.fixtures.slice(0, 15).forEach((newFixture) => {
-            const index = completeData.value.findIndex(
-              (oldFixture) => oldFixture.matchID === newFixture.matchID
-            );
-            if (index !== -1) {
-              // Replace the old fixture with the new one
-              completeData.value[index] = newFixture;
-            } else {
-              // If the fixture does not exist in completeData.value, add it
-              completeData.value.push(newFixture);
-            }
+            fixtureMap.set(newFixture.matchID, newFixture);
           });
+          
+          completeData.value = Array.from(fixtureMap.values());
         }
-      } else {
-        if (!completeData.value.length) {
-          isEmptyResponse.value = true;
-        }
+      } else if (!completeData.value.length) {
+        isEmptyResponse.value = true;
       }
     },
   }
 );
 
-const handleRefresh = () => {
-  // if(isManualRefetching.value) return
+// Optimize refresh handler with debounce
+const handleRefresh = _.debounce(() => {
+  if (isManualRefetching.value) return;
+  
   isManualRefetching.value = true;
-  refetch().then(() => {
+  refetch().finally(() => {
+    setTimeout(() => {
+      isManualRefetching.value = false;
+    }, 5000);
+  });
+}, 300);
 
-  })
-  setTimeout(() => {
-    isManualRefetching.value = false;
-  }, 5000)
+// Memoize filtered data
+const filteredLiveData = computed(() => {
+  if (!completeData.value.length || isEmptyResponse.value) return {};
+  
+  const filtered = completeData.value
+    .filter(s => s.sportID == activeSportID.value)
+    .slice(0, 5);
+    
+  return _.groupBy(filtered, "tournament");
+});
+
+// Memoize active sport markets
+const activeSportMarkets = computed(() => {
+  const data = marketGroup.value
+    .filter(s => s.sportID == activeSportID.value)
+    .sort((a, b) => a.marketID - b.marketID);
+    
+  return data.slice(0, 2);
+});
+
+// Optimize toggle function
+const toggleMoreSports = () => {
+  showMoreSportsMenu.value = !showMoreSportsMenu.value;
 };
 
-// get active sport data from completelive and group by tournament
-const filteredLiveData = computed(() => {
-  const res =
-    completeData.value && !isEmptyResponse.value
-      ? completeData.value.filter((s) => s.sportID == activeSportID.value).splice(0, 5)
-      : [];
-  return _.groupBy(res, "tournament");
-});
-
-const activeSportMarkets = computed(() => {
-  let data = marketGroup.value.filter((s) => s.sportID == activeSportID.value);
-  data = data.sort((a, b) => a.marketID - b.marketID);
-  return data ? data.slice(0, 2) : [];
-});
-
-function toggleMoreSports() {
-  showMoreSportsMenu.value = !showMoreSportsMenu.value;
-}
-
-function setActiveSport(sport) {
+// Optimize set active sport
+const setActiveSport = (sport) => {
   if (typeof sport === "object") {
     MoreSportsLabel.value = sport.sportName;
     activeSportID.value = sport.sportID;
@@ -218,5 +226,5 @@ function setActiveSport(sport) {
     activeSportID.value = sport;
     MoreSportsLabel.value = "More Sports";
   }
-}
+};
 </script>
