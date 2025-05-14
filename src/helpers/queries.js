@@ -315,3 +315,12 @@ export const TermsandConditions = async () => {
 export const BettingRules = async () => {
   return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/cms/page/betting-rules`))
 }
+
+
+export const getUserActiveBonus = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/bonus/get-active-bonus?client_id=${CLIENT_ID}`,
+    ),
+  );
+};
