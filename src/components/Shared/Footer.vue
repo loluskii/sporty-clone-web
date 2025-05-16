@@ -5,7 +5,7 @@
         <li class="x-col-wrapper brand-col">
           <div class="d-flex flex-direction-column">
             <div class="d-flex">
-              <img src="/default.png" alt="{{ utilsStore.brandName }}" class="logo" />
+              <img src="/logo.png" alt="{{ utilsStore.brandName }}" class="logo" />
             </div>
           </div>
         </li>

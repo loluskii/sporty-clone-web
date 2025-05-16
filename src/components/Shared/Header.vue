@@ -211,7 +211,7 @@
           <div class="x-left">
             <div class="x-logo-wrapper">
               <a href="/" class="x-image-wrapper"
-                ><img src="/default.png" alt="frapapa" class="x-img x-img--logo"
+                ><img src="/logo.png" alt="frapapa" class="x-img x-img--logo"
               /></a>
             </div>
           </div>
@@ -898,7 +898,7 @@ onMounted(() => {
   width: 100%;
 }
 .c-header .x-top-wrapper {
-  background: var(--brand-primary);
+  background: #f2f2f2;
 }
 .c-header .x-nav-wrapper {
   margin: 0 auto;
@@ -981,7 +981,7 @@ onMounted(() => {
   align-items: center;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: var(--brand-highlight-text);
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1026,7 +1026,7 @@ onMounted(() => {
   position: relative;
 }
 .c-header .x-image-wrapper > img {
-  height: 100%;
+  /* height: 100%; */
   width: 100%;
 }
 .c-header .x-header-item {

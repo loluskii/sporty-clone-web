@@ -1231,11 +1231,11 @@
 }
 
 .x-main .x-main-top .home-top .first-part-wrap {
-  background-color: #1b1e25;
+  background-color: var(--brand-primary);
 }
 
 .x-main .x-main-top .home-top .first-part {
-  background-color: #1b1e25;
+  /* background-color: #1b1e25; */
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   margin: 0 auto;
@@ -3208,7 +3208,8 @@
 }
 
 .c-header .x-nav-bar .x-nav {
-  background: #fff;
+  background: #341455;
+  color: #FFF;
 }
 
 .c-header .x-nav-bar .x-header-item {
@@ -3218,21 +3219,17 @@
 }
 
 .c-header .x-nav-bar .x-flex-item {
-  display: inline-block;
-  font-size: 16px;
   height: 100%;
   text-align: center;
   text-decoration: none;
-}
-
-.c-header .x-nav-bar .x-flex-item {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #353a45;
+  color: #fff;
   font-size: 14px;
   line-height: 19px;
   padding: 11px 13px 7px;
   position: relative;
+  display: inline-block;
 }
 
 .c-header .x-nav-bar .x-flex-item:hover {
