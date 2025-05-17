@@ -7,6 +7,7 @@ import FixtureDetail from '@/views/Sport/FixtureDetail.vue'
 import LiveFixtureDetail from '../views/Sport/LiveFixtureDetail.vue'
 
 import CasinoView from '@/views/Games/CasinoView.vue'
+import CasinoCategoryView from '@/views/Games/CasinoCategoryView.vue'
 import PlayView from '@/views/Games/PlayView.vue'
 
 import DepositView from '@/views/Account/DepositView.vue'
@@ -84,6 +85,11 @@ const router = createRouter({
       path: '/Games',
       name: 'game-view',
       component: CasinoView
+    },
+    {
+      path: '/Games/Category/:category_id/:category_name',
+      name: 'casino-category',
+      component: CasinoCategoryView
     },
     {
       path: '/Games/:game_name/:game_id/Play',

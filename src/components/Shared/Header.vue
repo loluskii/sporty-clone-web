@@ -315,7 +315,7 @@ const balance = computed(() => {
 });
 
 const viewIsCasino = computed(() => {
-  return route.name === "game-view" || route.name === "game-play";
+  return route.name === "game-view" || route.name === "game-play" || route.name === "casino-category";
 });
 
 const viewIsLive = computed(() => {
