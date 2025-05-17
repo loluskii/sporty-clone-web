@@ -230,12 +230,12 @@
   })
 </script>
 
-<style scoped>
-  :root {
-    --casino-bg: #1a1d24;
-    --casino-bg-light: #242830;
-    --casino-divider: rgba(255, 255, 255, 0.1);
-  }
+<style>
+@import url('@/assets/css/casino/bootstrap.css');
+
+a{
+  text-decoration: none !important;
+}
 
   .casino-layout {
     background-color: var(--casino-bg-light);

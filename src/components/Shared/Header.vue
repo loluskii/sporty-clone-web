@@ -268,9 +268,9 @@
             >
             <a
               id="header_nav_mobile"
-              href="/CMS/AboutUs"
+              href="/Promotions"
               class="x-flex-item"
-              :class="activeClass('cms') ? 'x-flex-item--active' : ''"
+              :class="activeClass('promotions') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="app">Promotions</span></a
             >
           </nav>

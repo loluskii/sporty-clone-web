@@ -1,31 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LiveView from '../views/LiveView.vue'
-// import SportsView from '../views/SportsView'
-import FixtureView from '../views/Sport/FixtureView.vue'
-import FixtureDetail from '@/views/Sport/FixtureDetail.vue'
-import LiveFixtureDetail from '../views/Sport/LiveFixtureDetail.vue'
-
-import CasinoView from '@/views/Games/CasinoView.vue'
-import CasinoCategoryView from '@/views/Games/CasinoCategoryView.vue'
-import PlayView from '@/views/Games/PlayView.vue'
-
-import DepositView from '@/views/Account/DepositView.vue'
-import VerifyPaymentView from '@/views/Account/VerifyPaymentView.vue'
-import WithDrawalView from '@/views/Account/WithdrawalView.vue'
-import BetHistoryView from '@/views/Account/BetHistoryView.vue'
-import BetHistoryDetail from '@/views/Account/BetHistoryDetail.vue'
-import TransactionsView from '@/views/Account/TransactionsView.vue'
-import MeView from '@/views/Account/MeView.vue'
-import TermsandConditions from '@/views/CMS/TermsandConditions.vue'
-import AboutUs from '@/views/CMS/AboutUs.vue'
-import ResponsibleGaming from '@/views/CMS/ResponsibleGaming.vue'
-import BettingRules from '@/views/CMS/BettingRules.vue'
-import ForgotPassword from '@/views/Account/ForgotPassword.vue'
+// Remove static imports for views
+// import HomeView from '../views/HomeView.vue'
+// import LiveView from '../views/LiveView.vue'
+// import FixtureView from '../views/Sport/FixtureView.vue'
+// import FixtureDetail from '@/views/Sport/FixtureDetail.vue'
+// import LiveFixtureDetail from '../views/Sport/LiveFixtureDetail.vue'
+// import CasinoView from '@/views/Games/CasinoView.vue'
+// import CasinoCategoryView from '@/views/Games/CasinoCategoryView.vue'
+// import PlayView from '@/views/Games/PlayView.vue'
+// import DepositView from '@/views/Account/DepositView.vue'
+// import VerifyPaymentView from '@/views/Account/VerifyPaymentView.vue'
+// import WithDrawalView from '@/views/Account/WithdrawalView.vue'
+// import BetHistoryView from '@/views/Account/BetHistoryView.vue'
+// import BetHistoryDetail from '@/views/Account/BetHistoryDetail.vue'
+// import TransactionsView from '@/views/Account/TransactionsView.vue'
+// import MeView from '@/views/Account/MeView.vue'
+// import TermsandConditions from '@/views/CMS/TermsandConditions.vue'
+// import AboutUs from '@/views/CMS/AboutUs.vue'
+// import ResponsibleGaming from '@/views/CMS/ResponsibleGaming.vue'
+// import BettingRules from '@/views/CMS/BettingRules.vue'
+// import PrivacyPolicy from '@/views/CMS/PrivacyPolicy.vue'
+// import ForgotPassword from '@/views/Account/ForgotPassword.vue'
+// import Promotions from '@/views/Promotions.vue'
 
 import { useUtilsStore } from '@/stores'
 import { unslugify } from '@/helpers'
-// import LiveFixtureDetail from '@/views/Sport/LiveFixtureDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,124 +32,134 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/Account/ResetPassword',
       name: 'reset-password',
-      component: ForgotPassword
+      component: () => import('@/views/Account/ForgotPassword.vue')
     },
     {
       path: '/Sport/LiveList',
       name: 'live-view',
-      component: LiveView
+      component: () => import('../views/LiveView.vue')
     },
     {
       path: '/Sport/Live',
       name: 'live-fixtures-one-detail',
-      component: LiveFixtureDetail
+      component: () => import('../views/Sport/LiveFixtureDetail.vue')
     },
     {
       path: '/Sports/Live/:sport/:tournament/:match/:match_id',
       name: 'live-fixtures-specific-detail',
-      component: LiveFixtureDetail
+      component: () => import('../views/Sport/LiveFixtureDetail.vue')
     },
     {
       path: '/Sports/Prematch/:sport',
       name: 'fixtures-by-sport',
-      component: FixtureView
+      component: () => import('../views/Sport/FixtureView.vue')
     },
     {
       path: '/Sports/Prematch/:sport/:categories',
       name: 'fixtures-by-categories',
-      component: FixtureView
+      component: () => import('../views/Sport/FixtureView.vue')
     },
     {
       path: '/Sports/Prematch/:sport/:categories/:tournaments',
       name: 'fixtures-by-tournaments',
-      component: FixtureView
+      component: () => import('../views/Sport/FixtureView.vue')
     },
     {
       path: '/Sports/Prematch/:sport/Upcoming',
       name: 'upcoming-fixtures-by-sport',
-      component: FixtureView
+      component: () => import('../views/Sport/FixtureView.vue')
     },
     {
       path: '/Sports/Prematch/:sport/:tournament_name/:event_name/:event_id',
       name: 'fixtures-detail',
-      component: FixtureDetail
+      component: () => import('@/views/Sport/FixtureDetail.vue')
     },
     // Casino
     {
       path: '/Games',
       name: 'game-view',
-      component: CasinoView
+      component: () => import('@/views/Games/CasinoView.vue')
     },
     {
       path: '/Games/Category/:category_id/:category_name',
       name: 'casino-category',
-      component: CasinoCategoryView
+      component: () => import('@/views/Games/CasinoCategoryView.vue')
     },
     {
       path: '/Games/:game_name/:game_id/Play',
       name: 'game-play',
-      component: PlayView
+      component: () => import('@/views/Games/PlayView.vue')
     },
     // Account Routes
     {
       path: '/Account/Me',
       name: 'account-me',
-      component: MeView
+      component: () => import('@/views/Account/MeView.vue')
     },
     {
       path: '/Account/Deposit',
       name: 'account-deposit',
-      component: DepositView
+      component: () => import('@/views/Account/DepositView.vue')
     },
     {
       path: '/payment-verification/:method',
       name: 'verify-deposit',
-      component: VerifyPaymentView
+      component: () => import('@/views/Account/VerifyPaymentView.vue')
     },
     {
       path: '/Account/Withdraw',
       name: 'account-withdraw',
-      component: WithDrawalView
+      component: () => import('@/views/Account/WithdrawalView.vue')
     },
     {
       path: '/Account/BetHistory',
       name: 'account-bethistory',
-      component: BetHistoryView
+      component: () => import('@/views/Account/BetHistoryView.vue')
     },
     {
       path: '/Account/BetHistory/:id/Detail',
       name: 'account-bethistory-detail',
-      component: BetHistoryDetail
+      component: () => import('@/views/Account/BetHistoryDetail.vue')
     },
     {
       path: '/Account/Transactions',
       name: 'account-transactions',
-      component: TransactionsView
+      component: () => import('@/views/Account/TransactionsView.vue')
+    },
+    {
+      path: '/Promotions',
+      name: 'promotions',
+      component: () => import('@/views/Promotions.vue')
     },
     {
       path: '/CMS/AboutUs',
       name: 'about-us',
-      component: AboutUs
+      component: () => import('@/views/CMS/AboutUs.vue')
     },
     {
       path: '/CMS/TandC',
       name: 't-and-c',
-      component: TermsandConditions
+      component: () => import('@/views/CMS/TermsandConditions.vue')
     },
     {
       path: '/CMS/ResponsibleGaming',
       name: 'responsible-gaming',
-      component: ResponsibleGaming
+      component: () => import('@/views/CMS/ResponsibleGaming.vue')
     },
     {
       path: '/CMS/BettingRules',
       name: 'betting-rules',
-      component: BettingRules
+      component: () => import('@/views/CMS/BettingRules.vue')
+    },
+    // Catch-all route to redirect to home
+    {
+      path: '/:pathMatch(.*)*', // Catch-all pattern
+      redirect: '/'
     }
   ]
 })
