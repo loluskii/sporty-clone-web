@@ -217,6 +217,9 @@
   --c-high-liability-dialog-hint-bg: #d6ebdc;
   --c-high-liability-dialog-bg: #ffffff;
   --c-high-liability-item-border-color: transparent;
+  --casino-bg: #1a1d24;
+  --casino-bg-light: #242830;
+  --casino-divider: rgba(255, 255, 255, 0.1);
 }
 
 .layout {
@@ -2871,7 +2874,7 @@
 
 .print-container-wrapper .sport-name .filter-control .range {
   border-right: 1px solid var(--brand-secondary);
-  font-family: "Avenir", sans-serif;
+  font-family: 'Avenir', sans-serif;
   font-weight: bold;
   margin-right: 8px;
   padding: 0 8px;
@@ -3166,7 +3169,7 @@
 }
 
 .x-market .x-outcome .x-outcome-odds.filter {
-  /* font-family: 'Roboto Condensed Bold'; */
+  /* font-family: 'Inter Bold'; */
 }
 
 .x-market .af-select {

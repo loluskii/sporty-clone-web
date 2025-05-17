@@ -268,9 +268,9 @@
             >
             <a
               id="header_nav_mobile"
-              href="/CMS/AboutUs"
+              href="/Promotions"
               class="x-flex-item"
-              :class="activeClass('cms') ? 'x-flex-item--active' : ''"
+              :class="activeClass('promotions') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="app">Promotions</span></a
             >
           </nav>
@@ -315,12 +315,12 @@ const balance = computed(() => {
 });
 
 const viewIsCasino = computed(() => {
-  return route.name === "game-view" || route.name === "game-play";
+  return route.name === "game-view" || route.name === "game-play" || route.name === "casino-category";
 });
 
 const viewIsLive = computed(() => {
-  return route.name === 'live-view' || route.name === 'live-fixtures-one-detail'
-})
+  return route.name === "live-view" || route.name === "live-fixtures-one-detail";
+});
 
 const activeClass = (name) => {
   return route.name === name;
@@ -637,15 +637,15 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-phone,
 .c-header .x-login-bar .x-psd {
-  background: #333;
+  background: #fff;
 }
 .c-header .x-login-bar .x-phone input,
 .c-header .x-login-bar .x-psd input {
-  background: #333;
+  background: #fff;
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #000;
   font-size: 12px;
   height: 100%;
   outline: none;
@@ -659,7 +659,7 @@ onMounted(() => {
 .c-header .x-login-bar .x-phone > span {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #000;
   font-size: 12px;
   padding: 0 0 0 15px;
 }
@@ -855,12 +855,13 @@ onMounted(() => {
   width: 65px;
 }
 .c-header .x-btn-login {
-  background: #7b0911;
+  background: var(--brand-secondary);
   border: none;
   border-radius: 2px;
 }
 .c-header .x-btn-login.disabled {
-  background: rgba(123, 9, 17, 0.8);
+  background: var(--brand-secondary);
+  opacity: 0.5;
   color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
 }
@@ -917,9 +918,9 @@ onMounted(() => {
 }
 .c-header .x-logo-bar .x-image-wrapper {
   display: inline-block;
-  height: 34px;
+  height: 100%;
   vertical-align: middle;
-  width: 173px;
+  width: 130px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;

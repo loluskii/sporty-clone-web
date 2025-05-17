@@ -209,6 +209,12 @@ export const placeBet2 = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/place-bet/${CLIENT_ID}`, payload))
 }
 
+export const validateBetslipSelections = async (payload) => {
+  return parseData(
+    fetchWrapper.post(`${NEW_BASE_API}/bets/validate-selections`, payload),
+  );
+};
+
 export const performCashout = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/cashout/`, payload))
 }
@@ -234,9 +240,31 @@ export const loadBetslipByCode = async (betslipId) => {
   )
 }
 
-export const getGames = async (page) => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/casino/web-games?paginate=1&page=${page}`))
-}
+export const getGames = async () => {
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/admin/games/get-games`));
+};
+
+export const getGamesBySearch = async (gameName) => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/games/${
+        import.meta.env.VITE_CLIENT_ID
+      }/game-list?gameName=${gameName}`,
+    ),
+  );
+};
+
+export const getGamesByProviders = async (providerId) => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/games/${CLIENT_ID}/list?providerId=${providerId}`,
+    ),
+  );
+};
+
+export const getProviders = async () => {
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/games/provider`));
+};
 
 export const getCasinoStartUrl = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/start`, payload))
@@ -247,11 +275,38 @@ export const getTopGameCategories = async () => {
 }
 
 export const gamesByTopCategory = async (id) => {
-  return parseData(fetchWrapper.get(`${NEW_BASE_API}/games/${CLIENT_ID}/list?categoryId=${id}`))
-}
+  return parseData(
+    fetchWrapper.get(`${NEW_BASE_API}/admin/games/get-games?categoryId=${id}`),
+  );
+};
+
+export const getJackpots = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/games/active-jackpot?clientId=${
+        import.meta.env.VITE_CLIENT_ID
+      } `,
+    ),
+  );
+};
+
+export const getJackpotWinners = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/games/jackpot-winners?clientId=${
+        import.meta.env.VITE_CLIENT_ID
+      }`,
+    ),
+  );
+};
+
 
 export const getPaymentMethods = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/payment-methods`))
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/admin/wallet/payment-methods/${import.meta.env.VITE_CLIENT_ID}`
+    )
+  )
 }
 
 export const getBanksList = async () => {
@@ -321,6 +376,16 @@ export const getUserActiveBonus = async () => {
   return parseData(
     fetchWrapper.get(
       `${NEW_BASE_API}/bonus/get-active-bonus?client_id=${CLIENT_ID}`,
+    ),
+  );
+};
+
+export const getPromotions = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/admin/games/promotions?clientId=${
+        import.meta.env.VITE_CLIENT_ID
+      }`,
     ),
   );
 };

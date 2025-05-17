@@ -1,69 +1,74 @@
 <template>
   <AccountLayout>
     <div class="x-dp-ng">
-      <ul class="x-dp-nav">
-        <li
-          class="f-item"
-          v-for="(method, index) in depositMethods"
-          :class="activeTab.id == method.id ? 'f-item--active' : ''"
-          :key="index"
-          @click="setActiveTab(method)"
-        >
-          {{ method.title }}
-        </li>
-      </ul>
-      <div class="f-dp">
-        <div>
-          <div class="bank-transfer-form-section">
-            <div class="f-line">
-              <span class="f-label"
-                ><span>Amount</span>
-                (NGN)
-              </span>
-              <div class="f-line-item i-amount">
-                <div tabindex="6" class="x-input-wrapper">
-                  <span class="x-input-com"
-                    ><i class="x-input-icon m-input-icon--clickable m-icon-delete"></i>
-                    <input
-                      type="input"
-                      input-mode=""
-                      name=""
-                      placeholder="min. 100"
-                      onpaste="return true"
-                      class="x-input fs-exclude"
-                      v-model="amount"
-                  /></span>
+      <template v-if="!isLoading">
+        <ul class="x-dp-nav">
+          <li
+            class="f-item"
+            v-for="(method, index) in depositMethods"
+            :class="activeTab.id == method.id ? 'f-item--active' : ''"
+            :key="index"
+            style="text-transform: capitalize"
+            @click="setActiveTab(method)"
+          >
+            {{ method.provider }}
+          </li>
+        </ul>
+        <div class="f-dp">
+          <div>
+            <div class="bank-transfer-form-section">
+              <div class="f-line">
+                <span class="f-label"
+                  ><span>Amount</span>
+                  (NGN)
+                </span>
+                <div class="f-line-item i-amount">
+                  <div tabindex="6" class="x-input-wrapper">
+                    <span class="x-input-com"
+                      ><i class="x-input-icon m-input-icon--clickable m-icon-delete"></i>
+                      <input
+                        type="input"
+                        input-mode=""
+                        name=""
+                        placeholder="min. 100"
+                        onpaste="return true"
+                        class="x-input fs-exclude"
+                        v-model="amount"
+                    /></span>
+                  </div>
                 </div>
               </div>
+              <div class="f-line mt-24">
+                <span class="f-label"></span>
+                <button
+                  class="af-button af-button--primary"
+                  :class="btnDisabled ? 'is-disabled' : ''"
+                  type="primary"
+                  @click.prevent="beginDeposit"
+                >
+                  <span> Top Up Now </span>
+                </button>
+              </div>
             </div>
-            <div class="f-line mt-24">
-              <span class="f-label"></span>
-              <button
-                class="af-button af-button--primary"
-                :class="btnDisabled ? 'is-disabled' : ''"
-                type="primary"
-                @click.prevent="beginDeposit"
+            <div style="margin-top: 20px" class="bank-transfer-desc-section">
+              <span>
+                <ol class="bank-transfer-card-steps">
+                  <li>Enter the amount you want to deposit and click the “Top Up Now” button.</li>
+                  <li>You will be given a temporary transfer account (expires after 30 mins).</li>
+                  <li>Transfer money to the account via your online banking or USSD.</li>
+                  <li>
+                    Check your transaction history. Bank transfers generally credit within 10
+                    minutes. If the deposit doesn't credit within 24 hours, please contact your
+                    bank.
+                  </li>
+                </ol></span
               >
-                <span> Top Up Now </span>
-              </button>
             </div>
-          </div>
-          <div style="margin-top: 20px" class="bank-transfer-desc-section">
-            <span>
-              <ol class="bank-transfer-card-steps">
-                <li>Enter the amount you want to deposit and click the “Top Up Now” button.</li>
-                <li>You will be given a temporary transfer account (expires after 30 mins).</li>
-                <li>Transfer money to the account via your online banking or USSD.</li>
-                <li>
-                  Check your transaction history. Bank transfers generally credit within 10 minutes.
-                  If the deposit doesn't credit within 24 hours, please contact your bank.
-                </li>
-              </ol></span
-            >
           </div>
         </div>
-      </div>
-      <div class="payment-tips-wrap"></div>
+        <div class="payment-tips-wrap"></div>
+      </template>
+      <LoadingSpinner v-else />
     </div>
   </AccountLayout>
 </template>
@@ -75,6 +80,7 @@ import { useRouter } from 'vue-router'
 import { useUsersStore } from '@/stores'
 import { getPaymentMethods, getDepositURL } from '@/helpers'
 import emitter from '@/plugins/emitter'
+import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 
 const activeTab = ref('')
 const depositMethods = ref([])

@@ -4,6 +4,18 @@ import TopView from '@/components/Home/TopView.vue'
 import HighlightsContainer from '@/components/Home/HighlightsContainer.vue'
 import LiveContainer from '@/components/Home/LiveContainer.vue'
 import BetContainer from '@/components/Shared/BetContainer.vue'
+import { useRoute } from 'vue-router'
+import { onMounted } from 'vue'
+import emitter from '@/plugins/emitter'
+
+const route = useRoute()
+
+onMounted(async () => {
+  if (route.query.clickid) {
+    // Emit the call to open the register modal
+    emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
+  }
+})
 </script>
 
 <template>
