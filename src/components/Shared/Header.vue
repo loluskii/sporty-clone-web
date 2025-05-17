@@ -268,9 +268,9 @@
             >
             <a
               id="header_nav_mobile"
-              href="/CMS/AboutUs"
+              href="/Promotions"
               class="x-flex-item"
-              :class="activeClass('cms') ? 'x-flex-item--active' : ''"
+              :class="activeClass('promotions') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="app">Promotions</span></a
             >
           </nav>
@@ -315,7 +315,7 @@ const balance = computed(() => {
 });
 
 const viewIsCasino = computed(() => {
-  return route.name === "game-view" || route.name === "game-play";
+  return route.name === "game-view" || route.name === "game-play" || route.name === "casino-category";
 });
 
 const viewIsLive = computed(() => {

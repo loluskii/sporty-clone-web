@@ -217,6 +217,9 @@
   --c-high-liability-dialog-hint-bg: #d6ebdc;
   --c-high-liability-dialog-bg: #ffffff;
   --c-high-liability-item-border-color: transparent;
+  --casino-bg: #1a1d24;
+  --casino-bg-light: #242830;
+  --casino-divider: rgba(255, 255, 255, 0.1);
 }
 
 .layout {

@@ -114,7 +114,8 @@
 <script setup>
 import { createID, isSelected, sortArr, slugify } from "@/helpers";
 import { useCouponStore } from "@/stores";
-import { computed, ref } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
+import { useMqttService } from '@/composables/useMqtt';
 
 import EmptyOdds from "../EmptyOdds.vue";
 const couponStore = useCouponStore();
@@ -127,6 +128,125 @@ const props = defineProps({
 
 const activeSpecifier = ref();
 const specifierOpen = ref(false);
+
+const updatePending = ref(false);
+const updatedOutcomes = ref({});
+
+// MQTT Service
+const { subscribe, isConnected } = useMqttService();
+
+// MQTT Topics
+const oddsChangeTopic = `feeds/prematch/odds_change/${props.game.matchID}`;
+const betStopTopic = `feeds/prematch/bet_stop/${props.game.matchID}`;
+
+// MQTT Handlers
+const handleOddsChange = (data) => {
+  console.log('[MQTT] Odds change received:', data);
+
+  if (!data || !data.markets) {
+    return;
+  }
+
+  if (String(data.event_id) !== String(props.game.matchID)) {
+    return;
+  }
+
+  if (!updatePending.value) {
+    updatePending.value = true;
+
+    requestAnimationFrame(() => {
+      // Update markets and outcomes
+      if (data.markets && data.markets.length > 0) {
+        data.markets.forEach(market => {
+          if (!market.outcomes) {
+            return;
+          }
+
+          // Find matching market in selectedMarkets
+          const selectedMarket = props.selectedMarkets.find(m => m.marketID == market.id);
+          if (!selectedMarket) {
+            return;
+          }
+
+          // Update outcomes
+          market.outcomes.forEach(newOutcome => {
+            const existingOutcomeIndex = props.game.outcomes.findIndex(
+              o => o.marketID === market.id && o.outcomeID === newOutcome.id
+            );
+            
+            if (existingOutcomeIndex !== -1) {
+              props.game.outcomes[existingOutcomeIndex] = {
+                ...props.game.outcomes[existingOutcomeIndex],
+                odds: newOutcome.odds,
+                active: newOutcome.active
+              };
+
+              // Update the outcomes map for tracking changes
+              const key = `${market.id}-${newOutcome.id}-${newOutcome.specifier || ""}`;
+              updatedOutcomes.value[key] = {
+                odds: newOutcome.odds,
+                active: newOutcome.active
+              };
+            }
+          });
+        });
+      }
+
+      updatePending.value = false;
+    });
+  }
+};
+
+const handleBetStop = (data) => {
+  console.log(`[MQTT] Bet stop received for match ${props.game.matchID}`);
+
+  if (String(data.event_id) !== String(props.game.matchID)) {
+    return;
+  }
+
+  // Set all outcomes to inactive with 0 odds
+  requestAnimationFrame(() => {
+    // Update the outcomes array
+    const newOutcomes = props.game.outcomes.map(outcome => ({
+      ...outcome,
+      odds: 0,
+      active: 0
+    }));
+
+    // Update the outcomes map
+    const updatedOutcomesCopy = { ...updatedOutcomes.value };
+    newOutcomes.forEach(outcome => {
+      const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ""}`;
+      updatedOutcomesCopy[key] = {
+        odds: 0,
+        active: 0
+      };
+    });
+
+    // Update both states
+    updatedOutcomes.value = updatedOutcomesCopy;
+    props.game.outcomes = newOutcomes;
+  });
+};
+
+// Subscribe to MQTT topics
+onMounted(() => {
+  console.log(`[MQTT] Subscribing to topics for match ${props.game.matchID}:`, {
+    oddsChangeTopic,
+    betStopTopic,
+    isConnected: isConnected.value
+  });
+
+  const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange);
+  const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop);
+
+  // Cleanup subscriptions on unmount
+  onUnmounted(() => {
+    console.log(`[MQTT] Unsubscribing from topics for match ${props.game.matchID}`);
+    unsubscribeOdds();
+    unsubscribeBetStop();
+  });
+});
 
 const getEmptyOutcomesLength = (m) => {
   const market = props.activeSportMarkets.find((mkt) => mkt.marketID == m.marketID);
