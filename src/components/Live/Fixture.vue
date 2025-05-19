@@ -88,6 +88,9 @@ const router = useRouter();
 const utilsStore = useUtilsStore();
 const updatePending = ref(false);
 const updatedOutcomes = ref({});
+const timer = ref(null);
+const displayTime = ref(props.match.eventTime || '00:00');
+
 
 // Score state
 const score = ref({
@@ -96,131 +99,265 @@ const score = ref({
   status: props.match.matchStatus || 0,
 });
 
-const eventTime = ref(props.match.eventTime);
-
 // MQTT Service
 const { subscribe, isConnected } = useMqttService();
 
 // MQTT Topics
 const oddsChangeTopic = `feeds/live/odds_change/${props.match.matchID}`;
 const betStopTopic = `feeds/live/bet_stop/${props.match.matchID}`;
+const fixtureStatus = `feeds/live/fixture_status/${props.match.matchID}`;
 
 // MQTT Handlers
 const handleOddsChange = (data) => {
-  console.log('[MQTT] Odds change received:', data);
-
   if (!data || !data.markets) {
+    console.log(`📊 MQTT: Invalid odds change data received for match ${props.match.matchID}`);
     return;
   }
 
-  if (String(data.event_id) !== String(props.match.matchID)) {
+  const matchId = props.match.matchID;
+  const dataMatchId = data.event_id || data.match_id;
+
+  if (dataMatchId && String(dataMatchId) !== String(matchId)) {
+    console.log(`📊 MQTT: Ignoring odds change for match ID ${dataMatchId}, our match ID is ${matchId}`);
     return;
   }
+
+  console.log(`📊 MQTT: Processing odds change for match ID ${matchId}`);
 
   if (!updatePending.value) {
     updatePending.value = true;
 
     requestAnimationFrame(() => {
-      // Update scores
-      if (data.sport_event_status) {
-        score.value = {
-          home: data.sport_event_status.home_score,
-          away: data.sport_event_status.away_score
-        };
-      }
+      try {
+        // Update scores
+        if (data.sport_event_status) {
+          score.value = {
+            home: data.sport_event_status.home_score,
+            away: data.sport_event_status.away_score
+          };
+        }
 
-      // Update markets and outcomes
-      if (data.markets && data.markets.length > 0) {
-        data.markets.forEach(market => {
-          if (!market.outcomes) {
-            return;
-          }
+        // Update markets and outcomes
+        if (data.markets?.length > 0) {
+          const updatedOutcomesCopy = { ...updatedOutcomes.value };
+          
+          data.markets.forEach(market => {
+            if (!market.outcomes) return;
 
-          const activeMarket = props.activeMarkets.find(m => m.marketID == market.id);
-          if (!activeMarket) {
-            return;
-          }
+            const activeMarket = props.activeMarkets.find(m => m.marketID == market.id);
+            if (!activeMarket) return;
 
-          // Update outcomes
-          market.outcomes.forEach(newOutcome => {
-            const existingOutcomeIndex = props.match.outcomes.findIndex(
-              o => o.marketID == newOutcome.id
-            );
-            
-            if (existingOutcomeIndex !== -1) {
-              const oldOdds = props.match.outcomes[existingOutcomeIndex].odds;
-              props.match.outcomes[existingOutcomeIndex] = {
-                ...props.match.outcomes[existingOutcomeIndex],
-                odds: newOutcome.odds,
-                active: newOutcome.active
-              };
+            market.outcomes?.forEach(outcome => {
+              const existingOutcomeIndex = props.match.outcomes.findIndex(
+                o => o.marketID == outcome.id
+              );
+              
+              if (existingOutcomeIndex !== -1) {
+                const key = `${market.id}-${outcome.id}-${outcome.specifier || ""}`;
+                updatedOutcomesCopy[key] = {
+                  odds: outcome.odds,
+                  active: outcome.active ? 1 : 0,
+                  timestamp: Date.now()
+                };
 
-              // Update the outcomes map for tracking changes
-              const key = `${market.id}-${newOutcome.id}-${newOutcome.specifier || ""}`;
-              updatedOutcomes.value[key] = {
-                odds: newOutcome.odds,
-                active: newOutcome.active
-              };
-            }
+                props.match.outcomes[existingOutcomeIndex] = {
+                  ...props.match.outcomes[existingOutcomeIndex],
+                  odds: outcome.odds,
+                  active: outcome.active ? 1 : 0
+                };
+              }
+            });
           });
-        });
-      }
 
-      updatePending.value = false;
+          updatedOutcomes.value = updatedOutcomesCopy;
+        }
+      } catch (error) {
+        console.error(`❌ MQTT: Error processing odds change for match ${matchId}:`, error);
+      } finally {
+        updatePending.value = false;
+      }
     });
   }
 };
 
 const handleBetStop = (data) => {
-  console.log(`[MQTT] Bet stop received for match ${props.match.matchID}`);
+  const matchId = props.match.matchID;
+  const dataMatchId = data.event_id || data.match_id;
 
-  if (String(data.event_id) !== String(props.match.matchID)) {
+  if (dataMatchId && String(dataMatchId) !== String(matchId)) {
+    console.log(`📊 MQTT: Ignoring bet stop for match ID ${dataMatchId}, our match ID is ${matchId}`);
     return;
   }
 
-  // Set all outcomes to inactive with 0 odds
+  console.log(`📊 MQTT: Processing bet stop for match ID ${matchId}`);
+
   requestAnimationFrame(() => {
-    // Update the outcomes array
-    const newOutcomes = props.match.outcomes.map(outcome => ({
-      ...outcome,
-      odds: 0,
-      active: 0
-    }));
-
-    // Update the outcomes map
-    const updatedOutcomesCopy = { ...updatedOutcomes.value };
-    newOutcomes.forEach(outcome => {
-      const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ""}`;
-      updatedOutcomesCopy[key] = {
+    try {
+      // Update the outcomes array
+      const newOutcomes = props.match.outcomes.map(outcome => ({
+        ...outcome,
         odds: 0,
-        active: 0,
-      };
-    });
+        active: 0
+      }));
 
-    // Update both states
-    updatedOutcomes.value = updatedOutcomesCopy;
-    props.match.outcomes = newOutcomes;
+      // Update the outcomes map
+      const updatedOutcomesCopy = { ...updatedOutcomes.value };
+      newOutcomes.forEach(outcome => {
+        const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ""}`;
+        updatedOutcomesCopy[key] = {
+          odds: 0,
+          active: 0,
+        };
+      });
+
+      // Update both states
+      updatedOutcomes.value = updatedOutcomesCopy;
+      props.match.outcomes = newOutcomes;
+    } catch (error) {
+      console.error(`❌ MQTT: Error processing bet stop for match ${matchId}:`, error);
+    }
   });
+};
+
+const handleFixtureStatus = (data) => {
+  const matchId = props.match.matchID;
+  const dataMatchId = data.event_id || data.match_id;
+
+  if (dataMatchId && String(dataMatchId) !== String(matchId)) {
+    console.log(`📊 MQTT: Ignoring fixture status for match ID ${dataMatchId}, our match ID is ${matchId}`);
+    return;
+  }
+
+  console.log(`📊 MQTT: Processing fixture status for match ID ${matchId}:`, data);
+
+  requestAnimationFrame(() => {
+    try {
+      // Check if match has ended
+      if (data.status_code === 100) {
+        console.log(`🏁 MQTT: Match ${matchId} has ended, removing from list`);
+        emitter.emit('match-ended', matchId);
+        return;
+      }
+
+      // Update scores
+      score.value = {
+        home: data.home_score,
+        away: data.away_score,
+        status: data.match_status
+      };
+      
+      // Update time and status
+      displayTime.value = data.event_time;
+      props.match.matchStatus = data.match_status;
+      
+      // Restart timer with new time
+      startTimer();
+    } catch (error) {
+      console.error(`❌ MQTT: Error processing fixture status for match ${matchId}:`, error);
+    }
+  });
+};
+
+// Time handling functions
+const parseTimeToSeconds = (timeStr) => {
+  if (!timeStr || timeStr === '--:--') return null;
+  try {
+    const [minutes, seconds] = timeStr.split(':').map(Number);
+    if (isNaN(minutes) || isNaN(seconds)) return null;
+    return minutes * 60 + seconds;
+  } catch (error) {
+    return null;
+  }
+};
+
+const formatSecondsToTime = (seconds) => {
+  try {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  } catch (error) {
+    return '00:00';
+  }
+};
+
+const stopTimer = () => {
+  if (timer.value) {
+    clearInterval(timer.value);
+    timer.value = null;
+  }
+};
+
+const startTimer = () => {
+  stopTimer();
+  
+  // Handle halftime/fulltime
+  if (('--:--','45:00','90:00').includes(displayTime.value)) {
+    return;
+  }
+
+  const initialTime = parseTimeToSeconds(displayTime.value);
+  if (initialTime === null || initialTime === 45*60 || initialTime === 90*60) return;
+  
+  let currentSeconds = initialTime;
+  displayTime.value = formatSecondsToTime(currentSeconds);
+  
+  timer.value = setInterval(() => {
+    try {
+      currentSeconds++;
+      
+      // Stop at key match times
+      if (currentSeconds === 45 * 60 || currentSeconds === 90 * 60) {
+        stopTimer();
+        return;
+      }
+      
+      displayTime.value = formatSecondsToTime(currentSeconds);
+    } catch (error) {
+      stopTimer();
+    }
+  }, 1000);
 };
 
 // Subscribe to MQTT topics
 onMounted(() => {
-  console.log(`[MQTT] Subscribing to topics for match ${props.match.matchID}:`, {
-    oddsChangeTopic,
-    betStopTopic,
-    isConnected: isConnected.value
+  console.log(`🏗️ Component: Setting up MQTT subscriptions for match ID: ${props.match.matchID}`);
+
+  const matchId = props.match.matchID;
+  const componentId = `fixture-${matchId}-${Date.now()}`;
+
+  const topics = {
+    oddsChange: oddsChangeTopic,
+    betStop: betStopTopic,
+    fixtureStatus: fixtureStatus
+  };
+
+  const handlers = {
+    oddsChange: handleOddsChange,
+    betStop: handleBetStop,
+    fixtureStatus: handleFixtureStatus
+  };
+
+  const unsubscribers = Object.entries(topics).map(([key, topic]) => {
+    console.log(`📊 Subscribing to ${key} on topic: ${topic}`);
+    return subscribe(topic, (data) => {
+      console.log(`📊 MQTT: Received message on topic ${topic} for component ${componentId}`, data);
+      handlers[key](data);
+    });
   });
 
-  const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange);
-  const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop);
-
-  // Cleanup subscriptions on unmount
   onUnmounted(() => {
-    console.log(`[MQTT] Unsubscribing from topics for match ${props.match.matchID}`);
-    unsubscribeOdds();
-    unsubscribeBetStop();
+    console.log(`🧹 Component: Cleaning up MQTT subscriptions for match ID: ${matchId}`);
+    unsubscribers.forEach(unsubscribe => unsubscribe());
+    stopTimer();
   });
 });
+
+// Watch for time changes to start/stop timer
+watch(() => displayTime.value, (newTime) => {
+  if (newTime) {
+    startTimer();
+  }
+}, { immediate: true });
 
 // Memoized computed properties
 const groupedOutcomes = computed(() => {
@@ -291,123 +428,6 @@ const addToBetslip = (event, odd, market) => {
 };
 
 // Timer state
-const timer = ref(null);
-const displayTime = ref(props.match.eventTime || '00:00');
-const isFootball = computed(() => String(props.match.sportID) === '1');
-
-// Function to parse time string (MM:SS) to seconds
-const parseTimeToSeconds = (timeStr) => {
-  if (!timeStr || timeStr === '--:--') return null;
-  try {
-    const [minutes, seconds] = timeStr.split(':').map(Number);
-    if (isNaN(minutes) || isNaN(seconds)) return null;
-    return minutes * 60 + seconds;
-  } catch (error) {
-    return null;
-  }
-};
-
-// Function to format seconds to MM:SS
-const formatSecondsToTime = (seconds) => {
-  try {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  } catch (error) {
-    return '00:00';
-  }
-};
-
-// Function to start the timer
-const startTimer = () => {
-  // Only start timer for football (sport ID 1)
-  if (!isFootball.value) {
-    displayTime.value = props.match.eventTime;
-    return;
-  }
-
-  // Clear any existing timer
-  if (timer.value) {
-    clearInterval(timer.value);
-    timer.value = null;
-  }
-  
-  // Handle halftime/fulltime
-  if (('--:--','45:00','90:00').includes(eventTime.value)) {
-    return;
-  }
-
-  const initialTime = parseTimeToSeconds(eventTime.value);
-  
-  
-  let currentSeconds = initialTime;
-  
-  // Update display immediately
-  displayTime.value = formatSecondsToTime(currentSeconds);
-  
-  // Start the interval
-  timer.value = setInterval(() => {
-    try {
-      currentSeconds++;
-      
-      // Stop at key match times
-      if (currentSeconds === 45 * 60) {
-        clearInterval(timer.value);
-        timer.value = null;
-        // displayTime.value = 'HT';
-        return;
-      }
-      
-      if (currentSeconds === 90 * 60) {
-        clearInterval(timer.value);
-        timer.value = null;
-        // displayTime.value = 'FT';
-        return;
-      }
-      
-      displayTime.value = formatSecondsToTime(currentSeconds);
-    } catch (error) {
-      clearInterval(timer.value);
-      timer.value = null;
-    }
-  }, 1000);
-};
-
-// Watch for match status changes
-watch(() => props.match.matchStatus, (newStatus) => {
-  if (isFootball.value) {
-    if (newStatus === '7') { // Halftime
-      displayTime.value = 'HT';
-      if (timer.value) {
-        clearInterval(timer.value);
-        timer.value = null;
-      }
-    } else if (newStatus === '3') { // Match end
-      displayTime.value = 'FT';
-      if (timer.value) {
-        clearInterval(timer.value);
-        timer.value = null;
-      }
-    } else if (newStatus === '1') { // Live
-      startTimer();
-    }
-  }
-}, { immediate: true });
-
-// Clean up timer on component unmount
-onBeforeUnmount(() => {
-  if (timer.value) {
-    clearInterval(timer.value);
-    timer.value = null;
-  }
-});
-
-// Start timer when component mounts if match is live
-onMounted(() => {
-  if (isFootball.value) {
-    startTimer();
-  }
-});
 </script>
 
 <style scoped>
