@@ -147,10 +147,29 @@ const { data, error, isLoading, refetch, isFetching } = useQuery(
   "liveData",
   getLiveHighlights,
   {
-    refetchInterval: 60000,
-    refetchOnWindowFocus: true,
-    staleTime: 30000, // Add stale time to prevent unnecessary refetches
-    cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
+    // Prevent automatic refetching which can cause recursive updates
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    refetchOnReconnect: false,
+    // Use a longer stale time to prevent unnecessary refetches
+    staleTime: 60000, // 1 minute
+    // Add cacheTime to control how long data stays in cache
+    cacheTime: 300000, // 5 minutes
+    // Update refetch interval to 10 minutes
+    refetchInterval: 60000 * 10, // 10 minutes
+    // Add retry logic with exponential backoff
+    retry: (failureCount, error) => {
+      // Don't retry on 4xx errors
+      if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status < 500
+      ) {
+        return false;
+      }
+      return failureCount < 3; // retry up to 3 times
+    },
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
     onError: (err) => {
       console.error(err);
       isEmptyResponse.value = true;
@@ -166,7 +185,7 @@ const { data, error, isLoading, refetch, isFetching } = useQuery(
             completeData.value.map(fixture => [fixture.matchID, fixture])
           );
           
-          response.fixtures.slice(0, 15).forEach((newFixture) => {
+          response.fixtures.slice(0, 30).forEach((newFixture) => {
             fixtureMap.set(newFixture.matchID, newFixture);
           });
           
