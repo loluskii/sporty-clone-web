@@ -11,7 +11,7 @@
                 <div class="x-user-info">
                   <div class="x-account">
                     <div class="x-user-txt">
-                      <!-- <em>{{ details.firstName + ' ' + details.lastName }}</em -->
+                      <!-- <em>{{ details.firstName + ' ' + details.lastName }}</em> -->
                       {{ details.username }}
                     </div>
                   </div>
@@ -20,7 +20,7 @@
                       <span class="x-text-second"
                         ><span data-cms-key="balance">Balance</span>
                       </span>
-                      <span>NGN {{ balance.toFixed(2) }}</span>
+                      <span>NGN {{ balance }}</span>
                     </div>
                   </div>
                 </div>

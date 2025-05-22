@@ -8,7 +8,7 @@
               <div class="x-info on">
                 <div class="x-bablance-wrapper">
                   <span id="j_balance" class="x-text x-balance"
-                    >NGN{{ formatNumber(balance) }}</span
+                    >NGN{{ balance }}</span
                   ><!-- <i id="j_toggleBalance" class="x-icon-toggle on"></i -->
                   <i
                     @click="usersStore.loadCurrentUser()"

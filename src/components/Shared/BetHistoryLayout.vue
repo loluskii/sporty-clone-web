@@ -11,56 +11,39 @@
                 <div class="x-user-info">
                   <div class="x-account">
                     <div class="x-user-txt">
-                      <em title="JESULOLUWA ISAAC ADELORE">{{
-                        details.firstName + ' ' + details.lastName
-                      }}</em
-                      >{{ details.username }}
+                      <em>{{ getUserName }}</em>
+                      {{ details.username }}
                     </div>
                   </div>
                   <div class="x-user-items">
                     <div class="x-user-item x-text-main">
-                      <span class="x-text-second"
-                        ><span data-cms-key="balance">Balance</span>
+                      <span class="x-text-second"><span data-cms-key="balance">Balance</span>
                       </span>
-                      <span>NGN {{ balance.toFixed(2) }}</span>
+                      <span>NGN {{ balance }}</span>
                     </div>
                   </div>
                 </div>
                 <ul class="x-user-center x-list">
-                  <li
-                    class="x-list-item x-text-main"
-                    @click="$router.push({ name: 'account-me' })"
-                    :class="activeClass('account-me') ? 'x-list-item--active' : 'j'"
-                  >
+                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-me' })"
+                    :class="activeClass('account-me') ? 'x-list-item--active' : 'j'">
                     <span><span data-cms-key="my_account_info">My Account Info</span> </span>
                   </li>
 
-                  <li
-                    class="x-list-item x-text-main"
-                    @click="$router.push({ name: 'account-deposit' })"
-                    :class="activeClass('account-deposit') ? 'x-list-item--active' : 'j'"
-                  >
+                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-deposit' })"
+                    :class="activeClass('account-deposit') ? 'x-list-item--active' : 'j'">
                     <span><span data-cms-key="deposit">Deposit</span> </span>
                   </li>
-                  <li
-                    class="x-list-item x-text-main"
-                    @click="$router.push({ name: 'account-withdraw' })"
-                    :class="activeClass('account-withdraw') ? 'x-list-item--active' : 'j'"
-                  >
+                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-withdraw' })"
+                    :class="activeClass('account-withdraw') ? 'x-list-item--active' : 'j'">
                     <span><span data-cms-key="withdraw">Withdraw</span> </span>
                   </li>
-                  <li
-                    class="x-list-item x-text-main"
+                  <li class="x-list-item x-text-main"
                     :class="activeClass('account-bethistory') ? 'x-list-item--active' : 'j'"
-                    @click="$router.push({ name: 'account-bethistory' })"
-                  >
+                    @click="$router.push({ name: 'account-bethistory' })">
                     <span><span data-cms-key="bet_history">Bet History</span> </span>
                   </li>
-                  <li
-                    class="x-list-item x-text-main"
-                    @click="$router.push({ name: 'account-transactions' })"
-                    :class="activeClass('account-transactions') ? 'x-list-item--active' : 'j'"
-                  >
+                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-transactions' })"
+                    :class="activeClass('account-transactions') ? 'x-list-item--active' : 'j'">
                     <span><span data-cms-key="transactions">Transactions</span> </span>
                   </li>
                   <li class="x-list-item x-text-main">
@@ -109,6 +92,13 @@ const details = computed(() => {
 const activeClass = (name) => {
   return route.name === name
 }
+
+const getUserName = computed(() => {
+  if(details.value.firstName && details.value.lastName){
+    return `${details.value.firstName} ${details.value.lastName}`
+  }
+  return 'User'
+})
 </script>
 
 <style>
@@ -116,11 +106,13 @@ const activeClass = (name) => {
   font-size: 13px;
   line-height: 1;
 }
+
 .x-user-info {
   background: #fff;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 .x-user-info .x-account {
   background: #000;
   -webkit-box-sizing: border-box;
@@ -128,16 +120,19 @@ const activeClass = (name) => {
   height: 48px;
   padding: 7px 0 0 12px;
 }
-.x-user-info .x-account > div {
+
+.x-user-info .x-account>div {
   display: inline-block;
   vertical-align: middle;
 }
+
 .x-user-info .x-account .x-user-txt {
   color: #fff;
   font-size: 10px;
   line-height: 1.3;
   width: 95px;
 }
+
 .x-user-info .x-account .x-user-txt em {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,6 +140,7 @@ const activeClass = (name) => {
   display: block;
   font-size: 14px;
 }
+
 .x-user-info .x-img-wrapper {
   border-radius: 31px;
   height: 31px;
@@ -152,10 +148,12 @@ const activeClass = (name) => {
   overflow: hidden;
   width: 31px;
 }
+
 .x-user-info .x-user-items {
   border-top-color: #e0e0e0;
   padding: 2px 5px 4px;
 }
+
 .x-user-info .x-icon-infos {
   display: inline-block;
   height: 100%;
@@ -163,6 +161,7 @@ const activeClass = (name) => {
   position: relative;
   vertical-align: middle;
 }
+
 .x-user-info .x-icon-infos:before {
   background: #e41827;
   border-radius: 50%;
@@ -172,6 +171,7 @@ const activeClass = (name) => {
   vertical-align: middle;
   width: 10px;
 }
+
 .x-user-info .x-icon-infos .x-blance-tips {
   background: #fff;
   border-radius: 2px;
@@ -190,6 +190,7 @@ const activeClass = (name) => {
   transform: translate3d(20px, -50%, 0);
   width: 376px;
 }
+
 .x-user-info .x-icon-infos .x-blance-tips:before {
   background: #fff;
   border-left-color: transparent;
@@ -210,34 +211,42 @@ const activeClass = (name) => {
   transform: translate3d(0, -50%, 0) rotate(135deg);
   width: 10px;
 }
+
 .x-user-info .x-icon-infos:hover .x-blance-tips {
   display: block;
 }
+
 .x-user-info .x-text-second {
   margin-bottom: 7px;
 }
+
 .x-user-info .x-user-item {
   padding: 8px 0 8px 8px;
 }
+
 .x-user-info .x-user-item:last-child {
   border-top: 1px solid #eaecef;
 }
-.x-user-info .x-user-item > span {
+
+.x-user-info .x-user-item>span {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: block;
 }
+
 .x-user-info .x-text-main {
   font-size: 15px;
   line-height: 1;
   word-break: break-word;
   font-size: 14px;
 }
+
 .x-user-info .withdrawable-container {
   color: #50545e;
   font-size: 12px;
 }
-.x-user-info .withdrawable-container > *:not(:last-child) {
+
+.x-user-info .withdrawable-container>*:not(:last-child) {
   margin-bottom: 7px;
 }
 
@@ -253,9 +262,11 @@ const activeClass = (name) => {
   padding: 10px;
   position: relative;
 }
+
 .x-user-center .x-list-item em {
   float: right;
 }
+
 .x-user-center .x-list-item .x-gift-value {
   text-align: right;
   width: 25%;
@@ -263,11 +274,13 @@ const activeClass = (name) => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .x-user-center .x-list-item .free-wrapper {
   border: solid 1px var(--brand-primary);
   border-radius: 7.5px;
   padding: 1px 4px;
 }
+
 .x-user-center .x-list-item .free-wrapper .free-text {
   color: var(--brand-primary);
   display: inline-block;
@@ -280,6 +293,7 @@ const activeClass = (name) => {
   -ms-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
 }
+
 .x-user-center .x-list-item .transaction-tip {
   background-color: #e41827;
   border-radius: 50%;
@@ -288,31 +302,38 @@ const activeClass = (name) => {
   top: 5px;
   width: 5px;
 }
+
 .x-user-center .x-list-item--active {
   background: var(--brand-secondary);
   color: #fff;
   margin: 0 -1px 0 -1px;
 }
+
 .x-user-center .x-list-item--active .kyc-status {
   color: #fff;
 }
+
 .x-user-center .x-list-item--active .free-wrapper {
   border-color: #fff;
 }
+
 .x-user-center .x-list-item--active .free-wrapper .free-text {
   color: #fff;
 }
+
 .x-user-center .x-text-main {
   font-size: 15px;
   line-height: 1;
   word-break: break-word;
   font-size: 12px;
 }
+
 .x-user-center .x-list-item-icon {
   float: left;
   margin: 0px 8px 8px 0px;
   width: 12px;
 }
+
 .x-user-center .red-dot {
   background-color: #e31826;
   border-radius: 50%;
@@ -321,12 +342,14 @@ const activeClass = (name) => {
   margin-right: 0.1rem;
   width: 7px;
 }
+
 .x-user-center .identity-verification {
   color: var(--brand-primary);
   font-size: 10px;
   margin-top: 3px;
   padding-left: 20px;
 }
+
 .x-order-wrapper {
   margin: 0 19px;
   -webkit-box-sizing: border-box;
@@ -334,6 +357,7 @@ const activeClass = (name) => {
   background: #eaecef;
   min-height: 695px;
 }
+
 .x-order-wrapper .x-title-bar {
   background: #f2f2f2;
   border-top: none;
@@ -341,30 +365,37 @@ const activeClass = (name) => {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+
 .x-order-wrapper .x-pg-container {
   background-color: #fff;
   padding: 3px 0;
   margin-top: 3px;
 }
+
 .x-order-wrapper .x-pg-container .pageNum {
   font-weight: bold;
   color: #353a45;
 }
+
 .x-order-wrapper .x-pg-container .pageNum.selected {
   color: #fff;
   background-color: var(--brand-primary);
 }
+
 .x-order-wrapper .x-pg-container .pageNum.icon-prev::before,
 .x-order-wrapper .x-pg-container .pageNum.icon-next::before {
   color: var(--brand-primary);
 }
+
 .x-order-wrapper .x-pg-container .pageNum.icon-prev.icon-disabled::before,
 .x-order-wrapper .x-pg-container .pageNum.icon-next.icon-disabled::before {
   color: #eaecef;
 }
+
 .x-order-wrapper .x-txt-b {
   font-weight: bold !important;
 }
+
 .x-order-wrapper .x-icon-arrow--down {
   position: relative;
   display: inline-block;
@@ -374,6 +405,7 @@ const activeClass = (name) => {
   background: #eaecef;
   border-radius: 2px;
 }
+
 .x-order-wrapper .x-icon-arrow--down:before {
   content: '';
   position: absolute;
@@ -383,6 +415,7 @@ const activeClass = (name) => {
   border-color: var(--brand-primary) transparent transparent;
   border-style: solid;
 }
+
 .x-order-wrapper .x-icon-ques {
   display: inline-block;
   vertical-align: middle;
@@ -397,16 +430,19 @@ const activeClass = (name) => {
   margin-left: 2px;
   text-align: center;
 }
+
 .x-order-wrapper .x-text-main {
   font-size: 15px;
   line-height: 1;
   word-break: break-word;
 }
+
 .x-order-wrapper .x-text-min {
   color: #353a45;
   font-size: 10px;
   line-height: 1;
 }
+
 .x-order-wrapper .x-bet-title {
   background: #1b1e25;
   padding: 6px 5px 7px 7px;
@@ -415,26 +451,32 @@ const activeClass = (name) => {
   box-sizing: border-box;
   color: #fff;
 }
+
 .x-order-wrapper .x-bet-title .x-text-min {
   color: #fff;
 }
+
 .x-order-wrapper .x-row-container {
   border: 1px solid #eaecef;
   margin-bottom: 4px;
   position: relative;
 }
+
 .x-order-wrapper .x-row-container:last-of-type {
   margin-bottom: 0;
 }
+
 .x-order-wrapper .x-row-container.x-row-open {
   border-color: #dcdee5;
   border-width: 3px;
 }
+
 .x-order-wrapper .x-row-container.x-row-open .x-icon-arrow--down {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+
 .x-order-wrapper .x-row-container .x-row-pflag {
   font-size: 8px;
   color: #e41827;
@@ -443,6 +485,7 @@ const activeClass = (name) => {
   left: 11px;
   top: 0;
 }
+
 .x-order-wrapper .x-row-container .x-row-pflag:before {
   position: absolute;
   left: -4px;
@@ -461,14 +504,17 @@ const activeClass = (name) => {
   -ms-transform: rotate(135deg);
   transform: rotate(135deg);
 }
+
 .x-order-wrapper .x-detail-title {
   padding: 5px 0;
 }
+
 .x-order-wrapper .x-detail-subtit {
   font-weight: bold;
   padding-left: 12px;
   position: relative;
 }
+
 .x-order-wrapper .x-detail-subtit:before {
   content: '';
   background: #000;
@@ -480,29 +526,36 @@ const activeClass = (name) => {
   left: 0;
   top: 4px;
 }
+
 .x-order-wrapper .x-detail-thead {
   color: #4a4a4a;
   font-size: 10px;
 }
+
 .x-order-wrapper .x-detail-thead .x-table-row {
   padding: 8px 0;
 }
-.x-order-wrapper .x-table-cell > span:not(.x-bet-type):not(.x-no-ellipse) {
+
+.x-order-wrapper .x-table-cell>span:not(.x-bet-type):not(.x-no-ellipse) {
   display: block;
   line-height: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.x-order-wrapper .x-table-cell > span:not(.x-bet-type):not(.x-no-ellipse):last-of-type {
+
+.x-order-wrapper .x-table-cell>span:not(.x-bet-type):not(.x-no-ellipse):last-of-type {
   margin-bottom: 0;
 }
-.x-order-wrapper .x-table-cell > span.x-bet-team {
+
+.x-order-wrapper .x-table-cell>span.x-bet-team {
   line-height: 20px !important;
 }
+
 .x-order-wrapper .x-icon--dollar {
   margin-left: 5px;
 }
+
 .x-order-wrapper .x-icon--dollar::before {
   content: '\e627';
   font-family: 'iconfont' !important;
@@ -511,25 +564,30 @@ const activeClass = (name) => {
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
+
 .x-order-wrapper .x-icon--dollar::before {
   color: var(--brand-primary);
   font-size: 11px;
   line-height: 11px;
 }
+
 .x-order-wrapper .x-popOver-wrapper {
   color: #000;
   white-space: nowrap;
   padding: 8px 10px;
   border: none;
 }
+
 .x-order-wrapper .x-popOver-wrapper .x-popOver-arrow {
   width: 6px;
   height: 6px;
 }
+
 .x-order-wrapper .x-popOver-wrapper .x-popOver-arrow.x-popOver-arrow--top {
   bottom: -3px;
   border: none;
 }
+
 .x-order-wrapper .x-gift-tip {
   text-align: left;
   margin-left: 3px;
@@ -537,16 +595,19 @@ const activeClass = (name) => {
   padding-left: 23px !important;
   font-weight: normal;
 }
+
 .x-order-wrapper .x-gift-tip .x-t-green {
   font-size: 10px;
   margin-left: 10px;
 }
+
 .x-print-txt {
   text-transform: capitalize;
   cursor: pointer;
   color: #3656a3;
   font-weight: bold;
 }
+
 .x-print-txt::before {
   content: '\e77b';
   font-family: 'iconfont' !important;
@@ -555,6 +616,7 @@ const activeClass = (name) => {
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
+
 .x-print-txt:before {
   font-size: 12px;
   margin-right: 6px;

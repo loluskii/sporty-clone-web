@@ -11,6 +11,7 @@ export const useUsersStore = defineStore({
     activeBonus: null,
     casinoActiveBonus: null,
     error: null,
+    isLoadingCurrentUser: false
   }),
   getters: {
     // Helper function to safely access nested properties
@@ -83,10 +84,12 @@ export const useUsersStore = defineStore({
     async loadCurrentUser() {
       try {
         this.error = null;
+        this.isLoadingCurrentUser = true
         const [userResponse, bonusResponse] = await Promise.allSettled([
           getUserDetailsByToken(),
           getUserActiveBonus(),
         ]);
+        this.isLoadingCurrentUser = false
 
         // Handle user details response
         if (userResponse.status === "rejected") {
