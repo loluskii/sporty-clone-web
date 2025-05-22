@@ -82,7 +82,7 @@
                           <span class="game-id-label">ID: </span>{{ match.gameID }}
                         </div>
                       </div>
-                      <div title="SK Austria Klagenfurt vs Sturm Graz (A)" class="teams">
+                      <div :title="match.event" class="teams">
                         <div class="home-team">{{ match.homeTeam }}</div>
                         <div class="away-team">{{ match.awayTeam }}</div>
                       </div>

@@ -5,7 +5,7 @@
         <li
           class="f-item"
           v-for="(method, index) in depositMethods"
-          :class="activeTab.id == method.id ? 'f-item--active' : ''"
+          :class="activeTab.provider == method.provider ? 'f-item--active' : ''"
           :key="index"
           @click="setActiveTab(method)"
         >
@@ -288,6 +288,11 @@ onMounted(async () => {
   overflow-x: auto;
   border-bottom: 1px solid #eaecef;
   margin-bottom: -3px;
+}
+
+.x-dp-nav::-webkit-scrollbar{
+  display: none;
+  height: 0px
 }
 .x-dp-nav .f-item {
   display: inline-block;

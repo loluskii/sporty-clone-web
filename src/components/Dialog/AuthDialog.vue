@@ -215,17 +215,18 @@ const registerUser = async () => {
     authStore.loading = false
     return
   } else {
-    const res = await sendOTP({
-      clientID: import.meta.env.VITE_CLIENT_ID,
-      phoneNumber: `234${formattedPhoneNumber(phoneNumber.value)}`
-    })
-    authStore.loading = false
-    if (res.status) {
-      activeStep.value = 2
-      startTimer()
-    } else {
-      authStore.authError = res.message
-    }
+    await doRegistration()
+    // const res = await sendOTP({
+    //   clientID: import.meta.env.VITE_CLIENT_ID,
+    //   phoneNumber: `234${formattedPhoneNumber(phoneNumber.value)}`
+    // })
+    // authStore.loading = false
+    // if (res.status) {
+    //   activeStep.value = 2
+    //   startTimer()
+    // } else {
+    //   authStore.authError = res.message
+    // }
   }
 }
 
