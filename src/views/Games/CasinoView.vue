@@ -32,7 +32,7 @@
           <div class="games-scroll">
             <div class="row g-4">
               <template v-if="gamesList[category.id]">
-                <div v-for="(game, gameIndex) in gamesList[category.id]" :key="gameIndex"
+                <div v-for="(game, gameIndex) in gamesList[category.id].slice(0,12)" :key="gameIndex"
                   class="col-xl-3 col-lg-4 col-md-6 col-sm-6" @click="redirectToGamePlay(game)">
                   <CasinoGameCard :image="getImagePath(game)" :title="game.title"
                     :provider="game.provider || game.vendor || ''" :tags="game.tags || game.types || []" />
