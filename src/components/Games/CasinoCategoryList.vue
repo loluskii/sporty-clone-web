@@ -24,7 +24,7 @@ const props = defineProps({
 
 function getImageSrc(prov) {
   if (prov === 'discover') {
-    return '/discover.png'
+    return new URL('../../assets/images/casino/all.png', import.meta.url)
   }
   try {
     let name = prov.split("-")

@@ -26,27 +26,59 @@ const gameURL = ref('')
 const isLoading = ref(false)
 const { currentUser } = useUsersStore()
 
-async function getCasinoURL(data) {
-  isLoading.value = true
-  const game_id = parseInt(route.params.game_id)
-  const payload = {
-    gameId: game_id,
-    username: currentUser?.username || 'guest',
-    userId: currentUser?.id || 0,
-    demo: !!currentUser && data !== 'demo' ? false : !!currentUser && data === 'demo',
-    isMobile: false,
-    homeUrl: import.meta.env.VITE_SITE_URL,
-    authCode: currentUser?.authCode || 'demo',
-    balanceType: data
+async function getCasinoURL() {
+  isLoading.value = true;
+
+  try {
+    const { game_id } = route.params;
+    const { bonusId, balanceType, bonusType } = route.query;
+    const { username, id, authCode } = currentUser || {};
+
+    let payload = {
+      gameId: parseInt(game_id),
+      clientId: import.meta.env.VITE_CLIENT_ID,
+      username,
+      userId: id,
+      demo: false,
+      isMobile: false,
+      homeUrl: import.meta.env.VITE_SITE_URL,
+      authCode,
+      balanceType: "real",
+    };
+
+    if (bonusId && balanceType === "bonus") {
+      Object.assign(payload, {
+        isBonus: true,
+        bonusType,
+        bonusId,
+        balanceType: "bonus",
+      });
+    }
+
+    const res =
+      game_id === "smat_virtual"
+        ? await getSmatVirtualStartUrl({
+            clientId: payload.clientId,
+            userId: id,
+            token: authCode,
+          })
+        : await getCasinoStartUrl(payload, "real");
+
+    gameURL.value = res.url;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
   }
-  const res = await getCasinoStartUrl(payload)
-  isLoading.value = false
-  gameURL.value = res.url
 }
 
-onMounted(() => {
-  emitter.on('setBalanceType', getCasinoURL)
-})
+onMounted(async () => {
+  await getCasinoURL();
+  // router.beforeEach((to, from, next) => {
+  //   previousRoute.value = from.fullPath; // Store the previous route
+  //   next();
+  // });
+});
 </script>
 
 <style>
