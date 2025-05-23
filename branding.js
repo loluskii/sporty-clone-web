@@ -4,7 +4,7 @@ export const brandDetails = {
   title: 'Streetbet',
   colors: {
     primaryColor: '#010440',
-    secondaryColor: '#F20505',
+    secondaryColor: '#f58634',
     tertiaryColor: '#C5C5C5',
 
     primaryBackground: '#FFFFFF',
@@ -26,8 +26,8 @@ export const brandDetails = {
 
     liveContainerBackgroundColor: '#1B1E25',
 
-    activeTabColor: '#353A45',
-    highlightTextColor: '#f58634'
+    activeTabColor: '#f58634',
+    highlightTextColor: '#010440'
   },
   fonts: {
     primaryFont: 'Inter',

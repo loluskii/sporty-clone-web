@@ -486,7 +486,7 @@ onMounted(() => {
   font-style: normal;
 }
 .c-header .x-login-bar .x-info .x-icon-refresh {
-  color: #fff;
+  /* color: #fff; */
   display: inline-block;
   height: 34px;
   vertical-align: top;
@@ -524,6 +524,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar.x-login-bar-fix .x-info {
   display: block;
+  color: var(--brand-highlight-text) !important
 }
 .c-header .x-login-bar.x-login-bar-fix .x-opt {
   display: none;
@@ -578,7 +579,7 @@ onMounted(() => {
   vertical-align: top;
 }
 .c-header .x-login-bar .x-bablance-wrapper:after {
-  background: #fff;
+  /* background: #fff; */
   content: "";
   display: inline-block;
   height: 14px;
@@ -588,7 +589,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-deposit:after,
 .c-header .x-login-bar .x-history:after {
-  background: #fff;
+  background: var(--brand-highlight-text);
   content: "";
   display: inline-block;
   height: 14px;
@@ -601,11 +602,13 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-history a {
   color: #fff;
+  color: var(--brand-highlight-text) !important;
   text-decoration: none;
 }
 .c-header .x-login-bar .x-history a:hover,
 .c-header .x-login-bar .x-history a:active {
   color: #fff;
+  color: var(--brand-highlight-text) !important
 }
 .c-header .x-login-bar .x-history .tips-wrapper {
   display: inline-block;
@@ -673,6 +676,7 @@ onMounted(() => {
 .c-header .x-login-bar .x-text,
 .c-header .x-login-bar .x-btn {
   color: #fff;
+  color: var(--brand-highlight-text) !important
 }
 .c-header .x-login-bar .x-text {
   -webkit-box-sizing: border-box;
@@ -681,8 +685,8 @@ onMounted(() => {
   padding: 0 8px;
 }
 .c-header .x-login-bar .x-balance {
-  color: yellow;
-  /* font-weight: bold; */
+  color: #f58634 !important;
+  font-weight: bold;
 }
 .c-header .x-login-bar a:hover {
   text-decoration: none;
@@ -745,7 +749,7 @@ onMounted(() => {
   font-style: normal;
 }
 .c-header .x-login-bar .x-userInfo:before {
-  color: rgba(255, 255, 255, 0.7);
+  /* color: rgba(255, 255, 255, 0.7); */
   float: right;
   font-size: 10px;
   -webkit-transform: translate3d(5px, 0, 0);
@@ -960,7 +964,7 @@ onMounted(() => {
   display: none;
 }
 .c-header .x-nav-main .x-timezone {
-  color: #fff;
+  color: #f58634;
   float: right;
   font-size: 14px;
   text-align: right;
