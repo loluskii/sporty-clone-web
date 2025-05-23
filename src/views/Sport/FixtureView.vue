@@ -951,57 +951,6 @@ onMounted(() => {
     background-color: var(--brand-secondary);
     color: #fff;
   }
-  .pagination {
-    margin: 10px auto;
-    text-align: center;
-  }
-  .pagination .pageNum {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    color: #353a45;
-    margin: 0 5px;
-    cursor: pointer;
-  }
-  .pagination .icon-next,
-  .pagination .icon-prev {
-    margin: 0 !important;
-    font-size: 0;
-  }
-  .pagination .icon-next::before,
-  .pagination .icon-prev::before {
-    content: '\e608';
-    font-family: 'iconfont' !important;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-style: normal;
-  }
-  .pagination .icon-next:before,
-  .pagination .icon-prev:before {
-    font-size: 12px;
-    color: #353a45;
-    font-weight: bold;
-  }
-  .pagination .icon-prev {
-    -webkit-transform-origin: 50% 50%;
-    -ms-transform-origin: 50% 50%;
-    transform-origin: 50% 50%;
-    -webkit-transform: rotate(-180deg);
-    -ms-transform: rotate(-180deg);
-    transform: rotate(-180deg);
-  }
-  .pagination .icon-disabled {
-    cursor: default;
-  }
-  .pagination .icon-disabled::before {
-    color: #eaecef;
-  }
-  .pagination .selected {
-    background: #eaecef;
-    border-radius: 2px;
-    cursor: default;
-  }
 
   .import-match .x-sport-bet-no-data,
   .import-match .x-sport-bet-err {

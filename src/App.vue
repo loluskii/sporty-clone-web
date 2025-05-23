@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from "vue";
 import DialogBox from "@/components/Shared/DialogBox.vue";
 import emitter from "@/plugins/emitter";
 import { useCouponStore, useUsersStore, useUtilsStore } from "@/stores";
-import { getBets, loadBetslipByCode } from "@/helpers";
+import { getBets, loadBetslipByCode, fetchBonusList, fetchGlobalVars, getSportsMenu, validateBetslipSelections } from "@/helpers";
 import CasinoDialog from "@/components/Dialog/CasinoDialog.vue";
 
 const dialogType = ref("");
@@ -12,7 +12,7 @@ const isDialogShown = ref(false);
 const dialogData = ref({});
 const usersStore = useUsersStore();
 const couponStore = useCouponStore();
-const utilstStore = useUtilsStore();
+const utilsStore = useUtilsStore();
 const showCasinoDialog = ref(false);
 const route = useRoute();
 const router = useRouter();
@@ -80,7 +80,52 @@ async function getBetsData() {
   };
   const res = await getBets(payload);
   if (res.bets) {
-    utilstStore.openBetCount = res.bets.length;
+    utilsStore.openBetCount = res.bets.length;
+  }
+}
+
+async function validateSelections() {
+  if (!couponStore.coupon.selections.length) return;
+
+  const selections = couponStore.coupon.selections.map((event) => ({
+    matchId: parseInt(event.matchId),
+    marketId: event.marketId.toString(),
+    outcomeId: event.outcomeId,
+    specifier: event.specifier,
+  }));
+  const res = await validateBetslipSelections({ events: selections });
+
+  if (res.success) {
+    // Convert response object to array of validated selections
+    const validatedSelections = Object.values(res.data);
+
+    // Update each selection with the new odds and active status
+    validatedSelections.forEach((validatedSelection) => {
+      const selection = couponStore.coupon.selections.find(
+        (sel) =>
+          String(sel.matchId) === String(validatedSelection.matchId) &&
+          String(sel.marketId) === validatedSelection.marketId &&
+          String(sel.outcomeId) === validatedSelection.outcomeId,
+      );
+
+      if (selection) {
+        selection.odds = validatedSelection.odds;
+        selection.suspended = !validatedSelection.active;
+        selection.unavailable = !validatedSelection.active;
+        selection.changed = true;
+
+        // Reset the changed flag after 5 seconds
+        setTimeout(() => {
+          selection.changed = false;
+        }, 5000);
+      }
+    });
+
+    // Recalculate winnings after updating all selections
+    couponStore.updateWinnings({
+      stake: couponStore.coupon.totalStake,
+      id: "all",
+    });
   }
 }
 
@@ -108,6 +153,21 @@ onMounted(async () => {
       .then(() => {})
       .catch(() => {});
   }
+
+  Promise.all([
+    fetchBonusList(),
+    fetchGlobalVars(),
+    getSportsMenu(),
+    validateSelections(),
+  ])
+    .then((res) => {
+      couponStore.sportsbookBonusList = res[0].data;
+      couponStore.SportsbookGlobalVariable = res[1].data.data;
+      utilsStore.SportsbookBonusList = res[0].data;
+      utilsStore.SportsbookGlobalVariable = res[1].data.data;
+      utilsStore.sportsMenu = res[2].sports; // Update loading state after delay
+    })
+    .catch(() => {});
 });
 </script>
 

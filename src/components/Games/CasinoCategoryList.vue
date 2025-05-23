@@ -24,7 +24,7 @@ const props = defineProps({
 
 function getImageSrc(prov) {
   if (prov === 'discover') {
-    return '/discover.png'
+    return new URL('../../assets/images/casino/all.png', import.meta.url)
   }
   try {
     let name = prov.split("-")
@@ -56,8 +56,8 @@ function getImageSrc(prov) {
   background-color: rgba(255, 255, 255, 0.15);
 }
 .category-icon {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   margin: 0 auto;
   display: flex;
   align-items: center;

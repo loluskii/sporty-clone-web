@@ -22,7 +22,7 @@
             <span class="x-item-market">{{ selection.marketName }}</span>
 
             <div class="x-item-odds">
-              <span v-if="!selectionIsExpired" class="x-text-main">{{
+              <span v-if="!selectionIsUnavailable" class="x-text-main">{{
                 parseFloat(selection.odds).toFixed(2)
               }}</span>
               <span v-else class="x-text-min x-text-btn">Unavailable</span>
@@ -45,14 +45,28 @@ const props = defineProps({
   selection: Object,
 });
 
-const selectionIsExpired = computed(() => {
-  const parsedDate = new Date(props.selection.eventDate);
-  // Get the current date and time
-  const currentDate = new Date();
-  // Calculate the difference in milliseconds
-  const difference = currentDate - parsedDate;
-  const hoursDifference = difference / (1000 * 60 * 60);
-  return hoursDifference >= 3;
+const selectionIsUnavailable = computed(() => {
+  // If explicitly marked as unavailable
+  if (props.selection.unavailable) {
+    return true;
+  }
+
+  // If suspended
+  if (props.selection.suspended) {
+    return true;
+  }
+
+  if(parseFloat(props.selection.odds <= 1)){
+    return true
+  }
+
+  // // Check if expired based on time
+  // const parsedDate = new Date(props.selection.eventDate);
+  // const currentDate = new Date();
+  // const difference = currentDate - parsedDate;
+  // const hoursDifference = difference / (1000 * 60 * 60);
+
+  // return hoursDifference >= 5;
 });
 
 async function removeSelection(element_id) {

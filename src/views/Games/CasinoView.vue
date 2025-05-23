@@ -1,54 +1,137 @@
 <template>
   <CasinoLayout>
-    <!-- Hero Carousel Section -->
-    <div id="casinoHeroCarousel" class="carousel slide d-none" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="/download.avif" class="d-block w-100" alt="Casino Hero">
+    <!-- Search Overlay -->
+    <div v-if="showSearch" class="search-overlay">
+      <div class="container py-4">
+        <div class="d-flex align-items-center mb-4">
+          <button class="btn p-0 text-white me-3" @click="closeSearch">
+            <i class="x-icon-back"></i>
+          </button>
+          <div class="search-container flex-grow-1">
+            <input 
+              type="text" 
+              v-model="searchQuery" 
+              class="form-control bg-dark text-white border-secondary" 
+              placeholder="Search games..."
+              @input="handleSearch"
+              ref="searchInput"
+            >
+          </div>
         </div>
-        <!-- Add more carousel items as needed -->
+
+        <!-- Search Results -->
+        <div class="row g-4">
+          <template v-if="!isSearching">
+            <div v-for="game in searchResults" :key="game.id" 
+              class="col-xl-3 col-lg-4 col-md-6 col-sm-6" @click="redirectToGamePlay(game)">
+              <CasinoGameCard 
+                :image="getImagePath(game)" 
+                :title="game.title"
+                :provider="game.provider || game.vendor || ''" 
+                :tags="game.tags || game.types || []" 
+              />
+            </div>
+          </template>
+          <template v-else>
+            <div v-for="i in 8" :key="i" class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+              <CasinoGameCard loading />
+            </div>
+          </template>
+        </div>
       </div>
     </div>
 
-    <!-- Categories Horizontal Scroll -->
-    <CasinoCategoryList 
-      :categories="topGameCategories" 
-      :activeCategory="activeCategory"
-      :onCategoryClick="onCategoryClick" 
-    />
-    <div class="section-divider"></div>
-
-    <!-- Top Categories with Games -->
-    <div class="container">
-      <template v-for="(category, index) in topGameCategories" :key="index">
-        <div v-if="category.id !== 'discover'" class="category-section mb-4"
-          :data-category-id="category.id" v-intersection="handleIntersection">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="text-white">{{ category.name }}</h3>
-            <button class="btn btn-outline-light btn-sm" @click="onCategoryClick(category)">
-              Show More
-            </button>
+    <!-- Main Content -->
+    <template v-else>
+      <!-- Hero Carousel Section -->
+      <div id="casinoHeroCarousel" class="carousel slide d-none" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="/download.avif" class="d-block w-100" alt="Casino Hero">
           </div>
-          <div class="games-scroll">
-            <div class="row g-4">
-              <template v-if="gamesList[category.id]">
-                <div v-for="(game, gameIndex) in gamesList[category.id]" :key="gameIndex"
-                  class="col-xl-3 col-lg-4 col-md-6 col-sm-6" @click="redirectToGamePlay(game)">
-                  <CasinoGameCard :image="getImagePath(game)" :title="game.title"
-                    :provider="game.provider || game.vendor || ''" :tags="game.tags || game.types || []" />
+          <!-- Add more carousel items as needed -->
+        </div>
+      </div>
+
+      <!-- Search Button -->
+      <div class="container">
+        <div class="search-button-container py-3">
+          <button class="btn btn-outline-light w-100" @click="openSearch">
+            <i class="x-icon-search me-2"></i>
+            Search Games
+          </button>
+        </div>
+      </div>
+
+      <!-- Categories Horizontal Scroll -->
+      <CasinoCategoryList 
+        :categories="topGameCategories" 
+        :activeCategory="activeCategory"
+        :onCategoryClick="onCategoryClick" 
+      />
+      <div class="section-divider"></div>
+
+      <!-- Top Categories with Games -->
+      <div class="container">
+        <template v-for="(category, index) in topGameCategories" :key="index">
+          <div v-if="category.id !== 'discover'" class="category-section mb-4"
+            :data-category-id="category.id" v-intersection="handleIntersection">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="text-white">{{ category.name }}</h3>
+              <button class="btn btn-outline-light btn-sm" @click="onCategoryClick(category)">
+                Show More
+              </button>
+            </div>
+            <div class="games-scroll">
+              <div class="row g-4">
+                <template v-if="gamesList[category.id]">
+                  <div v-for="(game, gameIndex) in gamesList[category.id].slice(0,12)" :key="gameIndex"
+                    class="col-xl-3 col-lg-4 col-md-6 col-sm-6" @click="redirectToGamePlay(game)">
+                    <CasinoGameCard :image="getImagePath(game)" :title="game.title"
+                      :provider="game.provider || game.vendor || ''" :tags="game.tags || game.types || []" />
+                  </div>
+                </template>
+                <template v-else>
+                  <div v-for="i in 4" :key="i" class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+                    <CasinoGameCard loading />
+                  </div>
+                </template>
+              </div>
+            </div>
+            <div class="section-divider"></div>
+
+            <!-- Providers Section (after second category) -->
+            <div v-if="index === 1" class="providers-section mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="text-white">Game Providers</h3>
+                <button class="btn btn-outline-light btn-sm" @click="router.push({ name: 'casino-providers' })">
+                  Show More
+                </button>
+              </div>
+              <div class="providers-scroll">
+                <div class="d-flex gap-3">
+                  <template v-if="!isLoadingProviders">
+                    <div v-for="provider in providers" :key="provider.id" 
+                      class="provider-item" @click="onProviderClick(provider)">
+                      <CasinoProviderCard 
+                        :image="provider.imagePath"
+                        :name="provider.name"
+                      />
+                    </div>
+                  </template>
+                  <template v-else>
+                    <div v-for="i in 6" :key="i" class="provider-item">
+                      <CasinoProviderCard loading />
+                    </div>
+                  </template>
                 </div>
-              </template>
-              <template v-else>
-                <div v-for="i in 4" :key="i" class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-                  <CasinoGameCard loading />
-                </div>
-              </template>
+              </div>
+              <div class="section-divider"></div>
             </div>
           </div>
-          <div class="section-divider"></div>
-        </div>
-      </template>
-    </div>
+        </template>
+      </div>
+    </template>
   </CasinoLayout>
 </template>
 
@@ -56,15 +139,19 @@
   import CasinoLayout from '@/components/Shared/CasinoLayout.vue'
   import CasinoGameCard from '@/components/Games/CasinoGameCard.vue'
   import CasinoCategoryList from '@/components/Games/CasinoCategoryList.vue'
+  import CasinoProviderCard from '@/components/Games/CasinoProviderCard.vue'
   import {
     ref,
     onBeforeMount,
-    computed
+    computed,
+    nextTick
   } from 'vue'
   import {
     getTopGameCategories,
     gamesByTopCategory,
-    slugify
+    getProviders,
+    slugify,
+    getGamesBySearch
   } from '@/helpers'
   import {
     useRoute,
@@ -86,11 +173,18 @@
   const discoverGames = ref([])
   const activeCategory = ref('discover')
   const isLoading = ref(false)
+  const providers = ref([])
+  const isLoadingProviders = ref(false)
   const router = useRouter()
   const route = useRoute()
   const userStore = useUsersStore()
   const gamesCache = ref(new Map())
   const sortOrders = ref({})
+  const showSearch = ref(false)
+  const searchQuery = ref('')
+  const searchResults = ref([])
+  const isSearching = ref(false)
+  const searchInput = ref(null)
 
   // Intersection Observer directive
   const vIntersection = {
@@ -196,6 +290,10 @@
     return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Casino2%2F${game.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}.png?alt=media`
   }
 
+  const getProviderImage = (provider) => {
+    return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Providers%2F${provider.name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}.png?alt=media`
+  }
+
   async function redirectToGamePlay(game) {
     try {
       if (!userStore.currentUser) {
@@ -224,9 +322,63 @@
     }
   }
 
+  async function getGameProviders() {
+    isLoadingProviders.value = true
+    try {
+      const response = await getProviders()
+      providers.value = Object.values(response.data).slice(0, 12) // Get first 12 providers
+    } catch (error) {
+      console.error('Error fetching providers:', error)
+      providers.value = []
+    }
+    isLoadingProviders.value = false
+  }
+
+  function onProviderClick(provider) {
+    router.push({
+      name: 'casino-provider',
+      params: {
+        provider_id: provider.id,
+        provider_name: slugify(provider.name)
+      }
+    })
+  }
+
+  async function handleSearch() {
+    if (!searchQuery.value) {
+      searchResults.value = []
+      return
+    }
+
+    isSearching.value = true
+    try {
+      const response = await getGamesBySearch(searchQuery.value)
+      searchResults.value = response.games
+    } catch (error) {
+      console.error('Error searching games:', error)
+      searchResults.value = []
+    } finally {
+      isSearching.value = false
+    }
+  }
+
+  function openSearch() {
+    showSearch.value = true
+    nextTick(() => {
+      searchInput.value?.focus()
+    })
+  }
+
+  function closeSearch() {
+    showSearch.value = false
+    searchQuery.value = ''
+    searchResults.value = []
+  }
+
   onBeforeMount(async () => {
     await getCategories()
     await loadDiscoverGames()
+    await getGameProviders()
   })
 </script>
 
@@ -271,15 +423,15 @@ a{
   }
 
   .category-icon {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
-    padding: 0.5rem;
+    padding: 0.4rem;
   }
 
   .category-icon img {
@@ -289,9 +441,9 @@ a{
   }
 
   .category-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #fff;
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -370,6 +522,76 @@ a{
 
   .btn-close {
     filter: invert(1) grayscale(100%) brightness(200%);
+  }
+
+  .providers-scroll {
+    overflow-x: auto;
+    padding: 1rem 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .providers-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .provider-item {
+    flex: 0 0 auto;
+  }
+
+  .search-overlay {
+    position: relative;
+    height: 500px;
+    background-color: var(--casino-bg);
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .search-container {
+    position: relative;
+  }
+
+  .search-container input {
+    padding-right: 2rem;
+    height: 48px;
+  }
+
+  .search-container input:focus {
+    border-color: var(--casino-primary);
+    box-shadow: none;
+  }
+
+  .search-button-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .x-icon-search {
+    color: #9ca0ab;
+  }
+
+  .x-icon-search::before {
+    content: '\e600';
+    font-family: 'iconfont' !important;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-style: normal;
+  }
+
+  .x-icon-back {
+    color: #9ca0ab;
+    left: 0;
+    text-decoration: none;
+  }
+
+  .x-icon-back::before {
+    content: '\e604';
+    font-family: 'iconfont' !important;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-style: normal;
   }
 </style>
 

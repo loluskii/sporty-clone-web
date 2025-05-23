@@ -302,11 +302,7 @@ export const getJackpotWinners = async () => {
 
 
 export const getPaymentMethods = async () => {
-  return parseData(
-    fetchWrapper.get(
-      `${NEW_BASE_API}/admin/wallet/payment-methods/${import.meta.env.VITE_CLIENT_ID}`
-    )
-  )
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/user/wallet/${import.meta.env.VITE_CLIENT_ID}/payment-methods`))
 }
 
 export const getBanksList = async () => {

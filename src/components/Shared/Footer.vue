@@ -67,8 +67,8 @@
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
-            <div data-cms-key="tell_phone_number">Telephone: +2347003727272</div>
-            <div data-cms-key="mail_to">Email: support@frapapa.com</div>
+            <div data-cms-key="tell_phone_number">Telephone: +234</div>
+            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}.ng</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
                 <a href="https://www.facebook.com/frapapaofficialng" target="_blank"
