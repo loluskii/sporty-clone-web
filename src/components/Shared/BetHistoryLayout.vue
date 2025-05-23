@@ -46,9 +46,9 @@
                     :class="activeClass('account-transactions') ? 'x-list-item--active' : 'j'">
                     <span><span data-cms-key="transactions">Transactions</span> </span>
                   </li>
-                  <li class="x-list-item x-text-main">
+                  <!-- <li class="x-list-item x-text-main">
                     <span><span data-cms-key="gifts">Bonus</span> </span>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </div>
