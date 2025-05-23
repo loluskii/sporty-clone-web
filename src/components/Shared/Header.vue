@@ -59,9 +59,9 @@
                     >
                       <span><span data-cms-key="transactions">Transactions</span> </span>
                     </li>
-                    <li class="x-list-item x-text-main">
+                    <!-- <li class="x-list-item x-text-main">
                       <span><span data-cms-key="gifts">Bonus</span> </span>
-                    </li>
+                    </li> -->
                     <li
                       class="x-list-bar"
                       @click="authStore.logout"
