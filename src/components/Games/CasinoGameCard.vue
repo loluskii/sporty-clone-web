@@ -36,7 +36,7 @@ defineProps({
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  min-height: 270px;
+  /* min-height: 270px; */
   cursor: pointer;
   transition: box-shadow 0.2s;
 }
@@ -45,7 +45,7 @@ defineProps({
 }
 .game-image-wrapper {
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16/10;
   border-radius: 12px;
   overflow: hidden;
   background: #23242a;
@@ -54,10 +54,11 @@ defineProps({
   justify-content: center;
 }
 .game-image {
-  width: 100%;
   height: 100%;
+  /* width: 100%;
   object-fit: cover;
   border-radius: 12px;
+  object-position: top; */
   display: block;
 }
 .game-title {

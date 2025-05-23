@@ -91,6 +91,16 @@ const router = createRouter({
       component: () => import('@/views/Games/CasinoCategoryView.vue')
     },
     {
+      path: '/Games/Providers',
+      name: 'casino-providers',
+      component: () => import('@/views/Games/CasinoProvidersView.vue')
+    },
+    {
+      path: '/Games/Provider/:provider_id/:provider_name',
+      name: 'casino-provider',
+      component: () => import('@/views/Games/CasinoProviderView.vue')
+    },
+    {
       path: '/Games/:game_name/:game_id/Play',
       name: 'game-play',
       component: () => import('@/views/Games/PlayView.vue')
