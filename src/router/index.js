@@ -147,6 +147,11 @@ const router = createRouter({
       component: () => import('@/views/Promotions.vue')
     },
     {
+      path: '/AgentSignUp',
+      name: 'agent-signup',
+      component: () => import('@/views/AgentSignUp.vue')
+    },
+    {
       path: '/CMS/AboutUs',
       name: 'about-us',
       component: () => import('@/views/CMS/AboutUs.vue')

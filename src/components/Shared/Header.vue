@@ -273,6 +273,13 @@
               :class="activeClass('promotions') ? 'x-flex-item--active' : ''"
               ><span data-cms-key="app">Promotions</span></a
             >
+            <a
+              id="header_nav_mobile"
+              href="/AgentSignUp"
+              class="x-flex-item"
+              :class="activeClass('agent-signup') ? 'x-flex-item--active' : ''"
+              ><span data-cms-key="app">Become an Agent</span></a
+            >
           </nav>
           <div id="j_timezone" class="x-timezone">GMT {{ sign }}{{ offsetHours }}:00</div>
         </div>
