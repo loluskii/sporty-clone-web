@@ -1,7 +1,7 @@
 <template>
   <CasinoLayout>
     <!-- Search Overlay -->
-    <div v-if="showSearch" class="search-overlay">
+    <div v-if="showSearch" class="search-overlay" style="min-height: 500px;">
       <div class="container py-4">
         <div class="d-flex align-items-center mb-4">
           <button class="btn p-0 text-white me-3" @click="closeSearch">
