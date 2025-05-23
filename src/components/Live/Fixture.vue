@@ -69,6 +69,7 @@ import { useCouponStore, useUtilsStore } from '@/stores';
 import { useMqttService } from '@/composables/useMqtt';
 import EmptyOdds from '../EmptyOdds.vue';
 import Odds from './Odds.vue';
+import emitter from '@/plugins/emitter';
 
 // Props
 const props = defineProps({
@@ -149,22 +150,18 @@ const handleOddsChange = (data) => {
 
             market.outcomes?.forEach(outcome => {
               const existingOutcomeIndex = props.match.outcomes.findIndex(
-                o => o.marketID == outcome.id
+                o => o.outcomeID == outcome.id
               );
               
               if (existingOutcomeIndex !== -1) {
-                const key = `${market.id}-${outcome.id}-${outcome.specifier || ""}`;
-                updatedOutcomesCopy[key] = {
-                  odds: outcome.odds,
-                  active: outcome.active ? 1 : 0,
-                  timestamp: Date.now()
-                };
-
+                // Update existing outcome while preserving original fields
                 props.match.outcomes[existingOutcomeIndex] = {
                   ...props.match.outcomes[existingOutcomeIndex],
                   odds: outcome.odds,
                   active: outcome.active ? 1 : 0
                 };
+              } else {
+                console.log('New outcome found:', outcome.id);
               }
             });
           });

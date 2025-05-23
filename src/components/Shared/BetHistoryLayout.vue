@@ -379,12 +379,12 @@ const getUserName = computed(() => {
 
 .x-order-wrapper .x-pg-container .pageNum.selected {
   color: #fff;
-  background-color: var(--brand-primary);
+  background-color: var(--brand-secondary);
 }
 
 .x-order-wrapper .x-pg-container .pageNum.icon-prev::before,
 .x-order-wrapper .x-pg-container .pageNum.icon-next::before {
-  color: var(--brand-primary);
+  color: var(--brand-secondary);
 }
 
 .x-order-wrapper .x-pg-container .pageNum.icon-prev.icon-disabled::before,

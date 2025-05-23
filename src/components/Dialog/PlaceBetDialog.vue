@@ -67,7 +67,7 @@
                 </button>
               </div> -->
               <div class="m-btn-text">
-                <a @click.prevent="$router.push({ name: 'account-bethistory' })"
+                <a @click.prevent="goToBetHistory"
                   ><span>Check Bet History</span> <i class="m-icon-more"></i
                 ></a>
               </div>
@@ -81,10 +81,17 @@
 
 <script setup>
 import emitter from "@/plugins/emitter";
-
+import { useRouter } from "vue-router";
 defineProps({
   response: Object,
 });
+
+const router = useRouter()
+
+const goToBetHistory = () => {
+  emitter.emit('hideDialog');
+  return router.push({ name: 'account-bethistory' })
+}
 </script>
 
 <style>
