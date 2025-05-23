@@ -1,5 +1,5 @@
 // let baseApi = import.meta.env.VITE_BASE_API;
-export const BASE_API = "https://www.frapapa.com"
+export const BASE_API = "https://api.streetbetjackpot.ng"
 export const NEW_BASE_API = import.meta.env.VITE_NEW_BASE_API
 
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
