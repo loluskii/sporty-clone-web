@@ -155,7 +155,7 @@ async function setBetStatus(status) {
 
 onMounted(async () => {
   try {
-    await getBetHistory();
+    await getBetHistory("");
   } catch (error) {
     console.error(error);
   }
@@ -233,8 +233,8 @@ onMounted(async () => {
   font-size: 12px;
 }
 #x-order-nav.x-nav-wrapper .x-wrap .x-type .x-type-item--active {
-  border: 1px solid var(--brand-primary);
-  background-color: var(--brand-primary);
+  border: 1px solid var(--brand-secondary);
+  background-color: var(--brand-secondary);
   color: #fff;
 }
 #x-order-nav.x-nav-wrapper .x-wrap .x-type .x-type-item--active .x-text-main {
