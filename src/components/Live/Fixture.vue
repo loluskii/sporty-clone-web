@@ -111,7 +111,7 @@ const fixtureStatus = `feeds/live/fixture_status/${props.match.matchID}`;
 // MQTT Handlers
 const handleOddsChange = (data) => {
   if (!data || !data.markets) {
-    console.log(`📊 MQTT: Invalid odds change data received for match ${props.match.matchID}`);
+    // console.log(`📊 MQTT: Invalid odds change data received for match ${props.match.matchID}`);
     return;
   }
 
@@ -119,11 +119,11 @@ const handleOddsChange = (data) => {
   const dataMatchId = data.event_id || data.match_id;
 
   if (dataMatchId && String(dataMatchId) !== String(matchId)) {
-    console.log(`📊 MQTT: Ignoring odds change for match ID ${dataMatchId}, our match ID is ${matchId}`);
+    // console.log(`📊 MQTT: Ignoring odds change for match ID ${dataMatchId}, our match ID is ${matchId}`);
     return;
   }
 
-  console.log(`📊 MQTT: Processing odds change for match ID ${matchId}`);
+  // console.log(`📊 MQTT: Processing odds change for match ID ${matchId}`);
 
   if (!updatePending.value) {
     updatePending.value = true;
@@ -182,11 +182,11 @@ const handleBetStop = (data) => {
   const dataMatchId = data.event_id || data.match_id;
 
   if (dataMatchId && String(dataMatchId) !== String(matchId)) {
-    console.log(`📊 MQTT: Ignoring bet stop for match ID ${dataMatchId}, our match ID is ${matchId}`);
+    // console.log(`📊 MQTT: Ignoring bet stop for match ID ${dataMatchId}, our match ID is ${matchId}`);
     return;
   }
 
-  console.log(`📊 MQTT: Processing bet stop for match ID ${matchId}`);
+  // console.log(`📊 MQTT: Processing bet stop for match ID ${matchId}`);
 
   requestAnimationFrame(() => {
     try {
@@ -221,17 +221,17 @@ const handleFixtureStatus = (data) => {
   const dataMatchId = data.event_id || data.match_id;
 
   if (dataMatchId && String(dataMatchId) !== String(matchId)) {
-    console.log(`📊 MQTT: Ignoring fixture status for match ID ${dataMatchId}, our match ID is ${matchId}`);
+    // console.log(`📊 MQTT: Ignoring fixture status for match ID ${dataMatchId}, our match ID is ${matchId}`);
     return;
   }
 
-  console.log(`📊 MQTT: Processing fixture status for match ID ${matchId}:`, data);
+  // console.log(`📊 MQTT: Processing fixture status for match ID ${matchId}:`, data);
 
   requestAnimationFrame(() => {
     try {
       // Check if match has ended
       if (data.status_code === 100) {
-        console.log(`🏁 MQTT: Match ${matchId} has ended, removing from list`);
+        // console.log(`🏁 MQTT: Match ${matchId} has ended, removing from list`);
         emitter.emit('match-ended', matchId);
         return;
       }
@@ -317,7 +317,7 @@ const startTimer = () => {
 
 // Subscribe to MQTT topics
 onMounted(() => {
-  console.log(`🏗️ Component: Setting up MQTT subscriptions for match ID: ${props.match.matchID}`);
+  // console.log(`🏗️ Component: Setting up MQTT subscriptions for match ID: ${props.match.matchID}`);
 
   const matchId = props.match.matchID;
   const componentId = `fixture-${matchId}-${Date.now()}`;
@@ -335,15 +335,15 @@ onMounted(() => {
   };
 
   const unsubscribers = Object.entries(topics).map(([key, topic]) => {
-    console.log(`📊 Subscribing to ${key} on topic: ${topic}`);
+    // console.log(`📊 Subscribing to ${key} on topic: ${topic}`);
     return subscribe(topic, (data) => {
-      console.log(`📊 MQTT: Received message on topic ${topic} for component ${componentId}`, data);
+      // console.log(`📊 MQTT: Received message on topic ${topic} for component ${componentId}`, data);
       handlers[key](data);
     });
   });
 
   onUnmounted(() => {
-    console.log(`🧹 Component: Cleaning up MQTT subscriptions for match ID: ${matchId}`);
+    // console.log(`🧹 Component: Cleaning up MQTT subscriptions for match ID: ${matchId}`);
     unsubscribers.forEach(unsubscribe => unsubscribe());
     stopTimer();
   });
