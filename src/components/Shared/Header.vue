@@ -931,7 +931,7 @@ onMounted(() => {
   display: inline-block;
   height: 100%;
   vertical-align: middle;
-  width: 130px;
+  width: 160px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;
