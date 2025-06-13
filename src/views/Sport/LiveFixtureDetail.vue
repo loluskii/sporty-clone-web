@@ -524,7 +524,7 @@ function handleOddsChange(data) {
     return;
   }
 
-  console.log(`📊 MQTT: Processing odds change for match ID ${matchId}`,data);
+  // console.log(`📊 MQTT: Processing odds change for match ID ${matchId}`,data);
 
   requestAnimationFrame(() => {
     try {
