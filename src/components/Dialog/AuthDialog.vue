@@ -75,6 +75,18 @@
                                   v-model="password"
                               /></span>
                             </div>
+                            <div v-if="authType === 'register'" style="display: flex; align-items: start; margin-top: 10px;">
+                              <input
+                                type="checkbox"
+                                id="agreeToTerms"
+                                v-model="agreeToTerms"
+                                style="margin-right: 7px; margin-top: 5px; accent-color: var(--brand-primary)"
+                              />
+                              <label for="agreeToTerms" style="font-size: 0.95rem;">
+                                By checking this box, you confirm you are above 18 and you agree to our
+                                <a href="/CMS/TandC" target="_blank" style="color: var(--brand-secondary); font-weight: bold;">Terms and Conditions</a>.
+                              </label>
+                            </div>
                           </form>
 
                           <div class="x-btn-wrap">
@@ -82,9 +94,9 @@
                               @click.prevent="handleFormSubmit"
                               class="af-button af-button--primary"
                               :class="{
-                                'is-disabled': authStore.loading || !phoneNumber || !password
+                                'is-disabled': authStore.loading || !phoneNumber || !password || (authType === 'register' && !agreeToTerms)
                               }"
-                              :disabled="authStore.loading"
+                              :disabled="authStore.loading || (authType === 'register' && !agreeToTerms)"
                             >
                               <span
                                 ><span data-cms-key="log_in">{{
@@ -100,7 +112,7 @@
                           >
                             <span
                               ><p class="mg-b-16 size-18 pd-hor-100">
-                                We’ve sent you a 6-digit code to +234 {{ phoneNumber }}
+                                We've sent you a 6-digit code to +234 {{ phoneNumber }}
                               </p></span
                             >
                             <div>
@@ -173,6 +185,7 @@ const activeStep = ref(1)
 const remainingTime = ref(60)
 const isDisabled = ref(false)
 let timer
+const agreeToTerms = ref(false)
 
 // const OTP = ref('')
 
@@ -188,6 +201,10 @@ function setAuthType(type) {
 
 const handleFormSubmit = async () => {
   authStore.authError = null
+  if (authType.value === 'register' && !agreeToTerms.value) {
+    authStore.authError = 'You must confirm you are above 18 and agree to the Terms and Conditions to continue.'
+    return
+  }
   if (authType.value === 'register') {
     await registerUser()
   } else {
