@@ -139,7 +139,7 @@ export const getToday2 = async (sid, page) => {
 
 export const getLiveHighlights = async () => {
   return parseData(
-    fetchWrapper.get(`${NEW_BASE_API}/sports/highlight/live/0?source=website&markets=1`)
+    fetchWrapper.get(`${NEW_BASE_API}/sports/highlight/live/0?source=web&markets=1`)
   )
 }
 
@@ -170,7 +170,7 @@ export const getHighlights2 = async (sid) => {
 export const getFixturesByTournamentId = async (id, sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/get-fixtures/${id}?sportID=${sid}&marketID=1&source=website&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/get-fixtures/${id}?sportID=${sid}&marketID=1&source=web&timeoffset=${sign}${offsetHours}`
     )
   )
 }
@@ -311,13 +311,13 @@ export const getBanksList = async () => {
 
 export const verifyAccount = async (payload) => {
   return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/verify-bank-account?source=website`, payload)
+    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/verify-bank-account?source=web`, payload)
   )
 }
 
 export const getDepositURL = async (payload) => {
   return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/initiate-deposit?source=website`, payload)
+    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/initiate-deposit?source=web`, payload)
   )
 }
 
@@ -331,7 +331,7 @@ export const verifyDeposit = async (channel, ref) => {
 
 export const withdrawalRequest = async (payload) => {
   return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/withdraw?source=website`, payload)
+    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/withdraw?source=web`, payload)
   )
 }
 

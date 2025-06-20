@@ -231,6 +231,10 @@ const activeSportMarkets = computed(() => {
   return data.slice(0, 2);
 });
 
+const removeFinishedFixtures = (matchId) => {
+  return completeData.value = completeData.value.filter(s => s.eventId == matchId)
+}
+
 // Optimized methods
 const setActiveSport = (sport) => {
   if (typeof sport === "object") {
