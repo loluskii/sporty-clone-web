@@ -51,14 +51,13 @@
           <div style="margin-top: 20px" class="bank-transfer-desc-section">
             <span>
               <ol class="bank-transfer-card-steps">
-                <li>Enter the amount you want to deposit and click the “Top Up Now” button.</li>
-                <li>You will be given a temporary transfer account (expires after 30 mins).</li>
-                <li>Transfer money to the account via your online banking or USSD.</li>
-                <li>
-                  Check your transaction history. Bank transfers generally credit within 10 minutes.
-                  If the deposit doesn't credit within 24 hours, please contact your bank.
-                </li>
-              </ol></span
+                  <li>Enter the amount you want to deposit and click the “Top Up Now” button.</li>
+                  <li>You will be redirected to a payment page to complete your deposit.</li>
+                  <li>
+                    Once the deposit is completed, you will be redireected back to your transaction history. Bank transfers generally credit within 10
+                    minutes. If the deposit doesn't credit within 24 hours, please contact the support team or your bank.
+                  </li>
+                </ol></span
             >
           </div>
         </div>
