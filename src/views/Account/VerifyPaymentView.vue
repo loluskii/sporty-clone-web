@@ -64,18 +64,22 @@ const bonus = computed(() => {
 
 async function verifyPaymentRef(method, ref) {
   isLoading.value = true
-  const res = await verifyDeposit(method, ref);
-  isLoading.value = false
-  if (res.success) {
-    isPaymentSuccess.value = true
-    if (bonus.value){
-      await awardBonus(bonus.value)
-      .then(res => {
-        usersStore.setActiveBonus(null);
-      })
+  try{
+    const res = await verifyDeposit(method, ref);
+    isLoading.value = false
+    if (res.success) {
+      isPaymentSuccess.value = true
+      if (bonus.value){
+        await awardBonus(bonus.value)
+        .then(res => {
+          usersStore.setActiveBonus(null);
+        })
+      }
+      router.push({ name: 'account-transactions' })
+    } else {
+      isPaymentFail.value = true
     }
-    router.push({ name: 'account-transactions' })
-  } else {
+  } catch(err) {
     isPaymentFail.value = true
   }
 }
