@@ -30,17 +30,33 @@ watch(
   () => [route.params.method],
   async ([method]) => {
     let ref;
-    if (method === 'paystack') {
+    if (method === "paystack") {
       ref = route.query.trxref;
     }
-    if (method === 'monnify') {
+    if (method === "monnify") {
       ref = route.query.paymentReference;
     }
 
-    await verifyPaymentRef(method, ref)
+    if (method === "flutterwave") {
+      ref = route.query.tx_ref;
+    }
+
+    if (method === "korapay") {
+      ref = route.query.reference;
+    }
+
+    if (method === "fidelity") {
+      ref = route.query.txnRef;
+    }
+
+    if (method === "coralpay") {
+      ref = route.query.id;
+    }
+
+    await verifyPaymentRef(method, ref);
   },
-  { immediate: true }
-)
+  { immediate: true },
+);
 
 const bonus = computed(() => {
   return usersStore.bonus
@@ -48,18 +64,22 @@ const bonus = computed(() => {
 
 async function verifyPaymentRef(method, ref) {
   isLoading.value = true
-  const res = await verifyDeposit(method, ref);
-  isLoading.value = false
-  if (res.success) {
-    isPaymentSuccess.value = true
-    if (bonus.value){
-      await awardBonus(bonus.value)
-      .then(res => {
-        usersStore.setActiveBonus(null);
-      })
+  try{
+    const res = await verifyDeposit(method, ref);
+    isLoading.value = false
+    if (res.success) {
+      isPaymentSuccess.value = true
+      if (bonus.value){
+        await awardBonus(bonus.value)
+        .then(res => {
+          usersStore.setActiveBonus(null);
+        })
+      }
+      router.push({ name: 'account-transactions' })
+    } else {
+      isPaymentFail.value = true
     }
-    router.push({ name: 'account-transactions' })
-  } else {
+  } catch(err) {
     isPaymentFail.value = true
   }
 }

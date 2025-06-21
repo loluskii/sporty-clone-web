@@ -41,7 +41,7 @@
               <span>{{ formatNumber(data.amount) }}</span>
             </div>
             <div class="x-table-cell">
-              <span class="" data-cms-key="succeed">Succeed</span>
+              <span class="" data-cms-key="succeed">{{ data.status === 0 ? 'Pending': data.status === 1 ? 'Success' : 'Failed' }}</span>
             </div>
             <div class="x-table-cell">
               <span>{{ formatNumber(data.balance) }}</span>
