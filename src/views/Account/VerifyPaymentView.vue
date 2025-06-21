@@ -27,8 +27,8 @@ const isLoading = ref(true);
 const usersStore = useUsersStore();
 
 watch(
-  () => [route.params.method],
-  async ([method]) => {
+  () => [route.params.method, route.params.status],
+  async ([method, status]) => {
     let ref;
     if (method === "paystack") {
       ref = route.query.trxref;
@@ -39,6 +39,9 @@ watch(
 
     if (method === "flutterwave") {
       ref = route.query.tx_ref;
+      if(status && status === 'cancelled'){
+        return router.push({ name: 'account-deposit' })
+      }
     }
 
     if (method === "korapay") {
