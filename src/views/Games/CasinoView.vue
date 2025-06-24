@@ -101,7 +101,7 @@
             <div class="section-divider"></div>
 
             <!-- Providers Section (after second category) -->
-            <div v-if="index === 1" class="providers-section mb-4">
+            <div v-if="index === 1" class="providers-section mb-4 d-none">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="text-white">Game Providers</h3>
                 <button class="btn btn-outline-light btn-sm" @click="router.push({ name: 'casino-providers' })">

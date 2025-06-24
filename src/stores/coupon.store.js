@@ -159,16 +159,16 @@ export const useCouponStore = defineStore({
 
       // If the data doesn't match our event, ignore it
       if (dataMatchId && String(dataMatchId) !== String(matchId)) {
-        console.log(
-          "📊 Betslip: Ignoring odds change for match ID",
-          dataMatchId,
-          "our match ID is",
-          matchId,
-        );
+        // console.log(
+        //   "📊 Betslip: Ignoring odds change for match ID",
+        //   dataMatchId,
+        //   "our match ID is",
+        //   matchId,
+        // );
         return;
       }
 
-      console.log("📊 Betslip: Processing odds change for match ID", matchId);
+      // console.log("📊 Betslip: Processing odds change for match ID", matchId);
 
       const markets = data.markets || [];
       let updatedAnySelection = false;
@@ -194,21 +194,21 @@ export const useCouponStore = defineStore({
             );
 
             if (outcome) {
-              console.log("📊 Betslip: Found outcome", outcome);
+              // console.log("📊 Betslip: Found outcome", outcome);
               if (!outcome.active) {
                 // If outcome is not active, suspend the selection
-                console.log(
-                  `📊 Betslip: Outcome not active, suspending selection for match ID ${matchId}`,
-                );
+                // console.log(
+                //   `📊 Betslip: Outcome not active, suspending selection for match ID ${matchId}`,
+                // );
                 selection.suspended = true;
                 selection.unavailable = true;
                 updatedAnySelection = true;
               } else {
                 // If outcome is active, make sure it's not suspended
                 if (selection.suspended || selection.unavailable) {
-                  console.log(
-                    `📊 Betslip: Reactivating previously suspended selection for match ID ${matchId}`,
-                  );
+                  // console.log(
+                  //   `📊 Betslip: Reactivating previously suspended selection for match ID ${matchId}`,
+                  // );
                   selection.suspended = false;
                   selection.unavailable = false;
                   updatedAnySelection = true;
@@ -216,9 +216,9 @@ export const useCouponStore = defineStore({
 
                 // Update odds if they've changed
                 if (outcome.odds !== selection.odds) {
-                  console.log(
-                    `📊 Betslip: Updating odds from ${selection.odds} to ${outcome.odds} for match ID ${matchId}`,
-                  );
+                  // console.log(
+                  //   `📊 Betslip: Updating odds from ${selection.odds} to ${outcome.odds} for match ID ${matchId}`,
+                  // );
                   selection.odds = outcome.odds;
                   selection.changed = true;
                   updatedAnySelection = true;
@@ -255,13 +255,13 @@ export const useCouponStore = defineStore({
       const dataMatchId = data.event_id || data.match_id;
 
       if (dataMatchId && String(dataMatchId) !== String(matchId)) {
-        console.log(
-          `📊 Betslip: Ignoring bet stop for match ID ${dataMatchId}, our match ID is ${matchId}`,
-        );
+        // console.log(
+        //   `📊 Betslip: Ignoring bet stop for match ID ${dataMatchId}, our match ID is ${matchId}`,
+        // );
         return;
       }
 
-      console.log(`⚠️ BET STOP: Processing bet stop for match ID ${matchId}`);
+      // console.log(`⚠️ BET STOP: Processing bet stop for match ID ${matchId}`);
 
       // Find all selections from this match
       const matchSelections = this.coupon.selections.filter(
@@ -271,9 +271,9 @@ export const useCouponStore = defineStore({
       );
 
       if (matchSelections.length > 0) {
-        console.log(
-          `⚠️ BET STOP: Suspending ${matchSelections.length} selections in betslip for match ID ${matchId}`,
-        );
+        // console.log(
+        //   `⚠️ BET STOP: Suspending ${matchSelections.length} selections in betslip for match ID ${matchId}`,
+        // );
 
         matchSelections.forEach((selection) => {
           selection.suspended = true;
@@ -355,7 +355,7 @@ export const useCouponStore = defineStore({
             const maxWinnings =
               parseFloat(splitProps.maxOdds) * parseFloat(minStake);
 
-            console.log(minWinnings, maxWinnings);
+            // console.log(minWinnings, maxWinnings);
             //calculate bonus
             this.coupon.minBonus = calculateBonus(
               this.coupon,
@@ -970,7 +970,7 @@ export const useCouponStore = defineStore({
           }
         });
 
-        console.log("📊 Betslip: Successfully resubscribed to all selections");
+        // console.log("📊 Betslip: Successfully resubscribed to all selections");
       } catch (error) {
         console.error("📊 Betslip: Error resubscribing to selections:", error);
       }
@@ -984,9 +984,9 @@ export const useCouponStore = defineStore({
         ctx.store.coupon.selections &&
         ctx.store.coupon.selections.length > 0
       ) {
-        console.log(
-          "📊 Betslip: Resubscribing to MQTT topics for all selections after page refresh",
-        );
+        // console.log(
+        //   "📊 Betslip: Resubscribing to MQTT topics for all selections after page refresh",
+        // );
         ctx.store.resubscribeToAllSelections();
       }
     },
