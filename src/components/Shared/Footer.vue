@@ -67,16 +67,16 @@
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
-            <div data-cms-key="tell_phone_number">Telephone: +234</div>
-            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}.ng</div>
+            <div data-cms-key="tell_phone_number">Telephone: 2012278124</div>
+            <div data-cms-key="mail_to">Email: customerservice@streetbet.ng</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
-                <a href="https://www.facebook.com/frapapaofficialng" target="_blank"
+                <a href="https://www.facebook.com/Streetbetng" target="_blank"
                   ><i class="x-icon x-icon-fb"></i
                 ></a>
               </address>
               <address class="mr-10p">
-                <a href="https://twitter.com/frapapabet" target="_blank"
+                <a href="https://twitter.com/streetbet_ng" target="_blank"
                   ><svg
                     viewBox="0 0 29 28"
                     fill="none"
@@ -95,7 +95,7 @@
                 </a>
               </address>
               <address class="mr-10p">
-                <a href="https://www.instagram.com/frapapaofficialng" target="_blank"
+                <a href="https://www.instagram.com/streetbet.ng" target="_blank"
                   ><i class="x-icon x-icon-ins"></i
                 ></a>
               </address>
