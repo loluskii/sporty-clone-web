@@ -148,12 +148,7 @@
         <ul class="x-left">
           <li class="l-item">
             <div class="x-image-wrapper">
-              <img src="/logo_visa.fd08bf37cf.png" alt="" />
-            </div>
-          </li>
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/logo_mc.51fc36230c.png" alt="" />
+              <img src="/kora.png" alt="" />
             </div>
           </li>
           <li class="l-item">
@@ -161,14 +156,9 @@
               <img src="/paystack-logo.png" alt="" />
             </div>
           </li>
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/monnify.png" alt="" />
-            </div>
-          </li>
         </ul>
         <span class="x-copy" data-cms-key="year_copy_right"
-          >© 2024 {{ utilsStore.brandName }}. All rights reserved.</span
+          >© 2025 {{ utilsStore.brandName }}. All rights reserved.</span
         >
       </div>
     </div>
