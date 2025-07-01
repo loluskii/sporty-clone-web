@@ -134,29 +134,16 @@
               />
             </div>
           </div>
-          <!-- <p class="x-right" data-cms-key="licence">
-            {{ utilsStore.brandName }} is operated by Soloti gaming Limited (RC 1687373). Soloti
-            Gaming Limited is licensed by: (i) The Nigerian Lottery Regulatory Commission (under
-            Licence number 0001042) , (ii) Lagos State Lotteries and Gaming Authority (under Licence
-            number 005310)
-          </p> -->
+          <p class="x-right" data-cms-key="licence">
+            {{ utilsStore.brandName }} is licensed by the Oyo State
+            Gaming Board, according to the License No: OYSGB/SPB/232975 issued by
+            the Oyo State Gaming Board.
+          </p>
         </li>
       </ul>
     </div>
     <div class="x-footer-bottom">
       <div class="x-content">
-        <ul class="x-left">
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/kora.png" alt="" />
-            </div>
-          </li>
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/paystack-logo.png" alt="" />
-            </div>
-          </li>
-        </ul>
         <span class="x-copy" data-cms-key="year_copy_right"
           >© 2025 {{ utilsStore.brandName }}. All rights reserved.</span
         >
