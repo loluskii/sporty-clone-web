@@ -161,7 +161,7 @@ const handleOddsChange = (data) => {
                   active: outcome.active ? 1 : 0
                 };
               } else {
-                console.log('New outcome found:', outcome.id);
+                // console.log('New outcome found:', outcome.id);
               }
             });
           });
