@@ -75,6 +75,8 @@
 
 <script setup>
 import emitter from "@/plugins/emitter";
+import { useUtilsStore } from "@/stores";
+const {brandName} = useUtilsStore()
 const props = defineProps({
   response: Object,
 });
@@ -109,7 +111,7 @@ function copyToClipboard() {
 }
 
 function redirectToPlatform(platform) {
-  let message = `Hey I just placed on Cubebet! ${window.location.origin}?shareCode=${props.response.betslipId}`
+  let message = `Hey I just placed on ${brandName}! ${window.location.origin}?shareCode=${props.response.betslipId}`
   switch (platform) {
     case "whatsapp":
       return window.open("https://wa.me/?text=" + encodeURIComponent(message));

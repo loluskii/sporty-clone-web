@@ -96,22 +96,22 @@ function handleCashout() {
 }
 
 async function confirmCashout() {
-  cashingOut.value = true
-  isCashoutMode.value = false
-  const res = await performCashout({
-    betId: props.bet.id,
-    amount: props.bet.cashOutAmount
-  })
-  cashingOut.value = false
-  isCashoutMode.value = false
-
-  if (res.success) {
-    console.log('cashout successful')
-
-    // emitter.emit('showDialogueToaster', 'Cashout Successful!')
-    // await getBetsData()
-  } else {
-    // emitter.emit('showDialogueToaster', res.message)
+  try {
+    cashingOut.value = true
+    isCashoutMode.value = false
+    const res = await performCashout({
+      betId: props.bet.id,
+      amount: props.bet.cashOutAmount
+    })
+    cashingOut.value = false
+    isCashoutMode.value = false
+  
+    if (res.success) {
+      emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: 'Cashout successful' } })
+      await getBetsData()
+    } 
+  } catch (error) {
+    emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: error } })
   }
 }
 </script>
