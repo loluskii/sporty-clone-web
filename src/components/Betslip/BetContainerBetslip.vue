@@ -232,6 +232,7 @@ const placeBetResponse = ref({})
 const bookBetResponse = ref({})
 const usersStore = useUsersStore()
 const showConfirmationModal = ref(false)
+
 const betSlipType = computed(() => {
   return couponStore.coupon.betslip_type
 })
@@ -356,7 +357,7 @@ function toggleConfirmation() {
 
 async function book(e) {
   try {
-    if (totalStake.value < 1) {
+    if (betlistStake.value < 1) {
       return
     }
     e.target.classList.add('loading-icon')
