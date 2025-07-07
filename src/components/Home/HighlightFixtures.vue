@@ -141,7 +141,7 @@ const betStopTopic = `feeds/prematch/bet_stop/${props.game.matchID}`;
 
 // MQTT Handlers
 const handleOddsChange = (data) => {
-  console.log('[MQTT] Odds change received:', data);
+  // console.log('[MQTT] Odds change received:', data);
 
   if (!data || !data.markets) {
     return;
@@ -198,7 +198,7 @@ const handleOddsChange = (data) => {
 };
 
 const handleBetStop = (data) => {
-  console.log(`[MQTT] Bet stop received for match ${props.game.matchID}`);
+  // console.log(`[MQTT] Bet stop received for match ${props.game.matchID}`);
 
   if (String(data.event_id) !== String(props.game.matchID)) {
     return;
@@ -231,7 +231,7 @@ const handleBetStop = (data) => {
 
 // Subscribe to MQTT topics
 onMounted(() => {
-  console.log(`[MQTT] Subscribing to topics for match ${props.game.matchID}:`, {
+  // console.log(`[MQTT] Subscribing to topics for match ${props.game.matchID}:`, {
     oddsChangeTopic,
     betStopTopic,
     isConnected: isConnected.value
@@ -242,7 +242,7 @@ onMounted(() => {
 
   // Cleanup subscriptions on unmount
   onUnmounted(() => {
-    console.log(`[MQTT] Unsubscribing from topics for match ${props.game.matchID}`);
+    // console.log(`[MQTT] Unsubscribing from topics for match ${props.game.matchID}`);
     unsubscribeOdds();
     unsubscribeBetStop();
   });
