@@ -231,11 +231,12 @@ const handleBetStop = (data) => {
 
 // Subscribe to MQTT topics
 onMounted(() => {
-  // console.log(`[MQTT] Subscribing to topics for match ${props.game.matchID}:`, {
-    oddsChangeTopic,
-    betStopTopic,
-    isConnected: isConnected.value
-  });
+  // console.log(`[MQTT] Subscribing to topics for match ${props.game.matchID}:`, 
+  // {
+  //   oddsChangeTopic,
+  //   betStopTopic,
+  //   isConnected: isConnected.value
+  // });
 
   const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange);
   const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop);
