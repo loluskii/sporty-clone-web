@@ -135,9 +135,7 @@
             </div>
           </div>
           <p class="x-right" data-cms-key="licence">
-            {{ utilsStore.brandName }} is licensed by the Oyo State
-            Gaming Board, according to the License No: OYSGB/SPB/232975 issued by
-            the Oyo State Gaming Board.
+            {{ utilsStore.brandName }} is licensed by the Lagos State Lotteries and Gaming  Authority
           </p>
         </li>
       </ul>
