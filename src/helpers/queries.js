@@ -81,6 +81,10 @@ export const resetPassword = async (payload) => {
   return parseData(fetchWrapper.patch(`${NEW_BASE_API}/auth/update/reset-password`, payload))
 }
 
+export const updatePassword = async (data) => {
+  return parseData(fetchWrapper.put(`${NEW_BASE_API}/auth/update/password/`, data));
+};
+
 export const updateProfile = async (payload) => {
   return parseData(fetchWrapper.put(`${NEW_BASE_API}/auth/update/details`, payload))
 }
