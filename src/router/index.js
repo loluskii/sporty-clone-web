@@ -23,8 +23,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import ForgotPassword from '@/views/Account/ForgotPassword.vue'
 // import Promotions from '@/views/Promotions.vue'
 
-import { useUtilsStore } from '@/stores'
+import { useAuthStore, useUtilsStore } from '@/stores'
 import { unslugify } from '@/helpers'
+
+const preloadRoutes = ["home", "live"];
+const authRoutes = ["Register"]
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +37,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/HomeView.vue')
+    },
+    {
+      path: '/Register',
+      name: 'Register',
+      component: () => import('../views/RegisterView.vue'),
+      meta: { showDefaultHeaderItems: false }
     },
     {
       path: '/Account/ResetPassword',
@@ -142,6 +152,11 @@ const router = createRouter({
       component: () => import('@/views/Account/TransactionsView.vue')
     },
     {
+      path: '/Account/SafetySecurity',
+      name: 'account-security',
+      component: () => import('@/views/Account/SecurityView.vue')
+    },
+    {
       path: '/Promotions',
       name: 'promotions',
       component: () => import('@/views/Promotions.vue')
@@ -175,13 +190,21 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+
   const utilsStore = useUtilsStore()
+  const authStore = useAuthStore()
+  const showDefaultHeaderItems = to.meta.showDefaultHeaderItems !== undefined ? to.meta.showDefaultHeaderItems : true
+  utilsStore.showDefaultHeaderItems = showDefaultHeaderItems
 
   if (to.params.sport) {
     let sport = utilsStore.sportsMenu.find((x) => x.sportName == unslugify(to.params.sport))
     if (sport) {
       utilsStore.activeSport = sport
     }
+  }
+
+  if(authRoutes.includes(to.name) && authStore.isAuthenticated){
+    router.push({name:'home'})
   }
 
 

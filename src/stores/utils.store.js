@@ -21,7 +21,8 @@ export const useUtilsStore = defineStore({
     errorMessage: null,
     activeCategories: [],
     openBetCount: 0,
-    liveListSingleMatch: null
+    liveListSingleMatch: null,
+    showDefaultHeaderItems: true
   }),
   getters: {},
   actions: {},

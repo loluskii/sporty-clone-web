@@ -3,7 +3,7 @@
     <div class="x-top-wrapper">
       <div class="x-nav-wrapper">
         <div class="x-logo-bar">
-          <div class="x-login-bar" :class="currentUser ? 'x-login-bar-fix' : ''">
+          <div class="x-login-bar" v-if="utilsStore.showDefaultHeaderItems" :class="currentUser ? 'x-login-bar-fix' : ''">
             <template v-if="currentUser">
               <div class="x-info on">
                 <div class="x-bablance-wrapper">
@@ -59,8 +59,11 @@
                     >
                       <span><span data-cms-key="transactions">Transactions</span> </span>
                     </li>
-                    <li class="x-list-item x-text-main">
-                      <span><span data-cms-key="gifts">Bonus</span> </span>
+                    <li
+                      class="x-list-item x-text-main"
+                      @click="$router.push({ name: 'account-security' })"
+                    >
+                      <span><span data-cms-key="security">Safety & Security</span> </span>
                     </li>
                     <li
                       class="x-list-bar"
@@ -284,7 +287,7 @@
 
 <script setup>
 import { defineComponent, computed, ref, onMounted } from "vue";
-import { useAuthStore, useUsersStore } from "@/stores";
+import { useAuthStore, useUsersStore, useUtilsStore } from "@/stores";
 import MD5 from "crypto-js/md5";
 
 import { formatNumber } from "@/helpers";
@@ -292,6 +295,7 @@ import emitter from "@/plugins/emitter";
 import { useRoute } from "vue-router";
 const usersStore = useUsersStore();
 const authStore = useAuthStore();
+const utilsStore = useUtilsStore()
 
 const route = useRoute();
 

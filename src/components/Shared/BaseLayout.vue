@@ -3,6 +3,9 @@ import Header from '@/components/Shared/Header.vue'
 import Footer from '@/components/Shared/Footer.vue'
 import DefaultHeaderItems from './DefaultHeaderItems.vue'
 import { defineComponent, onMounted, ref } from 'vue'
+import { useUtilsStore } from '@/stores'
+
+const utilsStore = useUtilsStore()
 
 defineComponent({
   name: 'base-layout'
@@ -12,7 +15,7 @@ defineComponent({
 <template>
   <div class="x-page">
     <Header>
-      <DefaultHeaderItems></DefaultHeaderItems>
+      <DefaultHeaderItems v-if="utilsStore.showDefaultHeaderItems"></DefaultHeaderItems>
     </Header>
     <div class="x-main x-layout-main">
       <div class="x-main-top">
