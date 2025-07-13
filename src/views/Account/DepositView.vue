@@ -18,7 +18,7 @@
             <div class="f-line">
               <span class="f-label"
                 ><span>Amount</span>
-                (NGN)
+                ({{ SportsbookGlobalVariable.Currency }})
               </span>
               <div class="f-line-item i-amount">
                 <div tabindex="6" class="x-input-wrapper">

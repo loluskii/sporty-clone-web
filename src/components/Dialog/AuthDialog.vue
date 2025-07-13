@@ -167,7 +167,7 @@
 <script setup>
 import { onMounted, ref, toRef } from 'vue'
 import emitter from '@/plugins/emitter'
-import { useAuthStore } from '@/stores'
+import { useAuthStore, useUtilsStore } from '@/stores'
 import { sendOTP, verifyOTP, register, verifyUsername } from '@/helpers'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 
@@ -186,6 +186,7 @@ const remainingTime = ref(60)
 const isDisabled = ref(false)
 let timer
 const agreeToTerms = ref(false)
+const utilsStore = useUtilsStore()
 
 // const OTP = ref('')
 
@@ -265,7 +266,7 @@ const startTimer = () => {
 const resendOtp = async () => {
   if (!isDisabled.value && remainingTime.value === 0) {
     let phone = phoneNumber.value.replace(/^0/, '')
-    const internationalNumber = `234${phone}`
+    const internationalNumber = `${utilsStore.SportsbookGlobalVariable.DialCode}${phone}`
     let payload = {
       clientID: import.meta.env.VITE_CLIENT_ID,
       phoneNumber: internationalNumber
@@ -281,7 +282,7 @@ const resendOtp = async () => {
 const storeOTP = async (data) => {
   authStore.loading = true
   authStore.authError = null
-  const internationalNumber = `234${formattedPhoneNumber(phoneNumber.value)}`
+  const internationalNumber = `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`
   let payload = {
     clientID: import.meta.env.VITE_CLIENT_ID,
     phoneNumber: internationalNumber,
@@ -310,7 +311,7 @@ const doRegistration = async () => {
   const payload = {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
-    phone: `234${formattedPhoneNumber(phoneNumber.value)}`,
+    phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
     clientID: import.meta.env.VITE_CLIENT_ID
   }
 
