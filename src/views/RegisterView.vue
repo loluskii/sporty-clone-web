@@ -17,7 +17,7 @@
             <div v-if="activeStep === 1" class="x-page-opt without-error">
               <form action="">
                 <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
-                  <div class="x-input-prepend"><span>+234</span></div>
+                  <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
                   <span class="x-input-com"><i
                       class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"></i>
                     <input type="input" input-mode="" name="" placeholder="Mobile Number" onpaste="return true"
@@ -53,7 +53,7 @@
               <div class="flex-column size-14 text-center pd-t-40 pd-b-24 justify-between">
                 <span>
                   <p class="mg-b-16 size-18 pd-hor-100">
-                    We've sent you a 6-digit code to +234 {{ phoneNumber }}
+                    We've sent you a 6-digit code to {{ utilsStore.SportsbookGlobalVariable.DialCode }} {{ phoneNumber }}
                   </p>
                 </span>
                 <div>
@@ -90,7 +90,7 @@ import StepTwo from "@/components/PasswordReset/StepTwo.vue";
 import StepThree from "@/components/PasswordReset/StepThree.vue";
 import { ref, onMounted } from "vue";
 import { verifyUsername, CLIENT_ID, formattedPhoneNumber } from "@/helpers";
-import { useAuthStore } from "@/stores";
+import { useAuthStore, useUtilsStore } from "@/stores";
 
 const phoneNumber = ref("");
 const isLoading = ref(false);
@@ -106,6 +106,7 @@ const remainingTime = ref(60)
 const isDisabled = ref(false)
 let timer
 const agreeToTerms = ref(false)
+const utilsStore = useUtilsStore()
 
 function setAuthType(type) {
   authType.value = type
@@ -183,7 +184,7 @@ const startTimer = () => {
 const resendOtp = async () => {
   if (!isDisabled.value && remainingTime.value === 0) {
     let phone = phoneNumber.value.replace(/^0/, '')
-    const internationalNumber = `234${phone}`
+    const internationalNumber = `${utilsStore.SportsbookGlobalVariable.DialCode}${phone}`
     let payload = {
       clientID: import.meta.env.VITE_CLIENT_ID,
       phoneNumber: internationalNumber
@@ -199,7 +200,7 @@ const resendOtp = async () => {
 const storeOTP = async (data) => {
   authStore.loading = true
   authStore.authError = null
-  const internationalNumber = `234${formattedPhoneNumber(phoneNumber.value)}`
+  const internationalNumber = `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`
   let payload = {
     clientID: import.meta.env.VITE_CLIENT_ID,
     phoneNumber: internationalNumber,
@@ -222,7 +223,7 @@ const doRegistration = async () => {
   const payload = {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
-    phone: `234${formattedPhoneNumber(phoneNumber.value)}`,
+    phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
     clientID: import.meta.env.VITE_CLIENT_ID
   }
 
