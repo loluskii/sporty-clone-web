@@ -57,9 +57,8 @@ const savePassword = async () => {
     }
 
     const res = await resetPassword(payload)
-    if (res.success) {
-      emit('next-step')
-    }
+    emit('next-step')
+
   } catch (error) {
     alert('An error occurred! Refresh and try again')
   }

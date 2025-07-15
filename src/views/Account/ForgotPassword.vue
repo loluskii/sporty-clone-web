@@ -68,8 +68,8 @@
             @go-back="returnToPreviousStep"
             @next-step="nextStep"
           ></StepOne>
-          <StepTwo v-if="activeStep === 2" :phone-number="phoneNumber"></StepTwo>
-          <StepThree v-if="activeStep === 3"></StepThree>
+          <StepTwo v-if="activeStep === 2" :phone-number="phoneNumber" @next-step="nextStep"></StepTwo>
+          <StepThree v-if="activeStep === 3" @next-step="nextStep"></StepThree>
         </template>
       </div>
     </div>
