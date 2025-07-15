@@ -18,14 +18,14 @@
               onpaste="return true"
               data-op=""
               class="x-input fs-exclude"
+              v-model="password"
           /></span>
         </div>
 
         <button
-          :disabled="s"
+          :disabled="isLoading || password === ''"
           class="af-button af-button--primary"
-          :class="{ 'is-disabled': isLoading || !password }"
-          type="primary"
+          :class="{ 'is-disabled': isLoading || password === '' }"
           @click.prevent="savePassword"
         >
           <span><span data-cms-key="confirm" data-cms-page="common_functions">Confirm</span></span>
@@ -48,16 +48,20 @@ const props = defineProps({
 const isLoading = ref(false)
 
 const savePassword = async () => {
-  isLoading.value = true
-  let payload = {
-    username: props.phoneNumber.replace(/^0/, ''),
-    password: password.value,
-    clientId: CLIENT_ID
-  }
+  try {
+    isLoading.value = true
+    let payload = {
+      username: props.phoneNumber.replace(/^0/, ''),
+      password: password.value,
+      clientId: CLIENT_ID
+    }
 
-  const res = await resetPassword(payload)
-  if (res.success) {
-    emit('next-step')
+    const res = await resetPassword(payload)
+    if (res.success) {
+      emit('next-step')
+    }
+  } catch (error) {
+    alert('An error occurred! Refresh and try again')
   }
 }
 </script>
@@ -81,7 +85,7 @@ const savePassword = async () => {
   border-radius: 2px;
 }
 .x-page .af-button--primary {
-  background: #0d9737 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 

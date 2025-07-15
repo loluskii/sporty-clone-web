@@ -147,7 +147,7 @@ function returnToPreviousStep() {
   font-style: normal;
 }
 .x-dialog-wrapper .x-holding-icon:before {
-  color: #0d9737;
+  color: var(--brand-secondary);
   font-size: 30px;
   line-height: 1;
   vertical-align: top;
@@ -207,7 +207,7 @@ function returnToPreviousStep() {
   font-style: normal;
 }
 .x-dialog-wrapper .x-pop-header-fix .x-icon-suc:before {
-  color: #0d9737;
+  color: var(--brand-secondary);
   font-size: 28px;
   line-height: 1;
 }
@@ -253,7 +253,7 @@ function returnToPreviousStep() {
   vertical-align: middle;
 }
 .x-dialog-wrapper .x-order-info .icon-one-bet-cut {
-  background: #32ce62;
+  background: var(--brand-secondary);
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-clip-path: polygon(0 1%, 91% 1%, 70% 100%, 0% 100%);
@@ -292,13 +292,13 @@ function returnToPreviousStep() {
   margin-right: 10px;
 }
 .x-dialog-wrapper .af-button--text {
-  color: #0d9737;
+  color: var(--brand-secondary);
   font-size: 14px;
   font-weight: bold;
 }
 
 .x-dialog-wrapper .af-button--primary {
-  background: #0d9737 !important;
+  background: var(--brand-secondary) !important;
   border: none;
   color: #fff !important;
   font-size: 12px;
@@ -397,7 +397,7 @@ function returnToPreviousStep() {
   padding: 0 16px;
 }
 .es-dialog.desktop .es-dialog-footer .es-dialog-btn {
-  background: #0d9737;
+  background: var(--brand-secondary);
   color: #fff;
   font-size: 14px;
   padding: 6px 16px;
@@ -494,7 +494,7 @@ function returnToPreviousStep() {
   border-radius: 2px;
 }
 .x-page .af-button--primary {
-  background: #0d9737 !important;
+  background: var(--brand-secondary) !important;
   color: #fff !important;
 }
 
@@ -548,11 +548,11 @@ function returnToPreviousStep() {
 }
 .x-page .x-input-wrapper.x-input-wrapper--active .x-input,
 .x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--active .x-input {
-  border-color: #0d9737;
+  border-color: var(--brand-secondary);
 }
 .x-page .x-input-wrapper.x-input-wrapper--active .x-input-prepend,
 .x-pop-wrapper .x-page .x-input-wrapper.x-input-wrapper--active .x-input-prepend {
-  border-color: #0d9737;
+  border-color: var(--brand-secondary);
 }
 
 .x-page .x-input-wrapper.x-input-wrapper--error .x-input,
@@ -565,7 +565,7 @@ function returnToPreviousStep() {
 }
 .x-page .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input,
 .x-pop-wrapper .x-page .x-input-wrapper:nth-of-type(2).x-input-wrapper--active .x-input {
-  border-color: #0d9737;
+  border-color: var(--brand-secondary);
 }
 .x-page .x-input-wrapper .x-input-icon--clickable:hover,
 .x-pop-wrapper .x-page .x-input-wrapper .x-input-icon--clickable:hover {
@@ -593,7 +593,7 @@ function returnToPreviousStep() {
 }
 .x-page .x-input-group--prepend.x-input-wrapper--active .x-input-prepend,
 .x-pop-wrapper .x-page .x-input-group--prepend.x-input-wrapper--active .x-input-prepend {
-  border-color: #0d9737;
+  border-color: var(--brand-secondary);
 }
 .x-opt-wrapper,
 .x-page-opt {
