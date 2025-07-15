@@ -42,7 +42,7 @@ export const fetchGlobalVars = async () => {
 }
 
 export const fetchBanners = async () => {
-  return parseData(fetchWrapper.get(`${NEW_BASE_API}/content-management/banner?clientId=4`))
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/content-management/banner?clientId=${import.meta.env.VITE_CLIENT_ID}`))
 }
 
 export const fetchBonusList = async () => {
@@ -356,7 +356,7 @@ export const awardBonus = async (payload) => {
 }
 
 export const getCMSPage = async (slug) => {
-  return parseData(fetchWrapper.get(`${NEW_BASE_API}/content-management/page?slug=${slug}&clientId=4`))
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/content-management/page?slug=${slug}&clientId=${import.meta.env.VITE_CLIENT_ID}`))
 }
 
 
