@@ -2,7 +2,7 @@
   <!-- Home Carousel --> <div id="carousel" class="main-banner"> <div data-ride="carousel"
   class="carousel slide"> <div role="listbox" class="carousel-inner"> <div v-for="(image,
   index) in images" :key="index" class="item" :class="currentIndex === index ? 'active' :
-  ''" @click="goToSlide(image)" > <img :src="image.image_path" /> </div> </div> </div>
+  ''" @click="goToSlide(image)" > <img :src="image.image" /> </div> </div> </div>
   </div> <!-- Home Carousel -->
 </template>
 <script setup>
@@ -39,7 +39,7 @@ function goToSlide(image) {
 onMounted(async () => {
   const res = await fetchBanners();
   if (res) {
-    images.value = res;
+    images.value = res.data;
   } else {
     images.value = [
       {

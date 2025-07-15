@@ -15,11 +15,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import BetHistoryDetail from '@/views/Account/BetHistoryDetail.vue'
 // import TransactionsView from '@/views/Account/TransactionsView.vue'
 // import MeView from '@/views/Account/MeView.vue'
-// import TermsandConditions from '@/views/CMS/TermsandConditions.vue'
-// import AboutUs from '@/views/CMS/AboutUs.vue'
-// import ResponsibleGaming from '@/views/CMS/ResponsibleGaming.vue'
-// import BettingRules from '@/views/CMS/BettingRules.vue'
-// import PrivacyPolicy from '@/views/CMS/PrivacyPolicy.vue'
 // import ForgotPassword from '@/views/Account/ForgotPassword.vue'
 // import Promotions from '@/views/Promotions.vue'
 
@@ -167,24 +162,9 @@ const router = createRouter({
       component: () => import('@/views/AgentSignUp.vue')
     },
     {
-      path: '/CMS/AboutUs',
-      name: 'about-us',
-      component: () => import('@/views/CMS/AboutUs.vue')
-    },
-    {
-      path: '/CMS/TandC',
-      name: 't-and-c',
-      component: () => import('@/views/CMS/TermsandConditions.vue')
-    },
-    {
-      path: '/CMS/ResponsibleGaming',
-      name: 'responsible-gaming',
-      component: () => import('@/views/CMS/ResponsibleGaming.vue')
-    },
-    {
-      path: '/CMS/BettingRules',
-      name: 'betting-rules',
-      component: () => import('@/views/CMS/BettingRules.vue')
+      path: '/cms/:page',
+      name: 'cms-page',
+      component: () => import('@/views/CMSView.vue')
     },
     // Catch-all route to redirect to home
     {

@@ -22,6 +22,7 @@
         <div
           class="simple-select-wrap sport-simple-select"
           :class="{ 'sport-simple-select-active': MoreSportsLabel !== 'More Sports' }"
+          v-if="moreSports.length > 0"
         >
           <div class="select-title" @click="toggleMoreSports">
             <p class="select-title__label">{{ MoreSportsLabel }}</p>
@@ -129,9 +130,21 @@ const utilsStore = useUtilsStore();
 // Memoize sportList
 const sportList = computed(() => utilsStore.sportsMenu);
 
-// Memoize visible sports
-const visibleSports = computed(() => sportList.value.slice(0, 6));
-const moreSports = computed(() => sportList.value.slice(5, 10));
+// Get sportIDs with live games
+const liveSportIDs = computed(() => {
+  return [...new Set(completeData.value.map(fixture => Number(fixture.sportID)))];
+});
+
+// Filter and sort sports with live games
+const liveSportsList = computed(() => {
+  return utilsStore.sportsMenu
+    .filter(sport => liveSportIDs.value.includes(Number(sport.sportID)))
+    .sort((a, b) => Number(a.sportID) - Number(b.sportID));
+});
+
+// Show first 6 as visible, rest as more
+const visibleSports = computed(() => liveSportsList.value.slice(0, 6));
+const moreSports = computed(() => liveSportsList.value.slice(6, 11));
 
 // State
 const showMoreSportsMenu = ref(false);
