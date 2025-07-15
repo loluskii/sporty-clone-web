@@ -162,24 +162,9 @@ const router = createRouter({
       component: () => import('@/views/Promotions.vue')
     },
     {
-      path: '/CMS/AboutUs',
-      name: 'about-us',
-      component: () => import('@/views/CMS/AboutUs.vue')
-    },
-    {
-      path: '/CMS/TandC',
-      name: 't-and-c',
-      component: () => import('@/views/CMS/TermsandConditions.vue')
-    },
-    {
-      path: '/CMS/ResponsibleGaming',
-      name: 'responsible-gaming',
-      component: () => import('@/views/CMS/ResponsibleGaming.vue')
-    },
-    {
-      path: '/CMS/BettingRules',
-      name: 'betting-rules',
-      component: () => import('@/views/CMS/BettingRules.vue')
+      path: '/cms/:page',
+      name: 'cms-page',
+      component: () => import('@/views/CMSView.vue')
     },
     // Catch-all route to redirect to home
     {

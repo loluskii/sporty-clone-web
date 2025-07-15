@@ -42,7 +42,7 @@ export const fetchGlobalVars = async () => {
 }
 
 export const fetchBanners = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/sports/mobile/sliders?banner_type=web`))
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/content-management/banner?clientId=4`))
 }
 
 export const fetchBonusList = async () => {
@@ -355,21 +355,10 @@ export const awardBonus = async (payload) => {
   )
 }
 
-export const AboutUs = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/cms/page/about-us`))
+export const getCMSPage = async (slug) => {
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/content-management/page?slug=${slug}&clientId=4`))
 }
 
-export const ResponsibleGaming = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/cms/page/responsible-gaming`))
-}
-
-export const TermsandConditions = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/cms/page/terms-and-conditions`))
-}
-
-export const BettingRules = async () => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/utilities/cms/page/betting-rules`))
-}
 
 
 export const getUserActiveBonus = async () => {
