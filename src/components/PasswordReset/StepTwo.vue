@@ -22,10 +22,9 @@
         </div>
 
         <button
-          :disabled="s"
+          :disabled="isLoading || !password"
           class="af-button af-button--primary"
           :class="{ 'is-disabled': isLoading || !password }"
-          type="primary"
           @click.prevent="savePassword"
         >
           <span><span data-cms-key="confirm" data-cms-page="common_functions">Confirm</span></span>
@@ -81,7 +80,7 @@ const savePassword = async () => {
   border-radius: 2px;
 }
 .x-page .af-button--primary {
-  background: #0d9737 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 
