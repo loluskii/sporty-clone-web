@@ -18,14 +18,18 @@
               onpaste="return true"
               data-op=""
               class="x-input fs-exclude"
+              v-model="password"
           /></span>
         </div>
 
+        <div v-show="!isPasswordValid" class="error-message">
+          <div v-for="error in passwordErrors" :key="error">{{ error }}</div>
+        </div>
+
         <button
-          :disabled="s"
+          :disabled="isPasswordValid || isLoading || password === ''"
           class="af-button af-button--primary"
-          :class="{ 'is-disabled': isLoading || !password }"
-          type="primary"
+          :class="{ 'is-disabled': isLoading || password === '' }"
           @click.prevent="savePassword"
         >
           <span><span data-cms-key="confirm" data-cms-page="common_functions">Confirm</span></span>
@@ -36,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref,computed } from 'vue'
 import { CLIENT_ID, resetPassword } from '@/helpers'
 
 const password = ref('')
@@ -48,21 +52,59 @@ const props = defineProps({
 const isLoading = ref(false)
 
 const savePassword = async () => {
-  isLoading.value = true
-  let payload = {
-    username: props.phoneNumber.replace(/^0/, ''),
-    password: password.value,
-    clientId: CLIENT_ID
-  }
+  try {
+    isLoading.value = true
+    let payload = {
+      username: props.phoneNumber.replace(/^0/, ''),
+      password: password.value,
+      clientId: CLIENT_ID
+    }
 
-  const res = await resetPassword(payload)
-  if (res.success) {
+    const res = await resetPassword(payload)
     emit('next-step')
+
+  } catch (error) {
+    alert('An error occurred! Refresh and try again')
   }
 }
+
+const passwordErrors = computed(() => {
+  const errors = [];
+  // Check if password length is at least 8 characters
+  if (password.value.length >= 1 && password.value.length < 8) {
+    errors.push("Password must be at least 8 characters long.");
+  }
+  // Check if password contains at least one uppercase letter
+  if (password.value.length >= 1 && !/[A-Z]/.test(password.value)) {
+    errors.push("Please add an uppercase letter.");
+  }
+  // Check if password contains at least one lowercase letter
+  if (password.value.length >= 1 && !/[a-z]/.test(password.value)) {
+    errors.push("Please add a lowercase letter.");
+  }
+  // Check if password contains at least one number
+  if (password.value.length >= 1 && !/\d/.test(password.value)) {
+    errors.push("Please add a number.");
+  }
+  return errors;
+});
+
+const isPasswordValid = computed(() => passwordErrors.value.length === 0);
+
 </script>
 
 <style>
+.error-message {
+  color: #e41827;
+  color: var(--warning-primary);
+  font-size: 1rem;
+  line-height: 1.67;
+  margin-top: 0.08333333rem;
+  min-height: 1.66666667rem;
+  text-align: left;
+  width: 100%;
+}
+
 .x-text-second {
   font-size: 13px;
   line-height: 1;
@@ -81,7 +123,7 @@ const savePassword = async () => {
   border-radius: 2px;
 }
 .x-page .af-button--primary {
-  background: #0d9737 !important;
+  background: var(--brand-primary) !important;
   color: #fff !important;
 }
 

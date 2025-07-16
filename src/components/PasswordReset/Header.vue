@@ -80,7 +80,7 @@ defineProps({
   color: #353a45;
 }
 .m-step .is-finish {
-  color: #0d9737;
+  color: var(--brand-secondary);
 }
 .m-step .is-error {
   color: #e41827;
@@ -174,8 +174,8 @@ defineProps({
   color: #fff;
 }
 .m-step .m-step__head.is-text.is-process {
-  background-color: #0d9737;
-  border-color: #0d9737;
+  background-color: var(--brand-secondary);
+  border-color: var(--brand-secondary);
 }
 .m-step .m-step__head.is-text.is-wait {
   color: #fff;
@@ -183,16 +183,16 @@ defineProps({
   border-color: #9ca0ab;
 }
 .m-step .m-step__head.is-text.is-success {
-  background-color: #0d9737;
-  border-color: #0d9737;
+  background-color: var(--brand-secondary);
+  border-color: var(--brand-secondary);
 }
 .m-step .m-step__head.is-text.is-error {
   background-color: #e41827;
   border-color: #e41827;
 }
 .m-step .m-step__head.is-text.is-finish {
-  background-color: #0d9737;
-  border-color: #0d9737;
+  background-color: var(--brand-secondary);
+  border-color: var(--brand-secondary);
 }
 .m-step .m-step__head.is-process {
   border-color: #353a45;
@@ -201,13 +201,13 @@ defineProps({
   border-color: #9ca0ab;
 }
 .m-step .m-step__head.is-success {
-  border-color: #0d9737;
+  border-color: var(--brand-secondary);
 }
 .m-step .m-step__head.is-error {
   border-color: #e41827;
 }
 .m-step .m-step__head.is-finish {
-  border-color: #0d9737;
+  border-color: var(--brand-secondary);
 }
 .m-step .m-step__main {
   white-space: normal;

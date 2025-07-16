@@ -118,7 +118,7 @@
 
 <script setup>
 import { useUtilsStore } from "@/stores";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import LoadingSpinner from "../Loaders/LoadingSpinner.vue";
 import { useQuery } from "vue-query";
 import { getLiveHighlights } from "@/helpers";
@@ -259,4 +259,10 @@ const setActiveSport = (sport) => {
     MoreSportsLabel.value = "More Sports";
   }
 };
+
+watch(liveSportsList, (newList) => {
+  if (newList.length > 0) {
+    activeSportID.value = Number(newList[0].sportID);
+  }
+}, { immediate: true });
 </script>
