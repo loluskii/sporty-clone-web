@@ -38,8 +38,8 @@ function goToSlide(image) {
 
 onMounted(async () => {
   const res = await fetchBanners();
-  if (res) {
-    images.value = res.data;
+  if (res.data) {
+    images.value = Object.values(res.data).filter((b) => b.target === 'web');
   } else {
     images.value = [
       {
