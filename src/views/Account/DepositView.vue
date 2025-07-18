@@ -40,7 +40,7 @@
               <span class="f-label"></span>
               <button
                 class="af-button af-button--primary"
-                :class="btnDisabled ? 'is-disabled' : ''"
+                :class="amount == '' ? ' is-disabled' : ''"
                 type="primary"
                 @click.prevent="activateBonus"
                 :disabled="amount === ''"
@@ -52,7 +52,7 @@
               <span class="f-label"></span>
               <button
                 class="af-button af-button--primary"
-                :class="btnDisabled ? 'is-disabled' : ''"
+                :class="btnDisabled || amount === '' ? 'is-disabled' : ''"
                 type="primary"
                 @click.prevent="beginDeposit"
               >
@@ -86,10 +86,10 @@
 
 <script setup>
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUsersStore, useUtilsStore } from '@/stores'
-import { getPaymentMethods, getDepositURL, checkFirstDeposit } from '@/helpers'
+import { getPaymentMethods, getDepositURL, checkFirstDeposit, formatNumber } from '@/helpers'
 import emitter from '@/plugins/emitter'
 
 const activeTab = ref('')
@@ -98,7 +98,9 @@ const usersStore = useUsersStore()
 const router = useRouter()
 const amount = ref('')
 const isLoading = ref(false)
-const btnDisabled = ref(false)
+const  btnDisabled = ref(false)
+const availableBonus = ref(null);
+
 const {SportsbookGlobalVariable} = useUtilsStore()
 
 const bonus = computed(() => {
@@ -165,7 +167,7 @@ onMounted(async () => {
   if (!usersStore.currentUser) {
     return router.push({ name: 'sign-in' })
   }
-  // usersStore.setActiveBonus(null);
+  usersStore.setActiveBonus(null);
 
   await getPayments();
   await checkForBonus();
