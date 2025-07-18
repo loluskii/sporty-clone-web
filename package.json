@@ -17,6 +17,7 @@
     "@vuepic/vue-datepicker": "^8.2.0",
     "crypto-js": "^4.2.0",
     "jquery": "^3.7.1",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "mitt": "^3.0.1",
     "moment": "^2.30.1",

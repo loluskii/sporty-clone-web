@@ -12,8 +12,7 @@
         <div>
           <div class="bank-transfer-form-section">
             <div class="f-line">
-              <span class="f-label"
-                ><span>Amount</span>
+              <span class="f-label"><span>Amount</span>
                 ({{ SportsbookGlobalVariable.Currency }})
               </span>
               <div class="f-line-item i-amount">
@@ -23,52 +22,73 @@
                       class="x-input fs-exclude" v-model="amount" /></span>
                 </div>
               </div>
+              <div class="f-line mt-24" v-if="availableBonus && !bonus">
+                <span class="f-label"></span>
+                <button class="af-button af-button--primary" :class="amount == '' ? ' is-disabled' : ''" type="primary"
+                  @click.prevent="activateBonus" :disabled="amount === ''">
+                  <span> Activate Bonus </span>
+                </button>
+              </div>
               <div class="f-line mt-24">
                 <span class="f-label"></span>
-                <button class="af-button af-button--primary" :class="btnDisabled ? 'is-disabled' : ''" type="primary"
-                  @click.prevent="beginDeposit">
+                <button class="af-button af-button--primary" :class="btnDisabled || amount === '' ? 'is-disabled' : ''"
+                  type="primary" @click.prevent="beginDeposit">
                   <span> Top Up Now </span>
                 </button>
               </div>
-            </div>
-            <div style="margin-top: 20px" class="bank-transfer-desc-section">
-              <span>
-                <ol class="bank-transfer-card-steps">
-                  <li>Minimum deposit amount is {{SportsbookGlobalVariable.CurrencyCode}} {{SportsbookGlobalVariable.MinDeposit}} - you can deposit at least {{SportsbookGlobalVariable.CurrencyCode}} {{SportsbookGlobalVariable.MinDeposit}} in one
-                  transaction.</li>
-                  <li>Maximum per transaction is {{SportsbookGlobalVariable.CurrencyCode}} 9,999,999.00 - you can deposit up to {{SportsbookGlobalVariable.CurrencyCode}}
-                  9,999,999.00 in one transaction.</li>
-                  <li>If you have any issues, please contact the support team.
-                  </li>
-                </ol>
-              </span>
+              <p v-if="bonus" class="mt-24">
+                You have activated <strong>{{ availableBonus?.name }}</strong>. Complete payment to receive
+                <strong>{{ formatNumber(bonus?.amount) }}</strong> in your bonus
+                account.
+              </p>
             </div>
           </div>
+          <div style="margin-top: 20px" class="bank-transfer-desc-section">
+            <span>
+              <ol class="bank-transfer-card-steps">
+                <li>Minimum deposit amount is {{ SportsbookGlobalVariable.CurrencyCode }}
+                  {{ SportsbookGlobalVariable.MinDeposit }} - you can deposit at least
+                  {{ SportsbookGlobalVariable.CurrencyCode }} {{ SportsbookGlobalVariable.MinDeposit }} in one
+                  transaction.</li>
+                <li>Maximum per transaction is {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 - you can deposit
+                  up to {{ SportsbookGlobalVariable.CurrencyCode }}
+                  9,999,999.00 in one transaction.</li>
+                <li>If you have any issues, please contact the support team.
+                </li>
+              </ol>
+            </span>
+          </div>
         </div>
-        <div class="payment-tips-wrap"></div>
       </div>
-      <!-- <LoadingSpinner v-else /> -->
+      <div class="payment-tips-wrap"></div>
     </div>
+    <!-- <LoadingSpinner v-else /> -->
   </AccountLayout>
 </template>
 
 <script setup>
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUsersStore, useUtilsStore } from '@/stores'
-import { getPaymentMethods, getDepositURL } from '@/helpers'
+import { getPaymentMethods, getDepositURL, checkFirstDeposit, formatNumber } from '@/helpers'
 import emitter from '@/plugins/emitter'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 
 const activeTab = ref('')
 const depositMethods = ref([])
-const { currentUser } = useUsersStore()
+const usersStore = useUsersStore()
 const router = useRouter()
 const amount = ref('')
 const isLoading = ref(false)
 const btnDisabled = ref(false)
-const {SportsbookGlobalVariable} = useUtilsStore()
+const availableBonus = ref(null);
+
+const { SportsbookGlobalVariable } = useUtilsStore()
+
+const bonus = computed(() => {
+  return usersStore.bonus;
+});
 
 function setActiveTab(method) {
   activeTab.value = method
@@ -81,6 +101,30 @@ async function getPayments() {
   depositMethods.value = res.data
   activeTab.value = res.data[0]
   isLoading.value = false
+}
+
+async function checkForBonus() {
+  const resp = await checkFirstDeposit();
+  if (resp.success) {
+    availableBonus.value = resp.data;
+  }
+}
+
+function activateBonus() {
+  let bonusAmount = amount.value;
+  if (availableBonus.value.type === "flat") {
+    bonusAmount = availableBonus.value.value;
+  } else {
+    bonusAmount = (parseFloat(amount.value) * availableBonus.value.value) / 100;
+  }
+
+  const bonus = {
+    bonusId: availableBonus.value.bonusId,
+    amount: bonusAmount,
+    username: usersStore.currentUser.username,
+  };
+  usersStore.setActiveBonus(bonus);
+  // availableBonus.value = null;
 }
 
 async function beginDeposit() {
@@ -103,10 +147,13 @@ async function beginDeposit() {
   }
 }
 onMounted(async () => {
-  if (!currentUser) {
+  if (!usersStore.currentUser) {
     return router.push({ name: 'sign-in' })
   }
-  await getPayments()
+  usersStore.setActiveBonus(null);
+
+  await getPayments();
+  await checkForBonus();
 })
 </script>
 
