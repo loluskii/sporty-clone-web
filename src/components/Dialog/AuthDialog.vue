@@ -59,7 +59,6 @@
                                   input-mode=""
                                   name=""
                                   placeholder="Mobile Number"
-                                  onpaste="return true"
                                   class="x-input fs-exclude"
                                   v-model="phoneNumber"
                               /></span>
@@ -73,6 +72,16 @@
                                   onpaste="return true"
                                   class="x-input fs-exclude"
                                   v-model="password"
+                              /></span>
+                            </div>
+                            <div tabindex="8" class="x-input-wrapper" v-if="authType === 'register'">
+                              <span class="x-input-com">
+                                <input
+                                  type="text"
+                                  name=""
+                                  placeholder="Promo code (optional)"
+                                  class="x-input fs-exclude"
+                                  v-model="promoCode"
                               /></span>
                             </div>
                             <div v-if="authType === 'register'" style="display: flex; align-items: start; margin-top: 10px;">
@@ -178,6 +187,7 @@ const props = defineProps({
 const authStore = useAuthStore()
 const phoneNumber = ref('')
 const password = ref('')
+const promoCode = ref('')
 const authType = toRef(props.authType)
 const buttonText = ref('Create Your Account')
 const registerError = ref(false)
@@ -313,8 +323,9 @@ const doRegistration = async () => {
   const payload = {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
-    phone: `234${formattedPhoneNumber(phoneNumber.value)}`,
-    clientId: import.meta.env.VITE_CLIENT_ID
+    phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
+    clientID: import.meta.env.VITE_CLIENT_ID,
+    promoCode: promoCode.value
   }
 
   if (route.query.clickid) {

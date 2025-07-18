@@ -115,7 +115,7 @@ import AccountLayout from "@/components/Shared/AccountLayout.vue";
 import { ref, onMounted, computed } from "vue";
 import emitter from "../../plugins/emitter";
 import { useRouter } from "vue-router";
-import { useUsersStore } from "../../stores";
+import { useUsersStore, useUtilsStore } from "../../stores";
 import {
   CLIENT_ID,
   fetchBankAssets,
@@ -127,6 +127,7 @@ import {
 const showBanks = ref(false);
 // const showBanksAssets = ref(false)
 const { currentUser } = useUsersStore();
+const { SportsbookGlobalVariable } = useUtilsStore()
 const router = useRouter();
 
 const banksList = ref([]);
@@ -168,16 +169,16 @@ const isFormComplete = computed(() => {
 });
 
 const checkWithdrawableAmount = () => {
-  // if (withdrawalAmount.value > currentUser.availableBalance) {
-  //   amountError.value = true
-  //   amountErrorMessage.value = `Amount exceeds your Withdrawable Balance (NGN ${currentUser.availableBalance.toFixed(2)})`
-  // } else if (withdrawalAmount.value.length < 2 && withdrawalAmount.value == '0') {
-  //   amountError.value = true
-  //   amountErrorMessage.value = 'Enter a valid amount'
-  // } else {
-  //   amountError.value = false
-  //   amountErrorMessage.value = null
-  // }
+  if (withdrawalAmount.value > currentUser.availableBalance) {
+    amountError.value = true
+    amountErrorMessage.value = `Amount exceeds your Withdrawable Balance (${SportsbookGlobalVariable.CurrencyCode} ${currentUser.availableBalance.toFixed(2)})`
+  } else if (withdrawalAmount.value.length < 2 && withdrawalAmount.value == '0') {
+    amountError.value = true
+    amountErrorMessage.value = 'Enter a valid amount'
+  } else {
+    amountError.value = false
+    amountErrorMessage.value = null
+  }
 };
 
 const balance = computed(() => {

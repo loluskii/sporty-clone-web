@@ -20,13 +20,18 @@
                   <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
                   <span class="x-input-com"><i
                       class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"></i>
-                    <input type="input" input-mode="" name="" placeholder="Mobile Number" onpaste="return true"
+                    <input type="input" input-mode="" name="" placeholder="Mobile Number"
                       class="x-input fs-exclude" v-model="phoneNumber" /></span>
                 </div>
                 <div tabindex="8" class="x-input-wrapper">
                   <span class="x-input-com">
                     <input type="password" name="" placeholder="Password" onpaste="return true"
                       class="x-input fs-exclude" v-model="password" /></span>
+                </div>
+                <div tabindex="8" class="x-input-wrapper">
+                  <span class="x-input-com">
+                    <input type="text" name="" placeholder="Promo Code (optional)"
+                      class="x-input fs-exclude" v-model="promoCode" /></span>
                 </div>
                 <div v-if="authType === 'register'" style="display: flex; align-items: start; margin-top: 10px;">
                   <input type="checkbox" id="agreeToTerms" v-model="agreeToTerms"
@@ -97,6 +102,7 @@ const isLoading = ref(false);
 const phoneNumberError = ref(false);
 const authStore = useAuthStore()
 const password = ref('')
+const promoCode = ref('')
 const authType = ref('register')
 const buttonText = ref('Create Your Account')
 const registerError = ref(false)
@@ -224,7 +230,8 @@ const doRegistration = async () => {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
     phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
-    clientID: import.meta.env.VITE_CLIENT_ID
+    clientID: import.meta.env.VITE_CLIENT_ID,
+    promoCode: promoCode.value,
   }
 
   try {
