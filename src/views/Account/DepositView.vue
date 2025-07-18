@@ -36,6 +36,18 @@
                 </div>
               </div>
             </div>
+            <div class="f-line mt-24" v-if="availableBonus && !bonus">
+              <span class="f-label"></span>
+              <button
+                class="af-button af-button--primary"
+                :class="btnDisabled ? 'is-disabled' : ''"
+                type="primary"
+                @click.prevent="activateBonus"
+                :disabled="amount === ''"
+              >
+                <span> Activate Bonus </span>
+              </button>
+            </div>
             <div class="f-line mt-24">
               <span class="f-label"></span>
               <button
@@ -47,6 +59,11 @@
                 <span> Top Up Now </span>
               </button>
             </div>
+            <p v-if="bonus" class="mt-24">
+              You have activated <strong>{{ availableBonus?.name }}</strong>. Complete payment to receive
+              <strong>{{ formatNumber(bonus?.amount) }}</strong> in your bonus
+              account.
+            </p>
           </div>
           <div style="margin-top: 20px" class="bank-transfer-desc-section">
             <span>
@@ -72,17 +89,21 @@ import AccountLayout from '@/components/Shared/AccountLayout.vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUsersStore, useUtilsStore } from '@/stores'
-import { getPaymentMethods, getDepositURL } from '@/helpers'
+import { getPaymentMethods, getDepositURL, checkFirstDeposit } from '@/helpers'
 import emitter from '@/plugins/emitter'
 
 const activeTab = ref('')
 const depositMethods = ref([])
-const { currentUser } = useUsersStore()
+const usersStore = useUsersStore()
 const router = useRouter()
 const amount = ref('')
 const isLoading = ref(false)
 const btnDisabled = ref(false)
 const {SportsbookGlobalVariable} = useUtilsStore()
+
+const bonus = computed(() => {
+  return usersStore.bonus;
+});
 
 function setActiveTab(method) {
   activeTab.value = method
@@ -95,6 +116,30 @@ async function getPayments() {
   depositMethods.value = res.data
   activeTab.value = res.data[0]
   isLoading.value = false
+}
+
+async function checkForBonus() {
+  const resp = await checkFirstDeposit();
+  if (resp.success) {
+    availableBonus.value = resp.data;
+  }
+}
+
+function activateBonus() {
+  let bonusAmount = amount.value;
+  if (availableBonus.value.type === "flat") {
+    bonusAmount = availableBonus.value.value;
+  } else {
+    bonusAmount = (parseFloat(amount.value) * availableBonus.value.value) / 100;
+  }
+
+  const bonus = {
+    bonusId: availableBonus.value.bonusId,
+    amount: bonusAmount,
+    username: usersStore.currentUser.username,
+  };
+  usersStore.setActiveBonus(bonus);
+  // availableBonus.value = null;
 }
 
 async function beginDeposit() {
@@ -117,10 +162,13 @@ async function beginDeposit() {
   }
 }
 onMounted(async () => {
-  if (!currentUser) {
+  if (!usersStore.currentUser) {
     return router.push({ name: 'sign-in' })
   }
-  await getPayments()
+  // usersStore.setActiveBonus(null);
+
+  await getPayments();
+  await checkForBonus();
 })
 </script>
 
