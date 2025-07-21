@@ -27,7 +27,7 @@
         </div>
 
         <button
-          :disabled="isPasswordValid || isLoading || password === ''"
+          :disabled="!isPasswordValid || isLoading || password === ''"
           class="af-button af-button--primary"
           :class="{ 'is-disabled': isLoading || password === '' }"
           @click.prevent="savePassword"
