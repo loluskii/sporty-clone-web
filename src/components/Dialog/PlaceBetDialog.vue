@@ -40,10 +40,12 @@
                   </div>
                   <div class="m-value">
                     <img
-                      src="//s.sporty.net/global/main/modules/main/desktop/common/components/betslips/image/ic-share.35f43c7b64.svg"
+                      @click="shareCode"
+                      src="/ic-share.svg"
                     />
                     <img
-                      src="//s.sporty.net/global/main/modules/main/desktop/common/components/betslips/image/ic-content-copy.8a86da1097.svg"
+                      @click="copyBookingCode"
+                      src="/copy.svg"
                     />
                     <div class="booking-code">{{ response.betslipId }}</div>
                   </div>
@@ -82,7 +84,7 @@
 <script setup>
 import emitter from "@/plugins/emitter";
 import { useRouter } from "vue-router";
-defineProps({
+const props = defineProps({
   response: Object,
 });
 
@@ -91,6 +93,25 @@ const router = useRouter()
 const goToBetHistory = () => {
   emitter.emit('hideDialog');
   return router.push({ name: 'account-bethistory' })
+}
+
+function copyBookingCode() {
+  const textToCopy = props.response.betslipId;
+  const textarea = document.createElement("textarea");
+  textarea.value = textToCopy;
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  try {
+    navigator.clipboard.writeText(textToCopy);
+    alert("Copied!");
+  } catch (err) {
+    console.error("Unable to copy to clipboard", err);
+  }
+}
+
+function shareCode(){
+ emitter.emit('hideDialog', { dialogType: 'book-bet', dialogData: props.response });
 }
 </script>
 
