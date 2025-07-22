@@ -13,7 +13,7 @@
             <div class="f-line">
               <div class="i-label">
                 <span>Amount</span>
-                (NGN)
+                ({{SportsbookGlobalVariable.CurrencyCode}})
               </div>
               <div class="i-value">{{ data.amount }}</div>
             </div>
@@ -49,6 +49,9 @@
 import { onMounted } from 'vue'
 import emitter from '@/plugins/emitter'
 import { formatString } from '@/helpers'
+import { useUtilsStore } from '@/stores'
+
+const {SportsbookGlobalVariable} = useUtilsStore()
 
 const props = defineProps({
   data: Object

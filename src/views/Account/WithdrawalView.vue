@@ -60,7 +60,7 @@
             <div class="f-line">
               <span class="f-label"
                 ><span data-cms-key="amount">Amount</span>
-                (NGN)
+                ({{ SportsbookGlobalVariable.CurrencyCode }})
               </span>
               <div class="f-line-item i-amount">
                 <div
@@ -100,8 +100,8 @@
           <div class="wrap">
             <div class="title" data-cms-key="note">Note</div>
             <ul class="x-dp-tips f-count">
-              <li class="l-item">1. Minimum per transaction is NGN 1.00.</li>
-              <li class="l-item">2. Maximum per transaction is NGN 9,999,999.00.</li>
+              <li class="l-item">1. Minimum per transaction is {{ SportsbookGlobalVariable.CurrencyCode }} 1.00.</li>
+              <li class="l-item">2. Maximum per transaction is {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00.</li>
             </ul>
           </div>
         </div>
