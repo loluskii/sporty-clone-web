@@ -5,7 +5,7 @@
         <li class="x-col-wrapper brand-col">
           <div class="d-flex flex-direction-column">
             <div class="d-flex">
-              <img src="/default.png" alt="{{ utilsStore.brandName }}" class="logo" />
+              <img src="/logo.png" :alt="utilsStore.brandName" class="logo" />
             </div>
           </div>
         </li>
@@ -67,8 +67,8 @@
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
-            <div data-cms-key="tell_phone_number">Telephone: +234</div>
-            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}.ng</div>
+            <div data-cms-key="tell_phone_number">Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}</div>
+            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
                 <a href="https://www.facebook.com/frapapaofficialng" target="_blank"
@@ -168,7 +168,7 @@
           </li>
         </ul>
         <span class="x-copy" data-cms-key="year_copy_right"
-          >© 2024 {{ utilsStore.brandName }}. All rights reserved.</span
+          >© 2025 {{ utilsStore.brandName }}. All rights reserved.</span
         >
       </div>
     </div>

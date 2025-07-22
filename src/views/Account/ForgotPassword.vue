@@ -23,11 +23,8 @@
                 <span class="x-text-label">Mobile Number</span>
               </div>
               <div class="x-opt-wrapper">
-                <div
-                  tabindex="6"
-                  class="x-input-wrapper x-input-group x-input-group--prepend"
-                >
-                  <div class="x-input-prepend"><span>+234</span></div>
+                <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
+                  <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
                   <span class="x-input-com"
                     ><i
                       class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
@@ -84,11 +81,13 @@ import StepTwo from "@/components/PasswordReset/StepTwo.vue";
 import StepThree from "@/components/PasswordReset/StepThree.vue";
 import { ref } from "vue";
 import { verifyUsername, CLIENT_ID, formattedPhoneNumber } from "@/helpers";
+import { useUtilsStore } from "@/stores";
 
 const activeStep = ref(0);
 const phoneNumber = ref("");
 const isLoading = ref(false);
 const phoneNumberError = ref(false);
+const utilsStore = useUtilsStore()
 
 const beginPasswordReset = async () => {
   isLoading.value = true;

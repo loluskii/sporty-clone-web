@@ -29,7 +29,7 @@
                     <img
                       @click="copyBookingCode"
                       id="content-copy"
-                      src="//s.sporty.net/global/main/modules/main/desktop/common/components/betslips/image/ic-content-copy.8a86da1097.svg"
+                      src="/copy.svg"
                     />
                   </div>
 
@@ -76,6 +76,7 @@
 <script setup>
 import emitter from "@/plugins/emitter";
 import { useUtilsStore } from "@/stores";
+import { onMounted } from "vue";
 const {brandName} = useUtilsStore()
 const props = defineProps({
   response: Object,

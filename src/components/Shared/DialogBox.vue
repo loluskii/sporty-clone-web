@@ -6,7 +6,7 @@
     <WithdrawalDialog v-if="dialogType == 'withdrawal'" :data="dialogData"></WithdrawalDialog>
     <ErrorDialog v-if="dialogType == 'error'" :data="dialogData"></ErrorDialog>
     <PlaceBetDialog v-if="dialogType == 'place-bet'" :response="dialogData.data"></PlaceBetDialog>
-    <BookDialog v-if="dialogType == 'book-bet'" :response="dialogData.data"></BookDialog>
+    <BookDialog v-if="dialogType == 'book-bet'" :response="dialogData.data ?? dialogData"></BookDialog>
   </div>
 </template>
 

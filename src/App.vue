@@ -23,9 +23,12 @@ function handleshowDialog(data) {
   isDialogShown.value = true;
 }
 
-function toggleDialog() {
+function toggleDialog(data) {
   if (isDialogShown.value) {
     isDialogShown.value = false;
+  }
+  if(data !== undefined){
+    handleshowDialog(data)
   }
 }
 

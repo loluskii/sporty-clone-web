@@ -124,7 +124,7 @@
                 </div>
                 <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
                 <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
-                  <div class="x-input-prepend"><span>+234</span></div>
+                  <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
                   <span class="x-input-com">
                     <input type="input" name="" placeholder="Mobile Number" onpaste="return true"
                       class="x-input fs-exclude" /></span>

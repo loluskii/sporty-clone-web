@@ -80,7 +80,7 @@
                 <div style="display: flex">
                   <div class="x-phone-wrapper">
                     <div class="x-phone">
-                      <span>+234</span
+                      <span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span
                       ><input
                         type="text"
                         name="phone"
@@ -158,7 +158,7 @@
                     <div class="x-error-toast"></div>
                     <div class="x-phone-wrapper">
                       <div class="x-phone">
-                        <span>+234</span
+                        <span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span
                         ><input
                           type="text"
                           name="phone"
