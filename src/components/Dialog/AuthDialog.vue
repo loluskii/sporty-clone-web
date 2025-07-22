@@ -49,7 +49,7 @@
                               tabindex="6"
                               class="x-input-wrapper x-input-group x-input-group--prepend"
                             >
-                              <div class="x-input-prepend"><span>+234</span></div>
+                              <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
                               <span class="x-input-com"
                                 ><i
                                   class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
@@ -121,7 +121,7 @@
                           >
                             <span
                               ><p class="mg-b-16 size-18 pd-hor-100">
-                                We've sent you a 6-digit code to +234 {{ phoneNumber }}
+                                We’ve sent you a 6-digit code to {{ utilsStore.SportsbookGlobalVariable.DialCode }} {{ phoneNumber }}
                               </p></span
                             >
                             <div>

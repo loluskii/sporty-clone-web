@@ -138,7 +138,7 @@ onMounted(async () => {
 .m-cashout .m-cashout-title .m-desc {
   color: var(--brand-primary);
   text-align: right;
-  with: 60px;
+  width: 60px;
 }
 .m-text-second {
   font-size: 13px;
