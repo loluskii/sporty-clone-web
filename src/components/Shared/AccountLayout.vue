@@ -98,7 +98,7 @@ const balance = computed(() => {
 })
 
 const details = computed(() => {
-  return usersStore.details
+  return usersStore.currentUser
 })
 const activeClass = (name) => {
   return route.name === name
