@@ -145,6 +145,14 @@ function activateBonus() {
 }
 
 async function beginDeposit() {
+  if(parseFloat(amount.value) < parseFloat(SportsbookGlobalVariable.MinDeposit)){
+    let error = {
+      dialogType: 'error',
+      dialogData: {data: `Your deposit amount is lower than the allowed value (${SportsbookGlobalVariable.Currency}${SportsbookGlobalVariable.MinDeposit}). Increase the amount and try again. `}
+    }
+    emitter.emit('showDialog', error)
+    return;
+  }
   btnDisabled.value = true
   let payload = {
     amount: amount.value,
@@ -157,7 +165,8 @@ async function beginDeposit() {
     window.location.href = res.data.link
   } else {
     let error = {
-      dialogType: 'error'
+      dialogType: 'error',
+      dialogData: res.message ?? 'An Error occured. Please try again'
     }
     emitter.emit('showDialog', error)
     console.error(res)
