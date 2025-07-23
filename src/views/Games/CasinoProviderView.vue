@@ -15,12 +15,12 @@
         <div class="d-flex gap-3">
           <!-- Search Input -->
           <div class="search-container">
-            <input 
-              type="text" 
-              v-model="searchQuery" 
-              class="form-control form-control-sm bg-dark text-white border-secondary" 
+            <input
+              type="text"
+              v-model="searchQuery"
+              class="form-control form-control-sm bg-dark text-white border-secondary"
               placeholder="Search games..."
-            >
+            />
           </div>
           <select v-model="sortBy" class="form-select form-select-sm w-auto">
             <option value="name">Sort: A-Z</option>
@@ -33,13 +33,17 @@
       <!-- Games Grid -->
       <div class="row g-4">
         <template v-if="!isLoading">
-          <div v-for="game in displayedGames" :key="game.id" 
-            class="col-xl-3 col-lg-4 col-md-6 col-sm-6" @click="redirectToGamePlay(game)">
-            <CasinoGameCard 
-              :image="getImagePath(game)" 
+          <div
+            v-for="game in displayedGames"
+            :key="game.id"
+            class="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+            @click="redirectToGamePlay(game)"
+          >
+            <CasinoGameCard
+              :image="getImagePath(game)"
               :title="game.title"
-              :provider="game.provider || game.vendor || ''" 
-              :tags="game.tags || game.types || []" 
+              :provider="game.provider || game.vendor || ''"
+              :tags="game.tags || game.types || []"
             />
           </div>
         </template>
@@ -52,9 +56,7 @@
 
       <!-- Load More Button -->
       <div v-if="hasMoreGames && !isLoading" class="text-center mt-4">
-        <button class="btn btn-outline-light" @click="loadMoreGames">
-          Load More Games
-        </button>
+        <button class="btn btn-outline-light" @click="loadMoreGames">Load More Games</button>
       </div>
     </div>
   </CasinoLayout>
@@ -94,7 +96,7 @@ const hasMoreGames = computed(() => {
 const getImagePath = (game) => {
   if (!game) return '/default-game.jpg'
   if (game.imagePath) return game.imagePath
-    
+
   // Return default if neither exists
   return '/default-game.jpg'
 }
@@ -114,11 +116,12 @@ function sortGames(games) {
 
 function filterGames(games) {
   if (!searchQuery.value) return games
-  
+
   const query = searchQuery.value.toLowerCase()
-  return games.filter(game => 
-    game.title.toLowerCase().includes(query) ||
-    (game.tags && game.tags.some(tag => tag.toLowerCase().includes(query)))
+  return games.filter(
+    (game) =>
+      game.title.toLowerCase().includes(query) ||
+      (game.tags && game.tags.some((tag) => tag.toLowerCase().includes(query)))
   )
 }
 
@@ -136,7 +139,7 @@ async function loadGames() {
     const response = await getGamesByProviders(route.params.provider_id, {
       limit: GAMES_PER_LOAD
     })
-    
+
     const { data } = response
     allGames.value = data
     displayedGames.value = data.slice(0, DISPLAY_INCREMENT)
@@ -166,11 +169,11 @@ function loadMoreGames() {
 async function redirectToGamePlay(game) {
   try {
     if (!userStore.currentUser) {
-      return router.push({ name: "sign-in" })
+      return router.push({ name: 'sign-in' })
     }
 
     if (userStore.casinoActiveBonus?.gameId?.includes(game.gameId)) {
-      emitter.emit("toggleCasinoDialog", {
+      emitter.emit('toggleCasinoDialog', {
         bonus: userStore.casinoActiveBonus,
         game
       })
@@ -178,14 +181,14 @@ async function redirectToGamePlay(game) {
     }
 
     await router.push({
-      name: "game-play",
+      name: 'game-play',
       params: {
         game_name: slugify(game.title),
         game_id: game.id
       }
     })
   } catch (error) {
-    console.error("Error redirecting to game:", error)
+    console.error('Error redirecting to game:', error)
   }
 }
 
@@ -201,7 +204,7 @@ onBeforeMount(async () => {
 <style>
 @import url('@/assets/css/casino/bootstrap.css');
 
-a{
+a {
   text-decoration: none !important;
 }
 
@@ -269,4 +272,4 @@ a{
   background-color: var(--casino-primary);
   border-color: var(--casino-primary);
 }
-</style> 
+</style>

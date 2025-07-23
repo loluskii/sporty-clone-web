@@ -13,7 +13,7 @@
                 <div
                   v-for="sport in visibleSports"
                   :key="sport.sportID"
-                  :class="{ 'active': sport.sportID == activeSportID }"
+                  :class="{ active: sport.sportID == activeSportID }"
                   class="sport-name-item"
                   @click="setActiveSport(sport.sportID)"
                 >
@@ -23,7 +23,7 @@
                   class="simple-select-wrap sport-simple-select"
                   :class="{
                     'simple-select-wrap-expand': showMoreSportsMenu,
-                    'sport-simple-select-active': MoreSportsLabel !== 'More Sports',
+                    'sport-simple-select-active': MoreSportsLabel !== 'More Sports'
                   }"
                 >
                   <div class="select-title" @click="toggleMoreSports">
@@ -52,18 +52,14 @@
                 >
                   <template v-for="(liveGroup, g) in filteredLiveData" :key="g">
                     <div class="x-table-row league-row">
-                      <div class="x-table-cell league">
-                        {{ liveGroup[0].categoryName }} {{ g }}
-                      </div>
+                      <div class="x-table-cell league">{{ liveGroup[0].categoryName }} {{ g }}</div>
                       <div class="x-table-cell each-module-wrap each-module-two-line">
                         <div class="market-desc-wrap">
                           <div
                             v-for="market in activeSportMarkets"
                             :key="market.marketID"
                             class="market-desc"
-                            :style="
-                              activeSportMarkets.length > 1 ? 'width: 50%' : 'width: 100%'
-                            "
+                            :style="activeSportMarkets.length > 1 ? 'width: 50%' : 'width: 100%'"
                           >
                             {{ market.marketName }}
                           </div>
@@ -100,8 +96,8 @@
                 </div>
                 <div v-else class="x-sport-bet-no-data">
                   <div style="white-space: pre-line">
-                    Sorry, there are no games currently<br />available in this category.
-                    Please try later.<br />Thank you.
+                    Sorry, there are no games currently<br />available in this category. Please try
+                    later.<br />Thank you.
                   </div>
                 </div>
               </div>
@@ -119,7 +115,9 @@
                 </div>
                 <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
                 <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
-                  <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
+                  <div class="x-input-prepend">
+                    <span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span>
+                  </div>
                   <span class="x-input-com">
                     <input
                       type="input"
@@ -130,10 +128,7 @@
                   /></span>
                 </div>
                 <div class="x-btn-wrapper">
-                  <button
-                    class="af-button af-button--primary"
-                    @click.prevent="showRegisterModal"
-                  >
+                  <button class="af-button af-button--primary" @click.prevent="showRegisterModal">
                     <span><span>Register</span></span>
                   </button>
                 </div>
@@ -148,109 +143,106 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useQuery } from "vue-query";
-import _ from "lodash";
-import LiveLayout from "@/components/Shared/LiveLayout.vue";
-import BetContainer from "@/components/Shared/BetContainer.vue";
-import Fixture from "@/components/Live/LiveFixture.vue";
-import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
-import { useUsersStore, useUtilsStore } from "@/stores";
-import { getLiveHighlights } from "@/helpers";
-import emitter from "@/plugins/emitter";
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useQuery } from 'vue-query'
+import _ from 'lodash'
+import LiveLayout from '@/components/Shared/LiveLayout.vue'
+import BetContainer from '@/components/Shared/BetContainer.vue'
+import Fixture from '@/components/Live/LiveFixture.vue'
+import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
+import { useUsersStore, useUtilsStore } from '@/stores'
+import { getLiveHighlights } from '@/helpers'
+import emitter from '@/plugins/emitter'
 
 // State
-const activeSportID = ref(1);
-const completeData = ref([]);
-const marketGroup = ref([]);
-const isEmptyResponse = ref(false);
-const showMoreSportsMenu = ref(false);
-const MoreSportsLabel = ref("More Sports");
+const activeSportID = ref(1)
+const completeData = ref([])
+const marketGroup = ref([])
+const isEmptyResponse = ref(false)
+const showMoreSportsMenu = ref(false)
+const MoreSportsLabel = ref('More Sports')
 
 // Store
-const utilsStore = useUtilsStore();
-const userStore = useUsersStore();
+const utilsStore = useUtilsStore()
+const userStore = useUsersStore()
 
 // Memoized computed properties
-const sportList = computed(() => utilsStore.sportsMenu);
-const visibleSports = computed(() => sportList.value.slice(0, 5));
-const moreSports = computed(() => sportList.value.slice(5));
+const sportList = computed(() => utilsStore.sportsMenu)
+const visibleSports = computed(() => sportList.value.slice(0, 5))
+const moreSports = computed(() => sportList.value.slice(5))
 
 // Optimize the query with better caching
-const { isLoading } = useQuery("liveData", getLiveHighlights, {
+const { isLoading } = useQuery('liveData', getLiveHighlights, {
   refetchInterval: 20000,
   staleTime: 15000, // Add stale time
   cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
   onError: (err) => {
-    console.error(err);
-    isEmptyResponse.value = true;
+    console.error(err)
+    isEmptyResponse.value = true
   },
   onSuccess: (response) => {
     if (response.fixtures) {
       if (completeData.value.length === 0) {
-        completeData.value = response.fixtures;
-        marketGroup.value = response.markets.filter((m) => m.specifier == "");
-        utilsStore.liveListSingleMatch = response.fixtures[0].matchID;
+        completeData.value = response.fixtures
+        marketGroup.value = response.markets.filter((m) => m.specifier == '')
+        utilsStore.liveListSingleMatch = response.fixtures[0].matchID
       } else {
         // Use Map for faster lookups
-        const fixtureMap = new Map(
-          completeData.value.map(fixture => [fixture.matchID, fixture])
-        );
-        
+        const fixtureMap = new Map(completeData.value.map((fixture) => [fixture.matchID, fixture]))
+
         response.fixtures.forEach((newFixture) => {
-          fixtureMap.set(newFixture.matchID, newFixture);
-        });
-        
-        completeData.value = Array.from(fixtureMap.values());
+          fixtureMap.set(newFixture.matchID, newFixture)
+        })
+
+        completeData.value = Array.from(fixtureMap.values())
       }
     } else {
-      isEmptyResponse.value = !completeData.value.length;
+      isEmptyResponse.value = !completeData.value.length
     }
-  },
-});
+  }
+})
 
 // Memoized filtered data
 const filteredLiveData = computed(() => {
-  if (!completeData.value.length || isEmptyResponse.value) return {};
-  
-  const filtered = completeData.value
-    .filter(s => s.sportID == activeSportID.value);
-    
-  return _.groupBy(filtered, "tournament");
-});
+  if (!completeData.value.length || isEmptyResponse.value) return {}
+
+  const filtered = completeData.value.filter((s) => s.sportID == activeSportID.value)
+
+  return _.groupBy(filtered, 'tournament')
+})
 
 // Memoized active sport markets
 const activeSportMarkets = computed(() => {
   const data = marketGroup.value
-    .filter(s => s.sportID == activeSportID.value)
-    .sort((a, b) => a.marketID - b.marketID);
-    
-  return data.slice(0, 2);
-});
+    .filter((s) => s.sportID == activeSportID.value)
+    .sort((a, b) => a.marketID - b.marketID)
+
+  return data.slice(0, 2)
+})
 
 const removeFinishedFixtures = (matchId) => {
-  return completeData.value = completeData.value.filter(s => s.eventId == matchId)
+  return (completeData.value = completeData.value.filter((s) => s.eventId == matchId))
 }
 
 // Optimized methods
 const setActiveSport = (sport) => {
-  if (typeof sport === "object") {
-    MoreSportsLabel.value = sport.sportName;
-    activeSportID.value = sport.sportID;
-    showMoreSportsMenu.value = false;
+  if (typeof sport === 'object') {
+    MoreSportsLabel.value = sport.sportName
+    activeSportID.value = sport.sportID
+    showMoreSportsMenu.value = false
   } else {
-    activeSportID.value = sport;
-    MoreSportsLabel.value = "More Sports";
+    activeSportID.value = sport
+    MoreSportsLabel.value = 'More Sports'
   }
-};
+}
 
 const toggleMoreSports = () => {
-  showMoreSportsMenu.value = !showMoreSportsMenu.value;
-};
+  showMoreSportsMenu.value = !showMoreSportsMenu.value
+}
 
 const showRegisterModal = () => {
-  emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
-};
+  emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
+}
 
 onMounted(() => {
   emitter.on('match-ended', removeFinishedFixtures)
@@ -259,12 +251,12 @@ onMounted(() => {
 // Cleanup
 onUnmounted(() => {
   // Cleanup any subscriptions if needed
-});
+})
 </script>
 
 <style>
 .clearfix:after {
-  content: ".";
+  content: '.';
   display: block;
   height: 0;
   clear: both;
@@ -292,7 +284,7 @@ onUnmounted(() => {
 }
 .x-overview .sport-name:after {
   clear: both;
-  content: ".";
+  content: '.';
   display: block;
   height: 0;
   visibility: hidden;
@@ -408,12 +400,7 @@ onUnmounted(() => {
   table-layout: fixed;
   width: 100%;
 }
-.x-overview
-  .match
-  .match-table
-  .league-row
-  .each-module-wrap
-  .each-module-table.two-markets {
+.x-overview .match .match-table .league-row .each-module-wrap .each-module-table.two-markets {
   width: 50%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -434,13 +421,7 @@ onUnmounted(() => {
   .each-module-table.two-markets:last-child {
   padding-left: 2px;
 }
-.x-overview
-  .match
-  .match-table
-  .league-row
-  .each-module-wrap
-  .each-module-table
-  .each-module {
+.x-overview .match .match-table .league-row .each-module-wrap .each-module-table .each-module {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   -ms-flex: 1;
@@ -469,7 +450,7 @@ onUnmounted(() => {
   .each-module-wrap.each-module-two-line
   .market-desc-wrap:after {
   clear: both;
-  content: ".";
+  content: '.';
   display: block;
   height: 0;
   visibility: hidden;
@@ -551,7 +532,7 @@ onUnmounted(() => {
   width: 78px;
   height: 1px;
   display: block;
-  content: " ";
+  content: ' ';
   background-color: #353a45;
   left: 0;
   top: -1px;
@@ -595,24 +576,10 @@ onUnmounted(() => {
   box-sizing: border-box;
   text-align: left;
 }
-.x-overview
-  .match
-  .match-table
-  .match-row
-  .left-team-cell
-  .left-team-table
-  .time
-  .clock-time {
+.x-overview .match .match-table .match-row .left-team-cell .left-team-table .time .clock-time {
   padding-bottom: 4px;
 }
-.x-overview
-  .match
-  .match-table
-  .match-row
-  .left-team-cell
-  .left-team-table
-  .time
-  .game-id {
+.x-overview .match .match-table .match-row .left-team-cell .left-team-table .time .game-id {
   font-weight: 500;
   color: #d8d8d8;
 }
@@ -686,8 +653,8 @@ onUnmounted(() => {
   text-align: right;
 }
 .x-overview .match .match-table .match-row .market-size:after {
-  content: "\e608";
-  font-family: "iconfont";
+  content: '\e608';
+  font-family: 'iconfont';
   font-weight: 700;
   display: inline-block;
   text-indent: 10px;
@@ -802,16 +769,16 @@ onUnmounted(() => {
   color: #9ca0ab;
 }
 .simple-select-wrap .select-title .arrow-icon-up::before {
-  content: "\e6a5";
-  font-family: "iconfont" !important;
+  content: '\e6a5';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 .simple-select-wrap .select-title .arrow-icon-down::before {
-  content: "\e603";
-  font-family: "iconfont" !important;
+  content: '\e603';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

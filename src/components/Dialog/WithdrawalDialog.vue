@@ -13,7 +13,7 @@
             <div class="f-line">
               <div class="i-label">
                 <span>Amount</span>
-                ({{SportsbookGlobalVariable.CurrencyCode}})
+                ({{ SportsbookGlobalVariable.CurrencyCode }})
               </div>
               <div class="i-value">{{ data.amount }}</div>
             </div>
@@ -51,7 +51,7 @@ import emitter from '@/plugins/emitter'
 import { formatString } from '@/helpers'
 import { useUtilsStore } from '@/stores'
 
-const {SportsbookGlobalVariable} = useUtilsStore()
+const { SportsbookGlobalVariable } = useUtilsStore()
 
 const props = defineProps({
   data: Object

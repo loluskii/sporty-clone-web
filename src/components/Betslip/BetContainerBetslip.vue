@@ -3,18 +3,25 @@
     <div v-if="selectionsLength > 1" class="x-list-nav">
       <div class="x-table">
         <div class="x-table-row">
-          <div class="x-table-cell"
+          <div
+            class="x-table-cell"
             :class="betSlipType !== 'Combo' && betType === 'Single' ? 'x-table-cell--active' : ''"
-            @click="couponStore.setBetType('Single')">
+            @click="couponStore.setBetType('Single')"
+          >
             <span data-cms-key="singles">Single</span>
           </div>
-          <div class="x-table-cell"
+          <div
+            class="x-table-cell"
             :class="betSlipType !== 'Combo' && betType === 'Multiple' ? 'x-table-cell--active' : ''"
-            @click="couponStore.setBetType('Multiple')">
+            @click="couponStore.setBetType('Multiple')"
+          >
             <span data-cms-key="multiple">Multiple</span>
           </div>
-          <div class="x-table-cell" :class="betSlipType === 'Combo' ? 'x-table-cell--active' : ''"
-            @click="couponStore.setBetType('Combo')">
+          <div
+            class="x-table-cell"
+            :class="betSlipType === 'Combo' ? 'x-table-cell--active' : ''"
+            @click="couponStore.setBetType('Combo')"
+          >
             <span data-cms-key="system">System</span>
           </div>
         </div>
@@ -32,7 +39,11 @@
           </div>
         </div>
         <!-- Selections -->
-        <BetListEvent v-for="(selection, s) in betslipSelections" :key="s" :selection="selection"></BetListEvent>
+        <BetListEvent
+          v-for="(selection, s) in betslipSelections"
+          :key="s"
+          :selection="selection"
+        ></BetListEvent>
         <!-- Selections -->
 
         <div class="x-stake">
@@ -44,11 +55,26 @@
                   <div class="x-line-wrapper">
                     <div class="x-label">Total Stake</div>
                     <div class="x-value">
-                      <span class="x-currency">{{ couponStore.SportsbookGlobalVariable.Currency }}</span>
-                      <div tabindex="6" class="x-input-wrapper" id="j_stake_0" style="max-width: 70px">
+                      <span class="x-currency">{{
+                        couponStore.SportsbookGlobalVariable.Currency
+                      }}</span>
+                      <div
+                        tabindex="6"
+                        class="x-input-wrapper"
+                        id="j_stake_0"
+                        style="max-width: 70px"
+                      >
                         <span class="x-input-com">
-                          <input type="input" input-mode="" name="" placeholder="min. 10" onpaste="return true"
-                            v-model="couponStore.coupon.stake" @input="updateStake" class="x-input fs-exclude" /></span>
+                          <input
+                            type="input"
+                            input-mode=""
+                            name=""
+                            placeholder="min. 10"
+                            onpaste="return true"
+                            v-model="couponStore.coupon.stake"
+                            @input="updateStake"
+                            class="x-input fs-exclude"
+                        /></span>
                       </div>
                     </div>
                   </div>
@@ -73,10 +99,23 @@
                     </div>
                     <div class="x-num">{{ selectionsLength }}</div>
                     <div class="x-money">
-                      <div tabindex="6" class="x-input-wrapper" data-index="0" style="max-width: 70px">
+                      <div
+                        tabindex="6"
+                        class="x-input-wrapper"
+                        data-index="0"
+                        style="max-width: 70px"
+                      >
                         <span class="x-input-com">
-                          <input type="input" input-mode="" name="" placeholder="min. 10" onpaste="return true"
-                            v-model="couponStore.coupon.stake" @input="updateStake" class="x-input fs-exclude" /></span>
+                          <input
+                            type="input"
+                            input-mode=""
+                            name=""
+                            placeholder="min. 10"
+                            onpaste="return true"
+                            v-model="couponStore.coupon.stake"
+                            @input="updateStake"
+                            class="x-input fs-exclude"
+                        /></span>
                       </div>
                     </div>
                   </div>
@@ -85,7 +124,6 @@
               </div>
             </div>
             <div class="x-money-wrapper">
-
               <template v-if="selectionsLength > 1">
                 <div>
                   <div class="x-label">Odds</div>
@@ -126,23 +164,30 @@
                 </template>
               </template>
 
-              <div v-if="
-                usersStore.currentUser &&
-                usersStore.currentUser.sportBonusBalance > 0 &&
-                !couponStore.betslipMode
-              " class="bonus mg-b-10">
+              <div
+                v-if="
+                  usersStore.currentUser &&
+                  usersStore.currentUser.sportBonusBalance > 0 &&
+                  !couponStore.betslipMode
+                "
+                class="bonus mg-b-10"
+              >
                 <div class="x-label">Use Bonus</div>
                 <div class="x-value" style="display: flex; align-items: center">
-                  <input type="checkbox" style="margin-right: 7px; accent-color: var(--brand-primary)"
-                    v-model="couponStore.coupon.useBonus" id="" />
-                  <span>
-                    {{ usersStore.currentUser.sportBonusBalance }}</span>
+                  <input
+                    type="checkbox"
+                    style="margin-right: 7px; accent-color: var(--brand-primary)"
+                    v-model="couponStore.coupon.useBonus"
+                    id=""
+                  />
+                  <span> {{ usersStore.currentUser.sportBonusBalance }}</span>
                 </div>
               </div>
 
               <div>
                 <div class="x-label x-label-one-cut-fix">
-                  <span class="flex"><span class="no-warp" data-cms-key="potential_win">Potential Win</span>
+                  <span class="flex"
+                    ><span class="no-warp" data-cms-key="potential_win">Potential Win</span>
                     &nbsp;
                   </span>
                 </div>
@@ -150,11 +195,17 @@
               </div>
             </div>
             <div class="x-btn-wrapper">
-              <button @click.prevent="toggleConfirmation" class="af-button af-button--primary"
-                :class="{ 'is-disabled': placeBetDisabled }" :style="placeBetDisabled ? 'cursor: not-allowed' : ''">
-                <span><span data-cms-key="place_bet">{{
-                  placeBetDisabled ? 'Please Wait...' : 'Place Bet'
-                }}</span></span>
+              <button
+                @click.prevent="toggleConfirmation"
+                class="af-button af-button--primary"
+                :class="{ 'is-disabled': placeBetDisabled }"
+                :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
+              >
+                <span
+                  ><span data-cms-key="place_bet">{{
+                    placeBetDisabled ? 'Please Wait...' : 'Place Bet'
+                  }}</span></span
+                >
               </button>
             </div>
             <!-- Bet Confirmation Modal -->
@@ -163,7 +214,8 @@
                 <div class="x-content-wrapper">
                   <div class="x-label">About to pay</div>
                   <div class="x-value">
-                    {{ couponStore.SportsbookGlobalVariable.Currency }}<span class="x-money"> {{ formatNumber(betlistStake) }}</span>
+                    {{ couponStore.SportsbookGlobalVariable.Currency
+                    }}<span class="x-money"> {{ formatNumber(betlistStake) }}</span>
                   </div>
                 </div>
 
@@ -195,17 +247,31 @@
     </p>
     <div class="x-opt-wrapper">
       <div tabindex="6" class="x-input-wrapper">
-        <span class="x-input-com"><i class="x-input-icon x-input-icon--clickable x-icon-delete"></i>
-          <input type="input" name="" placeholder="Booking Code" onpaste="return true" class="x-input fs-exclude"
-            v-model="bookingCode" /></span>
+        <span class="x-input-com"
+          ><i class="x-input-icon x-input-icon--clickable x-icon-delete"></i>
+          <input
+            type="input"
+            name=""
+            placeholder="Booking Code"
+            onpaste="return true"
+            class="x-input fs-exclude"
+            v-model="bookingCode"
+        /></span>
       </div>
 
-      <button :disabled="bookingCode === ''" :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
-        class="af-button af-button--primary" type="button"
-        :class="{ 'is-disabled': bookingCode === '' || placeBetDisabled }" @click.prevent="loadBet">
-        <span><span>{{
-          placeBetDisabled ? 'Loading...' : betslipSelections.length > 0 ? 'Place Bet' : 'Load'
-        }}</span></span>
+      <button
+        :disabled="bookingCode === ''"
+        :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
+        class="af-button af-button--primary"
+        type="button"
+        :class="{ 'is-disabled': bookingCode === '' || placeBetDisabled }"
+        @click.prevent="loadBet"
+      >
+        <span
+          ><span>{{
+            placeBetDisabled ? 'Loading...' : betslipSelections.length > 0 ? 'Place Bet' : 'Load'
+          }}</span></span
+        >
       </button>
     </div>
     <div>
@@ -223,7 +289,7 @@ import emitter from '@/plugins/emitter'
 import BetListEvent from '@/components/Betslip/BetListEvent.vue'
 
 const couponStore = useCouponStore()
-const { SportsbookGlobalVariable } = useUtilsStore();
+const { SportsbookGlobalVariable } = useUtilsStore()
 const bookingCode = ref('')
 const isPlaceBetSuccessful = ref(false)
 const placeBetResponse = ref({})
@@ -263,8 +329,8 @@ const selectionsLength = computed(() => {
 })
 
 const minWin = computed(() => {
-  return couponStore.coupon.minWin;
-});
+  return couponStore.coupon.minWin
+})
 
 const maxWin = computed(() => {
   return couponStore.coupon.maxWin
@@ -276,71 +342,60 @@ const betlistStake = computed(() => {
 
 const placeBetDisabled = computed(() => {
   return (
-    couponStore.coupon.totalStake <
-    parseFloat(SportsbookGlobalVariable.MinBetStake)
-  ) || couponStore.isBetslipLoading;
-});
+    couponStore.coupon.totalStake < parseFloat(SportsbookGlobalVariable.MinBetStake) ||
+    couponStore.isBetslipLoading
+  )
+})
 
-const taxEnabled = computed(
-  () => couponStore.SportsbookGlobalVariable.taxEnabled === "1",
-);
-const exciseTax = computed(() =>
-  parseFloat(couponStore.SportsbookGlobalVariable.exciseTax || 0),
-);
+const taxEnabled = computed(() => couponStore.SportsbookGlobalVariable.taxEnabled === '1')
+const exciseTax = computed(() => parseFloat(couponStore.SportsbookGlobalVariable.exciseTax || 0))
 
 const stakeAfterTax = computed(() => {
-  const excise = betlistStake.value * (exciseTax.value / 100);
-  return betlistStake.value - excise;
-});
+  const excise = betlistStake.value * (exciseTax.value / 100)
+  return betlistStake.value - excise
+})
 
 const wthTax = computed(() => {
-  let wth = parseFloat(couponStore.SportsbookGlobalVariable.wthTax || 0) / 100;
-  return (
-    (stakeAfterTax.value * couponStore.coupon.totalOdds -
-      couponStore.coupon.totalStake) *
-    wth
-  );
-});
+  let wth = parseFloat(couponStore.SportsbookGlobalVariable.wthTax || 0) / 100
+  return (stakeAfterTax.value * couponStore.coupon.totalOdds - couponStore.coupon.totalStake) * wth
+})
 
 const potentialWin = computed(() => {
-  const stake = parseFloat(betlistStake.value) || 0;
-  const totalOdd = parseFloat(couponStore.coupon.totalOdds) || 0;
-  let wth = parseFloat(couponStore.SportsbookGlobalVariable.wthTax || 0);
+  const stake = parseFloat(betlistStake.value) || 0
+  const totalOdd = parseFloat(couponStore.coupon.totalOdds) || 0
+  let wth = parseFloat(couponStore.SportsbookGlobalVariable.wthTax || 0)
 
   if (taxEnabled.value) {
-    let finalPayout = stake * totalOdd;
+    let finalPayout = stake * totalOdd
 
     if (exciseTax.value > 0) {
-      finalPayout = parseFloat(stakeAfterTax.value || 0) * totalOdd;
+      finalPayout = parseFloat(stakeAfterTax.value || 0) * totalOdd
     }
 
     if (wth > 0) {
       // wth tax
-      finalPayout = finalPayout - parseFloat(wthTax.value || 0);
+      finalPayout = finalPayout - parseFloat(wthTax.value || 0)
     }
-    return formatNumber(
-      (finalPayout + parseFloat(maxBonus.value || 0)).toFixed(2),
-    );
+    return formatNumber((finalPayout + parseFloat(maxBonus.value || 0)).toFixed(2))
   }
 
-  const isSingleBet =
-    betSlipType.value === "Single" && selectionsLength.value === 1;
-  const isMultipleBet = betSlipType.value === "Multiple";
+  const isSingleBet = betSlipType.value === 'Single' && selectionsLength.value === 1
+  const isMultipleBet = betSlipType.value === 'Multiple'
 
   if (isMultipleBet || isSingleBet) {
-    return formatNumber(parseFloat(maxWin.value || 0));
+    return formatNumber(parseFloat(maxWin.value || 0))
   }
   return `${formatNumber(parseFloat(minWin.value || 0))} ~ ${formatNumber(
-    parseFloat(maxWin.value || 0),
-  )}`;
-});
+    parseFloat(maxWin.value || 0)
+  )}`
+})
 
 function clearBetslip() {
   return couponStore.clearBetslip()
 }
 
 function toggleConfirmation() {
-  if (couponStore.isBetslipLoading) return;
+  if (couponStore.isBetslipLoading) return
   if (!usersStore.currentUser) {
     emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'login' })
   } else {
@@ -440,7 +495,7 @@ async function loadBet() {
   background: #ffffff;
 }
 
-.x-betslips .x-share--wrapper>div {
+.x-betslips .x-share--wrapper > div {
   width: 204px;
   margin: 0 auto;
 }
@@ -466,7 +521,7 @@ async function loadBet() {
   z-index: 23;
 }
 
-.x-betslips .x-comfirm-wrapper>div {
+.x-betslips .x-comfirm-wrapper > div {
   background: #ffffff;
   border-top: 1px solid #eaecef;
   bottom: 0;

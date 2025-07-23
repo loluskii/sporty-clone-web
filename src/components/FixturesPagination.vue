@@ -1,7 +1,7 @@
 <template>
   <div class="pagination">
-    <span 
-      class="pageNum icon-prev" 
+    <span
+      class="pageNum icon-prev"
       :class="{ 'icon-disabled': currentPage === 1 }"
       @click="handlePrevPage"
     ></span>
@@ -11,9 +11,10 @@
       @click="handlePageClick(pageNumber)"
       class="pageNum"
       :class="pageNumber === currentPage ? 'selected' : ''"
-    >{{ pageNumber }}</span>
-    <span 
-      class="pageNum icon-next" 
+      >{{ pageNumber }}</span
+    >
+    <span
+      class="pageNum icon-next"
       :class="{ 'icon-disabled': currentPage === totalPages }"
       @click="handleNextPage"
     ></span>
@@ -41,15 +42,12 @@ const pageRange = computed(() => {
   const maxButtons = 10 // Maximum number of buttons to display
   let startPage = Math.max(props.currentPage - Math.floor(maxButtons / 2), 1)
   let endPage = Math.min(startPage + maxButtons - 1, props.totalPages)
-  
+
   if (endPage - startPage + 1 < maxButtons) {
     startPage = Math.max(endPage - maxButtons + 1, 1)
   }
 
-  return Array.from(
-    { length: endPage - startPage + 1 }, 
-    (_, index) => startPage + index
-  )
+  return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index)
 })
 
 const handlePrevPage = () => {
@@ -128,4 +126,4 @@ const handlePageClick = (page) => {
   border-radius: 2px;
   cursor: default;
 }
-</style> 
+</style>

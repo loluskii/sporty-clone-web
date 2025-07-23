@@ -4,8 +4,8 @@
       <p class="x-page-title"></p>
       <div class="x-page x-page--login">
         <header class="x-header-bar">
-            <span class="x-header-bar-title">Create Your Account</span>
-          </header>
+          <span class="x-header-bar-title">Create Your Account</span>
+        </header>
         <section class="x-page-main">
           <div class="x-opt-wrapper">
             <div v-if="authStore.authError" class="x-error-wrap">
@@ -17,40 +17,83 @@
             <div v-if="activeStep === 1" class="x-page-opt without-error">
               <form action="">
                 <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
-                  <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
-                  <span class="x-input-com"><i
-                      class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"></i>
-                    <input type="input" input-mode="" name="" placeholder="Mobile Number"
-                      class="x-input fs-exclude" v-model="phoneNumber" /></span>
+                  <div class="x-input-prepend">
+                    <span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span>
+                  </div>
+                  <span class="x-input-com"
+                    ><i
+                      class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
+                    ></i>
+                    <input
+                      type="input"
+                      input-mode=""
+                      name=""
+                      placeholder="Mobile Number"
+                      class="x-input fs-exclude"
+                      v-model="phoneNumber"
+                  /></span>
                 </div>
                 <div tabindex="8" class="x-input-wrapper">
                   <span class="x-input-com">
-                    <input type="password" name="" placeholder="Password" onpaste="return true"
-                      class="x-input fs-exclude" v-model="password" /></span>
+                    <input
+                      type="password"
+                      name=""
+                      placeholder="Password"
+                      onpaste="return true"
+                      class="x-input fs-exclude"
+                      v-model="password"
+                  /></span>
                 </div>
                 <div tabindex="8" class="x-input-wrapper">
                   <span class="x-input-com">
-                    <input type="text" name="" placeholder="Promo Code (optional)"
-                      class="x-input fs-exclude" v-model="promoCode" /></span>
+                    <input
+                      type="text"
+                      name=""
+                      placeholder="Promo Code (optional)"
+                      class="x-input fs-exclude"
+                      v-model="promoCode"
+                  /></span>
                 </div>
-                <div v-if="authType === 'register'" style="display: flex; align-items: start; margin-top: 10px;">
-                  <input type="checkbox" id="agreeToTerms" v-model="agreeToTerms"
-                    style="margin-right: 7px; margin-top: 5px; accent-color: var(--brand-primary)" />
-                  <label for="agreeToTerms" style="font-size: 0.95rem;">
+                <div
+                  v-if="authType === 'register'"
+                  style="display: flex; align-items: start; margin-top: 10px"
+                >
+                  <input
+                    type="checkbox"
+                    id="agreeToTerms"
+                    v-model="agreeToTerms"
+                    style="margin-right: 7px; margin-top: 5px; accent-color: var(--brand-primary)"
+                  />
+                  <label for="agreeToTerms" style="font-size: 0.95rem">
                     By checking this box, you confirm you are above 18 and you agree to our
-                    <a href="/CMS/TandC" target="_blank" style="color: var(--brand-secondary); font-weight: bold;">Terms
-                      and Conditions</a>.
+                    <a
+                      href="/CMS/TandC"
+                      target="_blank"
+                      style="color: var(--brand-secondary); font-weight: bold"
+                      >Terms and Conditions</a
+                    >.
                   </label>
                 </div>
               </form>
 
               <div class="x-btn-wrap">
-                <button @click.prevent="handleFormSubmit" class="af-button af-button--primary" :class="{
-                  'is-disabled': authStore.loading || !phoneNumber || !password || (authType === 'register' && !agreeToTerms)
-                }" :disabled="authStore.loading || (authType === 'register' && !agreeToTerms)">
-                  <span><span data-cms-key="log_in">{{
-                    authStore.loading ? 'Please Wait' : 'Continue'
-                  }}</span></span>
+                <button
+                  @click.prevent="handleFormSubmit"
+                  class="af-button af-button--primary"
+                  :class="{
+                    'is-disabled':
+                      authStore.loading ||
+                      !phoneNumber ||
+                      !password ||
+                      (authType === 'register' && !agreeToTerms)
+                  }"
+                  :disabled="authStore.loading || (authType === 'register' && !agreeToTerms)"
+                >
+                  <span
+                    ><span data-cms-key="log_in">{{
+                      authStore.loading ? 'Please Wait' : 'Continue'
+                    }}</span></span
+                  >
                 </button>
               </div>
             </div>
@@ -58,23 +101,34 @@
               <div class="flex-column size-14 text-center pd-t-40 pd-b-24 justify-between">
                 <span>
                   <p class="mg-b-16 size-18 pd-hor-100">
-                    We've sent you a 6-digit code to {{ utilsStore.SportsbookGlobalVariable.DialCode }} {{ phoneNumber }}
+                    We've sent you a 6-digit code to
+                    {{ utilsStore.SportsbookGlobalVariable.DialCode }} {{ phoneNumber }}
                   </p>
                 </span>
                 <div>
                   <div class="x-pin-code-wrapper mg-b-16 size-20">
                     <form>
-                      <v-otp-input ref="otpInput" input-classes="x-pin-code-input fs-exclude" separator="  "
-                        :num-inputs="6" :should-auto-focus="true" input-type="number" @on-complete="storeOTP" />
+                      <v-otp-input
+                        ref="otpInput"
+                        input-classes="x-pin-code-input fs-exclude"
+                        separator="  "
+                        :num-inputs="6"
+                        :should-auto-focus="true"
+                        input-type="number"
+                        @on-complete="storeOTP"
+                      />
                     </form>
                   </div>
                   <div v-if="!authStore.loading">
                     <span class="darkGray not-allowed">Didn't get the code? </span>
-                    <span class="sec-left" @click="resendOtp" :disabled="isDisabled"
-                      :style="{ cursor: isDisabled ? 'not-allowed' : 'pointer' }">
-                      {{
-                        isDisabled ? `Send Again in ${remainingTime}s` : 'Send Again'
-                      }}</span>
+                    <span
+                      class="sec-left"
+                      @click="resendOtp"
+                      :disabled="isDisabled"
+                      :style="{ cursor: isDisabled ? 'not-allowed' : 'pointer' }"
+                    >
+                      {{ isDisabled ? `Send Again in ${remainingTime}s` : 'Send Again' }}</span
+                    >
                   </div>
                   <LoadingSpinner v-if="authStore.loading"></LoadingSpinner>
                 </div>
@@ -88,12 +142,12 @@
 </template>
 
 <script setup>
-import DefaultLayout from "@/components/Shared/DefaultLayout.vue";
-import { ref, onMounted } from "vue";
-import { verifyUsername, formattedPhoneNumber, register, verifyOTP, sendOTP } from "@/helpers";
-import { useAuthStore, useUtilsStore } from "@/stores";
+import DefaultLayout from '@/components/Shared/DefaultLayout.vue'
+import { ref, onMounted } from 'vue'
+import { verifyUsername, formattedPhoneNumber, register, verifyOTP, sendOTP } from '@/helpers'
+import { useAuthStore, useUtilsStore } from '@/stores'
 
-const phoneNumber = ref("");
+const phoneNumber = ref('')
 const authStore = useAuthStore()
 const password = ref('')
 const promoCode = ref('')
@@ -108,7 +162,8 @@ const utilsStore = useUtilsStore()
 const handleFormSubmit = async () => {
   authStore.authError = null
   if (authType.value === 'register' && !agreeToTerms.value) {
-    authStore.authError = 'You must confirm you are above 18 and agree to the Terms and Conditions to continue.'
+    authStore.authError =
+      'You must confirm you are above 18 and agree to the Terms and Conditions to continue.'
     return
   }
   if (authType.value === 'register') {
@@ -212,7 +267,7 @@ const doRegistration = async () => {
     password: password.value,
     phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
     clientID: import.meta.env.VITE_CLIENT_ID,
-    promoCode: promoCode.value,
+    promoCode: promoCode.value
   }
 
   try {
@@ -240,7 +295,6 @@ onMounted(() => {
   authStore.authError = null
   authStore.loading = false
 })
-
 </script>
 
 <style>
@@ -266,8 +320,8 @@ onMounted(() => {
   top: 170px;
 }
 .x-dialog-wrapper .x-holding-icon::before {
-  content: "\e654";
-  font-family: "iconfont" !important;
+  content: '\e654';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -306,8 +360,8 @@ onMounted(() => {
   transform: translate3d(0, -50%, 0);
 }
 .x-dialog-wrapper .x-pop-header .x-icon-close::before {
-  content: "\e69a";
-  font-family: "iconfont" !important;
+  content: '\e69a';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -326,8 +380,8 @@ onMounted(() => {
   padding: 20px 0 0;
 }
 .x-dialog-wrapper .x-pop-header-fix .x-icon-suc::before {
-  content: "\e60b";
-  font-family: "iconfont" !important;
+  content: '\e60b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -458,11 +512,7 @@ onMounted(() => {
   width: -moz-fit-content;
   width: fit-content;
 }
-.x-dialog-wrapper
-  .x-share-wrapper
-  .booking-code-share
-  .booking-code-share-code
-  #content-copy {
+.x-dialog-wrapper .x-share-wrapper .booking-code-share .booking-code-share-code #content-copy {
   left: 100%;
   margin-left: 12px;
   margin-top: 4px;
@@ -481,11 +531,7 @@ onMounted(() => {
 .x-dialog-wrapper .x-share-wrapper .booking-code-share .zoom-image-container .zoom-image {
   height: 100px;
 }
-.x-dialog-wrapper
-  .x-share-wrapper
-  .booking-code-share
-  .zoom-image-container
-  .zoom-handler {
+.x-dialog-wrapper .x-share-wrapper .booking-code-share .zoom-image-container .zoom-handler {
   cursor: pointer;
   left: 50%;
   position: absolute;
@@ -546,8 +592,8 @@ onMounted(() => {
   padding: 30px 0 14px;
 }
 .x-page-wrapper .x-page-title .x-icon-lock::before {
-  content: "\e60e";
-  font-family: "iconfont" !important;
+  content: '\e60e';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

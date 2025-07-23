@@ -11,7 +11,7 @@
                 $router.push({
                   name: 'fixtures-by-sport',
                   params: { sport: activeSport.sportName },
-                  query: { period: 'today' },
+                  query: { period: 'today' }
                 })
               "
             >
@@ -22,7 +22,7 @@
               @click="
                 $router.push({
                   name: 'upcoming-fixtures-by-sport',
-                  params: { sport: activeSport.sportName },
+                  params: { sport: activeSport.sportName }
                 })
               "
             >
@@ -80,7 +80,9 @@
                 </div>
                 <p class="x-pro-tips">Make a Deposit and Start Betting!</p>
                 <div tabindex="6" class="x-input-wrapper x-input-group x-input-group--prepend">
-                  <div class="x-input-prepend"><span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span></div>
+                  <div class="x-input-prepend">
+                    <span>{{ utilsStore.SportsbookGlobalVariable.DialCode }}</span>
+                  </div>
                   <span class="x-input-com">
                     <input
                       type="input"
@@ -91,10 +93,7 @@
                   /></span>
                 </div>
                 <div class="x-btn-wrapper">
-                  <button
-                    class="af-button af-button--primary"
-                    @click.prevent="showRegisterModal"
-                  >
+                  <button class="af-button af-button--primary" @click.prevent="showRegisterModal">
                     <span><span>Register</span></span>
                   </button>
                 </div>
@@ -109,78 +108,77 @@
   </BaseLayout>
 </template>
 <script setup>
-import BaseLayout from "@/components/Shared/BaseLayout.vue";
-import BetContainer from "./BetContainer.vue";
-import { useRoute, useRouter } from "vue-router";
-import { useUtilsStore, useUsersStore } from "@/stores";
-import { computed, onMounted, ref, watch } from "vue";
-import { getCategoriesBySport } from "@/helpers";
-import emitter from "@/plugins/emitter";
+import BaseLayout from '@/components/Shared/BaseLayout.vue'
+import BetContainer from './BetContainer.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useUtilsStore, useUsersStore } from '@/stores'
+import { computed, onMounted, ref, watch } from 'vue'
+import { getCategoriesBySport } from '@/helpers'
+import emitter from '@/plugins/emitter'
 
-const utilsStore = useUtilsStore();
-const userStore = useUsersStore();
-const categories = ref([]);
-const router = useRouter();
-const route = useRoute();
+const utilsStore = useUtilsStore()
+const userStore = useUsersStore()
+const categories = ref([])
+const router = useRouter()
+const route = useRoute()
 
 const activeSport = computed(() => {
-  return utilsStore.activeSport;
-});
-
+  return utilsStore.activeSport
+})
 
 async function getCategories() {
-  const res = await getCategoriesBySport(activeSport.value.sportID);
-  categories.value = res.sports;
+  const res = await getCategoriesBySport(activeSport.value.sportID)
+  categories.value = res.sports
 }
 
 function selectCategory(id) {
-  let categories = `sr:category:${id}`;
-  let currentCategories = route.params.categories || "";
-  let categoryArray = currentCategories ? currentCategories.split("_") : [];
-  let categoryExists = categoryArray.includes(categories);
+  let categories = `sr:category:${id}`
+  let currentCategories = route.params.categories || ''
+  let categoryArray = currentCategories ? currentCategories.split('_') : []
+  let categoryExists = categoryArray.includes(categories)
   if (categoryExists) {
-    categoryArray = categoryArray.filter((category) => category !== categories);
+    categoryArray = categoryArray.filter((category) => category !== categories)
   } else {
-    categoryArray.push(categories);
+    categoryArray.push(categories)
   }
   if (categoryArray.length === 0) {
     return router.push({
-      name: "fixtures-by-sport",
-      params: { sport: activeSport.value.sportName },
-    });
+      name: 'fixtures-by-sport',
+      params: { sport: activeSport.value.sportName }
+    })
   }
 
-  const updatedCategories = categoryArray.join("_");
+  const updatedCategories = categoryArray.join('_')
   return router.push({
-    name: "fixtures-by-categories",
-    params: { categories: updatedCategories },
-  });
+    name: 'fixtures-by-categories',
+    params: { categories: updatedCategories }
+  })
 }
 
 const isCategorySelected = (category) => {
   if (!route.params.categories) {
-    return false;
+    return false
   }
-  const categoriesArray = route.params.categories.split("_");
-  const categoryToCheck = `sr:category:${category}`;
-  return categoriesArray.includes(categoryToCheck);
-};
+  const categoriesArray = route.params.categories.split('_')
+  const categoryToCheck = `sr:category:${category}`
+  return categoriesArray.includes(categoryToCheck)
+}
 
 function showRegisterModal() {
-  emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
+  emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'register' })
 }
 
 watch(
   () => route.params.sport,
   async () => {
-    await getCategories();
+    await getCategories()
   },
   { immediate: true } // Trigger the watch callback immediately on component mount
-);
+)
 
 onMounted(async () => {
-  await getCategories();
-});
+  await getCategories()
+})
 </script>
 
 <style scoped>
@@ -220,7 +218,7 @@ onMounted(async () => {
 }
 .crumb-wrap .crumb > span:after {
   color: #9ca0ab;
-  content: "/";
+  content: '/';
   display: inline-block;
   padding: 0 3px;
 }
@@ -229,7 +227,7 @@ onMounted(async () => {
   cursor: normal;
 }
 .crumb-wrap .crumb > span:last-child:after {
-  content: " ";
+  content: ' ';
 }
 .crumb-wrap .btns {
   float: right;
@@ -238,8 +236,8 @@ onMounted(async () => {
   cursor: pointer;
 }
 .crumb-wrap .btns .printer::before {
-  content: "\e77b";
-  font-family: "iconfont" !important;
+  content: '\e77b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -253,8 +251,8 @@ onMounted(async () => {
   cursor: pointer;
 }
 .crumb-wrap .btns .refresh::before {
-  content: "\e645";
-  font-family: "iconfont" !important;
+  content: '\e645';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -266,7 +264,7 @@ onMounted(async () => {
 }
 .crumb-wrap:after {
   clear: both;
-  content: " ";
+  content: ' ';
   display: block;
   height: 0;
   visibility: hidden;
@@ -274,7 +272,7 @@ onMounted(async () => {
 
 /* Sports List Styles */
 .clearfix:after {
-  content: ".";
+  content: '.';
   display: block;
   height: 0;
   clear: both;
@@ -314,8 +312,8 @@ onMounted(async () => {
 }
 #sportList .titles .sportList-title:after,
 #sportList .titles .sportList-subtitle:after {
-  content: "\e608";
-  font-family: "iconfont";
+  content: '\e608';
+  font-family: 'iconfont';
   display: block;
   float: right;
   color: #dcdee5;

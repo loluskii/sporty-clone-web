@@ -5,10 +5,7 @@
       <div class="x-lay-mid">
         <div class="x-lay-mid">
           <div class="x-item-play">
-            <i
-              class="x-icon-sport"
-              :class="'x-icon--' + selection.sport.toLowerCase()"
-            ></i>
+            <i class="x-icon-sport" :class="'x-icon--' + selection.sport.toLowerCase()"></i>
             <span>{{ selection.outcomeName }}</span>
             <i class="x-icon-delete" @click="removeSelection(selection.element_id)"></i>
           </div>
@@ -35,32 +32,32 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useCouponStore } from "@/stores";
+import { computed } from 'vue'
+import { useCouponStore } from '@/stores'
 
-const couponStore = useCouponStore();
+const couponStore = useCouponStore()
 
-defineEmits(["toggle-betslip"]);
+defineEmits(['toggle-betslip'])
 const props = defineProps({
-  selection: Object,
-});
+  selection: Object
+})
 
 const selectionIsUnavailable = computed(() => {
   // If explicitly marked as unavailable
   if (props.selection.unavailable) {
-    return true;
+    return true
   }
 
   // If suspended
   if (props.selection.suspended) {
-    return true;
-  }
-
-  if(parseFloat(props.selection.odds <= 1)){
     return true
   }
 
-  return false;
+  if (parseFloat(props.selection.odds <= 1)) {
+    return true
+  }
+
+  return false
 
   // // Check if expired based on time
   // const parsedDate = new Date(props.selection.eventDate);
@@ -69,10 +66,10 @@ const selectionIsUnavailable = computed(() => {
   // const hoursDifference = difference / (1000 * 60 * 60);
 
   // return hoursDifference >= 5;
-});
+})
 
 async function removeSelection(element_id) {
-  await couponStore.removeSelection(element_id);
+  await couponStore.removeSelection(element_id)
 }
 </script>
 
@@ -168,7 +165,7 @@ async function removeSelection(element_id) {
   position: absolute;
   top: 0;
   right: -2px;
-  content: "";
+  content: '';
   width: 0;
   height: 0;
   border-top: 8px solid var(--brand-secondary);
@@ -190,8 +187,8 @@ async function removeSelection(element_id) {
   float: right;
 }
 .x-list .x-item-play .x-icon-delete::before {
-  content: "\e69a";
-  font-family: "iconfont" !important;
+  content: '\e69a';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -243,8 +240,8 @@ async function removeSelection(element_id) {
   color: var(--brand-secondary);
 }
 .x-list .x-icon-up::before {
-  content: "\e609";
-  font-family: "iconfont" !important;
+  content: '\e609';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -258,8 +255,8 @@ async function removeSelection(element_id) {
   color: #e41827;
 }
 .x-list .x-icon-down::before {
-  content: "\e605";
-  font-family: "iconfont" !important;
+  content: '\e605';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

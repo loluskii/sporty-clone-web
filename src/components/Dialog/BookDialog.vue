@@ -26,11 +26,7 @@
                   <div class="booking-code-share-code">
                     <input type="text" id="copyShareCode" class="invisible-element" />
                     {{ response.betslipId }}
-                    <img
-                      @click="copyBookingCode"
-                      id="content-copy"
-                      src="/copy.svg"
-                    />
+                    <img @click="copyBookingCode" id="content-copy" src="/copy.svg" />
                   </div>
 
                   <div class="links-container">
@@ -58,9 +54,7 @@
                           src="//s.sporty.net/global/main/modules/main/desktop/common/components/betslips/image/ig-copy-link.93a6ae7f8e.svg"
                         />
                       </div>
-                      <div data-cms-key="copy_link" data-cms-page="common_functions">
-                        Copy
-                      </div>
+                      <div data-cms-key="copy_link" data-cms-page="common_functions">Copy</div>
                     </div>
                   </div>
                 </div>
@@ -74,55 +68,53 @@
 </template>
 
 <script setup>
-import emitter from "@/plugins/emitter";
-import { useUtilsStore } from "@/stores";
-const {brandName} = useUtilsStore()
+import emitter from '@/plugins/emitter'
+import { useUtilsStore } from '@/stores'
+const { brandName } = useUtilsStore()
 const props = defineProps({
-  response: Object,
-});
+  response: Object
+})
 
 function copyBookingCode() {
-  const textToCopy = props.response.betslipId;
-  const textarea = document.createElement("textarea");
-  textarea.value = textToCopy;
-  document.body.appendChild(textarea);
-  textarea.select();
+  const textToCopy = props.response.betslipId
+  const textarea = document.createElement('textarea')
+  textarea.value = textToCopy
+  document.body.appendChild(textarea)
+  textarea.select()
 
   try {
-    navigator.clipboard.writeText(textToCopy);
-    alert("Copied!");
+    navigator.clipboard.writeText(textToCopy)
+    alert('Copied!')
   } catch (err) {
-    console.error("Unable to copy to clipboard", err);
+    console.error('Unable to copy to clipboard', err)
   }
 }
 
 function copyToClipboard() {
-  const textToCopy = `${window.location.origin}?shareCode=${props.response.betslipId}`;
-  const textarea = document.createElement("textarea");
-  textarea.value = textToCopy;
-  document.body.appendChild(textarea);
-  textarea.select();
+  const textToCopy = `${window.location.origin}?shareCode=${props.response.betslipId}`
+  const textarea = document.createElement('textarea')
+  textarea.value = textToCopy
+  document.body.appendChild(textarea)
+  textarea.select()
 
   try {
-    navigator.clipboard.writeText(textToCopy);
+    navigator.clipboard.writeText(textToCopy)
   } catch (err) {
-    console.error("Unable to copy to clipboard", err);
+    console.error('Unable to copy to clipboard', err)
   }
 }
 
 function redirectToPlatform(platform) {
   let message = `Hey I just placed on ${brandName}! ${window.location.origin}?shareCode=${props.response.betslipId}`
   switch (platform) {
-    case "whatsapp":
-      return window.open("https://wa.me/?text=" + encodeURIComponent(message));
-    case "x":
+    case 'whatsapp':
+      return window.open('https://wa.me/?text=' + encodeURIComponent(message))
+    case 'x':
+      return window.open('https://x.com/intent/tweet?text=' + encodeURIComponent(message))
+    case 'facebook':
       return window.open(
-        "https://x.com/intent/tweet?text=" + encodeURIComponent(message)
-      );
-    case "facebook":
-      return window.open(
-        "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(message)
-      );
+        'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(message)
+      )
   }
 }
 </script>
@@ -166,8 +158,8 @@ function redirectToPlatform(platform) {
   vertical-align: middle;
 }
 .m-dialog-suc .m-btn-text .m-icon-more::before {
-  content: "\e608";
-  font-family: "iconfont" !important;
+  content: '\e608';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

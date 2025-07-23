@@ -6,7 +6,9 @@
       isSelected(
         createID(match.gameID, match.matchID, odds.outcomeName, odds.oddID, match.name),
         couponStore.coupon
-      ) ? 'x-outcome--checked' : '',
+      )
+        ? 'x-outcome--checked'
+        : '',
       oddsChangeClass
     ]"
   >
@@ -36,25 +38,28 @@ const previousOdds = ref(props.odds.odds)
 const oddsChangeClass = ref('')
 
 // Watch for odds changes
-watch(() => props.odds.odds, (newOdds, oldOdds) => {
-  if (newOdds <= 1 || oldOdds <= 1) {
-    oddsChangeClass.value = ''
-    return
+watch(
+  () => props.odds.odds,
+  (newOdds, oldOdds) => {
+    if (newOdds <= 1 || oldOdds <= 1) {
+      oddsChangeClass.value = ''
+      return
+    }
+
+    if (newOdds > oldOdds) {
+      oddsChangeClass.value = 'x-outcome--up'
+    } else if (newOdds < oldOdds) {
+      oddsChangeClass.value = 'x-outcome--down'
+    }
+
+    // Clear the class after animation
+    setTimeout(() => {
+      oddsChangeClass.value = ''
+    }, 2000)
+
+    previousOdds.value = newOdds
   }
-
-  if (newOdds > oldOdds) {
-    oddsChangeClass.value = 'x-outcome--up'
-  } else if (newOdds < oldOdds) {
-    oddsChangeClass.value = 'x-outcome--down'
-  }
-
-  // Clear the class after animation
-  setTimeout(() => {
-    oddsChangeClass.value = ''
-  }, 2000)
-
-  previousOdds.value = newOdds
-})
+)
 </script>
 
 <!-- <style scoped>

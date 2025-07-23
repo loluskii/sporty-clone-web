@@ -1,16 +1,8 @@
 import moment from 'moment'
-import {
-  getSplitPropsData
-} from '@/helpers'
-import {
-  brandDetails
-} from '/branding'
-import {
-  useUtilsStore
-} from '@/stores'
-import {
-  brandDetails as defBrandDetails
-} from '/branding-template'
+import { getSplitPropsData } from '@/helpers'
+import { brandDetails } from '/branding'
+import { useUtilsStore } from '@/stores'
+import { brandDetails as defBrandDetails } from '/branding-template'
 
 export const applyBranding = async () => {
   try {
@@ -136,33 +128,33 @@ export default applyBranding
 
 export const calculateBonus = (coupondata, globalVars, bonusList) => {
   if (!globalVars || !bonusList) {
-    return;
+    return
   }
   let ticket_length = 0,
     totalBonusOdds = 1,
     minBonusOdd = globalVars?.MinBonusOdd,
     bonusInfo = {},
-    bonus = 0;
+    bonus = 0
   //count eligible tickets for bonus
   coupondata.selections.forEach((item) => {
     if (item.odds >= minBonusOdd) {
-      totalBonusOdds = totalBonusOdds * item.odds;
-      ticket_length++;
+      totalBonusOdds = totalBonusOdds * item.odds
+      ticket_length++
     }
-  });
+  })
 
   //get bonus settings for ticket length
   bonusList.forEach((item) => {
-    if (item.ticket_length === ticket_length) bonusInfo = item;
-  });
+    if (item.ticket_length === ticket_length) bonusInfo = item
+  })
 
   //calculate total bonus
   if (bonusInfo.bonus !== undefined) {
-    const maxWin = totalBonusOdds * coupondata.totalStake;
-    bonus = (maxWin * parseFloat(bonusInfo.bonus)) / 100;
+    const maxWin = totalBonusOdds * coupondata.totalStake
+    bonus = (maxWin * parseFloat(bonusInfo.bonus)) / 100
   }
-  return bonus;
-};
+  return bonus
+}
 
 export const getDataFromPayload = (couponPayload) => {
   const data = {
@@ -182,7 +174,7 @@ export const getDataFromPayload = (couponPayload) => {
     category: couponPayload.fixture.categoryName,
     sport: couponPayload.fixture.sportName,
     sportId: couponPayload.fixture.sportID,
-    type: couponPayload?.type || "prematch",
+    type: couponPayload?.type || 'prematch',
     fixed: false,
     combinability: couponPayload.fixture.combinability || 0,
     selectionId: couponPayload.ele_id,
@@ -193,402 +185,395 @@ export const getDataFromPayload = (couponPayload) => {
     stake: 0,
     suspended: false,
     unavailable: false,
-    changed: false,
-  };
-
-  if (couponPayload?.type === "live") {
-    data.inPlayTime = couponPayload.fixture.eventTime;
-    data.score =
-      couponPayload.fixture.homeScore + ":" + couponPayload.fixture.awayScore;
+    changed: false
   }
-  return data;
-};
+
+  if (couponPayload?.type === 'live') {
+    data.inPlayTime = couponPayload.fixture.eventTime
+    data.score = couponPayload.fixture.homeScore + ':' + couponPayload.fixture.awayScore
+  }
+  return data
+}
 
 export const formatDate = (date, format) => {
-  const fixDateForAllBrowsers = date.replace(/-/g, "/");
-  const d = new Date(fixDateForAllBrowsers);
-  return moment(d).format(format);
-};
+  const fixDateForAllBrowsers = date.replace(/-/g, '/')
+  const d = new Date(fixDateForAllBrowsers)
+  return moment(d).format(format)
+}
 
 export const slugify = (str) => {
   return str
     .toLowerCase()
     .replace(/\b\w/g, (char) => char.toUpperCase())
-    .replace(/\s+/g, "_");
-};
+    .replace(/\s+/g, '_')
+}
 
 export const unslugify = (str) => {
-  return str.replace(/-/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
-};
+  return str.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+}
 
 export const chunks = (arr) => {
   if (arr % 2 == 0) {
     return arr.reduce((resultArray, item, index) => {
-      const chunkIndex = Math.floor(index / 2);
+      const chunkIndex = Math.floor(index / 2)
       if (!resultArray[chunkIndex]) {
-        resultArray[chunkIndex] = [];
+        resultArray[chunkIndex] = []
       }
-      resultArray[chunkIndex].push(item);
-      return resultArray;
-    }, []);
+      resultArray[chunkIndex].push(item)
+      return resultArray
+    }, [])
   } else {
     return arr.reduce((resultArray, item, index) => {
-      const chunkIndex = Math.floor(index / 3);
+      const chunkIndex = Math.floor(index / 3)
       if (!resultArray[chunkIndex]) {
-        resultArray[chunkIndex] = [];
+        resultArray[chunkIndex] = []
       }
-      resultArray[chunkIndex].push(item);
-      return resultArray;
-    }, []);
+      resultArray[chunkIndex].push(item)
+      return resultArray
+    }, [])
   }
-};
+}
 
 export const formatNumber = (number, dp) => {
-  const decimal_place = dp ? dp : 2;
+  const decimal_place = dp ? dp : 2
   const formattedNumber = parseFloat(number)
     .toFixed(decimal_place)
-    .replace(/\d(?=(\d{3})+\.)/g, "$&,");
-  return formattedNumber;
-};
+    .replace(/\d(?=(\d{3})+\.)/g, '$&,')
+  return formattedNumber
+}
 
 export const formatTotalOdds = (number) => {
-  let odds = parseFloat(number);
+  let odds = parseFloat(number)
   if (odds < 1000) {
-    return odds.toFixed(2);
+    return odds.toFixed(2)
   } else if (odds < 1000000) {
-    return (odds / 1000).toFixed(1) + "k";
+    return (odds / 1000).toFixed(1) + 'k'
   } else if (odds < 1000000000) {
-    return (odds / 1000000).toFixed(1) + "M";
+    return (odds / 1000000).toFixed(1) + 'M'
   } else {
-    return (odds / 1000000000).toFixed(1) + "B";
+    return (odds / 1000000000).toFixed(1) + 'B'
   }
-};
+}
 
 export const formattedPhoneNumber = (phoneNumber) => {
   if (Number(phoneNumber)) {
     phoneNumber = String(phoneNumber)
   }
-  let pNumber = phoneNumber.replace(/^0/, "").toString();
+  let pNumber = phoneNumber.replace(/^0/, '').toString()
 
-  const first = pNumber.charAt(0);
-  if (first === "0") {
-    return pNumber.substring(1);
+  const first = pNumber.charAt(0)
+  if (first === '0') {
+    return pNumber.substring(1)
   }
-  return pNumber;
-};
+  return pNumber
+}
 
 export const getPlacedBetStatus = (status) => {
   switch (status) {
     case 0:
-      return "Pending";
+      return 'Pending'
     case 1:
-      return "Won";
+      return 'Won'
     case 2:
-      return "Lost";
+      return 'Lost'
     case 3:
-      return "Cancelled";
+      return 'Cancelled'
     case 4:
-      return "Void";
+      return 'Void'
     default:
-      return "Unknown";
+      return 'Unknown'
   }
-};
+}
 
 export const createID = (event_id, provider_id, odd, id, event_name) => {
-  let oddname = String(odd).replace(/[^a-zA-Z0-9]/g, "_");
-  let eventname = String(event_name).replace(/[^a-zA-Z0-9]/g, "_");
-  return (
-    event_id + "_" + provider_id + "_" + oddname + "_" + id + "_" + eventname
-  );
-};
+  let oddname = String(odd).replace(/[^a-zA-Z0-9]/g, '_')
+  let eventname = String(event_name).replace(/[^a-zA-Z0-9]/g, '_')
+  return event_id + '_' + provider_id + '_' + oddname + '_' + id + '_' + eventname
+}
 
 export const multibetCombination = (item) => {
   if (item.length === 1) {
-    return "Single";
+    return 'Single'
   } else if (item.length > 1 && item.length <= 2) {
-    return "Doubles";
+    return 'Doubles'
   } else if (item.length > 2 && item.length <= 3) {
-    return "Trebles";
+    return 'Trebles'
   } else {
-    return item.length;
+    return item.length
   }
-};
+}
 
 export const min = (list) => {
-  let minValue = list[0];
+  let minValue = list[0]
   for (let i = 1; i < list.length; i++) {
     if (list[i] < minValue) {
-      minValue = list[i];
+      minValue = list[i]
     }
   }
-  return minValue;
-};
+  return minValue
+}
 
 export const isSelected = (ele_id, coupon) => {
-  let isExist = false;
+  let isExist = false
 
   if (coupon.selections.length > 0) {
-    let count = coupon.selections.find(
-      (selection) => selection.selectionId === ele_id,
-    );
+    let count = coupon.selections.find((selection) => selection.selectionId === ele_id)
     if (count) {
-      isExist = true;
+      isExist = true
     }
   }
-  return isExist;
-};
+  return isExist
+}
 
 export const liveScore = (score, team) => {
   if (score) {
-    const scoreArray = score.split(":");
-    if (team === "home") {
-      return scoreArray[0];
+    const scoreArray = score.split(':')
+    if (team === 'home') {
+      return scoreArray[0]
     } else {
-      return scoreArray[1];
+      return scoreArray[1]
     }
   }
-};
+}
 
 export const calculateWinnings = (couponData, globalVars, bonusList) => {
   //calculate winnings
-  let maxWin =
-    parseFloat(couponData.totalOdds) * parseFloat(couponData.totalStake);
+  let maxWin = parseFloat(couponData.totalOdds) * parseFloat(couponData.totalStake)
   //calculate bonus
-  let maxBonus = calculateBonus(couponData, globalVars, bonusList);
+  let maxBonus = calculateBonus(couponData, globalVars, bonusList)
   //add bonus to max winnings
-  let total = maxWin + maxBonus;
+  let total = maxWin + maxBonus
   // calculate With-holding tax
-  let wthTax = ((total - couponData.totalStake) * 0) / 100;
+  let wthTax = ((total - couponData.totalStake) * 0) / 100
 
   return {
     maxWin: (total - wthTax).toFixed(2),
     grossWin: total,
     maxBonus: maxBonus,
-    wthTax,
-  };
-};
+    wthTax
+  }
+}
 
 export const groupSelections = (data) => {
-  let ArrKeyHolder = {};
-  let Arr = [];
+  let ArrKeyHolder = {}
+  let Arr = []
   data.forEach(function (item) {
-    ArrKeyHolder[item.matchId] = ArrKeyHolder[item.matchId] || {};
-    let obj = ArrKeyHolder[item.matchId];
+    ArrKeyHolder[item.matchId] = ArrKeyHolder[item.matchId] || {}
+    let obj = ArrKeyHolder[item.matchId]
 
-    if (Object.keys(obj).length === 0) Arr.push(obj);
+    if (Object.keys(obj).length === 0) Arr.push(obj)
 
-    obj.eventName = item.eventName;
-    obj.eventId = item.eventId;
-    obj.type = item.type;
-    obj.started = item.eventDate;
-    obj.score = item.score;
-    obj.selections = obj.selections || [];
+    obj.eventName = item.eventName
+    obj.eventId = item.eventId
+    obj.type = item.type
+    obj.started = item.eventDate
+    obj.score = item.score
+    obj.selections = obj.selections || []
 
-    obj.selections.push(item);
-  });
-  return Arr;
-};
+    obj.selections.push(item)
+  })
+  return Arr
+}
 
 export const groupTournament = (data) => {
-  let ArrKeyHolder = [];
-  let Arr = [];
+  let ArrKeyHolder = []
+  let Arr = []
   data.forEach(function (item) {
-    ArrKeyHolder[item.tournament] = ArrKeyHolder[item.tournament] || {};
-    let obj = ArrKeyHolder[item.tournament];
+    ArrKeyHolder[item.tournament] = ArrKeyHolder[item.tournament] || {}
+    let obj = ArrKeyHolder[item.tournament]
 
-    if (Object.keys(obj).length === 0) Arr.push(obj);
+    if (Object.keys(obj).length === 0) Arr.push(obj)
 
-    obj.tournamentName = item.tournament;
-    obj.category = item.category;
-    obj.combinability = item.combinability;
-    obj.events = obj.events || [];
+    obj.tournamentName = item.tournament
+    obj.category = item.category
+    obj.combinability = item.combinability
+    obj.events = obj.events || []
 
-    obj.events.push(item);
-    obj.fixtures = groupSelections(obj.events);
-  });
-  return Arr;
-};
+    obj.events.push(item)
+    obj.fixtures = groupSelections(obj.events)
+  })
+  return Arr
+}
 
 export const calculateTotalOdds = (selections) => {
-  let totalOdds = 1;
+  let totalOdds = 1
 
-  selections.forEach((selection) => (totalOdds = totalOdds * selection.odds));
+  selections.forEach((selection) => (totalOdds = totalOdds * selection.odds))
 
-  return totalOdds;
-};
+  return totalOdds
+}
 
 export const comboName = (len) => {
   switch (len) {
     case 1:
-      return " Singles";
+      return ' Singles'
     case 2:
-      return " Doubles";
+      return ' Doubles'
     case 3:
-      return " Trebles";
+      return ' Trebles'
     default:
-      return +" " + len + " folds";
+      return +' ' + len + ' folds'
   }
-};
+}
 
 export const checkBetType = (grouped) => {
-  let betType = "Multiple";
+  let betType = 'Multiple'
   grouped.forEach((item) => {
     if (item.selections.length > 1) {
-      betType = "Split";
-      return false;
+      betType = 'Split'
+      return false
     }
-  });
-  return betType;
-};
+  })
+  return betType
+}
 
 export const getSplitProps = async (couponData) => {
-  const {
-    data
-  } = await getSplitPropsData(couponData);
-  couponData.noOfCombos = data.noOfCombos;
-  couponData.minOdds = data.minOdds;
-  couponData.maxOdds = data.maxOdds;
-  couponData.maxBonus = data.maxBonus;
-  couponData.minWin = data.minWin;
-  couponData.maxWin = data.maxWin;
-  return couponData;
-};
+  const { data } = await getSplitPropsData(couponData)
+  couponData.noOfCombos = data.noOfCombos
+  couponData.minOdds = data.minOdds
+  couponData.maxOdds = data.maxOdds
+  couponData.maxBonus = data.maxBonus
+  couponData.minWin = data.minWin
+  couponData.maxWin = data.maxWin
+  return couponData
+}
 
 export const displayComboName = (grouping) => {
   switch (grouping) {
     case 1:
-      return "Single";
+      return 'Single'
     case 2:
-      return "Double";
+      return 'Double'
     case 3:
-      return "Treble";
+      return 'Treble'
     default:
-      return grouping + " folds";
+      return grouping + ' folds'
   }
-};
+}
 
 export const checkIfHasLive = (selections) => {
-  let hasLive = false;
+  let hasLive = false
   selections.forEach((item) => {
-    if (item.type === "live") {
-      hasLive = true;
+    if (item.type === 'live') {
+      hasLive = true
     }
-  });
-  return hasLive;
-};
+  })
+  return hasLive
+}
 export const checkNoOfDraws = (selections) => {
-  let no_of_draws = 0;
+  let no_of_draws = 0
   selections.forEach((selection) => {
-    if (selection.oddname === "X") no_of_draws++;
-  });
-  return no_of_draws === selections.length && no_of_draws > 5;
-};
+    if (selection.oddname === 'X') no_of_draws++
+  })
+  return no_of_draws === selections.length && no_of_draws > 5
+}
 
 export const formatOdd = (odd) => {
   if (odd > 0 && odd % 1 === 0) {
-    return odd + ".00";
+    return odd + '.00'
   } else {
-    return odd;
+    return odd
   }
-};
+}
 
 export const validateCombinability = (no_of_fixtures, tournaments) => {
   let res = {
     success: true
-  };
+  }
   tournaments.forEach((tournament) => {
     switch (tournament.combinability) {
-      case "double":
+      case 'double':
         if (no_of_fixtures < 2) {
           res = {
             success: false,
-            message: "You must select minimum of 2 games with " +
+            message:
+              'You must select minimum of 2 games with ' +
               tournament.category +
-              " -> " +
-              tournament.tournamentName,
-          };
+              ' -> ' +
+              tournament.tournamentName
+          }
         }
-        break;
-      case "treble":
+        break
+      case 'treble':
         if (no_of_fixtures < 3) {
           res = {
             success: false,
-            message: "You must select minimum of 3 games with " +
+            message:
+              'You must select minimum of 3 games with ' +
               tournament.category +
-              " -> " +
-              tournament.tournamentName,
-          };
+              ' -> ' +
+              tournament.tournamentName
+          }
         }
-        break;
-      case "min_5":
+        break
+      case 'min_5':
         if (no_of_fixtures < 5) {
           res = {
             success: false,
-            message: "You must select minimum of 5 games with " +
+            message:
+              'You must select minimum of 5 games with ' +
               tournament.category +
-              " -> " +
-              tournament.tournamentName,
-          };
+              ' -> ' +
+              tournament.tournamentName
+          }
         }
-        break;
+        break
     }
-  });
-  return res;
-};
+  })
+  return res
+}
 
 export const formatString = (str, pos) => {
-  let ast = "****";
-  if (pos == "pre") {
-    return ast.concat(str.slice(-4));
+  let ast = '****'
+  if (pos == 'pre') {
+    return ast.concat(str.slice(-4))
   } else {
-    let spaceIndex = str.indexOf(" ");
-    return str.substr(0, spaceIndex + 5).concat(ast);
+    let spaceIndex = str.indexOf(' ')
+    return str.substr(0, spaceIndex + 5).concat(ast)
   }
-};
+}
 
 export const sortArr = (arr, field) => {
   if (arr && arr.length) {
-    const copyArr = [...arr];
-    return copyArr.sort((a, b) => a[field] - b[field]);
+    const copyArr = [...arr]
+    return copyArr.sort((a, b) => a[field] - b[field])
   } else {
-    return arr;
+    return arr
   }
-};
+}
 
 export const extractIdsFromURL = (str, type) => {
-  const parts = str.split("_");
+  const parts = str.split('_')
   // Map through parts and extract IDs
   const ids = parts.map((part) => {
     // Split each part by colon to get the ID
-    const segments = part.split(":");
-    const id = segments[segments.length - 1]; // Get the last segment as ID
+    const segments = part.split(':')
+    const id = segments[segments.length - 1] // Get the last segment as ID
     // Return the object based on the type
-    return type === 'category' ? {
-      categoryID: id
-    } : {
-      tournamentID: id
-    }
+    return type === 'category'
+      ? {
+          categoryID: id
+        }
+      : {
+          tournamentID: id
+        }
   })
 
   return ids
 }
 
-
 export const uniqueOdds = (odds) => {
-  return Array.from(
-    new Map(odds.map((item) => [item.outcomeID, item])).values()
-  );
+  return Array.from(new Map(odds.map((item) => [item.outcomeID, item])).values())
 }
 
-
 export const getStartAndEndOfMonth = () => {
-  const today = new Date();
-  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // First day of the month
-  const formattedStartDate = startOfMonth.toISOString().split("T")[0]; // Format: yyyy-mm-dd
-  const formattedEndDate = today.toISOString().split("T")[0]; // Today's date in yyyy-mm-dd format
+  const today = new Date()
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1) // First day of the month
+  const formattedStartDate = startOfMonth.toISOString().split('T')[0] // Format: yyyy-mm-dd
+  const formattedEndDate = today.toISOString().split('T')[0] // Today's date in yyyy-mm-dd format
 
   return {
     startDate: formattedStartDate,
     endDate: formattedEndDate
-  };
-};
+  }
+}

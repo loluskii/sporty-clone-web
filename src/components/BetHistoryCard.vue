@@ -1,9 +1,7 @@
 <template>
   <div class="x-order-list">
     <div class="x-order-header">
-      <span class="x-order-left">{{
-        moment(betData.created).format("DD/MM/YYYY HH:mm")
-      }}</span>
+      <span class="x-order-left">{{ moment(betData.created).format('DD/MM/YYYY HH:mm') }}</span>
     </div>
     <div
       class="x-order-bar"
@@ -11,9 +9,7 @@
     >
       <span class="x-order-type"> {{ betData.betCategory }} </span>
 
-      <span class="x-order-status" data-cms-key="running">{{
-        betData.statusDescription
-      }}</span>
+      <span class="x-order-status" data-cms-key="running">{{ betData.statusDescription }}</span>
       <i class="x-order-detail"></i>
     </div>
     <div class="x-order-selection">
@@ -36,7 +32,7 @@
       <div class="x-order-total-return">
         <div class="total-return label" data-cms-key="total_return">Total Return</div>
         <div class="stake label">
-          {{ betData.winnings ? formatNumber(betData.winnings) : "0.00" }}
+          {{ betData.winnings ? formatNumber(betData.winnings) : '0.00' }}
         </div>
       </div>
     </div>
@@ -47,11 +43,11 @@
 </template>
 
 <script setup>
-import { formatNumber } from "@/helpers";
-import moment from "moment";
+import { formatNumber } from '@/helpers'
+import moment from 'moment'
 defineProps({
-  betData: Object,
-});
+  betData: Object
+})
 </script>
 
 <style scoped>
@@ -103,8 +99,8 @@ defineProps({
   cursor: pointer;
 }
 .x-order-list .x-order-header .x-order-icon.share::before {
-  content: "\e63d";
-  font-family: "iconfont" !important;
+  content: '\e63d';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -165,8 +161,8 @@ defineProps({
   color: #fff;
 }
 .x-order-list .x-order-bar .x-order-icon.win::before {
-  content: "\e626";
-  font-family: "iconfont" !important;
+  content: '\e626';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -193,8 +189,8 @@ defineProps({
   height: 24px;
 }
 .x-order-list .x-order-bar .x-order-detail::before {
-  content: "\e608";
-  font-family: "iconfont" !important;
+  content: '\e608';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

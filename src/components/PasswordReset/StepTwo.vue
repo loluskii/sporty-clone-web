@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref,computed } from 'vue'
+import { ref, computed } from 'vue'
 import { CLIENT_ID, resetPassword } from '@/helpers'
 
 const password = ref('')
@@ -62,35 +62,33 @@ const savePassword = async () => {
 
     await resetPassword(payload)
     emit('next-step')
-
   } catch (error) {
     alert('An error occurred! Refresh and try again')
   }
 }
 
 const passwordErrors = computed(() => {
-  const errors = [];
+  const errors = []
   // Check if password length is at least 8 characters
   if (password.value.length >= 1 && password.value.length < 8) {
-    errors.push("Password must be at least 8 characters long.");
+    errors.push('Password must be at least 8 characters long.')
   }
   // Check if password contains at least one uppercase letter
   if (password.value.length >= 1 && !/[A-Z]/.test(password.value)) {
-    errors.push("Please add an uppercase letter.");
+    errors.push('Please add an uppercase letter.')
   }
   // Check if password contains at least one lowercase letter
   if (password.value.length >= 1 && !/[a-z]/.test(password.value)) {
-    errors.push("Please add a lowercase letter.");
+    errors.push('Please add a lowercase letter.')
   }
   // Check if password contains at least one number
   if (password.value.length >= 1 && !/\d/.test(password.value)) {
-    errors.push("Please add a number.");
+    errors.push('Please add a number.')
   }
-  return errors;
-});
+  return errors
+})
 
-const isPasswordValid = computed(() => passwordErrors.value.length === 0);
-
+const isPasswordValid = computed(() => passwordErrors.value.length === 0)
 </script>
 
 <style>

@@ -10,7 +10,7 @@
             <p>Sorry, something went wrong. Please try again later.</p>
             <button @click="retryLastOperation" class="retry-button">Retry</button>
           </div>
-          
+
           <template v-else-if="fixturesList.length">
             <TournamentCard
               v-for="tournament in fixturesList"
@@ -39,10 +39,7 @@
 <script setup>
 import SportsLayout from '@/components/Shared/SportsLayout.vue'
 import TournamentCard from '@/components/TournamentCard.vue'
-import {
-  getSportHighlights,
-  getToday2,
-} from '@/helpers'
+import { getSportHighlights, getToday2 } from '@/helpers'
 import { useRoute } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { ref, watch, onMounted, computed } from 'vue'
@@ -267,7 +264,7 @@ async function fixturesByActiveSport() {
         }
       })
       .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
-    
+
     fixturesList.value = tournamentsArray
     // marketsGroup.value = res.markets
     lastPage.value = res.lastPage
@@ -301,7 +298,7 @@ async function fetchActiveSportByPeriod(period) {
           }
         })
         .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
-      
+
       fixturesList.value = tournamentsArray
       lastPage.value = res.lastPage
       isLoading.value = false
@@ -330,7 +327,7 @@ async function fetchTodayActiveSport(id) {
         }
       })
       .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
-    
+
     fixturesList.value = tournamentsArray
     lastPage.value = res.lastPage
     isLoading.value = false
@@ -478,7 +475,7 @@ onMounted(() => {
     margin-bottom: -1px;
     padding: 0 13px;
     text-align: center;
-   /* // width: calc(100% / 6); */
+    /* // width: calc(100% / 6); */
   }
   .import-match .match-league .market-group .market-item.active {
     border-bottom: 4px solid var(--brand-secondary);

@@ -67,7 +67,9 @@
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
-            <div data-cms-key="tell_phone_number">Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}</div>
+            <div data-cms-key="tell_phone_number">
+              Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}
+            </div>
             <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
@@ -106,7 +108,7 @@
     </div>
     <div class="x-footer-mid">
       <ul class="x-content d-flex">
-        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;">
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex">
           <div class="x-left x-forum">
             <div class="x-image-wrapper">
               <img
@@ -121,7 +123,7 @@
           </p>
         </li>
         <!-- <li style="padding: 20px"></li> -->
-        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;">
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex">
           <div class="x-left x-licence">
             <div class="x-image-wrapper" style="height: auto !important">
               <img

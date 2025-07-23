@@ -297,7 +297,7 @@ ins {
 .x-icon-football::before,
 .x-icon--soccer::before {
   content: '\e67d';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -305,8 +305,8 @@ ins {
 }
 
 .x-icon--basketball::before {
-  content: "\e674";
-  font-family: "iconfont" !important;
+  content: '\e674';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -315,7 +315,7 @@ ins {
 
 .x-icon--basketball3x3::before {
   content: '\e6da';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -323,8 +323,8 @@ ins {
 }
 
 .x-icon--tennis::before {
-  content: "\e680";
-  font-family: "iconfont" !important;
+  content: '\e680';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -332,8 +332,8 @@ ins {
 }
 
 .x-icon--tableTennis::before {
-  content: "\e6b6";
-  font-family: "iconfont" !important;
+  content: '\e6b6';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -341,8 +341,8 @@ ins {
 }
 
 .x-icon--rugby::before {
-  content: "\e67b";
-  font-family: "iconfont" !important;
+  content: '\e67b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -350,8 +350,8 @@ ins {
 }
 
 .x-icon--cricket::before {
-  content: "\e673";
-  font-family: "iconfont" !important;
+  content: '\e673';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -359,8 +359,8 @@ ins {
 }
 
 .x-icon--handball::before {
-  content: "\e67a";
-  font-family: "iconfont" !important;
+  content: '\e67a';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -368,8 +368,8 @@ ins {
 }
 
 .x-icon--iceHockey::before {
-  content: "\e67c";
-  font-family: "iconfont" !important;
+  content: '\e67c';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -377,8 +377,8 @@ ins {
 }
 
 .x-icon--darts::before {
-  content: "\e675";
-  font-family: "iconfont" !important;
+  content: '\e675';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -386,8 +386,8 @@ ins {
 }
 
 .x-icon--volleyball::before {
-  content: "\e67f";
-  font-family: "iconfont" !important;
+  content: '\e67f';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -395,8 +395,8 @@ ins {
 }
 
 .x-icon--beachVolley::before {
-  content: "\e676";
-  font-family: "iconfont" !important;
+  content: '\e676';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -405,7 +405,7 @@ ins {
 
 .x-icon--counter-Strike::before {
   content: '\e6ba';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -414,7 +414,7 @@ ins {
 
 .x-icon--counterStrike::before {
   content: '\e6ba';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -423,7 +423,7 @@ ins {
 
 .x-icon--dota2::before {
   content: '\e6b9';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -432,7 +432,7 @@ ins {
 
 .x-icon--loL::before {
   content: '\e6b8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -441,7 +441,7 @@ ins {
 
 .x-icon--lol::before {
   content: '\e6b8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -450,7 +450,7 @@ ins {
 
 .x-icon--leagueOfLegends::before {
   content: '\e6b8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -458,8 +458,8 @@ ins {
 }
 
 .x-icon--badminton::before {
-  content: "\e6bb";
-  font-family: "iconfont" !important;
+  content: '\e6bb';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -467,8 +467,8 @@ ins {
 }
 
 .x-icon--baseball::before {
-  content: "\e6bc";
-  font-family: "iconfont" !important;
+  content: '\e6bc';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -477,7 +477,7 @@ ins {
 
 .x-icon--americanFootball::before {
   content: '\e6c5';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -486,7 +486,7 @@ ins {
 
 .x-icon--mma::before {
   content: '\e6ce';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -495,7 +495,7 @@ ins {
 
 .x-icon--mMA::before {
   content: '\e6ce';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -504,7 +504,7 @@ ins {
 
 .x-icon--futsal::before {
   content: '\e6c8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -513,7 +513,7 @@ ins {
 
 .x-icon--eFootball::before {
   content: '\e6cd';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -522,7 +522,7 @@ ins {
 
 .x-icon--eBasketball::before {
   content: '\e6cf';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -531,7 +531,7 @@ ins {
 
 .x-icon--ebasketball::before {
   content: '\e6cf';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -540,7 +540,7 @@ ins {
 
 .x-icon--eIceHockey::before {
   content: '\e6d1';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -548,8 +548,8 @@ ins {
 }
 
 .x-icon--vFootball::before {
-  content: "\e6d4";
-  font-family: "iconfont" !important;
+  content: '\e6d4';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -557,8 +557,8 @@ ins {
 }
 
 .x-icon--boxing::before {
-  content: "\e6c6";
-  font-family: "iconfont" !important;
+  content: '\e6c6';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -566,14 +566,13 @@ ins {
 }
 
 .x-icon--snooker::before {
-  content: "\e6ca";
-  font-family: "iconfont" !important;
+  content: '\e6ca';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
-
 
 .icon-live_virtuals-01:before {
   content: '\e6d4';
@@ -1466,7 +1465,7 @@ ins {
 .x-icon--football::before,
 .x-icon--soccer::before {
   content: '\e67d';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1474,8 +1473,8 @@ ins {
 }
 
 .x-icon--basketball::before {
-  content: "\e674";
-  font-family: "iconfont" !important;
+  content: '\e674';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1484,7 +1483,7 @@ ins {
 
 .x-icon--basketball3x3::before {
   content: '\e6da';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1492,8 +1491,8 @@ ins {
 }
 
 .x-icon--tennis::before {
-  content: "\e680";
-  font-family: "iconfont" !important;
+  content: '\e680';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1501,8 +1500,8 @@ ins {
 }
 
 .x-icon--tableTennis::before {
-  content: "\e6b6";
-  font-family: "iconfont" !important;
+  content: '\e6b6';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1510,8 +1509,8 @@ ins {
 }
 
 .x-icon--rugby::before {
-  content: "\e67b";
-  font-family: "iconfont" !important;
+  content: '\e67b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1519,8 +1518,8 @@ ins {
 }
 
 .x-icon--cricket::before {
-  content: "\e673";
-  font-family: "iconfont" !important;
+  content: '\e673';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1528,8 +1527,8 @@ ins {
 }
 
 .x-icon--handball::before {
-  content: "\e67a";
-  font-family: "iconfont" !important;
+  content: '\e67a';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1537,8 +1536,8 @@ ins {
 }
 
 .x-icon--iceHockey::before {
-  content: "\e67c";
-  font-family: "iconfont" !important;
+  content: '\e67c';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1546,8 +1545,8 @@ ins {
 }
 
 .x-icon--darts::before {
-  content: "\e675";
-  font-family: "iconfont" !important;
+  content: '\e675';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1555,8 +1554,8 @@ ins {
 }
 
 .x-icon--volleyball::before {
-  content: "\e67f";
-  font-family: "iconfont" !important;
+  content: '\e67f';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1564,8 +1563,8 @@ ins {
 }
 
 .x-icon--beachVolley::before {
-  content: "\e676";
-  font-family: "iconfont" !important;
+  content: '\e676';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1574,7 +1573,7 @@ ins {
 
 .x-icon--counter-Strike::before {
   content: '\e6ba';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1583,7 +1582,7 @@ ins {
 
 .x-icon--counterStrike::before {
   content: '\e6ba';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1592,7 +1591,7 @@ ins {
 
 .x-icon--dota2::before {
   content: '\e6b9';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1601,7 +1600,7 @@ ins {
 
 .x-icon--loL::before {
   content: '\e6b8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1610,7 +1609,7 @@ ins {
 
 .x-icon--lol::before {
   content: '\e6b8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1619,7 +1618,7 @@ ins {
 
 .x-icon--leagueOfLegends::before {
   content: '\e6b8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1627,8 +1626,8 @@ ins {
 }
 
 .x-icon--badminton::before {
-  content: "\e6bb";
-  font-family: "iconfont" !important;
+  content: '\e6bb';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1636,8 +1635,8 @@ ins {
 }
 
 .x-icon--baseball::before {
-  content: "\e6bc";
-  font-family: "iconfont" !important;
+  content: '\e6bc';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1646,7 +1645,7 @@ ins {
 
 .x-icon--americanFootball::before {
   content: '\e6c5';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1655,7 +1654,7 @@ ins {
 
 .x-icon--mma::before {
   content: '\e6ce';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1664,7 +1663,7 @@ ins {
 
 .x-icon--mMA::before {
   content: '\e6ce';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1673,7 +1672,7 @@ ins {
 
 .x-icon--futsal::before {
   content: '\e6c8';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1682,7 +1681,7 @@ ins {
 
 .x-icon--eFootball::before {
   content: '\e6cd';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1691,7 +1690,7 @@ ins {
 
 .x-icon--eBasketball::before {
   content: '\e6cf';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1700,7 +1699,7 @@ ins {
 
 .x-icon--ebasketball::before {
   content: '\e6cf';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1709,7 +1708,7 @@ ins {
 
 .x-icon--eIceHockey::before {
   content: '\e6d1';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1717,8 +1716,8 @@ ins {
 }
 
 .x-icon--vFootball::before {
-  content: "\e6d4";
-  font-family: "iconfont" !important;
+  content: '\e6d4';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1726,8 +1725,8 @@ ins {
 }
 
 .x-icon--boxing::before {
-  content: "\e6c6";
-  font-family: "iconfont" !important;
+  content: '\e6c6';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1735,20 +1734,18 @@ ins {
 }
 
 .x-icon--snooker::before {
-  content: "\e6ca";
-  font-family: "iconfont" !important;
+  content: '\e6ca';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 
-
-
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (max-height: 1024px),
-only screen and (min-width: 1024px) and (max-width: 1439px),
-only screen and (min-width: 1440px) and (max-width: 2559px),
-only screen and (min-width: 2560px) {
+  only screen and (min-width: 1024px) and (max-width: 1439px),
+  only screen and (min-width: 1440px) and (max-width: 2559px),
+  only screen and (min-width: 2560px) {
   .x-dialog.opennet-dialog-style .x-dialog-head {
     padding-left: 24px;
     padding-right: 24px;
@@ -1760,9 +1757,9 @@ only screen and (min-width: 2560px) {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (max-height: 1024px),
-only screen and (min-width: 1024px) and (max-width: 1439px),
-only screen and (min-width: 1440px) and (max-width: 2559px),
-only screen and (min-width: 2560px) {
+  only screen and (min-width: 1024px) and (max-width: 1439px),
+  only screen and (min-width: 1440px) and (max-width: 2559px),
+  only screen and (min-width: 2560px) {
   .x-dialog.opennet-dialog-style .x-dialog-body:first-child {
     margin-top: 20px;
   }
@@ -1779,9 +1776,9 @@ only screen and (min-width: 2560px) {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (max-height: 1024px),
-only screen and (min-width: 1024px) and (max-width: 1439px),
-only screen and (min-width: 1440px) and (max-width: 2559px),
-only screen and (min-width: 2560px) {
+  only screen and (min-width: 1024px) and (max-width: 1439px),
+  only screen and (min-width: 1440px) and (max-width: 2559px),
+  only screen and (min-width: 2560px) {
   .x-dialog.opennet-dialog-style .x-dialog-body .x-dialog-main {
     font-size: 14px;
     padding: 0 24px;
@@ -1793,9 +1790,9 @@ only screen and (min-width: 2560px) {
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) and (max-height: 1024px),
-only screen and (min-width: 1024px) and (max-width: 1439px),
-only screen and (min-width: 1440px) and (max-width: 2559px),
-only screen and (min-width: 2560px) {
+  only screen and (min-width: 1024px) and (max-width: 1439px),
+  only screen and (min-width: 1440px) and (max-width: 2559px),
+  only screen and (min-width: 2560px) {
   .x-dialog.opennet-dialog-style .x-dialog-footer {
     margin-bottom: 20px;
   }
@@ -1824,12 +1821,16 @@ only screen and (min-width: 2560px) {
   color: var(--text-type1-secondary);
 }
 
-.x-dialog.opennet-dialog-style.has-oppositive-button__reverse .x-dialog-footer .es-dialog-btn:last-child {
+.x-dialog.opennet-dialog-style.has-oppositive-button__reverse
+  .x-dialog-footer
+  .es-dialog-btn:last-child {
   color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 
-.x-dialog.opennet-dialog-style.has-oppositive-button-right .x-dialog-footer .es-dialog-btn:last-child {
+.x-dialog.opennet-dialog-style.has-oppositive-button-right
+  .x-dialog-footer
+  .es-dialog-btn:last-child {
   color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
@@ -1846,7 +1847,10 @@ only screen and (min-width: 2560px) {
   font-size: 1.5rem !important;
 }
 
-.x-dialog.opennet-dialog-style.leave-dialog .es-dialog-body.x-dialog-body .es-dialog-main.x-dialog-main div {
+.x-dialog.opennet-dialog-style.leave-dialog
+  .es-dialog-body.x-dialog-body
+  .es-dialog-main.x-dialog-main
+  div {
   font-size: 1.16666667rem !important;
 }
 
@@ -1859,7 +1863,10 @@ only screen and (min-width: 2560px) {
   font-size: 18px !important;
 }
 
-.x-dialog.opennet-dialog-style.leave-dialog-pc .es-dialog-body.x-dialog-body .es-dialog-main.x-dialog-main div {
+.x-dialog.opennet-dialog-style.leave-dialog-pc
+  .es-dialog-body.x-dialog-body
+  .es-dialog-main.x-dialog-main
+  div {
   font-size: 14px !important;
 }
 
@@ -1931,7 +1938,7 @@ only screen and (min-width: 2560px) {
   padding: 0.66666667rem 2rem !important;
 }
 
-.opennet-dialog-style.es-dialog .es-dialog-footer .es-dialog-btn+.es-dialog-btn {
+.opennet-dialog-style.es-dialog .es-dialog-footer .es-dialog-btn + .es-dialog-btn {
   margin-left: 2rem;
 }
 
@@ -2025,7 +2032,7 @@ textarea {
 }
 
 .c-footer .x-footer-top,
-.c-header-fix+.c-page {
+.c-header-fix + .c-page {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
@@ -2053,8 +2060,6 @@ textarea {
   text-decoration: none;
 }
 
-
-
 .c-footer .x-footer-top .x-icon-more {
   color: hsla(0, 0%, 100%, 0.8);
 }
@@ -2072,8 +2077,6 @@ textarea {
   font-size: 10px;
   margin-right: 10px;
 }
-
-
 
 .c-footer .x-footer-top .x-m-r {
   margin-right: 65px;
@@ -2147,7 +2150,7 @@ textarea {
   top: 0;
 }
 
-.c-footer .x-footer-top .x-l-right>address {
+.c-footer .x-footer-top .x-l-right > address {
   display: inline-block;
   height: 24px;
   margin-right: 16px;
@@ -2157,7 +2160,7 @@ textarea {
 }
 
 .c-footer .x-footer-top .x-icon,
-.c-footer .x-footer-top .x-l-right>address>a {
+.c-footer .x-footer-top .x-l-right > address > a {
   display: inline-block;
   vertical-align: top;
 }
@@ -2174,8 +2177,6 @@ textarea {
 .c-footer .x-footer-top .x-icon:last-of-type {
   margin-right: 0;
 }
-
-
 
 .c-footer .x-footer-top .x-icon-fb {
   background: #3b5eb4;
@@ -2293,7 +2294,7 @@ textarea {
   margin-right: 14px;
 } */
 
-.c-footer .x-footer-mid .x-col-wrapper .x-forum+.x-right {
+.c-footer .x-footer-mid .x-col-wrapper .x-forum + .x-right {
   color: hsla(0, 0%, 100%, 0.86);
 }
 
@@ -2353,7 +2354,7 @@ textarea {
   width: 29px;
 }
 
-.c-footer .x-footer-mid .x-licence+.x-right {
+.c-footer .x-footer-mid .x-licence + .x-right {
   color: hsla(0, 0%, 100%, 0.86);
 }
 
@@ -2461,7 +2462,7 @@ textarea {
   width: 1000px;
 }
 
-.c-footer .x-content>* {
+.c-footer .x-content > * {
   display: inline-block;
 }
 
@@ -2470,7 +2471,7 @@ textarea {
   margin-right: 1rem;
 }
 
-.c-footer .x-image-wrapper>img {
+.c-footer .x-image-wrapper > img {
   height: 100%;
   width: 100%;
 }
@@ -2482,7 +2483,7 @@ textarea {
 }
 
 @media only screen and (min-width: 1024px) and (max-width: 1439px),
-only screen and (min-width: 1440px) and (max-width: 2559px) {
+  only screen and (min-width: 1440px) and (max-width: 2559px) {
   html {
     font-size: 12px;
   }
@@ -2495,18 +2496,18 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-tabs {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   background-color: var(--background-general-primary);
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
-  color: #353A45;
+  color: #353a45;
   color: var(--text-type1-primary);
 }
 
 .x-tabs-ink-bar {
-  background-color: #33EA6A;
+  background-color: #33ea6a;
   bottom: 1px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -2522,9 +2523,9 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-tabs-bar {
-  border-bottom: 1px solid #EAECEF;
+  border-bottom: 1px solid #eaecef;
   margin-bottom: 16px;
-  border-bottom-color: #EAECEF;
+  border-bottom-color: #eaecef;
   border-bottom-color: var(--line-type1-primary);
 }
 
@@ -2541,7 +2542,9 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   -webkit-transition: -webkit-transform 0.5s ease-in-out;
   transition: -webkit-transform 0.5s ease-in-out;
   transition: transform 0.5s ease-in-out;
-  transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
+  transition:
+    transform 0.5s ease-in-out,
+    -webkit-transform 0.5s ease-in-out;
   white-space: nowrap;
   width: 100%;
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -2604,7 +2607,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-tabs-nav .x-tabs-tab-active {
-  color: #33EA6A;
+  color: #33ea6a;
 }
 
 .x-tabs-mini .x-tabs-nav-container {
@@ -2630,7 +2633,9 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   -webkit-transition: -webkit-transform 0.5s ease-in-out;
   transition: -webkit-transform 0.5s ease-in-out;
   transition: transform 0.5s ease-in-out;
-  transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
+  transition:
+    transform 0.5s ease-in-out,
+    -webkit-transform 0.5s ease-in-out;
   will-change: transform;
 }
 
@@ -2650,7 +2655,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-tabs .right-btn {
-  background-color: #F2F3F5;
+  background-color: #f2f3f5;
   background-color: var(--background-type1-primary);
   -webkit-box-shadow: -2px 0 6px 0 rgba(0, 0, 0, 0.1);
   box-shadow: -2px 0 6px 0 rgba(0, 0, 0, 0.1);
@@ -2662,13 +2667,13 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   right: 0;
 }
 
-.x-tabs-no-animation>.x-tabs-content {
+.x-tabs-no-animation > .x-tabs-content {
   -webkit-transform: none !important;
   -ms-transform: none !important;
   transform: none !important;
 }
 
-.x-tabs-no-animation>.x-tabs-content>.x-tabs-tabpane-inactive {
+.x-tabs-no-animation > .x-tabs-content > .x-tabs-tabpane-inactive {
   display: none;
 }
 
@@ -2697,29 +2702,29 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   width: 100%;
-  color: #353A45;
+  color: #353a45;
   color: var(--text-type1-primary);
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   background-color: var(--background-general-primary);
 }
 
 .x-input-wrapper .x-input::-webkit-input-placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 
 .x-input-wrapper .x-input::-moz-placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 
 .x-input-wrapper .x-input::-ms-input-placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 
 .x-input-wrapper .x-input::placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 
@@ -2728,7 +2733,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-input-wrapper .x-input-icon {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
   height: 100%;
   position: absolute;
@@ -2742,23 +2747,23 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-input-wrapper .x-input-icon:before {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
   content: '\e602';
   display: inline-block;
   vertical-align: middle;
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 
-.x-input-wrapper .x-input-icon+.x-input {
+.x-input-wrapper .x-input-icon + .x-input {
   padding-right: 12px;
 }
 
-.x-input-wrapper .x-input-icon.x-input-icon--show+.x-input {
+.x-input-wrapper .x-input-icon.x-input-icon--show + .x-input {
   padding-right: 30px;
 }
 
@@ -2798,7 +2803,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   color: var(--brand-secondary);
 }
 
-.x-input-wrapper .x-input-text--icon+.x-input {
+.x-input-wrapper .x-input-text--icon + .x-input {
   padding-right: 42px;
 }
 
@@ -2825,32 +2830,32 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 .x-input-wrapper.x-input-wrapper--disabled .x-input,
 .x-input-wrapper.x-input-wrapper--disabled .x-input-append,
 .x-input-wrapper.x-input-wrapper--disabled .x-input-prepend {
-  background-color: #DCDEE5;
+  background-color: #dcdee5;
   background-color: var(--disable-brand-secondary);
-  border-color: #EAECEF;
+  border-color: #eaecef;
   border-color: var(--line-type1-primary);
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-disable-type1-primary);
   cursor: not-allowed;
 }
 
 .x-input-wrapper.x-input-wrapper--disabled .x-input::-webkit-input-placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-disable-type1-primary);
 }
 
 .x-input-wrapper.x-input-wrapper--disabled .x-input::-moz-placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-disable-type1-primary);
 }
 
 .x-input-wrapper.x-input-wrapper--disabled .x-input::-ms-input-placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-disable-type1-primary);
 }
 
 .x-input-wrapper.x-input-wrapper--disabled .x-input::placeholder {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-disable-type1-primary);
 }
 
@@ -2898,16 +2903,16 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   width: 100%;
 }
 
-.x-input-group>.x-input {
+.x-input-group > .x-input {
   display: table-cell;
   vertical-align: middle;
 }
 
 .x-input-group .x-input-append,
 .x-input-group .x-input-prepend {
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   background-color: var(--background-general-primary);
-  border: 1px solid #EAECEF;
+  border: 1px solid #eaecef;
   border-radius: 4px;
   display: table-cell;
   padding: 0 10px;
@@ -2917,9 +2922,9 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   vertical-align: middle;
   white-space: nowrap;
   width: 1px;
-  color: #353A45;
+  color: #353a45;
   color: var(--text-type1-primary);
-  border-color: #EAECEF;
+  border-color: #eaecef;
   border-color: var(--line-type1-primary);
 }
 
@@ -2935,11 +2940,11 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .x-input-group.x-input-group--prepend .x-input {
-  border: 1px solid #EAECEF;
+  border: 1px solid #eaecef;
   border-bottom-left-radius: 0;
   border-left: 0;
   border-top-left-radius: 0;
-  border-color: #EAECEF;
+  border-color: #eaecef;
   border-color: var(--line-type1-primary);
 }
 
@@ -2954,7 +2959,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   border-top-right-radius: 0;
 }
 
-.x-input-wrapper .x-input-text--icon+.x-input {
+.x-input-wrapper .x-input-text--icon + .x-input {
   padding-right: 50px;
 }
 
@@ -2969,10 +2974,9 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
   margin: 0;
 }
 
-.x-input-wrapper .x-input.hide-arrow[type=number] {
+.x-input-wrapper .x-input.hide-arrow[type='number'] {
   -moz-appearance: textfield;
 }
-
 
 .size-14 {
   font-size: 1.16666667rem;
@@ -2995,11 +2999,11 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .dark {
-  color: #353A45;
+  color: #353a45;
 }
 
 .darkGray {
-  color: #9CA0AB;
+  color: #9ca0ab;
 }
 
 .green {
@@ -3096,8 +3100,8 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .icon-sms::before {
-  content: "\e6bd";
-  font-family: "iconfont" !important;
+  content: '\e6bd';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3105,8 +3109,8 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .icon-voice::before {
-  content: "\e6be";
-  font-family: "iconfont" !important;
+  content: '\e6be';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3114,8 +3118,8 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .icon-reverse_sms::before {
-  content: "\e6d22";
-  font-family: "iconfont" !important;
+  content: '\e6d22';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3124,7 +3128,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 
 .icon-arrow-right::before {
   content: '\e608';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3133,7 +3137,7 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 
 .icon-back::before {
   content: '\e604';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -3145,5 +3149,5 @@ only screen and (min-width: 1440px) and (max-width: 2559px) {
 }
 
 .sec-left {
-  color: #353A45;
+  color: #353a45;
 }

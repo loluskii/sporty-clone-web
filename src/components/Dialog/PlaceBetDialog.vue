@@ -29,9 +29,7 @@
                       style="display: none; min-width: 320px"
                     >
                       <div class="m-popOver">
-                        <p
-                          data-cms-key="input_this_code_in_betslip_to_restore_selections"
-                        >
+                        <p data-cms-key="input_this_code_in_betslip_to_restore_selections">
                           Input this code in betslip to restore selections.
                         </p>
                       </div>
@@ -39,24 +37,15 @@
                     </div>
                   </div>
                   <div class="m-value">
-                    <img
-                      @click="shareCode"
-                      src="/ic-share.svg"
-                    />
-                    <img
-                      @click="copyBookingCode"
-                      src="/copy.svg"
-                    />
+                    <img @click="shareCode" src="/ic-share.svg" />
+                    <img @click="copyBookingCode" src="/copy.svg" />
                     <div class="booking-code">{{ response.betslipId }}</div>
                   </div>
                 </li>
               </ul>
 
               <div class="m-btn-wrapper m-ok-wrap">
-                <button
-                  class="af-button af-button--primary"
-                  @click="emitter.emit('clearBetslip')"
-                >
+                <button class="af-button af-button--primary" @click="emitter.emit('clearBetslip')">
                   <span><span>OK</span></span>
                 </button>
               </div>
@@ -82,36 +71,36 @@
 </template>
 
 <script setup>
-import emitter from "@/plugins/emitter";
-import { useRouter } from "vue-router";
+import emitter from '@/plugins/emitter'
+import { useRouter } from 'vue-router'
 const props = defineProps({
-  response: Object,
-});
+  response: Object
+})
 
 const router = useRouter()
 
 const goToBetHistory = () => {
-  emitter.emit('hideDialog');
+  emitter.emit('hideDialog')
   return router.push({ name: 'account-bethistory' })
 }
 
 function copyBookingCode() {
-  const textToCopy = props.response.betslipId;
-  const textarea = document.createElement("textarea");
-  textarea.value = textToCopy;
-  document.body.appendChild(textarea);
-  textarea.select();
+  const textToCopy = props.response.betslipId
+  const textarea = document.createElement('textarea')
+  textarea.value = textToCopy
+  document.body.appendChild(textarea)
+  textarea.select()
 
   try {
-    navigator.clipboard.writeText(textToCopy);
-    alert("Copied!");
+    navigator.clipboard.writeText(textToCopy)
+    alert('Copied!')
   } catch (err) {
-    console.error("Unable to copy to clipboard", err);
+    console.error('Unable to copy to clipboard', err)
   }
 }
 
-function shareCode(){
- emitter.emit('hideDialog', { dialogType: 'book-bet', dialogData: props.response });
+function shareCode() {
+  emitter.emit('hideDialog', { dialogType: 'book-bet', dialogData: props.response })
 }
 </script>
 
@@ -141,8 +130,8 @@ function shareCode(){
   top: 170px;
 }
 .m-dialog-wrapper .m-holding-icon::before {
-  content: "\e654";
-  font-family: "iconfont" !important;
+  content: '\e654';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -181,8 +170,8 @@ function shareCode(){
   transform: translate3d(0, -50%, 0);
 }
 .m-dialog-wrapper .m-pop-header .m-icon-close::before {
-  content: "\e69a";
-  font-family: "iconfont" !important;
+  content: '\e69a';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -201,8 +190,8 @@ function shareCode(){
   padding: 20px 0 0;
 }
 .m-dialog-wrapper .m-pop-header-fix .m-icon-suc::before {
-  content: "\e60b";
-  font-family: "iconfont" !important;
+  content: '\e60b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -333,11 +322,7 @@ function shareCode(){
   width: -moz-fit-content;
   width: fit-content;
 }
-.m-dialog-wrapper
-  .m-share-wrapper
-  .booking-code-share
-  .booking-code-share-code
-  #content-copy {
+.m-dialog-wrapper .m-share-wrapper .booking-code-share .booking-code-share-code #content-copy {
   left: 100%;
   margin-left: 12px;
   margin-top: 4px;
@@ -356,11 +341,7 @@ function shareCode(){
 .m-dialog-wrapper .m-share-wrapper .booking-code-share .zoom-image-container .zoom-image {
   height: 100px;
 }
-.m-dialog-wrapper
-  .m-share-wrapper
-  .booking-code-share
-  .zoom-image-container
-  .zoom-handler {
+.m-dialog-wrapper .m-share-wrapper .booking-code-share .zoom-image-container .zoom-handler {
   cursor: pointer;
   left: 50%;
   position: absolute;
@@ -434,8 +415,8 @@ function shareCode(){
   margin-left: 0;
 }
 .m-dialog-wrapper .m-share-wrapper .af-icon-faceBook::before {
-  content: "\e6e2";
-  font-family: "iconfont" !important;
+  content: '\e6e2';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -455,17 +436,11 @@ function shareCode(){
   height: 28px;
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--error .m-input,
-.m-dialog-wrapper
-  .m-share-wrapper
-  .m-input-wrapper.m-input-wrapper--error
-  .m-input-append {
+.m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--error .m-input-append {
   border-color: #e41827 !important;
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--active .m-input,
-.m-dialog-wrapper
-  .m-share-wrapper
-  .m-input-wrapper.m-input-wrapper--active
-  .m-input-append {
+.m-dialog-wrapper .m-share-wrapper .m-input-wrapper.m-input-wrapper--active .m-input-append {
   border-color: var(--brand-primary);
 }
 .m-dialog-wrapper .m-share-wrapper .m-input-wrapper .m-input-append {
@@ -488,8 +463,8 @@ function shareCode(){
   padding: 10px 0 0;
 }
 .m-dialog-suc .m-pop-header .m-icon-suc::before {
-  content: "\e60b";
-  font-family: "iconfont" !important;
+  content: '\e60b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -497,7 +472,7 @@ function shareCode(){
 }
 .m-dialog-suc .m-pop-header .m-icon-suc:after {
   background: var(--brand-primary);
-  content: "";
+  content: '';
   display: inline-block;
   height: 25px;
   left: -24px;
@@ -569,8 +544,8 @@ function shareCode(){
   width: 48px;
 }
 .m-dialog-suc .share-code .m-label em::before {
-  content: "\e651";
-  font-family: "iconfont" !important;
+  content: '\e651';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -624,8 +599,8 @@ function shareCode(){
   vertical-align: middle;
 }
 .m-dialog-suc .m-btn-text .m-icon-more::before {
-  content: "\e608";
-  font-family: "iconfont" !important;
+  content: '\e608';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
