@@ -6,9 +6,8 @@
   </div> <!-- Home Carousel -->
 </template>
 <script setup>
-import { ref, defineComponent, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { fetchBanners } from "@/helpers";
-import _ from "lodash";
 
 const currentIndex = ref(0);
 const intervalId = ref(null);

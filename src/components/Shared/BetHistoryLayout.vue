@@ -74,7 +74,6 @@
   </div>
 </template>
 <script setup>
-import BaseLayout from '@/components/Shared/BaseLayout.vue'
 import BetContainer from './BetContainer.vue'
 import Header from './Header.vue'
 import Footer from './Footer.vue'

@@ -133,7 +133,7 @@ const updatePending = ref(false);
 const updatedOutcomes = ref({});
 
 // MQTT Service
-const { subscribe, isConnected } = useMqttService();
+const { subscribe } = useMqttService();
 
 // MQTT Topics
 const oddsChangeTopic = `feeds/prematch/odds_change/${props.game.matchID}`;

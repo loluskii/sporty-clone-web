@@ -225,11 +225,8 @@ import BetListEvent from '@/components/Betslip/BetListEvent.vue'
 const couponStore = useCouponStore()
 const { SportsbookGlobalVariable } = useUtilsStore();
 const bookingCode = ref('')
-const placeBetStatus = ref(false)
 const isPlaceBetSuccessful = ref(false)
-const isBookBetSuccessful = ref(false)
 const placeBetResponse = ref({})
-const bookBetResponse = ref({})
 const usersStore = useUsersStore()
 const showConfirmationModal = ref(false)
 
@@ -282,10 +279,6 @@ const placeBetDisabled = computed(() => {
     couponStore.coupon.totalStake <
     parseFloat(SportsbookGlobalVariable.MinBetStake)
   ) || couponStore.isBetslipLoading;
-});
-
-const acceptedChanges = computed(() => {
-  return couponStore.coupon.acceptChanges;
 });
 
 const taxEnabled = computed(

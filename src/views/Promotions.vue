@@ -1,12 +1,9 @@
 <script setup>
 import BaseLayout from '@/components/Shared/BaseLayout.vue'
-import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { getPromotions } from "@/helpers";
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue';
-import emitter from '@/plugins/emitter'
 
-const route = useRoute()
 const promotions = ref([])
 const pageTitle = ref("Promotions");
 const pageMode = ref("general-mode");
@@ -17,13 +14,6 @@ function goToPromotion(promo) {
   pageTitle.value = promo.title;
   selectedPromotion.value = promo
   pageMode.value = "single-mode";
-}
-
-function goToLink(link) {
-  if (!link.startsWith("http") || !link.startsWith("https")) {
-    link = `https://${link}`; // Ensure it has the correct format
-  }
-  return window.location.href = link;
 }
 
 function backToGrid() {

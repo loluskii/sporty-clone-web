@@ -113,7 +113,7 @@ import { useUtilsStore } from '@/stores'
 import HighlightFixtures from './HighlightFixtures.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { getHighlights2, formatDate } from '@/helpers'
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 
 const utilsStore = useUtilsStore()

@@ -76,7 +76,6 @@
 <script setup>
 import emitter from "@/plugins/emitter";
 import { useUtilsStore } from "@/stores";
-import { onMounted } from "vue";
 const {brandName} = useUtilsStore()
 const props = defineProps({
   response: Object,

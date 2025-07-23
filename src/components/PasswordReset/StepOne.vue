@@ -63,7 +63,6 @@
 import { onMounted, ref } from 'vue'
 import { useAuthStore, useUtilsStore } from '@/stores'
 import { sendOTP, verifyOTP } from '@/helpers'
-import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 
 const emit = defineEmits(['go-back', 'next-step'])
 const props = defineProps(['phoneNumber'])

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import { getUserDetailsByToken, formatNumber } from "@/helpers";
+import { getUserDetailsByToken } from "@/helpers";
 import { getUserActiveBonus } from "../helpers";
 import emitter from "../plugins/emitter";
 

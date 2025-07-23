@@ -104,9 +104,9 @@
 </template>
 <script setup>
 import SportsLayout from "@/components/Shared/SportsLayout.vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted } from "vue";
 import { useCouponStore } from "@/stores";
 import emitter from "@/plugins/emitter";
 
@@ -114,7 +114,6 @@ import _ from "lodash";
 import { getFixtureMarkets, unslugify, createID, isSelected } from "@/helpers";
 import moment from "moment";
 // import LiveInplay from '@/components/LiveInplay.vue'
-import $ from "jquery";
 
 const couponStore = useCouponStore();
 const route = useRoute();
@@ -164,13 +163,6 @@ const uniqueOutcomes = (outcomes) => {
   );
   return x;
 };
-
-function replaceCompetitorNames(inputString) {
-  const replacedString = inputString
-    .replace(new RegExp(competitor1.value, "g"), "Home")
-    .replace(new RegExp(competitor2.value, "g"), "Away");
-  return replacedString;
-}
 
 function addToBetslip(event, odd, market) {
   if (odd.odds < 1) return;

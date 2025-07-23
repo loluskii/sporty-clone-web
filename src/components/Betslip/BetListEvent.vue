@@ -60,6 +60,8 @@ const selectionIsUnavailable = computed(() => {
     return true
   }
 
+  return false;
+
   // // Check if expired based on time
   // const parsedDate = new Date(props.selection.eventDate);
   // const currentDate = new Date();

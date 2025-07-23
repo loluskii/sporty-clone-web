@@ -60,7 +60,7 @@ const savePassword = async () => {
       clientId: CLIENT_ID
     }
 
-    const res = await resetPassword(payload)
+    await resetPassword(payload)
     emit('next-step')
 
   } catch (error) {

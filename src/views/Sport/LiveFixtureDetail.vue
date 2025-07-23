@@ -145,19 +145,18 @@
 </template>
 
 <script setup>
-import { defineComponent, watch, ref, computed, onMounted, onUnmounted, reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { defineComponent, watch, ref, computed, onUnmounted, reactive } from "vue";
+import { useRoute } from "vue-router";
 import {
   getFixtureMarkets,
-  chunks,
+
   createID,
-  isSelected,
-  getLiveHighlights,
+  isSelected
+  
 } from "@/helpers";
 import LiveLayout from "@/components/Shared/LiveLayout.vue";
 import BetContainer from "@/components/Shared/BetContainer.vue";
 import _ from "lodash";
-import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
 import emitter from "@/plugins/emitter";
 import { useCouponStore, useUtilsStore } from "@/stores";
 import { useMqttService } from "@/composables/useMqtt";
@@ -179,7 +178,6 @@ const REFETCH_INTERVAL_MS = 60000; // 60 seconds
 
 
 const route = useRoute();
-const router = useRouter();
 
 const couponStore = useCouponStore();
 const utilsStore = useUtilsStore();
@@ -188,7 +186,6 @@ const awayTeam = ref();
 
 const isRefreshing = ref(false);
 // const userStore = useUsersStore()
-const isClockStopped = ref(false);
 const unsubscribeFunctions = ref(null)
 
 const { subscribe } = useMqttService();
@@ -412,15 +409,6 @@ function addToBetslip(outcome, market) {
   return existsInBetslip
     ? couponStore.removeSelection(id)
     : couponStore.addToCoupon(data);
-}
-
-// Open fixture analysis in a new window
-function showFixtureAnalysis(id) {
-  return window.open(
-    `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
-    "stats",
-    "width=1078,height=768"
-  );
 }
 
 // Show register modal

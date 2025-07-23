@@ -4,7 +4,6 @@
   </div>
 </template>
 <script setup>
-import { formatOdd } from '../../helpers';
 import { defineComponent, ref, watch } from 'vue'
 
 const props = defineProps({

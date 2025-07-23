@@ -74,7 +74,7 @@ async function verifyPaymentRef(method, ref) {
       isPaymentSuccess.value = true
       if (bonus.value){
         await awardBonus(bonus.value)
-        .then(res => {
+        .then(() => {
           usersStore.setActiveBonus(null);
         })
       }

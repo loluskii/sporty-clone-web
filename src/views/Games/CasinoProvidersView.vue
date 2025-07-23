@@ -47,17 +47,16 @@ import { getProviders, slugify } from '@/helpers'
 const router = useRouter()
 const providers = ref([])
 const isLoading = ref(false)
-const sortBy = ref('name')
 
 const sortedProviders = computed(() => {
   const providersList = [...providers.value]
-  switch (sortBy.value) {
-    case 'popular':
-    //   return providersList.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
-    case 'name':
-    default:
-      return providersList.sort((a, b) => a.name.localeCompare(b.name))
-  }
+  return providersList.sort((a, b) => a.name.localeCompare(b.name))
+  // switch (sortBy.value) {
+  //   case 'popular':
+  //   //   return providersList.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+  //   case 'name':
+  //   default:
+  // }
 })
 
 const getProviderImage = (provider) => {

@@ -4,7 +4,7 @@
       <span class="circle"></span>
       <span class="text" data-cms-key="live_betting">Live Betting</span>
       <div class="config" style="">
-        <!-- <span class="refresh" @click="handleRefresh">Refresh</span> -->
+        <span class="refresh" @click="handleRefresh">Refresh</span>
       </div>
     </div>
     <div id="print-container-live">
@@ -122,13 +122,10 @@ import { computed, ref, watch } from "vue";
 import LoadingSpinner from "../Loaders/LoadingSpinner.vue";
 import { useQuery } from "vue-query";
 import { getLiveHighlights } from "@/helpers";
-import Fixture from "@/components/Live/Fixture.vue";
+import Fixture from "@/components/Live/LiveFixture.vue";
 import _ from "lodash";
 
 const utilsStore = useUtilsStore();
-
-// Memoize sportList
-const sportList = computed(() => utilsStore.sportsMenu);
 
 // Get sportIDs with live games
 const liveSportIDs = computed(() => {
@@ -156,7 +153,7 @@ const MoreSportsLabel = ref("More Sports");
 const isManualRefetching = ref(false);
 
 // Optimize the query with better caching and error handling
-const { data, error, isLoading, refetch, isFetching } = useQuery(
+const { isLoading, refetch } = useQuery(
   "liveData",
   getLiveHighlights,
   {

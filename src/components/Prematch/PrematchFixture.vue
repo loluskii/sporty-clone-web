@@ -125,13 +125,11 @@
 <script setup>
 import { computed, ref, onMounted, watch, onUnmounted } from "vue";
 import { slugify, sortArr, createID, isSelected, uniqueOdds } from "@/helpers";
-import _ from "lodash";
 import EmptyOdds from "../EmptyOdds.vue";
 import { useCouponStore } from "@/stores";
 import { useMqttService } from '@/composables/useMqtt';
 
 const couponStore = useCouponStore();
-import emitter from "@/plugins/emitter";
 const props = defineProps({
   activeMarket: Object,
   match: Object,
@@ -144,7 +142,7 @@ const updatePending = ref(false);
 const updatedOutcomes = ref({});
 
 // MQTT Service
-const { subscribe, isConnected } = useMqttService();
+const { subscribe } = useMqttService();
 
 // MQTT Topics
 const oddsChangeTopic = `feeds/prematch/odds_change/${props.match.matchID}`;
@@ -321,7 +319,7 @@ const getOdds = () => {
 };
 
 // Add a method to handle odds updates
-const handleOddsUpdate = (newOutcomes) => {
+const handleOddsUpdate = () => {
   if (!updatePending.value) {
     updatePending.value = true;
     

@@ -153,7 +153,7 @@ import { useQuery } from "vue-query";
 import _ from "lodash";
 import LiveLayout from "@/components/Shared/LiveLayout.vue";
 import BetContainer from "@/components/Shared/BetContainer.vue";
-import Fixture from "@/components/Live/Fixture.vue";
+import Fixture from "@/components/Live/LiveFixture.vue";
 import LoadingSpinner from "@/components/Loaders/LoadingSpinner.vue";
 import { useUsersStore, useUtilsStore } from "@/stores";
 import { getLiveHighlights } from "@/helpers";
@@ -177,7 +177,7 @@ const visibleSports = computed(() => sportList.value.slice(0, 5));
 const moreSports = computed(() => sportList.value.slice(5));
 
 // Optimize the query with better caching
-const { data, error, isLoading, refetch } = useQuery("liveData", getLiveHighlights, {
+const { isLoading } = useQuery("liveData", getLiveHighlights, {
   refetchInterval: 20000,
   staleTime: 15000, // Add stale time
   cacheTime: 5 * 60 * 1000, // Cache for 5 minutes
@@ -251,6 +251,10 @@ const toggleMoreSports = () => {
 const showRegisterModal = () => {
   emitter.emit("showDialog", { dialogType: "auth", dialogData: "register" });
 };
+
+onMounted(() => {
+  emitter.on('match-ended', removeFinishedFixtures)
+})
 
 // Cleanup
 onUnmounted(() => {

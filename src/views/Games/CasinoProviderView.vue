@@ -94,10 +94,7 @@ const hasMoreGames = computed(() => {
 const getImagePath = (game) => {
   if (!game) return '/default-game.jpg'
   if (game.imagePath) return game.imagePath
-  
-  // Try Firebase path
-  const firebasePath = `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Casino2%2F${game.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}.png?alt=media`
-  
+    
   // Return default if neither exists
   return '/default-game.jpg'
 }

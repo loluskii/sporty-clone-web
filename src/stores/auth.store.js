@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 
 import { login } from '@/helpers'
-import { getActivePinia } from 'pinia'
 import { useUsersStore, useUtilsStore } from '@/stores'
 import router from '../router'
 import emitter from '@/plugins/emitter'

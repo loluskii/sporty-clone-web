@@ -75,7 +75,7 @@
 
 <script setup>
 import DefaultLayout from "@/components/Shared/DefaultLayout.vue";
-import StepHeader from "@/components/PasswordReset/Header.vue";
+import StepHeader from "@/components/PasswordReset/PasswordResetHeader.vue";
 import StepOne from "@/components/PasswordReset/StepOne.vue";
 import StepTwo from "@/components/PasswordReset/StepTwo.vue";
 import StepThree from "@/components/PasswordReset/StepThree.vue";

@@ -154,7 +154,6 @@
     getGamesBySearch
   } from '@/helpers'
   import {
-    useRoute,
     useRouter
   } from 'vue-router'
   import emitter from '@/plugins/emitter'
@@ -176,10 +175,8 @@
   const providers = ref([])
   const isLoadingProviders = ref(false)
   const router = useRouter()
-  const route = useRoute()
   const userStore = useUsersStore()
   const gamesCache = ref(new Map())
-  const sortOrders = ref({})
   const showSearch = ref(false)
   const searchQuery = ref('')
   const searchResults = ref([])
@@ -222,22 +219,6 @@
     } catch (error) {
       console.error(`Error loading games for category ${categoryId}:`, error)
       gamesList.value[categoryId] = [] // Set empty array on error
-    }
-  }
-
-  const getImageSrc = (prov) => {
-    if (prov === 'discover') {
-      return '/discover.png' // Use a default image or icon for Discover
-    }
-    try {
-      let name = prov.split("-")
-      let imageName = name[1] !== "games" ? prov : name[0]
-      return new URL(`../../assets/images/casino/${imageName}.png`,
-        import.meta.url)
-    } catch (error) {
-      console.error('Error loading category image:', error)
-      return new URL(`../../assets/images/casino/virtuals.png`,
-        import.meta.url)
     }
   }
 
@@ -288,10 +269,6 @@
 
   const getImagePath = (game) => {
     return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Casino2%2F${game.title.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}.png?alt=media`
-  }
-
-  const getProviderImage = (provider) => {
-    return `https://firebasestorage.googleapis.com/v0/b/iron-envelope-405217.appspot.com/o/Providers%2F${provider.name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}.png?alt=media`
   }
 
   async function redirectToGamePlay(game) {

@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   categories: Array,
   activeCategory: String,
   onCategoryClick: Function

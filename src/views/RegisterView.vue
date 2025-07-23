@@ -89,40 +89,21 @@
 
 <script setup>
 import DefaultLayout from "@/components/Shared/DefaultLayout.vue";
-import StepHeader from "@/components/PasswordReset/Header.vue";
-import StepOne from "@/components/PasswordReset/StepOne.vue";
-import StepTwo from "@/components/PasswordReset/StepTwo.vue";
-import StepThree from "@/components/PasswordReset/StepThree.vue";
 import { ref, onMounted } from "vue";
-import { verifyUsername, CLIENT_ID, formattedPhoneNumber } from "@/helpers";
+import { verifyUsername, formattedPhoneNumber, register, verifyOTP, sendOTP } from "@/helpers";
 import { useAuthStore, useUtilsStore } from "@/stores";
 
 const phoneNumber = ref("");
-const isLoading = ref(false);
-const phoneNumberError = ref(false);
 const authStore = useAuthStore()
 const password = ref('')
 const promoCode = ref('')
 const authType = ref('register')
-const buttonText = ref('Create Your Account')
-const registerError = ref(false)
-const registerErrorMessage = ref('')
 const activeStep = ref(1)
 const remainingTime = ref(60)
 const isDisabled = ref(false)
 let timer
 const agreeToTerms = ref(false)
 const utilsStore = useUtilsStore()
-
-function setAuthType(type) {
-  authType.value = type
-  authStore.authError = null
-  if (type === 'register') {
-    buttonText.value = 'Create Your Account'
-  } else {
-    buttonText.value = 'Login'
-  }
-}
 
 const handleFormSubmit = async () => {
   authStore.authError = null

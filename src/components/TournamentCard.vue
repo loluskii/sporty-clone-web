@@ -76,10 +76,10 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import _ from 'lodash'
 import { formatDate, sortArr } from '@/helpers'
-import Prematch from './Prematch/Prematch.vue'
+import Prematch from './Prematch/PrematchFixture.vue'
 import emitter from '@/plugins/emitter'
 
 const props = defineProps({

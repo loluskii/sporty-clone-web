@@ -10,12 +10,6 @@ function today() {
   return year + '-' + month + '-' + day
 }
 
-function tomorrow() {
-  let tomorrow = new Date()
-  tomorrow.setDate((tomorrow.getDate() + 1).toString().padStart(2, '0'))
-  return tomorrow.getFullYear() + '-' + (tomorrow.getMonth() + 1) + '-' + tomorrow.getDate()
-}
-
 function end() {
   let future = new Date()
   future.setDate(future.getDate() + 21)

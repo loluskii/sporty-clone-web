@@ -290,7 +290,6 @@ import { defineComponent, computed, ref, onMounted } from "vue";
 import { useAuthStore, useUsersStore, useUtilsStore } from "@/stores";
 import MD5 from "crypto-js/md5";
 
-import { formatNumber } from "@/helpers";
 import emitter from "@/plugins/emitter";
 import { useRoute } from "vue-router";
 const usersStore = useUsersStore();

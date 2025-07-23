@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref, watch, onBeforeUnmount } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import _ from 'lodash';
 import { slugify, createID, isSelected } from '@/helpers';
@@ -101,7 +101,7 @@ const score = ref({
 });
 
 // MQTT Service
-const { subscribe, isConnected } = useMqttService();
+const { subscribe } = useMqttService();
 
 // MQTT Topics
 const oddsChangeTopic = `feeds/live/odds_change/${props.match.matchID}`;
@@ -320,7 +320,7 @@ onMounted(() => {
   // console.log(`🏗️ Component: Setting up MQTT subscriptions for match ID: ${props.match.matchID}`);
 
   const matchId = props.match.matchID;
-  const componentId = `fixture-${matchId}-${Date.now()}`;
+  // const componentId = `fixture-${matchId}-${Date.now()}`;
 
   const topics = {
     oddsChange: oddsChangeTopic,

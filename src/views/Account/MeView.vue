@@ -115,7 +115,6 @@
 </template>
 <script setup>
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
-import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref, computed, onMounted } from 'vue'
 import { useUsersStore, useUtilsStore } from '@/stores'

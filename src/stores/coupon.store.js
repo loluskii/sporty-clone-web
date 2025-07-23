@@ -29,10 +29,7 @@ const couponCalculation = new CouponCalculation();
 const WTH_PERC =
   import.meta.env.VITE_WTH_PERC;
 const {
-  subscribe,
-  unsubscribe
-} = useMqttService();
-const mqttService = useMqttService();
+  subscribe} = useMqttService();
 
 export const useCouponStore = defineStore({
   id: "coupon",
@@ -608,7 +605,6 @@ export const useCouponStore = defineStore({
       const globalVars = {
         ...this.SportsbookGlobalVariable
       };
-      const coupondata = JSON.parse(JSON.stringify(this.coupon));
       const bonusList = this.sportsbookBonusList;
 
       // Filter out suspended or unavailable selections

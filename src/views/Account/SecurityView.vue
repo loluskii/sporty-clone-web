@@ -48,10 +48,12 @@
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
 import { ref } from 'vue';
 import { updatePassword } from "@/helpers"
+import { useUsersStore } from '@/stores';
 
 const oldPassword = ref('')
 const newPassword = ref('')
 const isSaving = ref(false)
+const usersStore = useUsersStore()
 
 async function saveUpdate() {
     isSaving.value = true
@@ -59,6 +61,11 @@ async function saveUpdate() {
     if (oldPassword.value === newPassword.value) {
         alert('Your old password and new password cannot be the same!')
         return;
+    }
+    let payload = {
+        oldPassword: oldPassword.value,
+        password: newPassword.value,
+        clientId: import.meta.env.VITE_CLIENT_ID
     }
     const res = await updatePassword(payload);
     isSaving.value = true

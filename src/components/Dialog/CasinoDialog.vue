@@ -30,13 +30,12 @@
 
 <script setup>
 import { onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { useUsersStore } from '@/stores'
 import emitter from '@/plugins/emitter'
 
 const emits = defineEmits(['hide-dialogue'])
 const userStore = useUsersStore()
-const props = defineProps({
+defineProps({
   errorMessage: String,
   dialogueMessage: Object,
   dialogueType: String,

@@ -4,7 +4,7 @@
       <div class="es-dialog-main x-dialog-main" style="height: auto">
         <div class="x-pop-wrapper">
           <div class="x-pop-mian">
-            <div slot="popContent" class="x-pop-dialog">
+            <div class="x-pop-dialog">
               <ul class="x-pop-dialog__wrapper" style="transform: translate3d(0%, 0px, 0px)">
                 <li class="x-list__item" style="transform: translate3d(0%, 0px, 0px)">
                   <div class="x-page x-page--login">
@@ -189,8 +189,6 @@ const password = ref('')
 const promoCode = ref('')
 const authType = toRef(props.authType)
 const buttonText = ref('Create Your Account')
-const registerError = ref(false)
-const registerErrorMessage = ref('')
 const activeStep = ref(1)
 const remainingTime = ref(60)
 const isDisabled = ref(false)

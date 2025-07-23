@@ -72,13 +72,12 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { getTopBets, slugify } from "@/helpers";
-import Carousel from "../Carousel.vue";
+import { ref, onMounted } from "vue";
+import { getTopBets } from "@/helpers";
+import Carousel from "../CarouselSlider.vue";
 import emitter from "@/plugins/emitter";
 import { useUtilsStore } from "@/stores";
 
-const isLoading = ref(false);
 const utilsStore = useUtilsStore()
 
 const featuredTournaments = ref([]);

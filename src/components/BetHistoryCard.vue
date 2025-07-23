@@ -49,7 +49,7 @@
 <script setup>
 import { formatNumber } from "@/helpers";
 import moment from "moment";
-const props = defineProps({
+defineProps({
   betData: Object,
 });
 </script>

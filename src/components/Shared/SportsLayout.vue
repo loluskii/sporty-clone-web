@@ -114,8 +114,7 @@ import BetContainer from "./BetContainer.vue";
 import { useRoute, useRouter } from "vue-router";
 import { useUtilsStore, useUsersStore } from "@/stores";
 import { computed, onMounted, ref, watch } from "vue";
-import { getCategoriesBySport, extractIdsFromURL } from "@/helpers";
-import LoadingSpinner from "../Loaders/LoadingSpinner.vue";
+import { getCategoriesBySport } from "@/helpers";
 import emitter from "@/plugins/emitter";
 
 const utilsStore = useUtilsStore();
@@ -128,9 +127,7 @@ const activeSport = computed(() => {
   return utilsStore.activeSport;
 });
 
-const activeCategories = computed(() => {
-  return utilsStore.activeCategories;
-});
+
 async function getCategories() {
   const res = await getCategoriesBySport(activeSport.value.sportID);
   categories.value = res.sports;

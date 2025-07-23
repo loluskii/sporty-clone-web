@@ -20,13 +20,12 @@
 </template>
 
 <script setup>
-import { watch, ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { getCasinoStartUrl } from '@/helpers'
 import CasinoLayout from '@/components/Shared/CasinoLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { useUsersStore } from '@/stores'
-import emitter from '@/plugins/emitter'
 
 const route = useRoute()
 const router = useRouter()
@@ -63,14 +62,7 @@ async function getCasinoURL() {
       });
     }
 
-    const res =
-      game_id === "smat_virtual"
-        ? await getSmatVirtualStartUrl({
-            clientId: payload.clientId,
-            userId: id,
-            token: authCode,
-          })
-        : await getCasinoStartUrl(payload, "real");
+    const res = await getCasinoStartUrl(payload, "real");
 
     gameURL.value = res.url;
   } catch (error) {
