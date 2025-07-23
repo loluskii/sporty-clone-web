@@ -16,17 +16,11 @@
             >
           </div>
           <div class="timestamp">
-            {{ moment(betDetail.created).format("DD/MM/YYYY HH:mm") }}
+            {{ moment(betDetail.created).format('DD/MM/YYYY HH:mm') }}
           </div>
           <div
             class="status-bar"
-            :class="
-              betDetail.statusCode === 1
-                ? 'green'
-                : betDetail.statusCode === 2
-                ? 'gray'
-                : ''
-            "
+            :class="betDetail.statusCode === 1 ? 'green' : betDetail.statusCode === 2 ? 'gray' : ''"
           >
             <span class="x-order-type">{{ betDetail.betCategoryDesc }}</span>
 
@@ -64,7 +58,7 @@
               <span class="label" data-cms-key="total_return">Total Return</span>
               <span>: </span>
               <span class="value" :class="{ green: betDetail.winnings }">
-                {{ betDetail.winnings ? formatNumber(betDetail.winnings) : "0.00" }}
+                {{ betDetail.winnings ? formatNumber(betDetail.winnings) : '0.00' }}
               </span>
             </div>
           </div>
@@ -89,7 +83,7 @@
             <div class="selection-detail">
               <div class="selection-header">
                 <span class="game-timestamp">{{
-                  moment(betDetail.eventDate).format("DD/MM HH:mm")
+                  moment(betDetail.eventDate).format('DD/MM HH:mm')
                 }}</span>
                 <span class="game-id" data-cms-key="game_id_vid"
                   >Game ID: {{ selection.matchId }}</span
@@ -143,17 +137,21 @@
               </div>
               <div class="selection-body">
                 <div class="team-wrap">
-                  <p class="team-label home">{{ selection.eventName.split("vs.")[0] }}</p>
-                  <p class="team-label">{{ selection.eventName.split("vs.")[1] }}</p>
+                  <p class="team-label home">{{ selection.eventName.split('vs.')[0] }}</p>
+                  <p class="team-label">{{ selection.eventName.split('vs.')[1] }}</p>
                 </div>
                 <div class="score-wrap">
-                  <span v-if="selection.score === undefined || selection.score === ''" class="no-score">--</span>
+                  <span
+                    v-if="selection.score === undefined || selection.score === ''"
+                    class="no-score"
+                    >--</span
+                  >
                   <div v-else class="score-pairs">
                     <div class="home-score main">
-                      {{ selection.score.split(":")[0] }}
+                      {{ selection.score.split(':')[0] }}
                     </div>
                     <div class="away-score main">
-                      {{ selection.score.split(":")[1] }}
+                      {{ selection.score.split(':')[1] }}
                     </div>
                   </div>
                 </div>
@@ -185,45 +183,45 @@
 </template>
 
 <script setup>
-import { watch, ref } from "vue";
-import BetHistoryLayout from "@/components/Shared/BetHistoryLayout.vue";
-import { useRoute } from "vue-router";
-import { formatNumber } from "@/helpers";
-import moment from "moment";
+import { watch, ref } from 'vue'
+import BetHistoryLayout from '@/components/Shared/BetHistoryLayout.vue'
+import { useRoute } from 'vue-router'
+import { formatNumber } from '@/helpers'
+import moment from 'moment'
 
-const route = useRoute();
-const isLoading = ref(false);
-const betDetail = ref();
+const route = useRoute()
+const isLoading = ref(false)
+const betDetail = ref()
 
 watch(
   () => route.params.bet_id,
   async (bet_id) => {
-    await getBetDetails(bet_id);
+    await getBetDetails(bet_id)
   },
   { immediate: true } // Trigger the watch callback immediately on component mount
-);
+)
 
 async function getBetDetails() {
-  isLoading.value = true;
-  const res = localStorage.getItem("betDetail");
-  betDetail.value = JSON.parse(res);
-  isLoading.value = false;
+  isLoading.value = true
+  const res = localStorage.getItem('betDetail')
+  betDetail.value = JSON.parse(res)
+  isLoading.value = false
 }
 
 const getTeamShortName = (eventName, outcomeName) => {
-  let home = eventName.split("vs.")[0].trim();
-  let away = eventName.split("vs.")[1].trim();
-  let name;
+  let home = eventName.split('vs.')[0].trim()
+  let away = eventName.split('vs.')[1].trim()
+  let name
 
   if (outcomeName === home) {
-    name = "Home";
+    name = 'Home'
   } else if (outcomeName === away) {
-    name = "Away";
+    name = 'Away'
   } else {
-    name = outcomeName;
+    name = outcomeName
   }
-  return name;
-};
+  return name
+}
 </script>
 
 <style>
@@ -279,8 +277,8 @@ const getTeamShortName = (eventName, outcomeName) => {
   margin-right: 7px;
 }
 .x-order-wrapper .x-order-detail-wrap .title-wrap .icon-print::before {
-  content: "\e77b";
-  font-family: "iconfont" !important;
+  content: '\e77b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -302,8 +300,8 @@ const getTeamShortName = (eventName, outcomeName) => {
   margin-right: 7px;
 }
 .x-order-wrapper .x-order-detail-wrap .title-wrap .icon-share::before {
-  content: "\e63d";
-  font-family: "iconfont" !important;
+  content: '\e63d';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -339,8 +337,8 @@ const getTeamShortName = (eventName, outcomeName) => {
   margin-right: 8px;
 }
 .x-order-wrapper .x-order-detail-wrap .back-wrap .icon-back::before {
-  content: "\e620";
-  font-family: "iconfont" !important;
+  content: '\e620';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -418,8 +416,8 @@ const getTeamShortName = (eventName, outcomeName) => {
   color: #fff;
 }
 .x-order-wrapper .x-order-detail-wrap .status-bar .x-order-icon.win::before {
-  content: "\e626";
-  font-family: "iconfont" !important;
+  content: '\e626';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -558,20 +556,14 @@ const getTeamShortName = (eventName, outcomeName) => {
   vertical-align: middle;
 }
 .x-order-wrapper .x-order-detail-wrap .rebet-wrap .right .tip .icon-tip::before {
-  content: "\e651";
-  font-family: "iconfont" !important;
+  content: '\e651';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
-.x-order-wrapper
-  .x-order-detail-wrap
-  .rebet-wrap
-  .right
-  .tip
-  .icon-tip
-  .x-popOver-wrapper {
+.x-order-wrapper .x-order-detail-wrap .rebet-wrap .right .tip .icon-tip .x-popOver-wrapper {
   margin-bottom: 6px;
   margin-left: 5px;
 }
@@ -693,7 +685,7 @@ const getTeamShortName = (eventName, outcomeName) => {
   border-left: 1px solid #33ea6a;
   border-right: 1px solid transparent;
   border-top: 8px solid #33ea6a;
-  content: "";
+  content: '';
   height: 0;
   position: absolute;
   right: -2px;
@@ -767,8 +759,8 @@ const getTeamShortName = (eventName, outcomeName) => {
   .selection-detail
   .selection-header
   .selection-status.checked::before {
-  content: "\e60b";
-  font-family: "iconfont" !important;
+  content: '\e60b';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1083,8 +1075,8 @@ const getTeamShortName = (eventName, outcomeName) => {
   margin-left: 6px;
 }
 .x-order-wrapper .x-order-detail-wrap.list .bet-number-wrap .bet-detail-icon::before {
-  content: "\e608";
-  font-family: "iconfont" !important;
+  content: '\e608';
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

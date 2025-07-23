@@ -10,7 +10,7 @@
           v-for="sport in visibleSports"
           @click="setActiveSport(sport.sportID)"
           :key="sport.sportID"
-          :class="{ 'active': activeSportID === sport.sportID }"
+          :class="{ active: activeSportID === sport.sportID }"
           class="sport-name-item"
           style="max-width: 17%"
         >
@@ -51,13 +51,13 @@
                 @click="setActiveHighlight(group)"
                 :key="group.id"
                 class="tour-item"
-                :class="{ 'active': group.id === activeTournament.id }"
+                :class="{ active: group.id === activeTournament.id }"
               >
                 <div class="category-name">{{ group.category }}</div>
                 <div class="tour-name">{{ group.tournamentName }}</div>
               </div>
             </div>
-            
+
             <div class="x-table important-table match-table">
               <template v-for="(matches, date) in activeTournamentEvents" :key="date">
                 <div class="x-table-row date-row">
@@ -113,7 +113,7 @@ import { useUtilsStore } from '@/stores'
 import HighlightFixtures from './HighlightFixtures.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { getHighlights2, formatDate } from '@/helpers'
-import { onMounted, ref, computed, watch } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 
 const utilsStore = useUtilsStore()
@@ -138,7 +138,7 @@ const rawHighlights = ref([])
 // Then create a computed property that will memoize the transformed data
 const transformedHighlights = computed(() => {
   if (!rawHighlights.value.length) return []
-  
+
   const tournamentMap = new Map()
   for (const item of rawHighlights.value) {
     const key = `${item.tournament}-${item.categoryName}`
@@ -165,30 +165,30 @@ const sortedOutcomes = (group) => _.sortBy(group.outcomes, 'outcomeID')
 
 const getHighlightGames = async () => {
   if (prevSportID.value === activeSportID.value && rawHighlights.value.length) return
-  
+
   try {
     isLoading.value = true
     const response = await getHighlights2(activeSportID.value, 10)
-    
+
     if (response.fixtures && response.markets) {
       rawHighlights.value = response.fixtures // Store raw data
       const [firstTournament] = transformedHighlights.value // Use computed value
-      
+
       highlightsData.value = transformedHighlights.value
       activeTournament.value = firstTournament
       activeTournamentEvents.value = _.groupBy(
         firstTournament.events,
-        fixture => fixture.date.split(' ')[0]
+        (fixture) => fixture.date.split(' ')[0]
       )
-      
-      const markets = response.markets.filter(market => market.specifier === '')
+
+      const markets = response.markets.filter((market) => market.specifier === '')
       activeSportMarkets.value = markets.slice(0, 2)
-      selectedMarketIDs.value = markets.slice(0, 2).map(market => ({
+      selectedMarketIDs.value = markets.slice(0, 2).map((market) => ({
         marketID: parseInt(market.marketID),
         marketName: market.marketName,
         specifier: market.specifier
       }))
-      
+
       prevSportID.value = activeSportID.value
     } else {
       rawHighlights.value = []
@@ -211,17 +211,17 @@ const toggleMoreSportsDropdown = () => {
 
 const setActiveHighlight = (group) => {
   activeTournament.value = group
-  activeTournamentEvents.value = _.groupBy(group.events, fixture => fixture.date.split(' ')[0])
+  activeTournamentEvents.value = _.groupBy(group.events, (fixture) => fixture.date.split(' ')[0])
 }
 
 const setActiveSport = async (sid, name = null) => {
   if (isLoading.value) return
-  
+
   try {
     isLoading.value = true
     prevSportID.value = activeSportID.value
     activeSportID.value = sid
-    
+
     if (name) {
       toggleMoreSportsDropdown()
       MoreSportsLabel.value = name
@@ -230,7 +230,7 @@ const setActiveSport = async (sid, name = null) => {
       sportSimpleSelectActive.value = false
       MoreSportsLabel.value = 'More Sports'
     }
-    
+
     await getHighlightGames()
   } catch (error) {
     console.error('Error setting active sport:', error)
@@ -245,7 +245,6 @@ onMounted(() => {
 })
 
 // Cleanup
-
 </script>
 
 <style>

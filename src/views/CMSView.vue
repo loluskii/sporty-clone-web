@@ -3,7 +3,7 @@
     <div style="">
       <div class="body">
         <LoadingSpinner v-if="isLoading"></LoadingSpinner>
-        
+
         <div v-else v-html="html"></div>
       </div>
     </div>
@@ -24,18 +24,18 @@ const isLoading = ref(false)
 const route = useRoute()
 
 const getPageContent = async (slug) => {
-    try {
-      isLoading.value = true
-      const res = await getCMSPage(slug)
-      isLoading.value = false
-      html.value = Object.values(res.data)[0].content
-    } catch (error) {
-        alert(error)
-    }
+  try {
+    isLoading.value = true
+    const res = await getCMSPage(slug)
+    isLoading.value = false
+    html.value = Object.values(res.data)[0].content
+  } catch (error) {
+    alert(error)
+  }
 }
 
 onMounted(async () => {
-    await getPageContent(route.params.page)
+  await getPageContent(route.params.page)
 })
 </script>
 <style scoped>
@@ -60,4 +60,3 @@ p {
   margin-bottom: 1rem;
 }
 </style>
-

@@ -2,7 +2,7 @@
 import Header from '@/components/Shared/Header.vue'
 import Footer from '@/components/Shared/Footer.vue'
 import DefaultHeaderItems from './DefaultHeaderItems.vue'
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { useUtilsStore } from '@/stores'
 
 const utilsStore = useUtilsStore()
@@ -26,7 +26,6 @@ defineComponent({
       </div>
     </div>
     <Footer></Footer>
-    
   </div>
 </template>
 

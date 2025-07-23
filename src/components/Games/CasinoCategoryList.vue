@@ -1,11 +1,13 @@
 <template>
   <div class="categories-scroll">
     <div class="d-flex justify-content-center overflow-auto hide-scrollbar">
-      <div v-for="category in categories"
-           :key="category.id"
-           class="category-item text-center mx-3"
-           :class="{ 'active': activeCategory == category.id }"
-           @click="() => onCategoryClick(category)">
+      <div
+        v-for="category in categories"
+        :key="category.id"
+        class="category-item text-center mx-3"
+        :class="{ active: activeCategory == category.id }"
+        @click="() => onCategoryClick(category)"
+      >
         <div class="category-icon">
           <img :src="getImageSrc(category.slug)" class="img-fluid" alt="" />
         </div>
@@ -16,7 +18,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   categories: Array,
   activeCategory: String,
   onCategoryClick: Function
@@ -27,8 +29,8 @@ function getImageSrc(prov) {
     return new URL('../../assets/images/casino/all.png', import.meta.url)
   }
   try {
-    let name = prov.split("-")
-    let imageName = name[1] !== "games" ? prov : name[0]
+    let name = prov.split('-')
+    let imageName = name[1] !== 'games' ? prov : name[0]
     return new URL(`../../assets/images/casino/${imageName}.png`, import.meta.url)
   } catch (error) {
     return new URL(`../../assets/images/casino/virtuals.png`, import.meta.url)
@@ -80,4 +82,4 @@ function getImageSrc(prov) {
   text-overflow: ellipsis;
   font-weight: 600;
 }
-</style> 
+</style>

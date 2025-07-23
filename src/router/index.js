@@ -21,9 +21,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore, useUtilsStore } from '@/stores'
 import { unslugify } from '@/helpers'
 
-const preloadRoutes = ["home", "live"];
-const authRoutes = ["Register"]
-
+const authRoutes = ['Register']
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -170,10 +168,10 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-
   const utilsStore = useUtilsStore()
   const authStore = useAuthStore()
-  const showDefaultHeaderItems = to.meta.showDefaultHeaderItems !== undefined ? to.meta.showDefaultHeaderItems : true
+  const showDefaultHeaderItems =
+    to.meta.showDefaultHeaderItems !== undefined ? to.meta.showDefaultHeaderItems : true
   utilsStore.showDefaultHeaderItems = showDefaultHeaderItems
 
   if (to.params.sport) {
@@ -183,12 +181,11 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  if(authRoutes.includes(to.name) && authStore.isAuthenticated){
-    router.push({name:'home'})
+  if (authRoutes.includes(to.name) && authStore.isAuthenticated) {
+    router.push({ name: 'home' })
   }
 
-
-  const mobileUrl = import.meta.env.VITE_MOBILE_URL;
+  const mobileUrl = import.meta.env.VITE_MOBILE_URL
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     window.location.href = mobileUrl
   } else {

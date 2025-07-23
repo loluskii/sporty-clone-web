@@ -1,5 +1,5 @@
 <template>
-  <div class="casino-game-card" :class="{ 'skeleton': loading }">
+  <div class="casino-game-card" :class="{ skeleton: loading }">
     <div class="game-image-wrapper">
       <div v-if="loading" class="skeleton-image"></div>
       <img v-else :src="image" :alt="title" class="game-image" />
@@ -32,7 +32,7 @@ defineProps({
   background: #181a20;
   border-radius: 16px;
   padding: 0.75rem 0.75rem 1rem 0.75rem;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,7 +41,7 @@ defineProps({
   transition: box-shadow 0.2s;
 }
 .casino-game-card:hover {
-  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.18);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.18);
 }
 .game-image-wrapper {
   width: 100%;
@@ -116,7 +116,11 @@ defineProps({
   height: 12px;
 }
 @keyframes skeleton-bg {
-  0% { opacity: 0.7; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-</style> 
+</style>

@@ -32,10 +32,12 @@
       <!-- Games Grid -->
       <div class="row g-4">
         <template v-if="!isLoading">
-          <div v-for="(game, index) in sortedGames" 
-               :key="index"
-               class="col-xl-3 col-lg-4 col-md-6 col-sm-6"
-               @click="redirectToGamePlay(game)">
+          <div
+            v-for="(game, index) in sortedGames"
+            :key="index"
+            class="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+            @click="redirectToGamePlay(game)"
+          >
             <CasinoGameCard
               :image="getImagePath(game)"
               :title="game.title"
@@ -78,14 +80,14 @@ const activeCategory = ref(null)
 const discoverCategory = {
   id: 'discover',
   name: 'Discover',
-  slug: 'discover',
+  slug: 'discover'
 }
 
 function onCategoryClick(cat) {
   if (cat.id === 'discover') {
     router.push({ name: 'game-view' })
   } else if (cat.id !== activeCategory.value) {
-    activeCategory.value = cat.id;
+    activeCategory.value = cat.id
     router.push({
       name: 'casino-category',
       params: {
@@ -118,9 +120,10 @@ async function loadCategoryGames() {
     games.value = response.data
     category.value = {
       id: route.params.category_id,
-      name: route.params.category_name.split('-').map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1)
-      ).join(' ')
+      name: route.params.category_name
+        .split('-')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
     }
     activeCategory.value = route.params.category_id
   } catch (error) {
@@ -133,32 +136,35 @@ async function loadCategoryGames() {
 async function loadCategories() {
   const response = await getTopGameCategories()
   let filteredCategory = response.data.filter((c) => c.priority !== -1)
-  allCategories.value = [discoverCategory, ...filteredCategory.sort((a, b) => b.priority - a.priority)]
+  allCategories.value = [
+    discoverCategory,
+    ...filteredCategory.sort((a, b) => b.priority - a.priority)
+  ]
 }
 
 async function redirectToGamePlay(game) {
   try {
     if (!userStore.currentUser) {
-      return router.push({ name: "sign-in" })
+      return router.push({ name: 'sign-in' })
     }
 
     if (userStore.casinoActiveBonus?.gameId?.includes(game.gameId)) {
-      emitter.emit("toggleCasinoDialog", { 
-        bonus: userStore.casinoActiveBonus, 
-        game 
+      emitter.emit('toggleCasinoDialog', {
+        bonus: userStore.casinoActiveBonus,
+        game
       })
       return
     }
 
     await router.push({
-      name: "game-play",
-      params: { 
-        game_name: slugify(game.title), 
-        game_id: game.id 
+      name: 'game-play',
+      params: {
+        game_name: slugify(game.title),
+        game_id: game.id
       }
     })
   } catch (error) {
-    console.error("Error redirecting to game:", error)
+    console.error('Error redirecting to game:', error)
   }
 }
 
@@ -167,11 +173,14 @@ onMounted(async () => {
   await loadCategoryGames()
 })
 
-watch(() => route.params.category_id, async (newVal, oldVal) => {
-  if (newVal !== oldVal) {
-    await loadCategoryGames()
+watch(
+  () => route.params.category_id,
+  async (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      await loadCategoryGames()
+    }
   }
-})
+)
 </script>
 
 <style scoped>
@@ -233,4 +242,4 @@ watch(() => route.params.category_id, async (newVal, oldVal) => {
   color: #fff !important;
   opacity: 0.8;
 }
-</style> 
+</style>

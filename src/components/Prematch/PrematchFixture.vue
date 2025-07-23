@@ -4,9 +4,7 @@
       <div class="left-team-table">
         <div class="time">
           <div class="clock-time">{{ match.eventTime }}&nbsp;&nbsp;</div>
-          <div class="game-id">
-            <span class="game-id-label">ID: </span>{{ match.gameID }}
-          </div>
+          <div class="game-id"><span class="game-id-label">ID: </span>{{ match.gameID }}</div>
         </div>
         <div
           title=""
@@ -18,8 +16,8 @@
                 sport: slugify(match.sportName),
                 tournament_name: slugify(match.tournament),
                 event_name: slugify(match.name),
-                event_id: match.matchID,
-              },
+                event_id: match.matchID
+              }
             })
           "
         >
@@ -69,17 +67,17 @@
                 odds.odds <= 1
                   ? 'x-outcome--disabled'
                   : isSelected(
-                      createID(
-                        match.gameID,
-                        match.matchID,
-                        odds.outcomeName,
-                        odds.oddID,
-                        match.name
-                      ),
-                      couponStore.coupon
-                    )
-                  ? 'x-outcome--checked'
-                  : ''
+                        createID(
+                          match.gameID,
+                          match.matchID,
+                          odds.outcomeName,
+                          odds.oddID,
+                          match.name
+                        ),
+                        couponStore.coupon
+                      )
+                    ? 'x-outcome--checked'
+                    : ''
               "
             >
               <span v-if="odds.odds > 1" class="x-outcome-odds">{{ odds.odds.toFixed(2) }}</span>
@@ -93,10 +91,7 @@
             >
               <span class="x-icon-lock"></span>
             </div>
-            <EmptyOdds
-              v-for="(odd, index) in activeMarket?.outcomes"
-              :key="index"
-            ></EmptyOdds>
+            <EmptyOdds v-for="(odd, index) in activeMarket?.outcomes" :key="index"></EmptyOdds>
           </template>
         </template>
         <template v-else>
@@ -113,8 +108,8 @@
             sport: slugify(match.sportName),
             tournament_name: slugify(match.tournament),
             event_name: slugify(match.name),
-            event_id: match.matchID,
-          },
+            event_id: match.matchID
+          }
         })
       "
     >
@@ -123,122 +118,120 @@
   </div>
 </template>
 <script setup>
-import { computed, ref, onMounted, watch, onUnmounted } from "vue";
-import { slugify, sortArr, createID, isSelected, uniqueOdds } from "@/helpers";
-import _ from "lodash";
-import EmptyOdds from "../EmptyOdds.vue";
-import { useCouponStore } from "@/stores";
-import { useMqttService } from '@/composables/useMqtt';
+import { computed, ref, onMounted, watch, onUnmounted } from 'vue'
+import { slugify, sortArr, createID, isSelected, uniqueOdds } from '@/helpers'
+import EmptyOdds from '../EmptyOdds.vue'
+import { useCouponStore } from '@/stores'
+import { useMqttService } from '@/composables/useMqtt'
 
-const couponStore = useCouponStore();
-import emitter from "@/plugins/emitter";
+const couponStore = useCouponStore()
 const props = defineProps({
   activeMarket: Object,
-  match: Object,
-});
+  match: Object
+})
 
-const activeSpecifier = ref();
-const specifierOpen = ref(false);
-const outcomes = ref([]);
-const updatePending = ref(false);
-const updatedOutcomes = ref({});
+const activeSpecifier = ref()
+const specifierOpen = ref(false)
+const outcomes = ref([])
+const updatePending = ref(false)
+const updatedOutcomes = ref({})
 
 // MQTT Service
-const { subscribe, isConnected } = useMqttService();
+const { subscribe } = useMqttService()
 
 // MQTT Topics
-const oddsChangeTopic = `feeds/prematch/odds_change/${props.match.matchID}`;
-const betStopTopic = `feeds/prematch/bet_stop/${props.match.matchID}`;
+const oddsChangeTopic = `feeds/prematch/odds_change/${props.match.matchID}`
+const betStopTopic = `feeds/prematch/bet_stop/${props.match.matchID}`
 
 // MQTT Handlers
 const handleOddsChange = (data) => {
   // console.log('[MQTT] Odds change received:', data);
 
   if (!data || !data.markets) {
-    return;
+    return
   }
 
   if (String(data.event_id) !== String(props.match.matchID)) {
-    return;
+    return
   }
 
   if (!updatePending.value) {
-    updatePending.value = true;
+    updatePending.value = true
 
     requestAnimationFrame(() => {
       // Update markets and outcomes
       if (data.markets && data.markets.length > 0) {
-        data.markets.forEach(market => {
+        data.markets.forEach((market) => {
           if (!market.outcomes) {
-            return;
+            return
           }
 
-          const activeMarket = props.activeMarkets.find(m => m.marketID == market.id);
+          const activeMarket = props.activeMarkets.find((m) => m.marketID == market.id)
           if (!activeMarket) {
-            return;
+            return
           }
 
           // Update outcomes
-          market.outcomes.forEach(newOutcome => {
+          market.outcomes.forEach((newOutcome) => {
             const existingOutcomeIndex = props.match.outcomes.findIndex(
-              o => o.marketID == newOutcome.id
-            );
-            
+              (o) => o.marketID == newOutcome.id
+            )
+
             if (existingOutcomeIndex !== -1) {
-              const oldOdds = props.match.outcomes[existingOutcomeIndex].odds;
+              const oldOdds = props.match.outcomes[existingOutcomeIndex].odds
               props.match.outcomes[existingOutcomeIndex] = {
                 ...props.match.outcomes[existingOutcomeIndex],
                 odds: newOutcome.odds,
                 active: newOutcome.active
-              };
+              }
 
               // Update the outcomes map for tracking changes
-              const key = `${market.id}-${newOutcome.id}-${newOutcome.specifier || ""}`;
+              const key = `${market.id}-${newOutcome.id}-${newOutcome.specifier || ''}`
               updatedOutcomes.value[key] = {
                 odds: newOutcome.odds,
                 active: newOutcome.active
-              };
+              }
             }
-          });
-        });
+          })
+        })
       }
 
-      updatePending.value = false;
-    });
+      updatePending.value = false
+    })
   }
-};
+}
 
 const handleBetStop = (data) => {
   // console.log(`[MQTT] Bet stop received for match ${props.match.matchID}`);
 
   if (String(data.event_id) !== String(props.match.matchID)) {
-    return;
+    return
   }
 
   // Set all outcomes to inactive with 0 odds
   requestAnimationFrame(() => {
     // Update the outcomes array
-    const newOutcomes = props.match.outcomes.map(outcome => ({
+    const newOutcomes = props.match.outcomes.map((outcome) => ({
       ...outcome,
       odds: 0,
       active: 0
-    }));
+    }))
 
     // Update the outcomes map
-    const updatedOutcomesCopy = { ...updatedOutcomes.value };
-    newOutcomes.forEach(outcome => {
-      const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ""}`;
+    const updatedOutcomesCopy = { ...updatedOutcomes.value }
+    newOutcomes.forEach((outcome) => {
+      const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ''}`
       updatedOutcomesCopy[key] = {
         odds: 0,
         active: 0
-      };
-    });
+      }
+    })
 
     // Update both states
-    updatedOutcomes.value = updatedOutcomesCopy;
-    props.match.outcomes = newOutcomes;
-  });
-};
+    updatedOutcomes.value = updatedOutcomesCopy
+    props.match.outcomes = newOutcomes
+  })
+}
 
 // Subscribe to MQTT topics
 onMounted(() => {
@@ -248,160 +241,150 @@ onMounted(() => {
   //   isConnected: isConnected.value
   // });
 
-  const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange);
-  const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop);
+  const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange)
+  const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop)
 
   // Cleanup subscriptions on unmount
   onUnmounted(() => {
     // console.log(`[MQTT] Unsubscribing from topics for match ${props.match.matchID}`);
-    unsubscribeOdds();
-    unsubscribeBetStop();
-  });
-});
+    unsubscribeOdds()
+    unsubscribeBetStop()
+  })
+})
 
 const getSpecifiers = computed(() => {
-  if (
-    props.activeMarket &&
-    props.activeMarket.specifier &&
-    props.activeMarket.specifier !== ""
-  ) {
-    const result = [];
+  if (props.activeMarket && props.activeMarket.specifier && props.activeMarket.specifier !== '') {
+    const result = []
 
-    const outcomes = props.match.outcomes;
+    const outcomes = props.match.outcomes
     if (outcomes.length > 0) {
       const filtered = outcomes.filter(
         (item) => item.marketID === parseInt(props.activeMarket.marketID)
-      );
+      )
 
       filtered.forEach((outcome) => {
-        let specifier = outcome.specifier;
-        let found = result.find((item) => item.specifier === specifier);
+        let specifier = outcome.specifier
+        let found = result.find((item) => item.specifier === specifier)
         if (!found)
           // check if specifier has been listed
-          result.push({ specifier, value: specifier.split("=")[1] }); //push value to array
-      });
+          result.push({ specifier, value: specifier.split('=')[1] }) //push value to array
+      })
     }
-    return result.sort((a, b) => a.value - b.value);
+    return result.sort((a, b) => a.value - b.value)
   } else {
-    return [];
+    return []
   }
-});
+})
 const getOdds = () => {
   // Find and return the odds based on marketID and outcomeID
   if (props.activeMarket && props.match.activeMarkets > 0) {
     if (props.match.outcomes) {
-      const odds = props.match.outcomes;
-      let filtered = odds.filter(
-        (item) => item.marketID === parseInt(props.activeMarket.marketID)
-      );
-      if (props.activeMarket.specifier && props.activeMarket.specifier !== "") {
-        let defaultSpecifier = filtered[0]?.specifier;
+      const odds = props.match.outcomes
+      let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
+      if (props.activeMarket.specifier && props.activeMarket.specifier !== '') {
+        let defaultSpecifier = filtered[0]?.specifier
         if (defaultSpecifier) {
-          filtered = filtered.filter((item) => item.specifier === defaultSpecifier);
-          activeSpecifier.value = defaultSpecifier.split("=")[1];
+          filtered = filtered.filter((item) => item.specifier === defaultSpecifier)
+          activeSpecifier.value = defaultSpecifier.split('=')[1]
         }
       } else {
-        filtered = uniqueOdds(filtered);
+        filtered = uniqueOdds(filtered)
       }
       if (filtered.length) {
         // Update the outcomes map for tracking changes
-        filtered.forEach(outcome => {
-          const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ""}`;
+        filtered.forEach((outcome) => {
+          const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ''}`
           updatedOutcomes.value[key] = {
             odds: outcome.odds,
             active: outcome.active
-          };
-        });
-        outcomes.value = sortArr(uniqueOdds(filtered), "outcomeID");
+          }
+        })
+        outcomes.value = sortArr(uniqueOdds(filtered), 'outcomeID')
       } else {
-        outcomes.value = [];
+        outcomes.value = []
       }
     }
   }
-};
+}
 
 // Add a method to handle odds updates
-const handleOddsUpdate = (newOutcomes) => {
+const handleOddsUpdate = () => {
   if (!updatePending.value) {
-    updatePending.value = true;
-    
+    updatePending.value = true
+
     requestAnimationFrame(() => {
       if (props.match.outcomes) {
-        const odds = props.match.outcomes;
+        const odds = props.match.outcomes
         let filtered = odds.filter(
           (item) => item.marketID === parseInt(props.activeMarket.marketID)
-        );
-        
-        if (props.activeMarket.specifier && props.activeMarket.specifier !== "") {
-          filtered = filtered.filter((item) => item.specifier === activeSpecifier.value);
+        )
+
+        if (props.activeMarket.specifier && props.activeMarket.specifier !== '') {
+          filtered = filtered.filter((item) => item.specifier === activeSpecifier.value)
         }
-        
-        filtered = uniqueOdds(filtered);
-        
+
+        filtered = uniqueOdds(filtered)
+
         // Update the outcomes map for tracking changes
-        filtered.forEach(outcome => {
-          const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ""}`;
+        filtered.forEach((outcome) => {
+          const key = `${outcome.marketID}-${outcome.outcomeID}-${outcome.specifier || ''}`
           updatedOutcomes.value[key] = {
             odds: outcome.odds,
             active: outcome.active
-          };
-        });
-        
-        outcomes.value = sortArr(filtered, "outcomeID");
+          }
+        })
+
+        outcomes.value = sortArr(filtered, 'outcomeID')
       }
-      
-      updatePending.value = false;
-    });
+
+      updatePending.value = false
+    })
   }
-};
+}
 
 // Watch for odds changes
-watch(() => props.match.outcomes, (newOutcomes) => {
-  if (newOutcomes) {
-    handleOddsUpdate(newOutcomes);
-  }
-}, { deep: true });
+watch(
+  () => props.match.outcomes,
+  (newOutcomes) => {
+    if (newOutcomes) {
+      handleOddsUpdate(newOutcomes)
+    }
+  },
+  { deep: true }
+)
 
 function showFixtureAnalysis(id) {
   return window.open(
     `https://s5.sir.sportradar.com/betradar/en/match/${id}`,
-    "stats",
-    "width=1078,height=768"
-  );
+    'stats',
+    'width=1078,height=768'
+  )
 }
 
 const setActiveSpecifier = (spec) => {
   if (props.match.outcomes) {
-    const odds = props.match.outcomes;
-    let filtered = odds.filter(
-      (item) => item.marketID === parseInt(props.activeMarket.marketID)
-    );
-    filtered = filtered.filter((item) => item.specifier === spec.specifier);
-    outcomes.value = sortArr(uniqueOdds(filtered), "outcomeID");
-    activeSpecifier.value = spec.value;
+    const odds = props.match.outcomes
+    let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
+    filtered = filtered.filter((item) => item.specifier === spec.specifier)
+    outcomes.value = sortArr(uniqueOdds(filtered), 'outcomeID')
+    activeSpecifier.value = spec.value
   }
-};
+}
 const toggleList = () => {
-  specifierOpen.value = !specifierOpen.value;
-};
+  specifierOpen.value = !specifierOpen.value
+}
 
 watch(
   () => props.activeMarket,
   () => {
-    getOdds();
+    getOdds()
   },
   { immediate: true }
-);
+)
 
 function addToBetslip(event, odd) {
-  if (odd.odds <= 1) return;
-  const id = createID(
-    event.gameID,
-    event.matchID,
-    odd.outcomeName,
-    odd.oddID,
-    event.name
-  );
+  if (odd.odds <= 1) return
+  const id = createID(event.gameID, event.matchID, odd.outcomeName, odd.oddID, event.name)
   const data = {
     fixture: event,
     market_name: props.activeMarket.marketName,
@@ -411,22 +394,20 @@ function addToBetslip(event, odd) {
     odds: odd.odds,
     odd_id: odd.oddID,
     odd_name: odd.outcomeName,
-    type: "prematch",
+    type: 'prematch',
     event_id: event.gameID,
-    specifier: odd.specifier,
-  };
+    specifier: odd.specifier
+  }
 
   // return couponStore.addToCoupon(data)
 
-  const existsInBetslip = isSelected(id, couponStore.coupon);
-  return existsInBetslip
-    ? couponStore.removeSelection(id)
-    : couponStore.addToCoupon(data);
+  const existsInBetslip = isSelected(id, couponStore.coupon)
+  return existsInBetslip ? couponStore.removeSelection(id) : couponStore.addToCoupon(data)
 }
 
 onMounted(() => {
-  getOdds();
-});
+  getOdds()
+})
 </script>
 <style>
 .af-select-item {

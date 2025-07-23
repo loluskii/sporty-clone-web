@@ -4,7 +4,6 @@
   </div>
 </template>
 <script setup>
-import { formatOdd } from '../../helpers';
 import { defineComponent, ref, watch } from 'vue'
 
 const props = defineProps({
@@ -21,24 +20,27 @@ const previousOdds = ref(props.odds.odds)
 const oddsChangeClass = ref('')
 
 // Watch for odds changes
-watch(() => props.odds.odds, (newOdds, oldOdds) => {
-  if (newOdds <= 1 || oldOdds <= 1) {
-    oddsChangeClass.value = ''
-    return
+watch(
+  () => props.odds.odds,
+  (newOdds, oldOdds) => {
+    if (newOdds <= 1 || oldOdds <= 1) {
+      oddsChangeClass.value = ''
+      return
+    }
+
+    if (newOdds > oldOdds) {
+      oddsChangeClass.value = 'm-outcome--up'
+    } else if (newOdds < oldOdds) {
+      oddsChangeClass.value = 'm-outcome--down'
+    }
+
+    // Clear the class after animation
+    setTimeout(() => {
+      oddsChangeClass.value = ''
+    }, 2000)
+
+    previousOdds.value = newOdds
   }
-
-  if (newOdds > oldOdds) {
-    oddsChangeClass.value = 'm-outcome--up'
-  } else if (newOdds < oldOdds) {
-    oddsChangeClass.value = 'm-outcome--down'
-  }
-
-  // Clear the class after animation
-  setTimeout(() => {
-    oddsChangeClass.value = ''
-  }, 2000)
-
-  previousOdds.value = newOdds
-})
+)
 </script>
 <style lang=""></style>

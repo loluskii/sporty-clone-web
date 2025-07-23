@@ -13,10 +13,17 @@
 
       <div class="row g-4">
         <template v-if="!isLoading">
-          <div v-for="provider in sortedProviders" :key="provider.id" 
-            class="col-xl-3 col-lg-4 col-md-6 col-sm-6" @click="onProviderClick(provider)">
+          <div
+            v-for="provider in sortedProviders"
+            :key="provider.id"
+            class="col-xl-3 col-lg-4 col-md-6 col-sm-6"
+            @click="onProviderClick(provider)"
+          >
             <div class="provider-card text-center">
-              <div class="provider-image" :style="{ backgroundImage: 'url(' + getProviderImage(provider) + ')' }"></div>
+              <div
+                class="provider-image"
+                :style="{ backgroundImage: 'url(' + getProviderImage(provider) + ')' }"
+              ></div>
               <div class="provider-name text-white mt-2">{{ provider.name }}</div>
             </div>
           </div>
@@ -47,17 +54,16 @@ import { getProviders, slugify } from '@/helpers'
 const router = useRouter()
 const providers = ref([])
 const isLoading = ref(false)
-const sortBy = ref('name')
 
 const sortedProviders = computed(() => {
   const providersList = [...providers.value]
-  switch (sortBy.value) {
-    case 'popular':
-    //   return providersList.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
-    case 'name':
-    default:
-      return providersList.sort((a, b) => a.name.localeCompare(b.name))
-  }
+  return providersList.sort((a, b) => a.name.localeCompare(b.name))
+  // switch (sortBy.value) {
+  //   case 'popular':
+  //   //   return providersList.sort((a, b) => (b.popularity || 0) - (a.popularity || 0))
+  //   case 'name':
+  //   default:
+  // }
 })
 
 const getProviderImage = (provider) => {
@@ -96,9 +102,9 @@ onBeforeMount(async () => {
 
 <style>
 @import url('@/assets/css/casino/bootstrap.css');
-a{
-    text-decoration: none !important;
-  }
+a {
+  text-decoration: none !important;
+}
 .provider-card {
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -157,4 +163,4 @@ a{
     opacity: 0.5;
   }
 }
-</style> 
+</style>

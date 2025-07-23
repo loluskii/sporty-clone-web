@@ -23,43 +23,43 @@ const route = useRoute()
 const router = useRouter()
 const isPaymentSuccess = ref(false)
 const isPaymentFail = ref(false)
-const isLoading = ref(true);
-const usersStore = useUsersStore();
+const isLoading = ref(true)
+const usersStore = useUsersStore()
 
 watch(
   () => [route.params.method, route.params.status],
   async ([method, status]) => {
-    let ref;
-    if (method === "paystack") {
-      ref = route.query.trxref;
+    let ref
+    if (method === 'paystack') {
+      ref = route.query.trxref
     }
-    if (method === "monnify") {
-      ref = route.query.paymentReference;
+    if (method === 'monnify') {
+      ref = route.query.paymentReference
     }
 
-    if (method === "flutterwave") {
-      ref = route.query.tx_ref;
-      if(status && status === 'cancelled'){
+    if (method === 'flutterwave') {
+      ref = route.query.tx_ref
+      if (status && status === 'cancelled') {
         return router.push({ name: 'account-deposit' })
       }
     }
 
-    if (method === "korapay") {
-      ref = route.query.reference;
+    if (method === 'korapay') {
+      ref = route.query.reference
     }
 
-    if (method === "fidelity") {
-      ref = route.query.txnRef;
+    if (method === 'fidelity') {
+      ref = route.query.txnRef
     }
 
-    if (method === "coralpay") {
-      ref = route.query.id;
+    if (method === 'coralpay') {
+      ref = route.query.id
     }
 
-    await verifyPaymentRef(method, ref);
+    await verifyPaymentRef(method, ref)
   },
-  { immediate: true },
-);
+  { immediate: true }
+)
 
 const bonus = computed(() => {
   return usersStore.bonus
@@ -67,22 +67,21 @@ const bonus = computed(() => {
 
 async function verifyPaymentRef(method, ref) {
   isLoading.value = true
-  try{
-    const res = await verifyDeposit(method, ref);
+  try {
+    const res = await verifyDeposit(method, ref)
     isLoading.value = false
     if (res.success) {
       isPaymentSuccess.value = true
-      if (bonus.value){
-        await awardBonus(bonus.value)
-        .then(res => {
-          usersStore.setActiveBonus(null);
+      if (bonus.value) {
+        await awardBonus(bonus.value).then(() => {
+          usersStore.setActiveBonus(null)
         })
       }
       router.push({ name: 'account-transactions' })
     } else {
       isPaymentFail.value = true
     }
-  } catch(err) {
+  } catch (err) {
     isPaymentFail.value = true
   }
 }

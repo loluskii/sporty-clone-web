@@ -67,7 +67,9 @@
         <li class="x-col-wrapper">
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
-            <div data-cms-key="tell_phone_number">Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}</div>
+            <div data-cms-key="tell_phone_number">
+              Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}
+            </div>
             <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">

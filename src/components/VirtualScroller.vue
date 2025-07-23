@@ -1,13 +1,6 @@
 <template>
-  <div 
-    ref="container" 
-    class="virtual-scroller"
-    @scroll="handleScroll"
-  >
-    <div 
-      class="virtual-scroller__content"
-      :style="{ height: `${totalHeight}px` }"
-    >
+  <div ref="container" class="virtual-scroller" @scroll="handleScroll">
+    <div class="virtual-scroller__content" :style="{ height: `${totalHeight}px` }">
       <div
         v-for="item in visibleItems"
         :key="item.tournamentID"
@@ -63,7 +56,7 @@ const visibleItems = computed(() => {
 let scrollTimeout
 const handleScroll = () => {
   if (scrollTimeout) return
-  
+
   scrollTimeout = setTimeout(() => {
     if (container.value) {
       scrollTop.value = container.value.scrollTop
@@ -107,4 +100,4 @@ onUnmounted(() => {
   width: 100%;
   will-change: transform;
 }
-</style> 
+</style>

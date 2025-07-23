@@ -12,8 +12,8 @@
         <div>
           <div class="bank-transfer-form-section">
             <div class="f-line">
-              <span class="f-label"><span>Amount</span>
-                ({{ SportsbookGlobalVariable.Currency }})
+              <span class="f-label"
+                ><span>Amount</span> ({{ SportsbookGlobalVariable.Currency }})
               </span>
               <div class="f-line-item i-amount">
                 <div tabindex="6" class="x-input-wrapper">
@@ -46,17 +46,20 @@
           <div style="margin-top: 20px" class="bank-transfer-desc-section">
             <span>
               <ol class="bank-transfer-card-steps">
-                <li>Minimum deposit amount is {{ SportsbookGlobalVariable.CurrencyCode }}
+                <li>
+                  Minimum deposit amount is {{ SportsbookGlobalVariable.CurrencyCode }}
                   {{ SportsbookGlobalVariable.MinDeposit }} - you can deposit at least
-                  {{ SportsbookGlobalVariable.CurrencyCode }} {{ SportsbookGlobalVariable.MinDeposit }} in one
-                  transaction.</li>
-                <li>Maximum per transaction is {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 - you can deposit
-                  up to {{ SportsbookGlobalVariable.CurrencyCode }}
-                  9,999,999.00 in one transaction.</li>
-                <li>If you have any issues, please contact the support team.
+                  {{ SportsbookGlobalVariable.CurrencyCode }}
+                  {{ SportsbookGlobalVariable.MinDeposit }} in one transaction.
                 </li>
-              </ol>
-            </span>
+                <li>
+                  Maximum per transaction is
+                  {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 - you can deposit up to
+                  {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 in one transaction.
+                </li>
+                <li>If you have any issues, please contact the support team.</li>
+              </ol></span
+            >
           </div>
         </div>
       </div>
@@ -82,13 +85,13 @@ const router = useRouter()
 const amount = ref('')
 const isLoading = ref(false)
 const btnDisabled = ref(false)
-const availableBonus = ref(null);
+const availableBonus = ref(null)
 
 const { SportsbookGlobalVariable } = useUtilsStore()
 
 const bonus = computed(() => {
-  return usersStore.bonus;
-});
+  return usersStore.bonus
+})
 
 function setActiveTab(method) {
   activeTab.value = method
@@ -104,37 +107,39 @@ async function getPayments() {
 }
 
 async function checkForBonus() {
-  const resp = await checkFirstDeposit();
+  const resp = await checkFirstDeposit()
   if (resp.success) {
-    availableBonus.value = resp.data;
+    availableBonus.value = resp.data
   }
 }
 
 function activateBonus() {
-  let bonusAmount = amount.value;
-  if (availableBonus.value.type === "flat") {
-    bonusAmount = availableBonus.value.value;
+  let bonusAmount = amount.value
+  if (availableBonus.value.type === 'flat') {
+    bonusAmount = availableBonus.value.value
   } else {
-    bonusAmount = (parseFloat(amount.value) * availableBonus.value.value) / 100;
+    bonusAmount = (parseFloat(amount.value) * availableBonus.value.value) / 100
   }
 
   const bonus = {
     bonusId: availableBonus.value.bonusId,
     amount: bonusAmount,
-    username: usersStore.currentUser.username,
-  };
-  usersStore.setActiveBonus(bonus);
+    username: usersStore.currentUser.username
+  }
+  usersStore.setActiveBonus(bonus)
   // availableBonus.value = null;
 }
 
 async function beginDeposit() {
-  if(parseFloat(amount.value) < parseFloat(SportsbookGlobalVariable.MinDeposit)){
+  if (parseFloat(amount.value) < parseFloat(SportsbookGlobalVariable.MinDeposit)) {
     let error = {
       dialogType: 'error',
-      dialogData: {data: `Your deposit amount is lower than the allowed value (${SportsbookGlobalVariable.Currency}${SportsbookGlobalVariable.MinDeposit}). Increase the amount and try again. `}
+      dialogData: {
+        data: `Your deposit amount is lower than the allowed value (${SportsbookGlobalVariable.Currency}${SportsbookGlobalVariable.MinDeposit}). Increase the amount and try again. `
+      }
     }
     emitter.emit('showDialog', error)
-    return;
+    return
   }
   btnDisabled.value = true
   let payload = {
@@ -159,10 +164,10 @@ onMounted(async () => {
   if (!usersStore.currentUser) {
     return router.push({ name: 'sign-in' })
   }
-  usersStore.setActiveBonus(null);
+  usersStore.setActiveBonus(null)
 
-  await getPayments();
-  await checkForBonus();
+  await getPayments()
+  await checkForBonus()
 })
 </script>
 
@@ -365,7 +370,7 @@ onMounted(async () => {
 
 .x-dp-nav::-webkit-scrollbar {
   display: none;
-  height: 0px
+  height: 0px;
 }
 
 .x-dp-nav .f-item {
