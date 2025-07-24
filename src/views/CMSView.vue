@@ -30,7 +30,8 @@ const getPageContent = async (slug) => {
     isLoading.value = false
     html.value = Object.values(res.data)[0].content
   } catch (error) {
-    alert(error)
+    alert('Page does not exist!')
+    window.location.href = '/'
   }
 }
 
