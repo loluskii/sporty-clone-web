@@ -13,31 +13,31 @@
           <h6 class="x-col-title">{{ utilsStore.brandName }} Nigeria</h6>
           <ul class="x-col-content">
             <li class="x-icon-more">
-              <a href="/CMS/AboutUs"
+              <a href="/cms/about_us"
                 ><span data-cms-key="about_us" data-cms-page="common_helps">About Us</span></a
               >
             </li>
             <li class="x-icon-more">
-              <a href="/CMS/TandC"
+              <a href="/cms/terms_and_conditions"
                 ><span data-cms-key="t_and_c" data-cms-page="common_helps"
                   >Terms &amp; Conditions</span
                 ></a
               >
             </li>
             <li class="x-icon-more">
-              <a href="/CMS/BettingRules"
+              <a href="/cms/betting_rules"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Betting Rules</span></a
               >
             </li>
             <li class="x-icon-more">
-              <a href="/CMS/ResponsibleGambling"
+              <a href="/cms/responsible_gambling"
                 ><span data-cms-key="privacy" data-cms-page="common_helps"
                   >Responsible Gambling</span
                 ></a
               >
             </li>
             <li class="x-icon-more">
-              <a href="/CMS/Contact"
+              <a href="/cms/contact-us"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Contact Us</span></a
               >
             </li>
@@ -49,7 +49,7 @@
           </h6>
           <ul class="x-col-content">
             <li class="x-icon-more">
-              <a href="/CMS/FAQS"
+              <a href="/cms/faqs"
                 ><span data-cms-key="faq" data-cms-page="common_helps">FAQ</span></a
               >
             </li>

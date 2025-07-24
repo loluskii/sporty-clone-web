@@ -43,19 +43,19 @@ const route = useRoute()
 const cmsLinks = [
   {
     name: 'About Us',
-    link: '/CMS/AboutUs'
+    link: '/cms/about_us'
   },
   {
     name: 'Terms and Conditions',
-    link: '/CMS/TandC'
+    link: '/cms/terms_and_conditions'
   },
   {
     name: 'Responsible Gaming',
-    link: '/CMS/ResponsibleGaming'
+    link: '/cms/responsible_gambling'
   },
   {
     name: 'Betting Rules',
-    link: '/CMS/BettingRules'
+    link: '/cms/betting_rules'
   }
 ]
 
