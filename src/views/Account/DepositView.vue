@@ -9,7 +9,7 @@
           :key="index"
           @click="setActiveTab(method)"
         >
-          {{ method.title }}
+          {{ method.provider === "sbengine" ? "Shop" : method.provider }}
         </li>
       </ul>
       <div class="f-dp">
