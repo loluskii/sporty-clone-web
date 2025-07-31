@@ -33,7 +33,7 @@
               </div>
             </div>
             <Carousel></Carousel>
-            <div class="x-instant-reg x-instant-black">
+            <div style="display: none;" class="x-instant-reg x-instant-black">
               <div class="x-title">
                 <span data-cms-key="instant_registration" data-cms-page="pc_layout_right"
                   >Instant Registration</span

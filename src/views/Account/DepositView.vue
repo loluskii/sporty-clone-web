@@ -2,10 +2,14 @@
   <AccountLayout>
     <div class="x-dp-ng">
       <ul class="x-dp-nav">
-        <li class="f-item" v-for="(method, index) in depositMethods"
-          :class="activeTab.provider == method.provider ? 'f-item--active' : ''" :key="index"
-          @click="setActiveTab(method)">
-          {{ method.title }}
+        <li
+          class="f-item"
+          v-for="(method, index) in depositMethods"
+          :class="activeTab.provider == method.provider ? 'f-item--active' : ''"
+          :key="index"
+          @click="setActiveTab(method)"
+        >
+          {{ method.provider === "sbengine" ? "Shop" : method.provider }}
         </li>
       </ul>
       <div class="f-dp">
