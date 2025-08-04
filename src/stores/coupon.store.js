@@ -52,7 +52,7 @@ export const useCouponStore = defineStore({
       wthTax: 0,
       exciseDuty: 0,
       useBonus: false,
-      source: 'mobile'
+      source: 'website',
     },
     activeSubscriptions: [] // Will store objects with topic and unsubscribe function
   }),

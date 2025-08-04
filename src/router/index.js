@@ -152,7 +152,7 @@ const router = createRouter({
     {
       path: '/Promotions',
       name: 'promotions',
-      component: () => import('@/views/Promotions.vue')
+      component: () => import('@/views/PromotionsView.vue')
     },
     {
       path: '/cms/:page',

@@ -288,10 +288,10 @@ const route = useRoute()
 const phoneNumber = ref()
 const password = ref()
 
-const date = new Date()
-const offset = date.getTimezoneOffset()
-const sign = offset >= 0 ? '-' : '+'
-const offsetHours = Math.abs(offset / 60)
+// const date = new Date()
+// const offset = date.getTi/mezoneOffset()
+// const sign = offset >= 0 ? '-' : '+'
+// const offsetHours = Math.abs(offset / 60)
 const token = ref('111111')
 const group = ref(import.meta.env.VITE_APP_KEY)
 const mode = ref(0)
