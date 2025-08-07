@@ -228,7 +228,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useCouponStore, useUsersStore, useUtilsStore } from '@/stores'
-import { formatNumber, loadBetslipByCode } from '@/helpers'
+import { formatNumber, loadBetslipByCode, awardBonus } from '@/helpers'
 import emitter from '@/plugins/emitter'
 import BetListEvent from '@/components/Betslip/BetListEvent.vue'
 
@@ -375,8 +375,22 @@ async function placeBet(e) {
     emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'login' })
     return
   }
+  let bonusId = usersStore.activeCashback ? usersStore.activeCashback.id : null
+  if(bonusId){
+    try {
+      const bonus = {
+        bonusId: bonusId,
+        amount: betlistStake.value,
+        username: usersStore.currentUser.username,
+      };
+      await awardBonus(bonus)
+    } catch (error) {
+      
+      return
+    }
+  }
   try {
-    const res = await couponStore.placeBet(e, 'bet')
+    const res = await couponStore.placeBet(e, 'bet', bonusId)
     couponStore.isBetslipLoading = false
     if (res.success) {
       await usersStore.loadCurrentUser()
