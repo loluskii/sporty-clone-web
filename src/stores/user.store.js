@@ -9,6 +9,7 @@ export const useUsersStore = defineStore({
   state: () => ({
     currentUser: null,
     activeBonus: null,
+    activeCashback: null,
     casinoActiveBonus: null,
     error: null,
     isLoadingCurrentUser: false
@@ -85,9 +86,8 @@ export const useUsersStore = defineStore({
       try {
         this.error = null
         this.isLoadingCurrentUser = true
-        const [userResponse, bonusResponse] = await Promise.allSettled([
-          getUserDetailsByToken(),
-          getUserActiveBonus()
+        const [userResponse] = await Promise.allSettled([
+          getUserDetailsByToken()
         ])
         this.isLoadingCurrentUser = false
 
@@ -102,14 +102,6 @@ export const useUsersStore = defineStore({
         }
 
         this.currentUser = userResponse.value.data
-
-        // Handle bonus response
-        if (bonusResponse.status === 'fulfilled' && bonusResponse.value?.data) {
-          this.casinoActiveBonus = bonusResponse.value.data
-          emitter.emit('showCasinoDialog', { bonus: this.casinoActiveBonus })
-        } else if (bonusResponse.status === 'rejected') {
-          console.warn('Failed to fetch active bonus:', bonusResponse.reason)
-        }
 
         // Validate required properties
         const requiredProperties = [

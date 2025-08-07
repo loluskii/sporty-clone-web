@@ -53,7 +53,7 @@
                 class="tour-item"
                 :class="{ active: group.id === activeTournament.id }"
               >
-                <div class="category-name">{{ group.category }}</div>
+                <div class="category-name">{{ group.category === '' ? 'Tournament' : group.category }}</div>
                 <div class="tour-name">{{ group.tournamentName }}</div>
               </div>
             </div>

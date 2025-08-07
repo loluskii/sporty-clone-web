@@ -41,9 +41,13 @@
               <span>{{ formatNumber(data.amount) }}</span>
             </div>
             <div class="x-table-cell">
-              <span class="" data-cms-key="succeed">{{
-                data.status === 0 ? 'Pending' : data.status === 1 ? 'Success' : 'Failed'
-              }}</span>
+              <span class="" data-cms-key="succeed">
+                <i class="text-danger" v-if="data.status === 4">Cancelled</i>
+                <i class="text-danger" v-if="data.status === 3">Rejected</i>
+                <i class="text-danger" v-if="data.status === 2">Failed</i>
+                <i class="text-success" v-if="data.status === 1">Successful</i>
+                <i class="text-warning" v-if="data.status === 0">Pending</i>
+              </span>
             </div>
             <div class="x-table-cell">
               <span>{{ formatNumber(data.balance) }}</span>

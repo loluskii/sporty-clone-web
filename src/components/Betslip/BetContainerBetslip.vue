@@ -3,25 +3,18 @@
     <div v-if="selectionsLength > 1" class="x-list-nav">
       <div class="x-table">
         <div class="x-table-row">
-          <div
-            class="x-table-cell"
+          <div class="x-table-cell"
             :class="betSlipType !== 'Combo' && betType === 'Single' ? 'x-table-cell--active' : ''"
-            @click="couponStore.setBetType('Single')"
-          >
+            @click="couponStore.setBetType('Single')">
             <span data-cms-key="singles">Single</span>
           </div>
-          <div
-            class="x-table-cell"
+          <div class="x-table-cell"
             :class="betSlipType !== 'Combo' && betType === 'Multiple' ? 'x-table-cell--active' : ''"
-            @click="couponStore.setBetType('Multiple')"
-          >
+            @click="couponStore.setBetType('Multiple')">
             <span data-cms-key="multiple">Multiple</span>
           </div>
-          <div
-            class="x-table-cell"
-            :class="betSlipType === 'Combo' ? 'x-table-cell--active' : ''"
-            @click="couponStore.setBetType('Combo')"
-          >
+          <div class="x-table-cell" :class="betSlipType === 'Combo' ? 'x-table-cell--active' : ''"
+            @click="couponStore.setBetType('Combo')">
             <span data-cms-key="system">System</span>
           </div>
         </div>
@@ -39,11 +32,7 @@
           </div>
         </div>
         <!-- Selections -->
-        <BetListEvent
-          v-for="(selection, s) in betslipSelections"
-          :key="s"
-          :selection="selection"
-        ></BetListEvent>
+        <BetListEvent v-for="(selection, s) in betslipSelections" :key="s" :selection="selection"></BetListEvent>
         <!-- Selections -->
 
         <div class="x-stake">
@@ -58,23 +47,10 @@
                       <span class="x-currency">{{
                         couponStore.SportsbookGlobalVariable.Currency
                       }}</span>
-                      <div
-                        tabindex="6"
-                        class="x-input-wrapper"
-                        id="j_stake_0"
-                        style="max-width: 70px"
-                      >
+                      <div tabindex="6" class="x-input-wrapper" id="j_stake_0" style="max-width: 70px">
                         <span class="x-input-com">
-                          <input
-                            type="input"
-                            input-mode=""
-                            name=""
-                            placeholder="min. 10"
-                            onpaste="return true"
-                            v-model="couponStore.coupon.stake"
-                            @input="updateStake"
-                            class="x-input fs-exclude"
-                        /></span>
+                          <input type="input" input-mode="" name="" placeholder="min. 10" onpaste="return true"
+                            v-model="couponStore.coupon.stake" @input="updateStake" class="x-input fs-exclude" /></span>
                       </div>
                     </div>
                   </div>
@@ -99,29 +75,26 @@
                     </div>
                     <div class="x-num">{{ selectionsLength }}</div>
                     <div class="x-money">
-                      <div
-                        tabindex="6"
-                        class="x-input-wrapper"
-                        data-index="0"
-                        style="max-width: 70px"
-                      >
+                      <div tabindex="6" class="x-input-wrapper" data-index="0" style="max-width: 70px">
                         <span class="x-input-com">
-                          <input
-                            type="input"
-                            input-mode=""
-                            name=""
-                            placeholder="min. 10"
-                            onpaste="return true"
-                            v-model="couponStore.coupon.stake"
-                            @input="updateStake"
-                            class="x-input fs-exclude"
-                        /></span>
+                          <input type="input" input-mode="" name="" placeholder="min. 10" onpaste="return true"
+                            v-model="couponStore.coupon.stake" @input="updateStake" class="x-input fs-exclude" /></span>
                       </div>
                     </div>
                   </div>
                   <p class="x-error-tips" style="display: none"></p>
                 </div>
               </div>
+            </div>
+            <div class="x-coins" v-if="usersStore.currentUser && usersStore.currentUser.sportBonusBalance > 0">
+              <ul>
+                <li class="x-c-item" @click="couponStore.coupon.useBonus = true"><i class="i-check" :class="{'is-checked': couponStore.coupon.useBonus}"></i> 
+                  <span>Bonus Wallet (<span data-cms-key="usable" data-cms-page="component_betslip">Usable</span>: <span class="t-c-green">{{ SportsbookGlobalVariable.CurrencyCode }} {{ usersStore.sportBonusBalance }}</span>)</span>
+                </li>
+                <li class="x-c-item" @click="couponStore.coupon.useBonus = false"><i class="i-check" :class="{'is-checked': !couponStore.coupon.useBonus}"></i> <span>
+                    Balance
+                    <!----></span></li>
+              </ul>
             </div>
             <div class="x-money-wrapper">
               <template v-if="selectionsLength > 1">
@@ -164,30 +137,21 @@
                 </template>
               </template>
 
-              <div
-                v-if="
-                  usersStore.currentUser &&
-                  usersStore.currentUser.sportBonusBalance > 0 &&
-                  !couponStore.betslipMode
-                "
-                class="bonus mg-b-10"
-              >
-                <div class="x-label">Use Bonus</div>
+              <div v-if="
+                usersStore.currentUser &&
+                usersStore.activeCashback &&
+                !couponStore.betslipMode
+              " class="bonus mg-b-10">
+                <div class="x-label">Use Cashback</div>
                 <div class="x-value" style="display: flex; align-items: center">
-                  <input
-                    type="checkbox"
-                    style="margin-right: 7px; accent-color: var(--brand-primary)"
-                    v-model="couponStore.coupon.useBonus"
-                    id=""
-                  />
-                  <span> {{ usersStore.currentUser.sportBonusBalance }}</span>
+                  <input type="checkbox" style="margin-right: 7px; accent-color: var(--brand-secondary)"
+                    v-model="couponStore.coupon.useCashback" id="" />
                 </div>
               </div>
 
               <div>
                 <div class="x-label x-label-one-cut-fix">
-                  <span class="flex"
-                    ><span class="no-warp" data-cms-key="potential_win">Potential Win</span>
+                  <span class="flex"><span class="no-warp" data-cms-key="potential_win">Potential Win</span>
                     &nbsp;
                   </span>
                 </div>
@@ -195,17 +159,11 @@
               </div>
             </div>
             <div class="x-btn-wrapper">
-              <button
-                @click.prevent="toggleConfirmation"
-                class="af-button af-button--primary"
-                :class="{ 'is-disabled': placeBetDisabled }"
-                :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
-              >
-                <span
-                  ><span data-cms-key="place_bet">{{
-                    placeBetDisabled ? 'Please Wait...' : 'Place Bet'
-                  }}</span></span
-                >
+              <button @click.prevent="toggleConfirmation" class="af-button af-button--primary"
+                :class="{ 'is-disabled': placeBetDisabled }" :style="placeBetDisabled ? 'cursor: not-allowed' : ''">
+                <span><span data-cms-key="place_bet">{{
+                  placeBetDisabled ? 'Please Wait...' : 'Place Bet'
+                    }}</span></span>
               </button>
             </div>
             <!-- Bet Confirmation Modal -->
@@ -247,31 +205,17 @@
     </p>
     <div class="x-opt-wrapper">
       <div tabindex="6" class="x-input-wrapper">
-        <span class="x-input-com"
-          ><i class="x-input-icon x-input-icon--clickable x-icon-delete"></i>
-          <input
-            type="input"
-            name=""
-            placeholder="Booking Code"
-            onpaste="return true"
-            class="x-input fs-exclude"
-            v-model="bookingCode"
-        /></span>
+        <span class="x-input-com"><i class="x-input-icon x-input-icon--clickable x-icon-delete"></i>
+          <input type="input" name="" placeholder="Booking Code" onpaste="return true" class="x-input fs-exclude"
+            v-model="bookingCode" /></span>
       </div>
 
-      <button
-        :disabled="bookingCode === ''"
-        :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
-        class="af-button af-button--primary"
-        type="button"
-        :class="{ 'is-disabled': bookingCode === '' || placeBetDisabled }"
-        @click.prevent="loadBet"
-      >
-        <span
-          ><span>{{
-            placeBetDisabled ? 'Loading...' : betslipSelections.length > 0 ? 'Place Bet' : 'Load'
-          }}</span></span
-        >
+      <button :disabled="bookingCode === ''" :style="placeBetDisabled ? 'cursor: not-allowed' : ''"
+        class="af-button af-button--primary" type="button"
+        :class="{ 'is-disabled': bookingCode === '' || placeBetDisabled }" @click.prevent="loadBet">
+        <span><span>{{
+          placeBetDisabled ? 'Loading...' : betslipSelections.length > 0 ? 'Place Bet' : 'Load'
+            }}</span></span>
       </button>
     </div>
     <div>
@@ -495,7 +439,7 @@ async function loadBet() {
   background: #ffffff;
 }
 
-.x-betslips .x-share--wrapper > div {
+.x-betslips .x-share--wrapper>div {
   width: 204px;
   margin: 0 auto;
 }
@@ -521,7 +465,7 @@ async function loadBet() {
   z-index: 23;
 }
 
-.x-betslips .x-comfirm-wrapper > div {
+.x-betslips .x-comfirm-wrapper>div {
   background: #ffffff;
   border-top: 1px solid #eaecef;
   bottom: 0;
@@ -613,5 +557,83 @@ async function loadBet() {
 
 .x-betslips .x-comfirm-wrapper .x-line-label-fix {
   max-width: 138px;
+}
+
+.x-betslips .x-coins {
+  margin-top: -12px;
+  padding: 0 7px 6px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.x-betslips .x-coins > ul {
+  padding: 6px 8px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background: #ededed;
+  position: relative;
+}
+.x-betslips .x-coins > ul:before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: 10%;
+  width: 6px;
+  height: 6px;
+  background: #ededed;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.x-betslips .x-coins .x-c-item {
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 500;
+  color: #353A45;
+  cursor: pointer;
+}
+.x-betslips .x-coins .x-c-item:first-of-type {
+  margin-bottom: 6px;
+}
+.x-betslips .x-coins .t-c-green {
+  color: var(--brand-secondary);
+  font-weight: bold;
+}
+.x-betslips .x-coins .i-check {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.x-betslips .x-coins .i-check:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #9CA0AB;
+  background: #fff;
+  border-radius: 50%;
+  z-index: 1;
+}
+.x-betslips .x-coins .i-check.is-checked:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 2;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+.x-betslips .x-coins .i-check.is-checked:before {
+  border: none;
+  background: var(--brand-secondary);
+  width: 14px;
+  height: 14px;
 }
 </style>

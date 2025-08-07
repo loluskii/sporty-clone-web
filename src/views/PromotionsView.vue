@@ -23,7 +23,7 @@ function backToGrid() {
 onMounted(async () => {
   isLoading.value = true
   const res = await getPromotions()
-  promotions.value = res?.data ?? []
+  promotions.value = res?.data.filter((x) => x.type === 'web') ?? []
   isLoading.value = false
 })
 </script>
@@ -58,6 +58,7 @@ onMounted(async () => {
               <!-- Use v-html to render the content as HTML in single view -->
               <div
                 class="card-text promo-body text-muted mb-2 text-center"
+                style=""
                 v-if="selectedPromotion.content"
                 v-html="selectedPromotion.content"
               ></div>
@@ -71,7 +72,7 @@ onMounted(async () => {
           <div
             v-for="promo in promotions"
             :key="promo.id"
-            class="col-xl-6 col-lg-5 col-md-6 col-sm-10"
+            class="col-xl-8 col-lg-7 col-md-7 col-sm-10"
           >
             <div
               class="promo-card card h-100 shadow-sm"
@@ -79,7 +80,7 @@ onMounted(async () => {
               style="cursor: pointer"
             >
               <img class="card-img-top promo-img" :src="promo.imageUrl" alt="Promo Image" />
-              <div class="card-body d-flex flex-column justify-content-center align-items-center">
+              <div class="card-body d-flex flex-column justify-content-center align-items-center p-0">
                 <h4 class="card-title promo-title fw-bold mb-0 text-center">{{ promo.title }}</h4>
                 <!-- Body is hidden by CSS but kept in template -->
                 <div class="card-text promo-body text-muted text-center" v-if="promo.content"></div>
@@ -119,7 +120,7 @@ onMounted(async () => {
 .promo-card {
   border-radius: 18px;
   overflow: hidden;
-  background: #181a20;
+  /* background: #181a20; */
   color: #fff;
   border: none;
   transition:
@@ -134,14 +135,13 @@ onMounted(async () => {
 .promo-img {
   width: 100%;
   height: 220px; /* Fixed height for consistency */
-  object-fit: cover;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
   background: #23242a;
 }
 .promo-title {
-  font-size: 1.3rem;
-  color: #ffd600;
+  font-size: 1.8rem;
+  color: #181a20;
   padding: 1.2rem 0.5rem 1rem 0.5rem; /* Increased padding */
   text-align: center;
   width: 100%;
@@ -177,7 +177,7 @@ onMounted(async () => {
 }
 
 .btn-link {
-  color: #ffd600;
+  color: #181a20;
   font-weight: 500;
   text-decoration: none;
 }

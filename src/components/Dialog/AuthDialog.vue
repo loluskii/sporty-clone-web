@@ -57,7 +57,7 @@
                                   class="x-input-icon x-input-icon--clickable x-input-icon--show x-icon-delete"
                                 ></i>
                                 <input
-                                  type="input"
+                                  type="number"
                                   input-mode=""
                                   name=""
                                   placeholder="Mobile Number"

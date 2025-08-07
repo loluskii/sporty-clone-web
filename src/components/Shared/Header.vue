@@ -226,15 +226,16 @@
             >
             <a
               id="header_nav_games"
-              href="/Games"
+              href=""
+              @click.prevent="getCasinoURL"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
             >
             <a
               id="header_nav_liveBetting"
-              href="/Sport/LiveList"
-              :class="viewIsLive ? 'x-flex-item--active' : ''"
+              href="/Sport/Live"
+              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
@@ -264,7 +265,6 @@
               ><span data-cms-key="app">Promotions</span></a
             >
           </nav>
-          <div id="j_timezone" class="x-timezone">GMT {{ sign }}{{ offsetHours }}:00</div>
         </div>
       </div>
     </div>
@@ -276,7 +276,6 @@
 import { defineComponent, computed, ref, onMounted } from 'vue'
 import { useAuthStore, useUsersStore, useUtilsStore } from '@/stores'
 import MD5 from 'crypto-js/md5'
-
 import emitter from '@/plugins/emitter'
 import { useRoute } from 'vue-router'
 const usersStore = useUsersStore()
@@ -288,10 +287,10 @@ const route = useRoute()
 const phoneNumber = ref()
 const password = ref()
 
-// const date = new Date()
-// const offset = date.getTi/mezoneOffset()
-// const sign = offset >= 0 ? '-' : '+'
-// const offsetHours = Math.abs(offset / 60)
+const date = new Date()
+const offset = date.getTimezoneOffset()
+const sign = offset >= 0 ? '-' : '+'
+const offsetHours = Math.abs(offset / 60)
 const token = ref('111111')
 const group = ref(import.meta.env.VITE_APP_KEY)
 const mode = ref(0)
@@ -308,10 +307,6 @@ const viewIsCasino = computed(() => {
   return (
     route.name === 'game-view' || route.name === 'game-play' || route.name === 'casino-category'
   )
-})
-
-const viewIsLive = computed(() => {
-  return route.name === 'live-view' || route.name === 'live-fixtures-one-detail'
 })
 
 const activeClass = (name) => {
@@ -621,15 +616,15 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-phone,
 .c-header .x-login-bar .x-psd {
-  background: #333;
+  background: #fff;
 }
 .c-header .x-login-bar .x-phone input,
 .c-header .x-login-bar .x-psd input {
-  background: #333;
+  background: #fff;
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #000;
   font-size: 12px;
   height: 100%;
   outline: none;
@@ -643,7 +638,7 @@ onMounted(() => {
 .c-header .x-login-bar .x-phone > span {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #000;
   font-size: 12px;
   padding: 0 0 0 15px;
 }
@@ -839,12 +834,13 @@ onMounted(() => {
   width: 65px;
 }
 .c-header .x-btn-login {
-  background: #7b0911;
+  background: var(--brand-secondary);
   border: none;
   border-radius: 2px;
 }
 .c-header .x-btn-login.disabled {
-  background: rgba(123, 9, 17, 0.8);
+  background: var(--brand-secondary);
+  opacity: 0.5;
   color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
 }
@@ -901,9 +897,9 @@ onMounted(() => {
 }
 .c-header .x-logo-bar .x-image-wrapper {
   display: inline-block;
-  height: 34px;
+  height: 100%;
   vertical-align: middle;
-  width: 173px;
+  width: 130px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;

@@ -4,7 +4,9 @@
 
     <AuthDialog v-if="dialogType == 'auth'" :auth-type="dialogData"></AuthDialog>
     <WithdrawalDialog v-if="dialogType == 'withdrawal'" :data="dialogData"></WithdrawalDialog>
+    <ShopDepositWithdrawalDialog v-if="dialogType == 'shop-transaction'" :data="dialogData"></ShopDepositWithdrawalDialog>
     <ErrorDialog v-if="dialogType == 'error'" :data="dialogData"></ErrorDialog>
+    <ImageDialog v-if="dialogType == 'popup'" :data="dialogData"></ImageDialog>
     <PlaceBetDialog v-if="dialogType == 'place-bet'" :response="dialogData.data"></PlaceBetDialog>
     <BookDialog
       v-if="dialogType == 'book-bet'"
@@ -20,6 +22,8 @@ import ErrorDialog from '../Dialog/ErrorDialog.vue'
 import PlaceBetDialog from '../Dialog/PlaceBetDialog.vue'
 import emitter from '@/plugins/emitter'
 import BookDialog from '../Dialog/BookDialog.vue'
+import ImageDialog from '../Dialog/ImageDialog.vue'
+import ShopDepositWithdrawalDialog from '../Dialog/ShopDepositWithdrawalDialog.vue'
 
 defineProps({
   dialogType: String,
