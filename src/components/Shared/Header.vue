@@ -226,15 +226,16 @@
             >
             <a
               id="header_nav_games"
-              href="/Games"
+              href=""
+              @click.prevent="getCasinoURL"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
             >
             <a
               id="header_nav_liveBetting"
-              href="/Sport/LiveList"
-              :class="viewIsLive ? 'x-flex-item--active' : ''"
+              href="/Sport/Live"
+              :class="activeClass('live-view') ? 'x-flex-item--active' : ''"
               class="x-flex-item"
               ><span data-cms-key="live_betting">Live Betting</span></a
             >
@@ -264,7 +265,6 @@
               ><span data-cms-key="app">Promotions</span></a
             >
           </nav>
-          <div id="j_timezone" class="x-timezone">GMT {{ sign }}{{ offsetHours }}:00</div>
         </div>
       </div>
     </div>
@@ -276,7 +276,6 @@
 import { defineComponent, computed, ref, onMounted } from 'vue'
 import { useAuthStore, useUsersStore, useUtilsStore } from '@/stores'
 import MD5 from 'crypto-js/md5'
-
 import emitter from '@/plugins/emitter'
 import { useRoute } from 'vue-router'
 const usersStore = useUsersStore()
@@ -309,10 +308,6 @@ const viewIsCasino = computed(() => {
     route.name === 'game-view' || route.name === 'game-play' || route.name === 'casino-category'
   )
 })
-
-const viewIsLive = computed(() => {
-  return route.name === "live-view" || route.name === "live-fixtures-one-detail";
-});
 
 const activeClass = (name) => {
   return route.name === name

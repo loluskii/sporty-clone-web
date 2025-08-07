@@ -3,8 +3,8 @@
     <div class="x-table-cell left-team-cell">
       <div class="left-team-table">
         <div class="time">
-          <div class="clock-time">{{ game.eventTime }}&nbsp;&nbsp;</div>
-          <div class="game-id"><span class="game-id-label">ID: </span>{{ game.gameID }}</div>
+          <div class="clock-time">{{ localGame.eventTime }}&nbsp;&nbsp;</div>
+          <div class="game-id"><span class="game-id-label">ID: </span>{{ localGame.gameID }}</div>
         </div>
         <div
           title=""
@@ -13,29 +13,29 @@
             $router.push({
               name: 'fixtures-detail',
               params: {
-                sport: slugify(game.sportName),
-                tournament_name: slugify(game.tournament),
-                event_name: slugify(game.name),
-                event_id: game.matchID
+                sport: slugify(localGame.sportName),
+                tournament_name: slugify(localGame.tournament),
+                event_name: slugify(localGame.name),
+                event_id: localGame.matchID
               }
             })
           "
         >
-          <div class="home-team">{{ game.homeTeam }}</div>
-          <div class="away-team">{{ game.awayTeam }}</div>
+          <div class="home-team">{{ localGame.homeTeam }}</div>
+          <div class="away-team">{{ localGame.awayTeam }}</div>
         </div>
-        <div class="lmt-icon" @click="showFixtureAnalysis(game.matchID)">
+        <div class="lmt-icon" @click="showFixtureAnalysis(localGame.matchID)">
           <em class="icon"></em>
         </div>
       </div>
     </div>
     <div
       class="x-table-cell market-cell"
-      :class="getFilteredOutcomes(game.outcomes).length > 1 ? 'two-markets' : ''"
+      :class="getFilteredOutcomes(localGame.outcomes).length > 1 ? 'two-markets' : ''"
     >
       <div
         class="x-market market"
-        v-for="(market, m) in getFilteredOutcomes(game.outcomes)"
+        v-for="(market, m) in getFilteredOutcomes(localGame.outcomes)"
         :key="m"
       >
         <div
@@ -49,7 +49,7 @@
               <div
                 class="af-select-list animate-core"
                 v-if="specifierOpen"
-                :class="'af-select-list-' + game.gameID"
+                :class="'af-select-list-' + localGame.gameID"
                 style="opacity: 1; width: 100%"
               >
                 <span
@@ -72,7 +72,7 @@
             class="x-outcome"
             :class="
               isSelected(
-                createID(game.gameID, game.matchID, k.outcomeName, k.oddID, game.name),
+                createID(localGame.gameID, localGame.matchID, k.outcomeName, k.oddID, localGame.name),
                 couponStore.coupon
               )
                 ? 'x-outcome--checked'
@@ -93,15 +93,15 @@
         $router.push({
           name: 'fixtures-detail',
           params: {
-            sport: slugify(game.sportName),
-            tournament_name: slugify(game.tournament),
-            event_name: slugify(game.name),
-            event_id: game.matchID
+            sport: slugify(localGame.sportName),
+            tournament_name: slugify(localGame.tournament),
+            event_name: slugify(localGame.name),
+            event_id: localGame.matchID
           }
         })
       "
     >
-      +{{ game.activeMarkets }}
+      +{{ localGame.activeMarkets }}
     </div>
   </div>
 </template>
@@ -109,7 +109,7 @@
 <script setup>
 import { createID, isSelected, sortArr, slugify } from '@/helpers'
 import { useCouponStore } from '@/stores'
-import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue'
 import { useMqttService } from '@/composables/useMqtt'
 
 import EmptyOdds from '../EmptyOdds.vue'
@@ -121,6 +121,14 @@ const props = defineProps({
   game: Object
 })
 
+// Create a local reactive copy of the game data
+const localGame = ref({ ...props.game })
+
+// Watch for changes in the original game prop and update local copy
+watch(() => props.game, (newGame) => {
+  localGame.value = { ...newGame }
+}, { deep: true })
+
 const activeSpecifier = ref()
 const specifierOpen = ref(false)
 
@@ -130,9 +138,9 @@ const updatedOutcomes = ref({})
 // MQTT Service
 const { subscribe } = useMqttService()
 
-// MQTT Topics
-const oddsChangeTopic = `feeds/prematch/odds_change/${props.game.matchID}`
-const betStopTopic = `feeds/prematch/bet_stop/${props.game.matchID}`
+// MQTT Topics - use localGame instead of props.game
+const oddsChangeTopic = computed(() => `feeds/prematch/odds_change/${localGame.value.matchID}`)
+const betStopTopic = computed(() => `feeds/prematch/bet_stop/${localGame.value.matchID}`)
 
 // MQTT Handlers
 const handleOddsChange = (data) => {
@@ -142,7 +150,7 @@ const handleOddsChange = (data) => {
     return
   }
 
-  if (String(data.event_id) !== String(props.game.matchID)) {
+  if (String(data.event_id) !== String(localGame.value.matchID)) {
     return
   }
 
@@ -150,7 +158,7 @@ const handleOddsChange = (data) => {
     updatePending.value = true
 
     requestAnimationFrame(() => {
-      // Update markets and outcomes
+      // Update markets and outcomes on local copy
       if (data.markets && data.markets.length > 0) {
         data.markets.forEach((market) => {
           if (!market.outcomes) {
@@ -163,15 +171,15 @@ const handleOddsChange = (data) => {
             return
           }
 
-          // Update outcomes
+          // Update outcomes in local copy
           market.outcomes.forEach((newOutcome) => {
-            const existingOutcomeIndex = props.game.outcomes.findIndex(
+            const existingOutcomeIndex = localGame.value.outcomes.findIndex(
               (o) => o.marketID === market.id && o.outcomeID === newOutcome.id
             )
 
             if (existingOutcomeIndex !== -1) {
-              props.game.outcomes[existingOutcomeIndex] = {
-                ...props.game.outcomes[existingOutcomeIndex],
+              localGame.value.outcomes[existingOutcomeIndex] = {
+                ...localGame.value.outcomes[existingOutcomeIndex],
                 odds: newOutcome.odds,
                 active: newOutcome.active
               }
@@ -193,16 +201,16 @@ const handleOddsChange = (data) => {
 }
 
 const handleBetStop = (data) => {
-  // console.log(`[MQTT] Bet stop received for match ${props.game.matchID}`);
+  // console.log(`[MQTT] Bet stop received for match ${localGame.value.matchID}`);
 
-  if (String(data.event_id) !== String(props.game.matchID)) {
+  if (String(data.event_id) !== String(localGame.value.matchID)) {
     return
   }
 
-  // Set all outcomes to inactive with 0 odds
+  // Set all outcomes to inactive with 0 odds in local copy
   requestAnimationFrame(() => {
     // Update the outcomes array
-    const newOutcomes = props.game.outcomes.map((outcome) => ({
+    const newOutcomes = localGame.value.outcomes.map((outcome) => ({
       ...outcome,
       odds: 0,
       active: 0
@@ -220,7 +228,7 @@ const handleBetStop = (data) => {
 
     // Update both states
     updatedOutcomes.value = updatedOutcomesCopy
-    props.game.outcomes = newOutcomes
+    localGame.value.outcomes = newOutcomes
   })
 }
 
@@ -232,12 +240,12 @@ onMounted(() => {
   //   isConnected: isConnected.value
   // });
 
-  const unsubscribeOdds = subscribe(oddsChangeTopic, handleOddsChange)
-  const unsubscribeBetStop = subscribe(betStopTopic, handleBetStop)
+  const unsubscribeOdds = subscribe(oddsChangeTopic.value, handleOddsChange)
+  const unsubscribeBetStop = subscribe(betStopTopic.value, handleBetStop)
 
   // Cleanup subscriptions on unmount
   onUnmounted(() => {
-    // console.log(`[MQTT] Unsubscribing from topics for match ${props.game.matchID}`);
+    // console.log(`[MQTT] Unsubscribing from topics for match ${localGame.value.matchID}`);
     unsubscribeOdds()
     unsubscribeBetStop()
   })
@@ -272,7 +280,7 @@ function getFilteredOutcomes(outcomes) {
 
 const getSpecifiers = computed(() => {
   const result = []
-  const outcomes = props.game.outcomes
+  const outcomes = localGame.value.outcomes // Changed from props.game.outcomes
   const specifier = props.selectedMarkets.filter((market) => market.specifier !== '')
   if (outcomes.length > 0) {
     let filtered = outcomes.filter((item) => item.marketID === specifier[0].marketID)
@@ -332,4 +340,7 @@ function showFixtureAnalysis(id) {
     'width=1078,height=768'
   )
 }
+
+// Export localGame for use in template
+defineExpose({ localGame })
 </script>

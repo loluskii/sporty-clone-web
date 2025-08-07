@@ -5,7 +5,7 @@
         <li class="x-col-wrapper brand-col">
           <div class="d-flex flex-direction-column">
             <div class="d-flex">
-              <img src="/logo.png" :alt="utilsStore.brandName" class="logo" />
+              <img src="/default.png" :alt="utilsStore.brandName" class="logo" />
             </div>
           </div>
         </li>
@@ -128,49 +128,14 @@
       <ul class="x-content d-flex">
         <!-- <li style="padding: 20px"></li> -->
         <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex">
-          <div class="x-left x-licence">
-            <div class="x-image-wrapper" style="height: auto !important">
-              <img
-                src="//s.sporty.net/global/main/modules/main/desktop/common/core/image/license@2x.c598257514.svg"
-                alt="Licence"
-              />
-            </div>
-          </div>
-          <!-- <p class="x-right" data-cms-key="licence">
-            {{ utilsStore.brandName }} is operated by Soloti gaming Limited (RC 1687373). Soloti
-            Gaming Limited is licensed by: (i) The Nigerian Lottery Regulatory Commission (under
-            Licence number 0001042) , (ii) Lagos State Lotteries and Gaming Authority (under Licence
-            number 005310)
-          </p> -->
         </li>
       </ul>
     </div>
     <div class="x-footer-bottom">
       <div class="x-content">
-        <ul class="x-left">
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/logo_visa.fd08bf37cf.png" alt="" />
-            </div>
-          </li>
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/logo_mc.51fc36230c.png" alt="" />
-            </div>
-          </li>
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/paystack-logo.png" alt="" />
-            </div>
-          </li>
-          <li class="l-item">
-            <div class="x-image-wrapper">
-              <img src="/monnify.png" alt="" />
-            </div>
-          </li>
-        </ul>
+        
         <span class="x-copy" data-cms-key="year_copy_right"
-          >© 2025 {{ utilsStore.brandName }}. All rights reserved.</span
+          >&copy; {{ new Date().getFullYear() }} {{ utilsStore.brandName }}. All rights reserved.</span
         >
       </div>
     </div>

@@ -9,7 +9,7 @@
           :key="index"
           @click="setActiveTab(method)"
         >
-          {{ method.provider === "sbengine" ? "Shop" : method.provider }}
+          {{ method.provider === "sbengine" ? "Shop" : method.title }}
         </li>
       </ul>
       <div class="f-dp">
@@ -153,8 +153,30 @@ async function beginDeposit() {
   }
 
   const res = await getDepositURL(payload)
+  amount.value = null
   if (res.success) {
-    window.location.href = res.data.link
+    btnDisabled.value = false
+    if (activeTab.value.provider === 'sbengine') {
+      let data = {
+        dialogType: 'shop-transaction',
+        dialogData: {
+          type: 'deposit',
+          message: 'Deposit Request Recieved!',
+          amount: amount.value,
+          transactionCode: res.data.transactionRef
+        }
+      }
+      console.log(data)
+      emitter.emit('showDialog', data)
+    }else{
+      if (res.data.link === 'ACCEPTED') {
+        window.location.href = '/';
+      } else if (!res.data.link.includes('http')) {
+        emitter.emit("showErrorMessage", res.message);
+      } else {
+        window.location.href = res.data.link;
+      }
+    }
   } else {
     let error = {
       dialogType: 'error',

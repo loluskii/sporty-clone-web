@@ -1,9 +1,17 @@
-import { defineStore } from 'pinia'
+import {
+  defineStore
+} from 'pinia'
 
-import { login } from '@/helpers'
-import { useUsersStore, useUtilsStore } from '@/stores'
+import {
+  login,
+  getUserActiveBonus,
+  getUserCashbackBonus
+} from '@/helpers'
+import {
+  useUsersStore,
+  useUtilsStore
+} from '@/stores'
 import router from '../router'
-import emitter from '@/plugins/emitter'
 
 export const useAuthStore = defineStore({
   id: 'auth',
@@ -19,29 +27,33 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async doLogin(payload) {
-      this.loading = true
-      this.authError = null
+      this.loading = true;
+      this.authError = "";
       try {
-        const res = await login(payload)
-        if (res?.data?.token) {
-          this.token = res.data.token
-          this.mobile_number = payload.username
-          const userStore = useUsersStore()
-          userStore.loadCurrentUser()
-          this.loading = false
-          emitter.emit('hideDialog')
-          if (!this.returnUrl || this.returnUrl === '/') {
-            return router.push('/')
+        const res = await login(payload);
+        if (res.data && res.data.token) {
+          this.token = res.data.token;
+          this.mobile_number = payload.username;
+          const userStore = useUsersStore();
+          const data = await Promise.all([
+            userStore.loadCurrentUser(),
+            getUserActiveBonus(),
+            getUserCashbackBonus()
+          ]);
+
+          userStore.activeCashback = data[2].data
+          this.loading = false;
+          if (this.returnUrl) {
+            return router.push(this.returnUrl);
           } else {
-            return router.push(this.returnUrl)
+            return router.push('/')
           }
         } else {
           throw Error(res.error)
         }
       } catch (error) {
-        this.loading = false
-        this.authError = error
-        alert(error)
+        this.loading = false;
+        alert(error);
       }
     },
     clearStores() {

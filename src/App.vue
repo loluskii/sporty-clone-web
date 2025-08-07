@@ -3,14 +3,17 @@ import { RouterView, useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 import DialogBox from '@/components/Shared/DialogBox.vue'
 import emitter from '@/plugins/emitter'
-import { useCouponStore, useUsersStore, useUtilsStore } from '@/stores'
+import { useAuthStore, useCouponStore, useUsersStore, useUtilsStore } from '@/stores'
 import {
   getBets,
   loadBetslipByCode,
   fetchBonusList,
   fetchGlobalVars,
   getSportsMenu,
-  validateBetslipSelections
+  validateBetslipSelections,
+  getUserActiveBonus,
+  getUserCashbackBonus,
+  fetchBanners
 } from '@/helpers'
 import CasinoDialog from '@/components/Dialog/CasinoDialog.vue'
 
@@ -18,6 +21,7 @@ const dialogType = ref('')
 const isDialogShown = ref(false)
 const dialogData = ref({})
 const usersStore = useUsersStore()
+const authStore = useAuthStore()
 const couponStore = useCouponStore()
 const utilsStore = useUtilsStore()
 const showCasinoDialog = ref(false)
@@ -151,6 +155,13 @@ watch(
 )
 
 onMounted(async () => {
+  const res = await fetchBanners();
+  if(res.data && Object.keys(res.data).length > 0){
+    utilsStore.banners = Object.values(res.data).filter((b) => b.target === 'web');
+  }else{
+    utilsStore.banners = []
+  }
+
   emitter.on('showDialog', handleshowDialog)
   emitter.on('hideDialog', toggleDialog)
   emitter.on('clearBetslip', clearBetslip)
@@ -158,9 +169,22 @@ onMounted(async () => {
   emitter.on('toggleCasinoDialog', () => {
     showCasinoDialog.value = true
   })
-  if (usersStore.currentUser) {
-    Promise.all([usersStore.loadCurrentUser(), getBetsData()])
-      .then(() => {})
+  
+  setTimeout(() => {
+    let popupBanner = utilsStore.banners.find((b) => b.position === 'popup')
+    console.log(popupBanner)
+    if(popupBanner && utilsStore.popupDialogShown ===  null){
+      dialogData.value = popupBanner
+      utilsStore.popupDialogShown = false;
+      handleshowDialog({dialogType: 'popup', dialogData: dialogData.value})
+    }
+  }, 1000)
+
+  if (authStore.isAuthenticated) {
+    Promise.all([usersStore.loadCurrentUser(), getUserActiveBonus(), getUserCashbackBonus(), getBetsData()])
+      .then(() => {
+        usersStore.activeCashback = res[2].data;
+      })
       .catch(() => {})
   }
 
@@ -171,6 +195,18 @@ onMounted(async () => {
       utilsStore.SportsbookBonusList = res[0].data
       utilsStore.SportsbookGlobalVariable = res[1].data.data
       utilsStore.sportsMenu = res[2].sports // Update loading state after delay
+
+      // Handle bonus response
+      // if (res[3].data) {
+      //   utilsStore.casinoActiveBonus = bonusResponse.value.data;
+      //   if(utilsStore.bonusModalShown === null){
+      //     utilsStore.bonusModalShown = false
+      //     emitter.emit("showCasinoDialog", { bonus: utilsStore.casinoActiveBonus });
+      //   }
+      // } else {
+      //   console.warn("Failed to fetch active bonus:", );
+      // }
+
     })
     .catch(() => {})
 })

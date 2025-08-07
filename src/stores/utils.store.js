@@ -9,6 +9,7 @@ export const useUtilsStore = defineStore({
     },
     sportID: 1,
     live: false,
+    banners: [],
     sportsMenu: [],
     marketGroups: [],
     activeLiveMarkets: [],
@@ -22,7 +23,9 @@ export const useUtilsStore = defineStore({
     activeCategories: [],
     openBetCount: 0,
     liveListSingleMatch: null,
-    showDefaultHeaderItems: true
+    showDefaultHeaderItems: true,
+    bonusModalShown: null,
+    popupDialogShown: null,
   }),
   getters: {},
   actions: {},

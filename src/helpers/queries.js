@@ -56,7 +56,7 @@ export const getCombosData = async (payload) => {
 }
 
 export const login = async (payload) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/auth/login/`, payload))
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/auth/login?source=website`, payload))
 }
 
 export const register = async (payload) => {
@@ -357,6 +357,14 @@ export const getUserActiveBonus = async () => {
     fetchWrapper.get(`${NEW_BASE_API}/bonus/get-active-bonus?client_id=${CLIENT_ID}`)
   )
 }
+
+export const getUserCashbackBonus = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/bonus/user/check-cashback-bonus?clientId=${CLIENT_ID}`,
+    ),
+  );
+};
 
 export const getPromotions = async () => {
   return parseData(
