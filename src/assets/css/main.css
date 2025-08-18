@@ -2770,7 +2770,7 @@
   padding-bottom: 3px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-weight: 300;
+  font-family: 'Degular Semibold', sans-serif !important;
 }
 
 .x-main .x-main-bottom .x-main-mid .important-match .tour-name-wrap .tour-item .tour-name {
@@ -3496,6 +3496,10 @@
   min-width: 1%;
   position: relative;
   text-align: center;
+}
+
+.live-table .x-market .x-outcome {
+  background-color: var(--brand-live-odds-bg);
 }
 
 .x-market .x-outcome > span {

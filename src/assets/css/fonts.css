@@ -1,53 +1,31 @@
-/* roboto-condensed-regular - latin */
 @font-face {
-  font-family: 'Roboto Condensed';
+  font-family: 'Degular Regular';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src:
-    local('Roboto Condensed'),
-    local('RobotoCondensed-Regular'),
-    url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.woff2') format('woff2'),
-    url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.woff') format('woff'),
-    url('../fonts/roboto-condensed-v18-latin-ext_latin-regular.ttf') format('truetype');
+  src: local('DegularDemo-Regular'), url(@/assets/fonts/DegularDemo-Medium.otf) format('opentype');
 }
 
-/* roboto-condensed-700 - latin */
 @font-face {
-  font-family: 'Roboto Condensed Bolder';
+  font-family: 'Degular Medium';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('DegularDemo-Medium'), url(@/assets/fonts/DegularDemo-Medium.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Degular Semibold';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('DegularDemo-Semibold'), url(@/assets/fonts/DegularDemo-Semibold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Degular Bold';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src:
-    local('Roboto Condensed Bold'),
-    local('RobotoCondensed-Bold'),
-    url('../fonts/roboto-condensed-v18-latin-ext_latin-700.woff2') format('woff2'),
-    url('../fonts/roboto-condensed-v18-latin-ext_latin-700.woff') format('woff'),
-    url('../fonts/roboto-condensed-v18-latin-ext_latin-700.ttf') format('truetype');
-}
-
-/* roboto-regular - latin */
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src:
-    local('Roboto'),
-    local('Roboto-Regular'),
-    url('../fonts/Roboto-Regular-webfont.woff') format('woff'),
-    url('../fonts/Roboto-Regular-webfont.ttf') format('truetype');
-}
-
-/* roboto-700 - latin */
-@font-face {
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src:
-    local('Roboto Bold'),
-    local('Roboto-Bold'),
-    url('../fonts/Roboto-Bold-webfont.woff') format('woff'),
-    url('../fonts/Roboto-Bold-webfont.ttf') format('truetype');
+  src: local('DegularDemo-Bold'), url(@/assets/fonts/DegularDemo-Bold.otf) format('opentype');
 }

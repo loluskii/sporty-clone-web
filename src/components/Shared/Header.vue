@@ -210,7 +210,7 @@
           <div class="x-left">
             <div class="x-logo-wrapper">
               <a href="/" class="x-image-wrapper"
-                ><img src="/default.png" alt="frapapa" class="x-img x-img--logo"
+                ><img src="/logo.png" alt="frapapa" class="x-img x-img--logo"
               /></a>
             </div>
           </div>
@@ -899,7 +899,7 @@ onMounted(() => {
   display: inline-block;
   height: 100%;
   vertical-align: middle;
-  width: 130px;
+  width: 160px;
 }
 .c-header .x-logo-bar .x-image-wrapper.region-select {
   cursor: pointer;
