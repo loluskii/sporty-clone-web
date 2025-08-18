@@ -53,7 +53,7 @@ export const useCouponStore = defineStore({
       exciseDuty: 0,
       useBonus: false,
       useCashback: false,
-      source: 'website',
+      source: 'website'
     },
     activeSubscriptions: [] // Will store objects with topic and unsubscribe function
   }),
@@ -392,7 +392,7 @@ export const useCouponStore = defineStore({
             }
           } else {
             const winnings = calculateWinnings(this.coupon, globalVars, bonusList)
-            console.log(winnings);
+            console.log(winnings)
             this.coupon.maxWin = winnings.maxWin
             this.coupon.maxBonus = winnings.maxBonus
             this.coupon.wthTax = winnings.wthTax
@@ -764,7 +764,7 @@ export const useCouponStore = defineStore({
         this.isBetslipLoading = true
         coupondata.isBooking = this.mode === 'real' ? 0 : 2
 
-        if(bonusId){
+        if (bonusId) {
           coupondata.bonusId = bonusId
         }
 

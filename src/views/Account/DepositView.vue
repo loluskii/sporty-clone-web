@@ -9,7 +9,7 @@
           :key="index"
           @click="setActiveTab(method)"
         >
-          {{ method.provider === "sbengine" ? "Shop" : method.title }}
+          {{ method.provider === 'sbengine' ? 'Shop' : method.title }}
         </li>
       </ul>
       <div class="f-dp">
@@ -183,13 +183,13 @@ async function beginDeposit() {
       }
       console.log(data)
       emitter.emit('showDialog', data)
-    }else{
+    } else {
       if (res.data.link === 'ACCEPTED') {
-        window.location.href = '/';
+        window.location.href = '/'
       } else if (!res.data.link.includes('http')) {
-        emitter.emit("showErrorMessage", res.message);
+        emitter.emit('showErrorMessage', res.message)
       } else {
-        window.location.href = res.data.link;
+        window.location.href = res.data.link
       }
     }
   } else {

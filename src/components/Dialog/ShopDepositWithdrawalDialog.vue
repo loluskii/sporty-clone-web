@@ -4,12 +4,12 @@
       <div class="es-dialog-main x-dialog-main" style="height: auto">
         <div class="x-wd-pop x-pop--confirm">
           <h3 class="f-title">
-            <span data-cms-key="confirm_to_withdraw" data-cms-page="page_withdraw"
-              >{{data.message}}</span
-            >
+            <span data-cms-key="confirm_to_withdraw" data-cms-page="page_withdraw">{{
+              data.message
+            }}</span>
             <i @click="emitter.emit('hideDialog')" class="x-icon-close"></i>
           </h3>
-          <p style="font-size: 14px;">Take this code to any of our shops to complete the process</p>
+          <p style="font-size: 14px">Take this code to any of our shops to complete the process</p>
           <section>
             <div class="f-line">
               <div class="i-label">
@@ -20,10 +20,12 @@
 
             <div class="f-line">
               <div class="i-label">Code</div>
-              <div class="i-value fs-exclude">{{ data.transactionCode }} <img @click="copyBookingCode" src="/copy.svg" /></div> 
+              <div class="i-value fs-exclude">
+                {{ data.transactionCode }} <img @click="copyBookingCode" src="/copy.svg" />
+              </div>
             </div>
             <div class="f-line f-line--opt">
-              <button class="af-button af-button--primary"  @click="emitter.emit('hideDialog')">
+              <button class="af-button af-button--primary" @click="emitter.emit('hideDialog')">
                 <span>Continue</span>
               </button>
             </div>

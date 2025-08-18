@@ -3,18 +3,25 @@
     <div id="withdraw-container">
       <div class="x-wd-ng">
         <div class="tabs-v2__nav tabs-v2__nav--shrink">
-          <div v-for="(method, index) in withdrawalMethods" class="tabs-v2__tab"
-            :class="activeTab === method.key ? 'tabs-v2__tab--active' : ''" :key="index"
-            @click="activeTab = method.key">
-            <div class="label-container"><span>{{ method.name }}</span></div>
+          <div
+            v-for="(method, index) in withdrawalMethods"
+            class="tabs-v2__tab"
+            :class="activeTab === method.key ? 'tabs-v2__tab--active' : ''"
+            :key="index"
+            @click="activeTab = method.key"
+          >
+            <div class="label-container">
+              <span>{{ method.name }}</span>
+            </div>
           </div>
         </div>
         <section>
           <div id="j_ngBank" class="x-bank">
             <template v-if="activeTab === 'bank'">
               <div class="f-line">
-                <span class="f-label" data-cms-key="bank_account_info" data-cms-page="page_withdraw">Bank Account
-                  Info</span>
+                <span class="f-label" data-cms-key="bank_account_info" data-cms-page="page_withdraw"
+                  >Bank Account Info</span
+                >
                 <div class="f-line-item i-bank">
                   <div tabindex="9" class="f-list-wrapper" :class="showBanks ? 'on' : ''">
                     <div class="f-content" @click="toggleShowBanks">
@@ -24,13 +31,21 @@
                       <i class="i-icon--more" :class="showBanks ? 'on' : ''"></i>
                     </div>
                     <ul class="f-list" :style="showBanks ? 'display: block' : ''">
-                      <li v-for="(bank, index) in banksList" :key="index" @click="selectBank(bank)" class="l-item"
+                      <li
+                        v-for="(bank, index) in banksList"
+                        :key="index"
+                        @click="selectBank(bank)"
+                        class="l-item"
                         :class="{
                           'l-item--checked': selectedBank && selectedBank.code == bank.code
-                        }">
+                        }"
+                      >
                         <div class="x-bank-item">
                           <span class="f-text">{{ bank.name }}</span>
-                          <i v-if="selectedBank && selectedBank.code == bank.code" class="i-icon-checked"></i>
+                          <i
+                            v-if="selectedBank && selectedBank.code == bank.code"
+                            class="i-icon-checked"
+                          ></i>
                         </div>
                       </li>
                     </ul>
@@ -39,8 +54,13 @@
                 <div class="f-line-item i-num">
                   <div class="x-fix-input">
                     <div class="x-value">
-                      <input type="input" placeholder="Account Number" onpaste="return true" class="x-input fs-exclude"
-                        v-model="accountNumber" />
+                      <input
+                        type="input"
+                        placeholder="Account Number"
+                        onpaste="return true"
+                        class="x-input fs-exclude"
+                        v-model="accountNumber"
+                      />
                     </div>
                   </div>
                   <div v-if="accountError" class="f-error">
@@ -50,15 +70,26 @@
               </div>
             </template>
             <div class="f-line">
-              <span class="f-label"><span data-cms-key="amount">Amount</span> ({{
-                SportsbookGlobalVariable.CurrencyCode
-              }})
+              <span class="f-label"
+                ><span data-cms-key="amount">Amount</span> ({{
+                  SportsbookGlobalVariable.CurrencyCode
+                }})
               </span>
               <div class="f-line-item i-amount">
-                <div tabindex="6" class="x-input-wrapper" :class="{ 'x-input-wrapper--error': amountError }">
-                  <span class="x-input-com"><i class="x-input-icon x-input-icon--clickable x-icon-delete"></i>
-                    <input type="input" placeholder="min. 1" class="x-input fs-exclude" v-model="withdrawalAmount"
-                      @input="checkWithdrawableAmount" /></span>
+                <div
+                  tabindex="6"
+                  class="x-input-wrapper"
+                  :class="{ 'x-input-wrapper--error': amountError }"
+                >
+                  <span class="x-input-com"
+                    ><i class="x-input-icon x-input-icon--clickable x-icon-delete"></i>
+                    <input
+                      type="input"
+                      placeholder="min. 1"
+                      class="x-input fs-exclude"
+                      v-model="withdrawalAmount"
+                      @input="checkWithdrawableAmount"
+                  /></span>
                 </div>
                 <div v-if="amountError" class="f-error">
                   <p>{{ amountErrorMessage }}</p>
@@ -67,8 +98,12 @@
             </div>
             <div class="f-line f-line--opt">
               <span class="f-label"></span>
-              <button :class="!isFormComplete || buttonLoader ? 'is-disabled' : ''" @click.prevent="submit"
-                :disabled="!isFormComplete || buttonLoader" class="af-button af-button--primary">
+              <button
+                :class="!isFormComplete || buttonLoader ? 'is-disabled' : ''"
+                @click.prevent="submit"
+                :disabled="!isFormComplete || buttonLoader"
+                class="af-button af-button--primary"
+              >
                 <span> Withdraw </span>
               </button>
             </div>
@@ -132,7 +167,7 @@ const amountErrorMessage = ref('')
 
 const withdrawalMethods = [
   { name: 'Bank Transfer', key: 'bank' },
-  { name: 'Shop', key: 'shop' },
+  { name: 'Shop', key: 'shop' }
   // { name: 'Transfer to Friend', key: 'transfer' }
 ]
 
@@ -150,11 +185,7 @@ function toggleShowBanks() {
 }
 
 const isFormComplete = computed(() => {
-  return (
-    withdrawalAmount.value !== undefined &&
-    !amountError.value &&
-    !accountError.value
-  )
+  return withdrawalAmount.value !== undefined && !amountError.value && !accountError.value
 })
 
 const checkWithdrawableAmount = () => {
@@ -182,7 +213,6 @@ function selectBank(bank) {
 async function submit() {
   buttonLoader.value = true
 
-
   switch (activeTab.value) {
     case 'bank':
       submitBankWithdrawal({
@@ -190,14 +220,13 @@ async function submit() {
         bankCode: selectedBank.value.code,
         clientId: CLIENT_ID
       })
-      break;
+      break
     case 'shop':
-      submitShopWithdrawal();
-      break;
+      submitShopWithdrawal()
+      break
     default:
-      break;
+      break
   }
-
 }
 
 async function submitBankWithdrawal(payload) {
@@ -466,7 +495,7 @@ onMounted(async () => {
   border-bottom: 4px solid var(--brand-secondary);
 }
 
-.x-wd-ng .x-wd-coming-soon-container>.container {
+.x-wd-ng .x-wd-coming-soon-container > .container {
   background-color: unset;
 }
 
@@ -474,7 +503,7 @@ onMounted(async () => {
   width: 512px;
 }
 
-.x-dialog--tips .x-pop-header>span {
+.x-dialog--tips .x-pop-header > span {
   color: #353a45;
   font-size: 20px;
   font-weight: bold;
@@ -482,7 +511,7 @@ onMounted(async () => {
   padding: 24px 24px 0;
 }
 
-.x-dialog--tips .x-pop-header>span::before {
+.x-dialog--tips .x-pop-header > span::before {
   content: '\e623';
   font-family: 'iconfont' !important;
   font-size: 16px;
@@ -491,7 +520,7 @@ onMounted(async () => {
   font-style: normal;
 }
 
-.x-dialog--tips .x-pop-header>span:before {
+.x-dialog--tips .x-pop-header > span:before {
   display: inline-block;
   line-height: 1;
   margin-right: 8px;
@@ -503,7 +532,7 @@ onMounted(async () => {
   text-align: right;
 }
 
-.x-dialog--tips .x-pop-main>p {
+.x-dialog--tips .x-pop-main > p {
   padding: 0 24px;
 }
 
@@ -536,7 +565,7 @@ onMounted(async () => {
   flex-direction: column;
 }
 
-.x-wd-ng .x-error-wrapper>div {
+.x-wd-ng .x-error-wrapper > div {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
@@ -605,7 +634,7 @@ onMounted(async () => {
   align-items: flex-start;
 }
 
-.x-wd-ng .x-error-wrapper-fix>div {
+.x-wd-ng .x-error-wrapper-fix > div {
   text-align: left;
   vertical-align: top;
   padding: 60px 40px;
@@ -807,7 +836,7 @@ onMounted(async () => {
   height: 20px;
 }
 
-.x-bank .f-content .x-image-wrapper>img {
+.x-bank .f-content .x-image-wrapper > img {
   width: 100%;
   height: 20px;
 }
@@ -866,7 +895,7 @@ onMounted(async () => {
   height: 20px;
 }
 
-.x-bank .f-list .x-image-wrapper>img {
+.x-bank .f-list .x-image-wrapper > img {
   width: 100%;
   height: 20px;
 }
@@ -1024,7 +1053,7 @@ onMounted(async () => {
   margin-right: 14px;
 }
 
-.x-bank-list .l-item .x-image-wrapper>img {
+.x-bank-list .l-item .x-image-wrapper > img {
   width: 100%;
   height: 20px;
 }
@@ -1331,7 +1360,7 @@ onMounted(async () => {
   height: 20px;
 }
 
-.x-bank-list .f-content .x-image-wrapper>img {
+.x-bank-list .f-content .x-image-wrapper > img {
   width: 100%;
   height: 20px;
 }
@@ -1390,7 +1419,7 @@ onMounted(async () => {
   height: 20px;
 }
 
-.x-bank-list .f-list .x-image-wrapper>img {
+.x-bank-list .f-list .x-image-wrapper > img {
   width: 100%;
   height: 20px;
 }
@@ -1442,11 +1471,11 @@ onMounted(async () => {
   width: 184px;
 }
 
-.x-bank-list>.f-line {
+.x-bank-list > .f-line {
   padding-left: 12px;
 }
 
-.x-bank-list>.f-line:first-of-type {
+.x-bank-list > .f-line:first-of-type {
   margin-top: 16px;
 }
 
@@ -1463,7 +1492,7 @@ onMounted(async () => {
   background: #fff;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #353A45;
+  color: #353a45;
   margin-left: 21px;
   padding: 31px 65px 41px;
 }
@@ -1492,10 +1521,10 @@ onMounted(async () => {
 }
 
 .m-wd-ng .m-title {
-  border-bottom: 2px solid #EAECEF;
+  border-bottom: 2px solid #eaecef;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #353A45;
+  color: #353a45;
   font-size: 16px;
   font-weight: bold;
   line-height: 22px;
@@ -1514,7 +1543,7 @@ onMounted(async () => {
 .m-wd-ng .f-line .f-label {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #353A45;
+  color: #353a45;
   display: inline-block;
   font-size: 16px;
   font-weight: 500;
@@ -1527,7 +1556,7 @@ onMounted(async () => {
 }
 
 .m-wd-ng .f-line .m-input-wrapper {
-  border: 1px solid #B4B4B4;
+  border: 1px solid #b4b4b4;
   border-radius: 2px;
   height: 38px;
   width: 200px;
@@ -1551,7 +1580,7 @@ onMounted(async () => {
 }
 
 .m-wd-ng .f-line .m-input-wrapper .m-input-icon--clickable {
-  color: #DCDEE5;
+  color: #dcdee5;
   display: inline-block;
   height: 36px;
   line-height: 36px;
@@ -1559,23 +1588,23 @@ onMounted(async () => {
 }
 
 .m-wd-ng .f-line .m-input-wrapper .m-input-icon--clickable:hover {
-  color: #9CA0AB;
+  color: #9ca0ab;
 }
 
 .m-wd-ng .f-line .m-input-wrapper.m-input-wrapper--active {
-  border: 1px solid #0D9737 !important;
+  border: 1px solid #0d9737 !important;
 }
 
 .m-wd-ng .f-line .m-input-wrapper.m-input-wrapper--active .m-input-icon--clickable:hover {
-  color: #0D9737 !important;
+  color: #0d9737 !important;
 }
 
 .m-wd-ng .f-line .m-input-wrapper.m-input-wrapper--error {
-  border: 1px solid #E41827 !important;
+  border: 1px solid #e41827 !important;
 }
 
 .m-wd-ng .f-line .m-input-wrapper.m-input-wrapper--error .m-input-icon--clickable:hover {
-  color: #E41827 !important;
+  color: #e41827 !important;
 }
 
 .m-wd-ng .f-line .m-fix-input .m-input,
@@ -1585,7 +1614,7 @@ onMounted(async () => {
 }
 
 .m-wd-ng .f-line .f-error p {
-  color: #E41827;
+  color: #e41827;
   font-size: 12px;
 }
 
@@ -1601,26 +1630,26 @@ onMounted(async () => {
 }
 
 .m-wd-ng .f-line .af-button--primary {
-  background: #0D9737 !important;
+  background: #0d9737 !important;
   color: #fff !important;
 }
 
 .m-wd-ng .f-line .af-button--primary:hover {
-  background: #32CE62 !important;
+  background: #32ce62 !important;
 }
 
 .m-wd-ng .f-line .af-button--primary:active {
-  background: #33EA6A !important;
+  background: #33ea6a !important;
 }
 
 .m-wd-ng .f-line .is-disabled {
-  background: #DCDEE5 !important;
+  background: #dcdee5 !important;
   color: #fff !important;
 }
 
 .m-wd-ng .f-line .is-disabled:hover,
 .m-wd-ng .f-line .is-disabled:active {
-  background: #DCDEE5 !important;
+  background: #dcdee5 !important;
   color: #fff !important;
 }
 
@@ -1628,7 +1657,7 @@ onMounted(async () => {
   height: 60vh;
 }
 
-.m-wd-ng .m-wd-coming-soon-container>.container {
+.m-wd-ng .m-wd-coming-soon-container > .container {
   background-color: unset;
 }
 
@@ -1636,24 +1665,24 @@ onMounted(async () => {
   width: 512px;
 }
 
-.m-dialog--tips .m-pop-header>span {
-  color: #353A45;
+.m-dialog--tips .m-pop-header > span {
+  color: #353a45;
   font-size: 20px;
   font-weight: bold;
   line-height: 24px;
   padding: 24px 24px 0;
 }
 
-.m-dialog--tips .m-pop-header>span::before {
+.m-dialog--tips .m-pop-header > span::before {
   content: '\e623';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-style: normal;
 }
 
-.m-dialog--tips .m-pop-header>span:before {
+.m-dialog--tips .m-pop-header > span:before {
   display: inline-block;
   line-height: 1;
   margin-right: 8px;
@@ -1665,7 +1694,7 @@ onMounted(async () => {
   text-align: right;
 }
 
-.m-dialog--tips .m-pop-main>p {
+.m-dialog--tips .m-pop-main > p {
   padding: 0 24px;
 }
 
@@ -1752,7 +1781,7 @@ onMounted(async () => {
   flex-direction: column;
 }
 
-.m-wd-ng .m-error-wrapper>div {
+.m-wd-ng .m-error-wrapper > div {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
@@ -1764,7 +1793,7 @@ onMounted(async () => {
   height: 40px;
   line-height: 40px;
   color: #fff;
-  background: #EAECEF;
+  background: #eaecef;
   border-radius: 50%;
   margin-bottom: 10px;
   -webkit-animation: logoLoading 1s infinite cubic-bezier(0.4, 0, 1, 1) alternate;
@@ -1773,7 +1802,7 @@ onMounted(async () => {
 
 .m-wd-ng .m-error-wrapper .m-icon-loading::before {
   content: '\e610';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1785,19 +1814,19 @@ onMounted(async () => {
 }
 
 .m-wd-ng .m-error-wrapper .m-text-msg {
-  color: #353A45;
+  color: #353a45;
   font-size: 12px;
   line-height: 16px;
 }
 
 .m-wd-ng .m-error-wrapper .m-error-title {
   font-size: 64px;
-  color: #9CA0AB;
+  color: #9ca0ab;
   line-height: 87px;
 }
 
 .m-wd-ng .m-error-wrapper .af-button {
-  background: #0D9737 !important;
+  background: #0d9737 !important;
   color: #fff !important;
   width: 65px;
   height: 32px;
@@ -1807,11 +1836,11 @@ onMounted(async () => {
 }
 
 .m-wd-ng .m-error-wrapper .af-button:hover {
-  background: #32CE62 !important;
+  background: #32ce62 !important;
 }
 
 .m-wd-ng .m-error-wrapper .af-button:active {
-  background: #33EA6A !important;
+  background: #33ea6a !important;
 }
 
 .m-wd-ng .m-error-wrapper-fix {
@@ -1825,7 +1854,7 @@ onMounted(async () => {
   align-items: flex-start;
 }
 
-.m-wd-ng .m-error-wrapper-fix>div {
+.m-wd-ng .m-error-wrapper-fix > div {
   text-align: left;
   vertical-align: top;
   padding: 60px 40px;
@@ -1847,7 +1876,7 @@ onMounted(async () => {
 }
 
 #withdraw-container .payment-tips-wrap {
-  border-top: 1px solid #EAECEF;
+  border-top: 1px solid #eaecef;
   padding-top: 12px;
 }
 
@@ -1870,7 +1899,7 @@ onMounted(async () => {
 
 .withdraw-notification .tip-icon::before {
   content: '\e651';
-  font-family: "iconfont" !important;
+  font-family: 'iconfont' !important;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1878,21 +1907,21 @@ onMounted(async () => {
 }
 
 .withdraw-notification .tip-icon:before {
-  color: #FAC111;
+  color: #fac111;
   font-size: 1.66666667rem;
 }
 
 #withdraw-pin-notify {
   background: rgba(250, 253, 0, 0.1);
-  color: #353A45;
+  color: #353a45;
   font-family: Roboto;
   font-size: 12px;
   padding: 14px;
 }
 
 #withdraw-pin-notify a {
-  border-bottom: 1px solid #353A45;
-  color: #353A45;
+  border-bottom: 1px solid #353a45;
+  color: #353a45;
 }
 
 #withdraw-pin-notify a:hover {
@@ -1905,18 +1934,16 @@ onMounted(async () => {
   padding: 0 !important;
 }
 
-
-
 .tabs-v2.payment-tabs.main-tabs {
   overflow: visible !important;
   overflow-x: clip !important;
 }
 
 .tabs-v2.payment-tabs .tabs-v2__nav {
-  border-bottom: 1px solid #EAECEF;
-  border-bottom-color: #EAECEF;
+  border-bottom: 1px solid #eaecef;
+  border-bottom-color: #eaecef;
   border-bottom-color: var(--line-type1-primary);
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   background-color: var(--background-type1-secondary);
 }
 
@@ -1929,7 +1956,7 @@ onMounted(async () => {
 }
 
 .tabs-v2.payment-tabs.sub-tabs .tabs-v2__tab:not(.tabs-v2__tab--active) {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 
@@ -1945,7 +1972,7 @@ onMounted(async () => {
   overflow-x: scroll;
   position: relative;
   scrollbar-width: none;
-  color: #353A45;
+  color: #353a45;
   color: var(--text-type1-primary);
 }
 
@@ -1963,12 +1990,12 @@ onMounted(async () => {
 
 .tabs-v2__nav .tabs-v2__tab--active {
   font-weight: 700;
-  color: #353A45;
+  color: #353a45;
   color: var(--text-type1-primary);
 }
 
 .tabs-v2__nav .tabs-v2__tab--disabled {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
   cursor: default;
   pointer-events: none;
@@ -2023,7 +2050,7 @@ onMounted(async () => {
   position: absolute;
   top: 0px;
   z-index: 1;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   background-color: var(--background-type1-secondary);
 }
 
@@ -2041,12 +2068,12 @@ onMounted(async () => {
   position: absolute;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  background-color: #0D9737;
+  background-color: #0d9737;
   background-color: var(--brand-secondary);
 }
 
 .tabs-v2 .arrow-icon {
-  color: #9CA0AB;
+  color: #9ca0ab;
   color: var(--text-type1-secondary);
 }
 

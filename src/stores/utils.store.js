@@ -25,7 +25,7 @@ export const useUtilsStore = defineStore({
     liveListSingleMatch: null,
     showDefaultHeaderItems: true,
     bonusModalShown: null,
-    popupDialogShown: null,
+    popupDialogShown: null
   }),
   getters: {},
   actions: {},

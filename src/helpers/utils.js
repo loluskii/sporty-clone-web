@@ -579,6 +579,6 @@ export const getStartAndEndOfMonth = () => {
 }
 
 export const stringIsLink = (text) => {
-  const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-  return regex.test(text.trim());
+  const regex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i
+  return regex.test(text.trim())
 }

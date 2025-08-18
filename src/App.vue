@@ -155,10 +155,10 @@ watch(
 )
 
 onMounted(async () => {
-  const res = await fetchBanners();
-  if(res.data && Object.keys(res.data).length > 0){
-    utilsStore.banners = Object.values(res.data).filter((b) => b.target === 'web');
-  }else{
+  const res = await fetchBanners()
+  if (res.data && Object.keys(res.data).length > 0) {
+    utilsStore.banners = Object.values(res.data).filter((b) => b.target === 'web')
+  } else {
     utilsStore.banners = []
   }
 
@@ -169,21 +169,26 @@ onMounted(async () => {
   emitter.on('toggleCasinoDialog', () => {
     showCasinoDialog.value = true
   })
-  
+
   setTimeout(() => {
     let popupBanner = utilsStore.banners.find((b) => b.position === 'popup')
     console.log(popupBanner)
-    if(popupBanner && utilsStore.popupDialogShown ===  null){
+    if (popupBanner && utilsStore.popupDialogShown === null) {
       dialogData.value = popupBanner
-      utilsStore.popupDialogShown = false;
-      handleshowDialog({dialogType: 'popup', dialogData: dialogData.value})
+      utilsStore.popupDialogShown = false
+      handleshowDialog({ dialogType: 'popup', dialogData: dialogData.value })
     }
   }, 1000)
 
   if (authStore.isAuthenticated) {
-    Promise.all([usersStore.loadCurrentUser(), getUserActiveBonus(), getUserCashbackBonus(), getBetsData()])
+    Promise.all([
+      usersStore.loadCurrentUser(),
+      getUserActiveBonus(),
+      getUserCashbackBonus(),
+      getBetsData()
+    ])
       .then(() => {
-        usersStore.activeCashback = res[2].data;
+        usersStore.activeCashback = res[2].data
       })
       .catch(() => {})
   }
@@ -206,7 +211,6 @@ onMounted(async () => {
       // } else {
       //   console.warn("Failed to fetch active bonus:", );
       // }
-
     })
     .catch(() => {})
 })

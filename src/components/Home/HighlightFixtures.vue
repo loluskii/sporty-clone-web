@@ -72,7 +72,13 @@
             class="x-outcome"
             :class="
               isSelected(
-                createID(localGame.gameID, localGame.matchID, k.outcomeName, k.oddID, localGame.name),
+                createID(
+                  localGame.gameID,
+                  localGame.matchID,
+                  k.outcomeName,
+                  k.oddID,
+                  localGame.name
+                ),
                 couponStore.coupon
               )
                 ? 'x-outcome--checked'
@@ -125,9 +131,13 @@ const props = defineProps({
 const localGame = ref({ ...props.game })
 
 // Watch for changes in the original game prop and update local copy
-watch(() => props.game, (newGame) => {
-  localGame.value = { ...newGame }
-}, { deep: true })
+watch(
+  () => props.game,
+  (newGame) => {
+    localGame.value = { ...newGame }
+  },
+  { deep: true }
+)
 
 const activeSpecifier = ref()
 const specifierOpen = ref(false)
