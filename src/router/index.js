@@ -240,7 +240,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    authStore.returnUrl = to.fullPath;
+    authStore.returnUrl = to.fullPath
     emitter.emit('showDialog', { dialogType: 'auth', dialogData: 'login' })
   }
 

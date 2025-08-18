@@ -9,7 +9,7 @@
           :key="index"
           @click="setActiveTab(method)"
         >
-          {{ method.provider === "sbengine" ? "Shop" : method.title }}
+          {{ method.provider === 'sbengine' ? 'Shop' : method.title }}
         </li>
       </ul>
       <div class="f-dp">
@@ -21,29 +21,46 @@
               </span>
               <div class="f-line-item i-amount">
                 <div tabindex="6" class="x-input-wrapper">
-                  <span class="x-input-com"><i class="x-input-icon m-input-icon--clickable m-icon-delete"></i>
-                    <input type="input" input-mode="" name="" placeholder="min. 100" onpaste="return true"
-                      class="x-input fs-exclude" v-model="amount" /></span>
+                  <span class="x-input-com"
+                    ><i class="x-input-icon m-input-icon--clickable m-icon-delete"></i>
+                    <input
+                      type="input"
+                      input-mode=""
+                      name=""
+                      placeholder="min. 100"
+                      onpaste="return true"
+                      class="x-input fs-exclude"
+                      v-model="amount"
+                  /></span>
                 </div>
               </div>
               <div class="f-line mt-24" v-if="availableBonus && !bonus">
                 <span class="f-label"></span>
-                <button class="af-button af-button--primary" :class="amount == '' ? ' is-disabled' : ''" type="primary"
-                  @click.prevent="activateBonus" :disabled="amount === ''">
+                <button
+                  class="af-button af-button--primary"
+                  :class="amount == '' ? ' is-disabled' : ''"
+                  type="primary"
+                  @click.prevent="activateBonus"
+                  :disabled="amount === ''"
+                >
                   <span> Activate Bonus </span>
                 </button>
               </div>
               <div class="f-line mt-24">
                 <span class="f-label"></span>
-                <button class="af-button af-button--primary" :class="btnDisabled || amount === '' ? 'is-disabled' : ''"
-                  type="primary" @click.prevent="beginDeposit">
+                <button
+                  class="af-button af-button--primary"
+                  :class="btnDisabled || amount === '' ? 'is-disabled' : ''"
+                  type="primary"
+                  @click.prevent="beginDeposit"
+                >
                   <span> Top Up Now </span>
                 </button>
               </div>
               <p v-if="bonus" class="mt-24">
-                You have activated <strong>{{ availableBonus?.name }}</strong>. Complete payment to receive
-                <strong>{{ formatNumber(bonus?.amount) }}</strong> in your bonus
-                account.
+                You have activated <strong>{{ availableBonus?.name }}</strong
+                >. Complete payment to receive <strong>{{ formatNumber(bonus?.amount) }}</strong> in
+                your bonus account.
               </p>
             </div>
           </div>
@@ -168,13 +185,13 @@ async function beginDeposit() {
       }
       console.log(data)
       emitter.emit('showDialog', data)
-    }else{
+    } else {
       if (res.data.link === 'ACCEPTED') {
-        window.location.href = '/';
+        window.location.href = '/'
       } else if (!res.data.link.includes('http')) {
-        emitter.emit("showErrorMessage", res.message);
+        emitter.emit('showErrorMessage', res.message)
       } else {
-        window.location.href = res.data.link;
+        window.location.href = res.data.link
       }
     }
   } else {
@@ -327,7 +344,7 @@ onMounted(async () => {
   height: 60vh;
 }
 
-.x-dp-ng .x-dp-coming-soon-container>.container {
+.x-dp-ng .x-dp-coming-soon-container > .container {
   background-color: unset;
 }
 
@@ -335,7 +352,7 @@ onMounted(async () => {
   width: 512px;
 }
 
-.x-dialog--tips .x-pop-header>span {
+.x-dialog--tips .x-pop-header > span {
   color: #353a45;
   font-size: 20px;
   font-weight: bold;
@@ -343,7 +360,7 @@ onMounted(async () => {
   padding: 24px 24px 0;
 }
 
-.x-dialog--tips .x-pop-header>span::before {
+.x-dialog--tips .x-pop-header > span::before {
   content: '\e623';
   font-family: 'iconfont' !important;
   font-size: 16px;
@@ -352,7 +369,7 @@ onMounted(async () => {
   font-style: normal;
 }
 
-.x-dialog--tips .x-pop-header>span:before {
+.x-dialog--tips .x-pop-header > span:before {
   display: inline-block;
   line-height: 1;
   margin-right: 8px;
@@ -363,7 +380,7 @@ onMounted(async () => {
   right: 20px;
 }
 
-.x-dialog--tips .x-pop-main>p {
+.x-dialog--tips .x-pop-main > p {
   padding: 0 24px;
 }
 
@@ -551,11 +568,11 @@ html[theme='light'] {
   font-style: normal;
 }
 
-.x-input-wrapper .x-input-icon+.x-input {
+.x-input-wrapper .x-input-icon + .x-input {
   padding-right: 12px;
 }
 
-.x-input-wrapper .x-input-icon.x-input-icon--show+.x-input {
+.x-input-wrapper .x-input-icon.x-input-icon--show + .x-input {
   padding-right: 30px;
 }
 
@@ -589,7 +606,7 @@ html[theme='light'] {
   color: var(--brand-secondary);
 }
 
-.x-input-wrapper .x-input-text--icon+.x-input {
+.x-input-wrapper .x-input-text--icon + .x-input {
   padding-right: 42px;
 }
 
@@ -689,7 +706,7 @@ html[theme='light'] {
   width: 100%;
 }
 
-.x-input-group>.x-input {
+.x-input-group > .x-input {
   display: table-cell;
   vertical-align: middle;
 }
@@ -745,7 +762,7 @@ html[theme='light'] {
   border-top-right-radius: 0;
 }
 
-.x-input-wrapper .x-input-text--icon+.x-input {
+.x-input-wrapper .x-input-text--icon + .x-input {
   padding-right: 50px;
 }
 

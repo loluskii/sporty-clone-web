@@ -80,7 +80,9 @@ onMounted(async () => {
               style="cursor: pointer"
             >
               <img class="card-img-top promo-img" :src="promo.imageUrl" alt="Promo Image" />
-              <div class="card-body d-flex flex-column justify-content-center align-items-center p-0">
+              <div
+                class="card-body d-flex flex-column justify-content-center align-items-center p-0"
+              >
                 <h4 class="card-title promo-title fw-bold mb-0 text-center">{{ promo.title }}</h4>
                 <!-- Body is hidden by CSS but kept in template -->
                 <div class="card-text promo-body text-muted text-center" v-if="promo.content"></div>

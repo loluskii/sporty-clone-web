@@ -134,9 +134,13 @@ const props = defineProps({
 const localMatch = ref({ ...props.match })
 
 // Watch for changes in the original match prop and update local copy
-watch(() => props.match, (newMatch) => {
-  localMatch.value = { ...newMatch }
-}, { deep: true })
+watch(
+  () => props.match,
+  (newMatch) => {
+    localMatch.value = { ...newMatch }
+  },
+  { deep: true }
+)
 
 const activeSpecifier = ref()
 const specifierOpen = ref(false)
@@ -321,7 +325,8 @@ const handleOddsUpdate = () => {
     updatePending.value = true
 
     requestAnimationFrame(() => {
-      if (localMatch.value.outcomes) { // Use localMatch
+      if (localMatch.value.outcomes) {
+        // Use localMatch
         const odds = localMatch.value.outcomes
         let filtered = odds.filter(
           (item) => item.marketID === parseInt(props.activeMarket.marketID)
@@ -370,7 +375,8 @@ function showFixtureAnalysis(id) {
 }
 
 const setActiveSpecifier = (spec) => {
-  if (localMatch.value.outcomes) { // Use localMatch
+  if (localMatch.value.outcomes) {
+    // Use localMatch
     const odds = localMatch.value.outcomes
     let filtered = odds.filter((item) => item.marketID === parseInt(props.activeMarket.marketID))
     filtered = filtered.filter((item) => item.specifier === spec.specifier)

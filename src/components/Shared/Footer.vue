@@ -108,7 +108,7 @@
     </div>
     <div class="x-footer-mid">
       <ul class="x-content d-flex">
-        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex;align-items: center;">
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex; align-items: center">
           <div class="x-left x-forum">
             <div class="x-image-wrapper" style="height: auto">
               <img
@@ -127,15 +127,14 @@
     <div class="x-footer-mid">
       <ul class="x-content d-flex">
         <!-- <li style="padding: 20px"></li> -->
-        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex">
-        </li>
+        <li class="x-col-wrapper flex-1 d-flex" style="display: inline-flex"></li>
       </ul>
     </div>
     <div class="x-footer-bottom">
       <div class="x-content">
-        
         <span class="x-copy" data-cms-key="year_copy_right"
-          >&copy; {{ new Date().getFullYear() }} {{ utilsStore.brandName }}. All rights reserved.</span
+          >&copy; {{ new Date().getFullYear() }} {{ utilsStore.brandName }}. All rights
+          reserved.</span
         >
       </div>
     </div>

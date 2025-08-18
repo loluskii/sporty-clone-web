@@ -86,9 +86,7 @@ export const useUsersStore = defineStore({
       try {
         this.error = null
         this.isLoadingCurrentUser = true
-        const [userResponse] = await Promise.allSettled([
-          getUserDetailsByToken()
-        ])
+        const [userResponse] = await Promise.allSettled([getUserDetailsByToken()])
         this.isLoadingCurrentUser = false
 
         // Handle user details response
