@@ -5,7 +5,7 @@
         <div class="es-dialog-main m-dialog-main" style="height: auto">
           <div class="m-dialog-wrapper m-dialog-suc">
             <div class="m-pop-header m-pop-header-fix">
-              <span data-cms-key="submission_successful" data-cms-page="common_feedback"
+              <span data-cms-key="submission_successful" 
                 >Submission Successful</span
               >
               <i data-action="close" data-ret="close" class="m-icon-close"></i>

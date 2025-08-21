@@ -64,10 +64,10 @@
         </div>
       </div>
       <div class="x-table-cell x-main-mid" style="width: 615px; min-width: 615px">
-        <!-- <div class="crumb-wrap">
-          <div class="crumb"><span>Football</span><span></span></div>
-          <div class="btns"><span class="refresh"></span></div>
-        </div> -->
+        <div class="crumb-wrap">
+          <!-- <div class="crumb"><span>{{$route.params.sport  }}</span><span></span></div> -->
+          <!-- <div class="btns"><span class="refresh"></span></div> -->
+        </div>
         <slot name="fixtures-list"></slot>
       </div>
       <div class="x-table-cell x-main-right" style="width: 235px; min-width: 235px">
@@ -113,7 +113,7 @@ import BetContainer from './BetContainer.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUtilsStore, useUsersStore } from '@/stores'
 import { computed, onMounted, ref, watch } from 'vue'
-import { getCategoriesBySport } from '@/helpers'
+import { FEED_TOGGLE, getCategoriesBySport } from '@/helpers'
 import emitter from '@/plugins/emitter'
 
 const utilsStore = useUtilsStore()
@@ -127,6 +127,10 @@ const activeSport = computed(() => {
 })
 
 async function getCategories() {
+  if(!FEED_TOGGLE){
+    categories.value = []
+    return;
+  }
   const res = await getCategoriesBySport(activeSport.value.sportID)
   categories.value = res.sports
 }

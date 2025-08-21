@@ -4,7 +4,7 @@
       <span class="circle"></span>
       <span class="text" data-cms-key="live_betting">Live Betting</span>
       <div class="config" style="">
-        <span class="refresh" @click="handleRefresh">Refresh</span>
+        <!-- <span class="refresh" @click="handleRefresh">Refresh</span> -->
       </div>
     </div>
     <div id="print-container-live">
@@ -115,7 +115,7 @@ import { useUtilsStore } from '@/stores'
 import { computed, ref, watch } from 'vue'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 import { useQuery } from 'vue-query'
-import { getLiveHighlights } from '@/helpers'
+import { FEED_TOGGLE, getLiveHighlights } from '@/helpers'
 import Fixture from '@/components/Live/LiveFixture.vue'
 import _ from 'lodash'
 
@@ -148,6 +148,7 @@ const isManualRefetching = ref(false)
 
 // Optimize the query with better caching and error handling
 const { isLoading, refetch } = useQuery('liveData', getLiveHighlights, {
+  enabled: FEED_TOGGLE,
   // Prevent automatic refetching which can cause recursive updates
   refetchOnWindowFocus: false,
   refetchOnMount: true,

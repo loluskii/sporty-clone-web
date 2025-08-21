@@ -73,7 +73,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getTopBets } from '@/helpers'
+import { FEED_TOGGLE, getTopBets } from '@/helpers'
 import Carousel from '../CarouselSlider.vue'
 import emitter from '@/plugins/emitter'
 import { useUtilsStore } from '@/stores'
@@ -83,6 +83,10 @@ const utilsStore = useUtilsStore()
 const featuredTournaments = ref([])
 
 async function getFeaturedGames() {
+  if(!FEED_TOGGLE){
+    featuredTournaments.value = []
+    return;
+  }
   const res = await getTopBets()
   featuredTournaments.value = res.data?.splice(0, 4)
 }
