@@ -3,7 +3,7 @@
     <div v-if="!openBets.length" class="m-cashout-error">
       <div>
         <i v-if="isLoading" class="m-icon-load"></i>
-        <p class="m-text-msg" data-cms-key="no_bets_available" data-cms-page="common_feedback">
+        <p class="m-text-msg" data-cms-key="no_bets_available" >
           {{ isLoading ? 'Loading' : 'No bets available' }}
         </p>
       </div>

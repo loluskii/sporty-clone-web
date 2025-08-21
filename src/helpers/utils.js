@@ -83,6 +83,11 @@ export const applyBranding = async () => {
     )
 
     document.documentElement.style.setProperty(
+      '--brand-live-odds-hover',
+      config.colors.liveOddBackgroundHover
+    )
+
+    document.documentElement.style.setProperty(
       '--brand-live-odds-text',
       config.colors.liveOddTextColor
     )
@@ -209,7 +214,7 @@ export const slugify = (str) => {
 }
 
 export const unslugify = (str) => {
-  return str.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+  return str.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
 export const chunks = (arr) => {
