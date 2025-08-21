@@ -114,7 +114,7 @@
 import { useUtilsStore } from '@/stores'
 import HighlightFixtures from './HighlightFixtures.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-import { getHighlights2, formatDate } from '@/helpers'
+import { getHighlights2, formatDate, FEED_TOGGLE } from '@/helpers'
 import { onMounted, ref, computed } from 'vue'
 import _ from 'lodash'
 
@@ -167,6 +167,10 @@ const sortedOutcomes = (group) => _.sortBy(group.outcomes, 'outcomeID')
 
 const getHighlightGames = async () => {
   if (prevSportID.value === activeSportID.value && rawHighlights.value.length) return
+  if(!FEED_TOGGLE){
+    highlightsData.value = []
+    return;
+  }
 
   try {
     isLoading.value = true

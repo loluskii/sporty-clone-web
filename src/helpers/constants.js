@@ -8,6 +8,8 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL
 export const AUTH_EXCLUDE_LIST = []
 export const WTH_PERC = 0
 
+export const FEED_TOGGLE = true
+
 export const PINIA_PERSIST_OPTIONS = {
   storage: localStorage
 }

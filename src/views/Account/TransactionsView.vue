@@ -58,7 +58,7 @@
         <div v-else class="m-list-none">
           <p class="no-list-txt">
             <i class="m-icon--pageques"></i>
-            <span data-cms-key="no_records_found" data-cms-page="common_feedback"
+            <span data-cms-key="no_records_found" 
               >No Records Found.</span
             >
           </p>
