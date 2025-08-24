@@ -18,6 +18,13 @@
               >
             </li>
             <li class="x-icon-more">
+              <a href="/cms/privacy_policy"
+                ><span data-cms-key="t_and_c" data-cms-page="common_helps"
+                  >Privacy Policy</span
+                ></a
+              >
+            </li>
+            <li class="x-icon-more">
               <a href="/cms/terms_and_conditions"
                 ><span data-cms-key="t_and_c" data-cms-page="common_helps"
                   >Terms &amp; Conditions</span
@@ -37,7 +44,7 @@
               >
             </li>
             <li class="x-icon-more">
-              <a href="/cms/contact-us"
+              <a href="/cms/contact_us"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Contact Us</span></a
               >
             </li>
@@ -70,15 +77,15 @@
             <div data-cms-key="tell_phone_number">
               Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}
             </div>
-            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}</div>
+            <div data-cms-key="mail_to">Email: maxbet@maxlottery.ng</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
-                <a href="https://www.facebook.com/frapapaofficialng" target="_blank"
+                <a href="https://www.facebook.com/Maxbetng" target="_blank"
                   ><i class="x-icon x-icon-fb"></i
                 ></a>
               </address>
               <address class="mr-10p">
-                <a href="https://twitter.com/frapapabet" target="_blank"
+                <a href="https://twitter.com/MaxBetNg" target="_blank"
                   ><svg
                     viewBox="0 0 29 28"
                     fill="none"
@@ -97,7 +104,7 @@
                 </a>
               </address>
               <address class="mr-10p">
-                <a href="https://www.instagram.com/frapapaofficialng" target="_blank"
+                <a href="https://www.instagram.com/maxbetng" target="_blank"
                   ><i class="x-icon x-icon-ins"></i
                 ></a>
               </address>
