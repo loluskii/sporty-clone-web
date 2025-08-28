@@ -23,7 +23,7 @@ function backToGrid() {
 onMounted(async () => {
   isLoading.value = true
   const res = await getPromotions()
-  promotions.value = res?.data.filter((x) => x.type === 'web') ?? []
+  promotions.value = res?.data ?? []
   isLoading.value = false
 })
 </script>
