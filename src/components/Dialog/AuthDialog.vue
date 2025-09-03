@@ -280,7 +280,7 @@ const registerUser = async () => {
        activeStep.value = 2
        startTimer()
      } else {
-       authStore.authError = res.message p
+       authStore.authError = res.message
      }
   }
 }
