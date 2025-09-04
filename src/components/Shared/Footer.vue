@@ -25,21 +25,9 @@
               >
             </li>
             <li class="x-icon-more">
-              <a href="/cms/terms_and_conditions"
-                ><span data-cms-key="t_and_c" data-cms-page="common_helps"
-                  >Terms &amp; Conditions</span
-                ></a
-              >
-            </li>
-            <li class="x-icon-more">
-              <a href="/cms/betting_rules"
-                ><span data-cms-key="privacy" data-cms-page="common_helps">Betting Rules</span></a
-              >
-            </li>
-            <li class="x-icon-more">
-              <a href="/cms/responsible_gambling"
+              <a href="/cms/responsible_gaming"
                 ><span data-cms-key="privacy" data-cms-page="common_helps"
-                  >Responsible Gambling</span
+                  >Responsible Gaming</span
                 ></a
               >
             </li>
