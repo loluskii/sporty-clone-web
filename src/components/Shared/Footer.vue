@@ -36,6 +36,11 @@
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Contact Us</span></a
               >
             </li>
+            <li class="x-icon-more">
+              <a href="/cms/account_deletion"
+                ><span data-cms-key="privacy" data-cms-page="common_helps">Account Deletion</span></a
+              >
+            </li>
           </ul>
         </li>
         <li class="x-col-wrapper x-m-r">
