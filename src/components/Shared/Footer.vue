@@ -41,6 +41,21 @@
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Account Deletion</span></a
               >
             </li>
+            <li class="x-icon-more">
+              <a href="/cms/terms_and_conditions"
+                ><span data-cms-key="privacy" data-cms-page="common_helps">Terms and Conditions</span></a
+              >
+            </li>
+            <li class="x-icon-more">
+              <a href="/cms/betting_rules"
+                ><span data-cms-key="privacy" data-cms-page="common_helps">Betting Rules</span></a
+              >
+            </li>
+            <li class="x-icon-more">
+              <a href="/cms/become_an_affiliate"
+                ><span data-cms-key="privacy" data-cms-page="common_helps">Become an Affiliate</span></a
+              >
+            </li>
           </ul>
         </li>
         <li class="x-col-wrapper x-m-r">
