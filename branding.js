@@ -1,7 +1,7 @@
 export const brandDetails = {
-  name: 'Sportsbook Engine',
+  name: 'Maxbet',
   url: '',
-  title: 'SportsBook Engine',
+  title: 'Maxbet',
   colors: {
     primaryColor: '#a52424',
     secondaryColor: '#2c8331',
