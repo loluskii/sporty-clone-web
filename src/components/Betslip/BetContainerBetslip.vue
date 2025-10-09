@@ -17,13 +17,13 @@
           >
             <span data-cms-key="multiple">Multiple</span>
           </div>
-          <div
+          <!-- <div
             class="x-table-cell"
             :class="betSlipType === 'Combo' ? 'x-table-cell--active' : ''"
             @click="couponStore.setBetType('Combo')"
           >
             <span data-cms-key="system">System</span>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
