@@ -18,7 +18,6 @@ import Footer from '@/components/Shared/Footer.vue'
   background: #1b1e25;
 }
 #games-lobby-wrapper {
-  
   position: relative;
 }
 </style>

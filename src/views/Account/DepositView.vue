@@ -2,61 +2,85 @@
   <AccountLayout>
     <div class="x-dp-ng">
       <ul class="x-dp-nav">
-        <li class="f-item" v-for="(method, index) in depositMethods"
-          :class="activeTab.provider == method.provider ? 'f-item--active' : ''" :key="index"
-          @click="setActiveTab(method)">
-          {{ method.title }}
+        <li
+          class="f-item"
+          v-for="(method, index) in depositMethods"
+          :class="activeTab.provider == method.provider ? 'f-item--active' : ''"
+          :key="index"
+          @click="setActiveTab(method)"
+        >
+          {{ method.provider === 'sbengine' ? 'Shop' : method.title }}
         </li>
       </ul>
       <div class="f-dp">
         <div>
           <div class="bank-transfer-form-section">
             <div class="f-line">
-              <span class="f-label"><span>Amount</span>
-                ({{ SportsbookGlobalVariable.Currency }})
+              <span class="f-label"
+                ><span>Amount</span> ({{ SportsbookGlobalVariable.Currency }})
               </span>
               <div class="f-line-item i-amount">
                 <div tabindex="6" class="x-input-wrapper">
-                  <span class="x-input-com"><i class="x-input-icon m-input-icon--clickable m-icon-delete"></i>
-                    <input type="input" input-mode="" name="" placeholder="min. 100" onpaste="return true"
-                      class="x-input fs-exclude" v-model="amount" /></span>
+                  <span class="x-input-com"
+                    ><i class="x-input-icon m-input-icon--clickable m-icon-delete"></i>
+                    <input
+                      type="input"
+                      input-mode=""
+                      name=""
+                      placeholder="min. 100"
+                      onpaste="return true"
+                      class="x-input fs-exclude"
+                      v-model="amount"
+                  /></span>
                 </div>
               </div>
               <div class="f-line mt-24" v-if="availableBonus && !bonus">
                 <span class="f-label"></span>
-                <button class="af-button af-button--primary" :class="amount == '' ? ' is-disabled' : ''" type="primary"
-                  @click.prevent="activateBonus" :disabled="amount === ''">
+                <button
+                  class="af-button af-button--primary"
+                  :class="amount == '' ? ' is-disabled' : ''"
+                  type="primary"
+                  @click.prevent="activateBonus"
+                  :disabled="amount === ''"
+                >
                   <span> Activate Bonus </span>
                 </button>
               </div>
               <div class="f-line mt-24">
                 <span class="f-label"></span>
-                <button class="af-button af-button--primary" :class="btnDisabled || amount === '' ? 'is-disabled' : ''"
-                  type="primary" @click.prevent="beginDeposit">
+                <button
+                  class="af-button af-button--primary"
+                  :class="btnDisabled || amount === '' ? 'is-disabled' : ''"
+                  type="primary"
+                  @click.prevent="beginDeposit"
+                >
                   <span> Top Up Now </span>
                 </button>
               </div>
               <p v-if="bonus" class="mt-24">
-                You have activated <strong>{{ availableBonus?.name }}</strong>. Complete payment to receive
-                <strong>{{ formatNumber(bonus?.amount) }}</strong> in your bonus
-                account.
+                You have activated <strong>{{ availableBonus?.name }}</strong
+                >. Complete payment to receive <strong>{{ formatNumber(bonus?.amount) }}</strong> in
+                your bonus account.
               </p>
             </div>
           </div>
           <div style="margin-top: 20px" class="bank-transfer-desc-section">
             <span>
               <ol class="bank-transfer-card-steps">
-                <li>Minimum deposit amount is {{ SportsbookGlobalVariable.CurrencyCode }}
+                <li>
+                  Minimum deposit amount is {{ SportsbookGlobalVariable.CurrencyCode }}
                   {{ SportsbookGlobalVariable.MinDeposit }} - you can deposit at least
-                  {{ SportsbookGlobalVariable.CurrencyCode }} {{ SportsbookGlobalVariable.MinDeposit }} in one
-                  transaction.</li>
-                <li>Maximum per transaction is {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 - you can deposit
-                  up to {{ SportsbookGlobalVariable.CurrencyCode }}
-                  9,999,999.00 in one transaction.</li>
-                <li>If you have any issues, please contact the support team.
+                  {{ SportsbookGlobalVariable.CurrencyCode }}
+                  {{ SportsbookGlobalVariable.MinDeposit }} in one transaction.
                 </li>
-              </ol>
-            </span>
+                <li>
+                  Maximum per transaction is
+                  {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 - you can deposit up to
+                  {{ SportsbookGlobalVariable.CurrencyCode }} 9,999,999.00 in one transaction.
+                </li>
+                <li>If you have any issues, please contact the support team.</li>
+              </ol></span
+            >
           </div>
         </div>
       </div>
@@ -82,13 +106,13 @@ const router = useRouter()
 const amount = ref('')
 const isLoading = ref(false)
 const btnDisabled = ref(false)
-const availableBonus = ref(null);
+const availableBonus = ref(null)
 
 const { SportsbookGlobalVariable } = useUtilsStore()
 
 const bonus = computed(() => {
-  return usersStore.bonus;
-});
+  return usersStore.bonus
+})
 
 function setActiveTab(method) {
   activeTab.value = method
@@ -104,30 +128,40 @@ async function getPayments() {
 }
 
 async function checkForBonus() {
-  const resp = await checkFirstDeposit();
+  const resp = await checkFirstDeposit()
   if (resp.success) {
-    availableBonus.value = resp.data;
+    availableBonus.value = resp.data
   }
 }
 
 function activateBonus() {
-  let bonusAmount = amount.value;
-  if (availableBonus.value.type === "flat") {
-    bonusAmount = availableBonus.value.value;
+  let bonusAmount = amount.value
+  if (availableBonus.value.type === 'flat') {
+    bonusAmount = availableBonus.value.value
   } else {
-    bonusAmount = (parseFloat(amount.value) * availableBonus.value.value) / 100;
+    bonusAmount = (parseFloat(amount.value) * availableBonus.value.value) / 100
   }
 
   const bonus = {
     bonusId: availableBonus.value.bonusId,
     amount: bonusAmount,
-    username: usersStore.currentUser.username,
-  };
-  usersStore.setActiveBonus(bonus);
+    username: usersStore.currentUser.username
+  }
+  usersStore.setActiveBonus(bonus)
   // availableBonus.value = null;
 }
 
 async function beginDeposit() {
+  if (parseFloat(amount.value) < parseFloat(SportsbookGlobalVariable.MinDeposit)) {
+    let error = {
+      dialogType: 'error',
+      dialogData: {
+        data: `Your deposit amount is lower than the allowed value (${SportsbookGlobalVariable.Currency}${SportsbookGlobalVariable.MinDeposit}). Increase the amount and try again. `
+      }
+    }
+    emitter.emit('showDialog', error)
+    return
+  }
   btnDisabled.value = true
   let payload = {
     amount: amount.value,
@@ -136,11 +170,34 @@ async function beginDeposit() {
   }
 
   const res = await getDepositURL(payload)
+  amount.value = null
   if (res.success) {
-    window.location.href = res.data.link
+    btnDisabled.value = false
+    if (activeTab.value.provider === 'sbengine') {
+      let data = {
+        dialogType: 'shop-transaction',
+        dialogData: {
+          type: 'deposit',
+          message: 'Deposit Request Recieved!',
+          amount: amount.value,
+          transactionCode: res.data.transactionRef
+        }
+      }
+      console.log(data)
+      emitter.emit('showDialog', data)
+    } else {
+      if (res.data.link === 'ACCEPTED') {
+        window.location.href = '/'
+      } else if (!res.data.link.includes('http')) {
+        emitter.emit('showErrorMessage', res.message)
+      } else {
+        window.location.href = res.data.link
+      }
+    }
   } else {
     let error = {
-      dialogType: 'error'
+      dialogType: 'error',
+      dialogData: res.message ?? 'An Error occured. Please try again'
     }
     emitter.emit('showDialog', error)
     console.error(res)
@@ -150,10 +207,10 @@ onMounted(async () => {
   if (!usersStore.currentUser) {
     return router.push({ name: 'sign-in' })
   }
-  usersStore.setActiveBonus(null);
+  usersStore.setActiveBonus(null)
 
-  await getPayments();
-  await checkForBonus();
+  await getPayments()
+  await checkForBonus()
 })
 </script>
 
@@ -287,7 +344,7 @@ onMounted(async () => {
   height: 60vh;
 }
 
-.x-dp-ng .x-dp-coming-soon-container>.container {
+.x-dp-ng .x-dp-coming-soon-container > .container {
   background-color: unset;
 }
 
@@ -295,7 +352,7 @@ onMounted(async () => {
   width: 512px;
 }
 
-.x-dialog--tips .x-pop-header>span {
+.x-dialog--tips .x-pop-header > span {
   color: #353a45;
   font-size: 20px;
   font-weight: bold;
@@ -303,7 +360,7 @@ onMounted(async () => {
   padding: 24px 24px 0;
 }
 
-.x-dialog--tips .x-pop-header>span::before {
+.x-dialog--tips .x-pop-header > span::before {
   content: '\e623';
   font-family: 'iconfont' !important;
   font-size: 16px;
@@ -312,7 +369,7 @@ onMounted(async () => {
   font-style: normal;
 }
 
-.x-dialog--tips .x-pop-header>span:before {
+.x-dialog--tips .x-pop-header > span:before {
   display: inline-block;
   line-height: 1;
   margin-right: 8px;
@@ -323,7 +380,7 @@ onMounted(async () => {
   right: 20px;
 }
 
-.x-dialog--tips .x-pop-main>p {
+.x-dialog--tips .x-pop-main > p {
   padding: 0 24px;
 }
 
@@ -356,7 +413,7 @@ onMounted(async () => {
 
 .x-dp-nav::-webkit-scrollbar {
   display: none;
-  height: 0px
+  height: 0px;
 }
 
 .x-dp-nav .f-item {
@@ -511,11 +568,11 @@ html[theme='light'] {
   font-style: normal;
 }
 
-.x-input-wrapper .x-input-icon+.x-input {
+.x-input-wrapper .x-input-icon + .x-input {
   padding-right: 12px;
 }
 
-.x-input-wrapper .x-input-icon.x-input-icon--show+.x-input {
+.x-input-wrapper .x-input-icon.x-input-icon--show + .x-input {
   padding-right: 30px;
 }
 
@@ -549,7 +606,7 @@ html[theme='light'] {
   color: var(--brand-secondary);
 }
 
-.x-input-wrapper .x-input-text--icon+.x-input {
+.x-input-wrapper .x-input-text--icon + .x-input {
   padding-right: 42px;
 }
 
@@ -649,7 +706,7 @@ html[theme='light'] {
   width: 100%;
 }
 
-.x-input-group>.x-input {
+.x-input-group > .x-input {
   display: table-cell;
   vertical-align: middle;
 }
@@ -705,7 +762,7 @@ html[theme='light'] {
   border-top-right-radius: 0;
 }
 
-.x-input-wrapper .x-input-text--icon+.x-input {
+.x-input-wrapper .x-input-text--icon + .x-input {
   padding-right: 50px;
 }
 

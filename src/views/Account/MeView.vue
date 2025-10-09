@@ -4,7 +4,9 @@
       <form class="x-fm-wrap" style="position: relative">
         <div class="x-fm-row" style="padding: 15px 0px 0px">
           <div class="x-fm-left" data-cms-key="mobile_number">Mobile Number</div>
-          <div class="x-fm-right">+234 {{ currentUser.username }}</div>
+          <div class="x-fm-right">
+            {{ utilsStore.SportsbookGlobalVariable.DialCode }} {{ currentUser.username }}
+          </div>
         </div>
         <div class="x-fm-row">
           <div class="x-fm-left">First Name</div>
@@ -115,12 +117,12 @@
 </template>
 <script setup>
 import AccountLayout from '@/components/Shared/AccountLayout.vue'
-import Datepicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import { ref, computed, onMounted } from 'vue'
-import { useUsersStore } from '@/stores'
+import { useUsersStore, useUtilsStore } from '@/stores'
 import { updateProfile } from '@/helpers'
 const usersStore = useUsersStore()
+const utilsStore = useUtilsStore()
 
 const currentUser = computed(() => {
   return usersStore.currentUser

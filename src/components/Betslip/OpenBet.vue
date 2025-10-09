@@ -41,7 +41,10 @@
             <span class="m-label" data-cms-key="full_cashout" data-cms-page="cashout"
               >Full Cashout</span
             >
-            <span class="m-value">NGN {{ bet.cashOutAmount.toFixed(2) }} </span>
+            <span class="m-value"
+              >{{ utilsStore.SportsbookGlobalVariable.CurrencyCode }}
+              {{ bet.cashOutAmount.toFixed(2) }}
+            </span>
           </p>
         </div>
         <div class="m-btn-wrapper">
@@ -78,11 +81,14 @@
 </template>
 
 <script setup>
-import { formatDate, performCashout } from '@/helpers'
+import { formatDate, performCashout, getBets } from '@/helpers'
 import emitter from '@/plugins/emitter'
+import { useUsersStore, useUtilsStore } from '@/stores'
 import { ref } from 'vue'
 const cashingOut = ref(false)
 const isCashoutMode = ref(false)
+const utilsStore = useUtilsStore()
+const usersStore = useUsersStore()
 
 defineEmits(['refresh-betslip'])
 
@@ -95,6 +101,19 @@ function handleCashout() {
   isCashoutMode.value = true
 }
 
+async function getBetsData() {
+  let payload = {
+    clientId: import.meta.env.VITE_CLIENT_ID,
+    date: '',
+    status: 0,
+    userId: usersStore.currentUser.id
+  }
+  const res = await getBets(payload)
+  if (res.bets) {
+    utilsStore.openBetCount = res.bets.length
+  }
+}
+
 async function confirmCashout() {
   try {
     cashingOut.value = true
@@ -105,11 +124,14 @@ async function confirmCashout() {
     })
     cashingOut.value = false
     isCashoutMode.value = false
-  
+
     if (res.success) {
-      emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: 'Cashout successful' } })
+      emitter.emit('showDialog', {
+        dialogType: 'error',
+        dialogData: { data: 'Cashout successful' }
+      })
       await getBetsData()
-    } 
+    }
   } catch (error) {
     emitter.emit('showDialog', { dialogType: 'error', dialogData: { data: error } })
   }

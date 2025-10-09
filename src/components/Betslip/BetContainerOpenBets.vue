@@ -3,7 +3,7 @@
     <div v-if="!openBets.length" class="m-cashout-error">
       <div>
         <i v-if="isLoading" class="m-icon-load"></i>
-        <p class="m-text-msg" data-cms-key="no_bets_available" data-cms-page="common_feedback">
+        <p class="m-text-msg" data-cms-key="no_bets_available" >
           {{ isLoading ? 'Loading' : 'No bets available' }}
         </p>
       </div>
@@ -138,7 +138,7 @@ onMounted(async () => {
 .m-cashout .m-cashout-title .m-desc {
   color: var(--brand-primary);
   text-align: right;
-  with: 60px;
+  width: 60px;
 }
 .m-text-second {
   font-size: 13px;

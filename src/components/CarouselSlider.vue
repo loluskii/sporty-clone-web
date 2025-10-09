@@ -1,55 +1,66 @@
 <template lang="">
-  <!-- Home Carousel --> <div id="carousel" class="main-banner"> <div data-ride="carousel"
-  class="carousel slide"> <div role="listbox" class="carousel-inner"> <div v-for="(image,
-  index) in images" :key="index" class="item" :class="currentIndex === index ? 'active' :
-  ''" @click="goToSlide(image)" > <img :src="image.image" /> </div> </div> </div>
-  </div> <!-- Home Carousel -->
+  <!-- Home Carousel -->
+  <div id="carousel" class="main-banner">
+    <div data-ride="carousel" class="carousel slide">
+      <div role="listbox" class="carousel-inner">
+        <div
+          v-for="(image, index) in images"
+          :key="index"
+          class="item"
+          :class="currentIndex === index ? 'active' : ''"
+          @click="goToSlide(image)"
+        >
+          <img :src="image.image" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Home Carousel -->
 </template>
 <script setup>
-import { ref, defineComponent, onMounted, onBeforeUnmount } from "vue";
-import { fetchBanners } from "@/helpers";
-import _ from "lodash";
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { fetchBanners } from '@/helpers'
 
-const currentIndex = ref(0);
-const intervalId = ref(null);
-const autoScrollDelay = ref(3000);
-const images = ref([]);
+const currentIndex = ref(0)
+const intervalId = ref(null)
+const autoScrollDelay = ref(3000)
+const images = ref([])
 function startAutoSlider() {
   intervalId.value = setInterval(() => {
-    nextSlide();
-  }, autoScrollDelay.value);
+    nextSlide()
+  }, autoScrollDelay.value)
 }
 function stopAutoSlider() {
-  clearInterval(intervalId.value);
+  clearInterval(intervalId.value)
 }
 function nextSlide() {
   if (currentIndex.value < images.value.length - 1) {
-    currentIndex.value++;
+    currentIndex.value++
   } else {
-    currentIndex.value = 0;
+    currentIndex.value = 0
   }
 }
 
 function goToSlide(image) {
   if (image.link) {
-    window.location.href = image.link;
-  } else return;
+    window.location.href = image.link
+  } else return
 }
 
 onMounted(async () => {
-  const res = await fetchBanners();
-  if(res.data && Object.keys(res.data).length > 0){
-    images.value = Object.values(res.data).filter((b) => b.target === 'web');
+  const res = await fetchBanners()
+  if (res.data && Object.keys(res.data).length > 0) {
+    images.value = Object.values(res.data).filter((b) => b.target === 'web')
   } else {
     images.value = [
       {
         id: 670,
-        title: "Temp",
-        banner_type: "sport",
-        target: "web",
-        image_path: "https://placehold.co/490x254",
+        title: 'Temp',
+        banner_type: 'sport',
+        target: 'web',
+        image_path: 'https://placehold.co/490x254',
         link: null,
-        position: "slider",
+        position: 'slider',
         text: null,
         sport: null,
         category: null,
@@ -57,17 +68,17 @@ onMounted(async () => {
         competiton: null,
         created_by: null,
         created_at: null,
-        updated_at: null,
-      },
-    ];
+        updated_at: null
+      }
+    ]
   }
 
-  startAutoSlider();
-});
+  startAutoSlider()
+})
 
 onBeforeUnmount(() => {
-  stopAutoSlider();
-});
+  stopAutoSlider()
+})
 </script>
 <style scoped>
 .carousel {
@@ -102,8 +113,8 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
 }
-.carousel .carousel-inner > .item > img[src=""],
-.carousel .carousel-inner > .item > a > img[src=""] {
+.carousel .carousel-inner > .item > img[src=''],
+.carousel .carousel-inner > .item > a > img[src=''] {
   visibility: hidden;
 }
 .carousel .carousel-inner > .active,
@@ -177,7 +188,9 @@ onBeforeUnmount(() => {
   top: 0;
   height: 100%;
   width: 5%;
-  font: bold 50px/10 "Microsoft Yahei", sans-serif;
+  font:
+    bold 50px/10 'Microsoft Yahei',
+    sans-serif;
   text-align: center;
   color: #dcdee5;
 }

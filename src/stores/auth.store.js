@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
 
-import { login } from '@/helpers'
-import { getActivePinia } from 'pinia'
+import { login, getUserActiveBonus, getUserCashbackBonus } from '@/helpers'
 import { useUsersStore, useUtilsStore } from '@/stores'
 import router from '../router'
-import emitter from '@/plugins/emitter'
 
 export const useAuthStore = defineStore({
   id: 'auth',
@@ -21,29 +19,49 @@ export const useAuthStore = defineStore({
   actions: {
     async doLogin(payload) {
       this.loading = true
-      this.authError = null
+      this.authError = ''
       try {
-        const res = await login(payload)
-        if (res?.data?.token) {
-          this.token = res.data.token
-          this.mobile_number = payload.username
-          const userStore = useUsersStore()
-          userStore.loadCurrentUser()
-          this.loading = false
-          emitter.emit('hideDialog')
-          if (!this.returnUrl || this.returnUrl === '/') {
-            return router.push('/')
-          } else {
-            return router.push(this.returnUrl)
-          }
-        } else {
-          throw Error(res.error)
-        }
-      } catch (error) {
-        this.loading = false
-        this.authError = error
-        alert(error)
-      }
+  const res = await login(payload)
+  if (res.data && res.data.token) {
+    this.token = res.data.token
+    this.mobile_number = payload.username
+    const userStore = useUsersStore()
+
+    const results = await Promise.allSettled([
+      userStore.loadCurrentUser(),
+      getUserActiveBonus(),
+      getUserCashbackBonus()
+    ])
+
+    // handle per-result safely
+    if (results[0].status !== "fulfilled") {
+      console.error("Failed to load user", results[0].reason)
+    }
+
+    if (results[1].status === "fulfilled") {
+      // optional: assign activeBonus
+      userStore.activeBonus = results[1].value.data
+    } else {
+      console.warn("Active bonus fetch failed", results[1].reason)
+    }
+
+    if (results[2].status === "fulfilled") {
+      userStore.activeCashback = results[2].value.data
+    } else {
+      console.warn("Cashback bonus fetch failed", results[2].reason)
+      userStore.activeCashback = null
+    }
+
+    this.loading = false
+    return router.push(this.returnUrl || '/')
+  } else {
+    throw Error(res.error)
+  }
+} catch (error) {
+  this.loading = false
+  alert(error)
+}
+
     },
     clearStores() {
       const authStore = useAuthStore()

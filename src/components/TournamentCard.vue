@@ -1,15 +1,15 @@
 <template>
   <div class="match-league-wrap" :class="{ 'is-loading': isLoading }">
-    <div class="match-league" :class="{ 'hide': !cardIsShown }">
+    <div class="match-league" :class="{ hide: !cardIsShown }">
       <div class="league-title">
-        <div 
-          class="dis-icon" 
+        <div
+          class="dis-icon"
           @click="fetchFixtures"
           :disabled="isLoading"
           :title="isShown ? 'Refresh fixtures' : 'Load fixtures'"
         >
           <em :class="{ 'is-loading': isLoading }"></em>
-      </div>
+        </div>
         <span class="text">{{ tournamentName }}</span>
       </div>
 
@@ -20,12 +20,12 @@
             v-for="market in shownMarkets"
             :key="market.marketID"
             class="market-item"
-            :class="{ 'active': market.marketID === activeMarket.marketID }"
+            :class="{ active: market.marketID === activeMarket.marketID }"
             @click="setActiveMarket(market)"
             :disabled="isLoading"
           >
             {{ market.marketName }}
-        </div>
+          </div>
         </div>
 
         <!-- Fixtures Table -->
@@ -38,10 +38,7 @@
               </div>
               <div class="x-table-cell each-module-wrap">
                 <div class="each-module-table">
-                  <div
-                    v-if="activeMarket.specifier"
-                    class="each-module is-multiline"
-                  >
+                  <div v-if="activeMarket.specifier" class="each-module is-multiline">
                     {{ activeMarket.specifier }}
                   </div>
                   <div
@@ -76,10 +73,10 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import _ from 'lodash'
 import { formatDate, sortArr } from '@/helpers'
-import Prematch from './Prematch/Prematch.vue'
+import Prematch from './Prematch/PrematchFixture.vue'
 import emitter from '@/plugins/emitter'
 
 const props = defineProps({
@@ -114,22 +111,18 @@ const cardIsShown = computed(() => isShown.value && props.events.length > 0)
 
 const shownMarkets = computed(() => {
   if (!props.markets?.length) return []
-  
+
   return props.markets.length > 5
-    ? props.markets.filter(market => 
-        market.marketID !== '36' && market.marketID !== '547'
-      )
+    ? props.markets.filter((market) => market.marketID !== '36' && market.marketID !== '547')
     : props.markets
 })
 
 const groupedFixtures = computed(() => {
-  return _.groupBy(props.events, fixture => fixture.date.split(' ')[0])
+  return _.groupBy(props.events, (fixture) => fixture.date.split(' ')[0])
 })
 
 const sortedOutcomes = computed(() => {
-  return activeMarket.value.outcomes 
-    ? sortArr(activeMarket.value.outcomes, 'outcomeID')
-    : []
+  return activeMarket.value.outcomes ? sortArr(activeMarket.value.outcomes, 'outcomeID') : []
 })
 
 // Watchers
@@ -154,7 +147,7 @@ watch(
 // Methods
 const setActiveMarket = (market) => {
   if (isLoading.value) return
-  
+
   try {
     const sortedMarket = {
       ...market,
@@ -170,17 +163,17 @@ const setActiveMarket = (market) => {
 
 const fetchFixtures = async () => {
   if (isLoading.value) return
-  
+
   try {
     isLoading.value = true
     error.value = null
-    
+
     // Toggle isShown if we have events
     if (props.events.length) {
       isShown.value = !isShown.value
       return
     }
-    
+
     // If no events, fetch them
     emit('fetch-fixtures', props.tournamentID)
     isShown.value = true

@@ -61,10 +61,11 @@
                   >
                     <span><span data-cms-key="transactions">Transactions</span> </span>
                   </li>
-                  <li 
+                  <li
                     class="x-list-item m-text-main"
                     @click="$router.push({ name: 'account-security' })"
-                    :class="activeClass('account-security') ? 'x-list-item--active' : 'j'">
+                    :class="activeClass('account-security') ? 'x-list-item--active' : 'j'"
+                  >
                     <span><span data-cms-key="gifts">Safety & Security</span> </span>
                   </li>
                 </ul>
@@ -98,7 +99,7 @@ const balance = computed(() => {
 })
 
 const details = computed(() => {
-  return usersStore.details
+  return usersStore.currentUser
 })
 const activeClass = (name) => {
   return route.name === name

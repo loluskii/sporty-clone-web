@@ -16,7 +16,8 @@
           <span
             ><p class="mg-b-16 size-18 pd-hor-100">
               <span data-cms-key="we_have_sent_you_a_vnum_digit_code_to_vcountrycode_vphone"
-                >We’ve sent you a 6-digit code to +234 {{ phoneNumber }}</span
+                >We've sent you a 6-digit code to
+                {{ utilsStore.SportsbookGlobalVariable.DialCode }} {{ phoneNumber }}</span
               >
             </p></span
           >
@@ -63,7 +64,6 @@
 import { onMounted, ref } from 'vue'
 import { useAuthStore, useUtilsStore } from '@/stores'
 import { sendOTP, verifyOTP } from '@/helpers'
-import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 
 const emit = defineEmits(['go-back', 'next-step'])
 const props = defineProps(['phoneNumber'])

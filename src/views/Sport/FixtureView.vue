@@ -4,13 +4,10 @@
     </template> -->
     <template #fixtures-list>
       <div id="importMatch" class="import-match">
-        <LoadingSpinner v-if="isLoading && !fixturesList.length" />
+        <LoadingSpinner v-if="isLoading && !fixturesList.length || isLoading" />
         <template v-else>
-          <div v-if="loadingError" class="error-message">
-            <p>Sorry, something went wrong. Please try again later.</p>
-            <button @click="retryLastOperation" class="retry-button">Retry</button>
-          </div>
-          
+          <LoadingError v-if="loadingError" @reload="handlePageChange"></LoadingError>
+
           <template v-else-if="fixturesList.length">
             <TournamentCard
               v-for="tournament in fixturesList"
@@ -39,18 +36,16 @@
 <script setup>
 import SportsLayout from '@/components/Shared/SportsLayout.vue'
 import TournamentCard from '@/components/TournamentCard.vue'
-import {
-  getSportHighlights,
-  getToday2,
-} from '@/helpers'
+import { FEED_TOGGLE, getSportHighlights, getToday2 } from '@/helpers'
 import { useRoute } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import _ from 'lodash'
 import { getFixturesByTournamentId, getTournamentsByCategories, extractIdsFromURL } from '@/helpers'
 import { useUtilsStore } from '@/stores'
-import Pagination from '@/components/Pagination.vue'
+import Pagination from '@/components/FixturesPagination.vue'
 import NoDataMessage from '@/components/NoDataMessage.vue'
+import LoadingError from '@/components/Loaders/LoadingError.vue'
 
 const utilsStore = useUtilsStore()
 const route = useRoute()
@@ -70,16 +65,16 @@ const activeSport = computed(() => {
 })
 
 watch(
-  () => [route.name, route.query.period, route.query.type],
-  async ([routeName, period, type]) => {
-    const tournament = route.params.tournaments
-      ? extractIdsFromURL(route.params.tournaments, 'tournament')
+  () => [route.name, route.query, route.params],
+  async ([routeName, query, params]) => {
+    const tournament = params.tournaments
+      ? extractIdsFromURL(params.tournaments, 'tournament')
       : null
+    
     // Check the route name
     switch (routeName) {
       case 'fixtures-by-tournament':
       case 'top-tournament-fixtures':
-        // await getTournamentFixtures(tournament_id)
         break
       case 'fixtures-by-categories':
         await getCategoryFixtures()
@@ -87,57 +82,20 @@ watch(
       case 'fixtures-by-tournaments':
         await getTournamentFixtures(tournament[0])
         break
-
       case 'upcoming-fixtures-by-sport':
       case 'fixtures-by-sport':
-        if (period) {
-          await fetchActiveSportByPeriod(period)
+        if (query.period) {
+          await fetchActiveSportByPeriod(query.period)
         } else {
           await fixturesByActiveSport()
         }
         break
-
       default:
-        // Handle other routes or provide a default behavior
         break
     }
   },
-  { immediate: true } // Trigger the watch callback immediately on component mount
+  { immediate: true, deep: true }
 )
-
-// Function to calculate the range of page numbers to display based on the current active page
-const getPageRange = () => {
-  const currentPage = activePage.value
-  const totalPages = lastPage.value
-  const maxButtons = 10 // Maximum number of buttons to display
-  // Calculate the starting and ending page numbers for the displayed range
-  let startPage = Math.max(currentPage - Math.floor(maxButtons / 2), 1)
-  let endPage = Math.min(startPage + maxButtons - 1, totalPages)
-  // Adjust the starting page number if the range exceeds the total pages
-  if (endPage - startPage + 1 < maxButtons) {
-    startPage = Math.max(endPage - maxButtons + 1, 1)
-  }
-
-  return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index)
-}
-const nextPage = async () => {
-  if (activePage.value < lastPage.value) {
-    activePage.value++
-    await handlePageChange()
-  }
-}
-const prevPage = async () => {
-  if (activePage.value > 1) {
-    activePage.value--
-    await handlePageChange()
-  }
-}
-const moveToSpecificPage = async (page) => {
-  if (page >= 1 && page <= lastPage.value) {
-    activePage.value = page
-    await handlePageChange()
-  }
-}
 
 // Function to handle page change based on the current route and parameters
 const handlePageChange = async () => {
@@ -177,6 +135,11 @@ const handlePageChange = async () => {
 async function getCategoryFixtures() {
   const routeExtractedTIds = extractIdsFromURL(route.params.categories, 'category')
   const sid = activeSport.value.sportID
+
+  if(!FEED_TOGGLE){
+    fixturesList.value = []
+    return;
+  }
 
   try {
     isLoading.value = true
@@ -240,6 +203,10 @@ async function getCategoryFixtures() {
 }
 
 async function getTournamentFixtures(tid) {
+  if(!FEED_TOGGLE){
+    fixturesList.value = []
+    return;
+  }
   isLoading.value = true
   const sid = activeSport.value.sportID
   tid = tid.tournamentID || tid
@@ -283,6 +250,10 @@ async function getTournamentFixtures(tid) {
 }
 
 async function fixturesByActiveSport() {
+  if(!FEED_TOGGLE){
+    fixturesList.value = []
+    return;
+  }
   isLoading.value = true
   const sid = activeSport.value.sportID
   try {
@@ -301,7 +272,7 @@ async function fixturesByActiveSport() {
         }
       })
       .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
-    
+
     fixturesList.value = tournamentsArray
     // marketsGroup.value = res.markets
     lastPage.value = res.lastPage
@@ -314,6 +285,10 @@ async function fixturesByActiveSport() {
 }
 
 async function fetchActiveSportByPeriod(period) {
+  if(!FEED_TOGGLE){
+    fixturesList.value = []
+    return;
+  }
   isLoading.value = true
   const sid = activeSport.value.sportID
   try {
@@ -335,7 +310,7 @@ async function fetchActiveSportByPeriod(period) {
           }
         })
         .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
-      
+
       fixturesList.value = tournamentsArray
       lastPage.value = res.lastPage
       isLoading.value = false
@@ -348,6 +323,10 @@ async function fetchActiveSportByPeriod(period) {
 }
 
 async function fetchTodayActiveSport(id) {
+  if(!FEED_TOGGLE){
+    fixturesList.value = []
+    return;
+  }
   try {
     const res = await getToday2(id, activePage.value)
     let result = _.groupBy(res.fixtures, 'tournament')
@@ -364,7 +343,7 @@ async function fetchTodayActiveSport(id) {
         }
       })
       .sort((a, b) => a.tournamentID - b.tournamentID) // Sort by tournamentID
-    
+
     fixturesList.value = tournamentsArray
     lastPage.value = res.lastPage
     isLoading.value = false
@@ -512,7 +491,7 @@ onMounted(() => {
     margin-bottom: -1px;
     padding: 0 13px;
     text-align: center;
-   /* // width: calc(100% / 6); */
+    /* // width: calc(100% / 6); */
   }
   .import-match .match-league .market-group .market-item.active {
     border-bottom: 4px solid var(--brand-secondary);

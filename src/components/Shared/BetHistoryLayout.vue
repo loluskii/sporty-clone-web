@@ -17,39 +17,55 @@
                   </div>
                   <div class="x-user-items">
                     <div class="x-user-item x-text-main">
-                      <span class="x-text-second"><span data-cms-key="balance">Balance</span>
+                      <span class="x-text-second"
+                        ><span data-cms-key="balance">Balance</span>
                       </span>
                       <span>NGN {{ balance }}</span>
                     </div>
                   </div>
                 </div>
                 <ul class="x-user-center x-list">
-                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-me' })"
-                    :class="activeClass('account-me') ? 'x-list-item--active' : 'j'">
+                  <li
+                    class="x-list-item x-text-main"
+                    @click="$router.push({ name: 'account-me' })"
+                    :class="activeClass('account-me') ? 'x-list-item--active' : 'j'"
+                  >
                     <span><span data-cms-key="my_account_info">My Account Info</span> </span>
                   </li>
 
-                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-deposit' })"
-                    :class="activeClass('account-deposit') ? 'x-list-item--active' : 'j'">
+                  <li
+                    class="x-list-item x-text-main"
+                    @click="$router.push({ name: 'account-deposit' })"
+                    :class="activeClass('account-deposit') ? 'x-list-item--active' : 'j'"
+                  >
                     <span><span data-cms-key="deposit">Deposit</span> </span>
                   </li>
-                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-withdraw' })"
-                    :class="activeClass('account-withdraw') ? 'x-list-item--active' : 'j'">
+                  <li
+                    class="x-list-item x-text-main"
+                    @click="$router.push({ name: 'account-withdraw' })"
+                    :class="activeClass('account-withdraw') ? 'x-list-item--active' : 'j'"
+                  >
                     <span><span data-cms-key="withdraw">Withdraw</span> </span>
                   </li>
-                  <li class="x-list-item x-text-main"
+                  <li
+                    class="x-list-item x-text-main"
                     :class="activeClass('account-bethistory') ? 'x-list-item--active' : 'j'"
-                    @click="$router.push({ name: 'account-bethistory' })">
+                    @click="$router.push({ name: 'account-bethistory' })"
+                  >
                     <span><span data-cms-key="bet_history">Bet History</span> </span>
                   </li>
-                  <li class="x-list-item x-text-main" @click="$router.push({ name: 'account-transactions' })"
-                    :class="activeClass('account-transactions') ? 'x-list-item--active' : 'j'">
+                  <li
+                    class="x-list-item x-text-main"
+                    @click="$router.push({ name: 'account-transactions' })"
+                    :class="activeClass('account-transactions') ? 'x-list-item--active' : 'j'"
+                  >
                     <span><span data-cms-key="transactions">Transactions</span> </span>
                   </li>
-                  <li 
+                  <li
                     class="x-list-item m-text-main"
                     @click="$router.push({ name: 'account-security' })"
-                    :class="activeClass('account-security') ? 'x-list-item--active' : 'j'">
+                    :class="activeClass('account-security') ? 'x-list-item--active' : 'j'"
+                  >
                     <span><span data-cms-key="gifts">Safety & Security</span> </span>
                   </li>
                 </ul>
@@ -74,7 +90,6 @@
   </div>
 </template>
 <script setup>
-import BaseLayout from '@/components/Shared/BaseLayout.vue'
 import BetContainer from './BetContainer.vue'
 import Header from './Header.vue'
 import Footer from './Footer.vue'
@@ -97,7 +112,7 @@ const activeClass = (name) => {
 }
 
 const getUserName = computed(() => {
-  if(details.value.firstName && details.value.lastName){
+  if (details.value.firstName && details.value.lastName) {
     return `${details.value.firstName} ${details.value.lastName}`
   }
   return 'User'
@@ -124,7 +139,7 @@ const getUserName = computed(() => {
   padding: 7px 0 0 12px;
 }
 
-.x-user-info .x-account>div {
+.x-user-info .x-account > div {
   display: inline-block;
   vertical-align: middle;
 }
@@ -231,7 +246,7 @@ const getUserName = computed(() => {
   border-top: 1px solid #eaecef;
 }
 
-.x-user-info .x-user-item>span {
+.x-user-info .x-user-item > span {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   display: block;
@@ -249,7 +264,7 @@ const getUserName = computed(() => {
   font-size: 12px;
 }
 
-.x-user-info .withdrawable-container>*:not(:last-child) {
+.x-user-info .withdrawable-container > *:not(:last-child) {
   margin-bottom: 7px;
 }
 
@@ -539,7 +554,7 @@ const getUserName = computed(() => {
   padding: 8px 0;
 }
 
-.x-order-wrapper .x-table-cell>span:not(.x-bet-type):not(.x-no-ellipse) {
+.x-order-wrapper .x-table-cell > span:not(.x-bet-type):not(.x-no-ellipse) {
   display: block;
   line-height: 16px;
   overflow: hidden;
@@ -547,11 +562,11 @@ const getUserName = computed(() => {
   white-space: nowrap;
 }
 
-.x-order-wrapper .x-table-cell>span:not(.x-bet-type):not(.x-no-ellipse):last-of-type {
+.x-order-wrapper .x-table-cell > span:not(.x-bet-type):not(.x-no-ellipse):last-of-type {
   margin-bottom: 0;
 }
 
-.x-order-wrapper .x-table-cell>span.x-bet-team {
+.x-order-wrapper .x-table-cell > span.x-bet-team {
   line-height: 20px !important;
 }
 
