@@ -56,6 +56,12 @@
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Become an Affiliate</span></a
               >
             </li>
+            <li class="x-icon-more">
+              <a href="/maxbet.apk"
+                download="/koretbet.apk"
+                ><span data-cms-key="privacy" data-cms-page="common_helps">Download App</span></a
+              >
+            </li>
           </ul>
         </li>
         <li class="x-col-wrapper x-m-r">
