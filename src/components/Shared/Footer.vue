@@ -58,7 +58,7 @@
             </li>
             <li class="x-icon-more">
               <a href="/maxbet.apk"
-                download="/koretbet.apk"
+                download="/maxbet.apk"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Download App</span></a
               >
             </li>
