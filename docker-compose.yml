@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   sportsbook-web:
-    image: sportsbook-web:latest
+    image: west-bet24:latest
     ports:
       - "3001:80"
     environment:
