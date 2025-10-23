@@ -3,7 +3,9 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --force
+RUN rm -rf node_modules package-lock.json && \
+    npm install && \
+    npm install @rollup/rollup-linux-x64-musl --save-optional
 
 COPY . .
 RUN npm run build
