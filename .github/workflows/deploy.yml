@@ -57,49 +57,8 @@ jobs:
           path: .VERSION
           retention-days: 1
 
-  build:
-    needs: version
-    runs-on: [self-hosted, linux, x64]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Create version file from output
-        run: |
-          echo "${{ needs.version.outputs.version }}" > .VERSION
-          echo "Version from previous job: ${{ needs.version.outputs.version }}"
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value=${{ needs.version.outputs.version }}
-            type=raw,value=latest
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
   release:
-    needs: [version, build]
+    needs: [version]
     runs-on: [self-hosted, linux, x64]
     if: github.ref == 'refs/heads/west-bet24' 
     steps:
@@ -150,7 +109,7 @@ jobs:
         run: npx semantic-release
 
   deploy:
-    needs: [version, build, release]
+    needs: [version, release]
     runs-on: [self-hosted, linux, x64]
     environment: GCP CI
     if: github.ref == 'refs/heads/west-bet24' 
@@ -178,22 +137,18 @@ jobs:
           # Copy repository .env file
           cp .env .env.backup 2>/dev/null || echo "No existing .env file to backup"
           
-          # Update docker-compose with new image version
-          sed -i "s|image: ghcr.io.*|image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$NEXT_VERSION|g" docker-compose.yml
+          # No need to update docker-compose since we're building locally
 
       - name: Deploy to GCP server
         run: |
           # Create directory on server
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
           
-          # Copy files to server
-          scp -o StrictHostKeyChecking=no .env ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
-          scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
-          scp -o StrictHostKeyChecking=no deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
+          # Copy entire source code to server
+          rsync -avz --exclude='.git' --exclude='node_modules' --exclude='dist' . ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
           
-          # Login to GitHub Container Registry on server and execute deployment
+          # Execute deployment
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             chmod +x ~/west-bet24/deploy.sh
             bash ~/west-bet24/deploy.sh
           '
