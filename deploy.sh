@@ -16,8 +16,8 @@ docker network create sbenet || true
 # Stop existing containers
 docker compose down || true
 
-# Pull latest images
-docker compose pull
+# Build images
+docker compose build
 
 # Start services
 docker compose up -d

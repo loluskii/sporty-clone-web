@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   sportsbook-web:
-    image: ghcr.io/zoroplay/west-bet24:latest
+    build: .
     ports:
       - "3001:80"
     environment:
