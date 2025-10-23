@@ -6,11 +6,9 @@ set -e  # Exit on any error
 cd ~/west-bet24
 
 # Note: .env file is used by docker-compose directly
-if [ -f .env ]; then
-    echo "Found .env file for docker-compose"
-else
-    echo "Warning: .env file not found"
-fi
+# Note: Environment variables are baked into the Docker image at build time
+echo "Using pre-built Docker image with embedded environment variables"
+
 
 # Create network if it doesn't exist,
 docker network create sbenet || true
