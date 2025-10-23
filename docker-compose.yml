@@ -4,7 +4,7 @@ services:
   sportsbook-web:
     image: ghcr.io/zoroplay/west-bet24:latest
     ports:
-      - "3001:80"
+      - "3001:3001"
     environment:
       - NODE_ENV=production
     env_file:
