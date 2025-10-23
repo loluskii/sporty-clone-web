@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.0...v1.0.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* change nginx to listen on port 3001 for proxy manager compatibility ([4cc2914](https://github.com/zoroplay/sporty-clone-web/commit/4cc291464ea50771b30632625eadd1f5367e0666))
+
 # 1.0.0 (2025-10-23)
 
 
