@@ -139,6 +139,7 @@ jobs:
           # Note: Building locally, no need to update image version
 
       - name: Deploy to GCP server
+        continue-on-error: true
         run: |
           # Create directory on server
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
@@ -149,7 +150,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && tar -xzf source.tar.gz && rm source.tar.gz'
           
           # Execute deployment in single SSH session
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} << 'EOF' || true
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} << 'EOF'
             cd ~/west-bet24
             echo "=== Current directory and files ==="
             pwd
