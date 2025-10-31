@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.2...v1.0.3) (2025-10-31)
+
+
+### Bug Fixes
+
+* code update ([f769017](https://github.com/zoroplay/sporty-clone-web/commit/f769017e0572df9fd7d65332239da3011cb743a5))
+
 ## [1.0.2](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.1...v1.0.2) (2025-10-23)
 
 
