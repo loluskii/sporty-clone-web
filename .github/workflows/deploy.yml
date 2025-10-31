@@ -149,9 +149,14 @@ jobs:
           scp -o StrictHostKeyChecking=no source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && tar -xzf source.tar.gz && rm source.tar.gz'
           
-          # Execute deployment script
+          # Execute deployment script with verbose output
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
             cd ~/west-bet24
+            echo "Current directory: $(pwd)"
+            echo "Files present:"
+            ls -la
+            echo "Making deploy.sh executable"
             chmod +x deploy.sh
-            ./deploy.sh
+            echo "Running deploy.sh with verbose output"
+            bash -x ./deploy.sh 2>&1
           '
