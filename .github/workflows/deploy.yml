@@ -144,13 +144,18 @@ jobs:
           # Create directory on server
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
           
-          # Copy entire source code to server
-          tar --exclude='.git' --exclude='node_modules' --exclude='dist' -czf source.tar.gz .
-          scp -o StrictHostKeyChecking=no source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && tar -xzf source.tar.gz && rm source.tar.gz'
+          # Copy entire source code to server using rsync
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='dist' \
+            --exclude='.github' \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./ ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
           
           # Execute deployment
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             chmod +x ~/west-bet24/deploy.sh
             bash ~/west-bet24/deploy.sh
           '
