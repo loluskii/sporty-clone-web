@@ -2,29 +2,27 @@
 
 set -e  # Exit on any error
 
-# Change to correct directory
-cd ~/west-bet24
+echo "=== Vue.js App Deployment ==="
+echo "Current directory: $(pwd)"
+echo "Files in directory:"
+ls -la
 
-# Note: .env file is used by docker-compose directly
-# Note: Environment variables are baked into the Docker image at build time
-echo "Using pre-built Docker image with embedded environment variables"
+echo "=== Creating Docker network ==="
+docker network create sbenet || echo "Network already exists"
 
+echo "=== Stopping existing containers ==="
+docker compose down || echo "No containers to stop"
 
-# Create network if it doesn't exist,
-docker network create sbenet || true
-
-# Stop existing containers
-docker compose down || true
-
-# Build images
+echo "=== Building Vue.js app with Docker ==="
 docker compose build
 
-# Start services
+echo "=== Starting Vue.js app ==="
 docker compose up -d
 
-# Show running containers
+echo "=== Checking running containers ==="
 docker ps
 
-echo "Deployment completed successfully"
+echo "=== Deployment completed successfully ==="
+echo "App should be available on port 3000"
 
      
