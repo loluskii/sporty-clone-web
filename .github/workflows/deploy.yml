@@ -148,21 +148,28 @@ jobs:
           scp -o StrictHostKeyChecking=no source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && tar -xzf source.tar.gz && rm source.tar.gz'
           
-          # Execute deployment step by step with error handling
-          echo "Step 1: List files"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && ls -la' || true
-          
-          echo "Step 2: Make deploy.sh executable"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && chmod +x deploy.sh' || true
-          
-          echo "Step 3: Create network"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && docker network create sbenet || true' || true
-          
-          echo "Step 4: Stop containers"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && docker compose down || true' || true
-          
-          echo "Step 5: Build image"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && docker compose build 2>&1' || echo "Build failed with exit code $?"
-          
-          echo "Step 6: Start containers"
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && docker compose up -d 2>&1' || echo "Start failed with exit code $?"
+          # Execute deployment in single SSH session
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} << 'EOF' || true
+            cd ~/west-bet24
+            echo "=== Current directory and files ==="
+            pwd
+            ls -la
+            
+            echo "=== Making deploy.sh executable ==="
+            chmod +x deploy.sh
+            
+            echo "=== Creating network ==="
+            docker network create sbenet || echo "Network already exists"
+            
+            echo "=== Stopping containers ==="
+            docker compose down || echo "No containers to stop"
+            
+            echo "=== Building image ==="
+            docker compose build
+            
+            echo "=== Starting containers ==="
+            docker compose up -d
+            
+            echo "=== Checking running containers ==="
+            docker ps
+          EOF
