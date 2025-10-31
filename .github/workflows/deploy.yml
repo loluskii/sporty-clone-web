@@ -108,14 +108,45 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
 
+  build:
+    needs: [version]
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
   deploy:
-    needs: [version, release]
+    needs: [version, release, build]
     runs-on: [self-hosted, linux, x64]
     environment: GCP CI
     if: github.ref == 'refs/heads/west-bet24' 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
 
       - name: Create version file from output
         run: |
@@ -145,7 +176,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
           
           # Create tar archive with proper exclusions and ignore file changes
-          tar --exclude='.git' --exclude='node_modules' --exclude='dist' --exclude='.github' --warning=no-file-changed -czf source.tar.gz .
+          tar --exclude='.git' --exclude='node_modules' --exclude='.github' --warning=no-file-changed -czf source.tar.gz .
           
           # Copy and extract on server
           scp -o StrictHostKeyChecking=no source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
