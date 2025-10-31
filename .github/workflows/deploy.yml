@@ -144,14 +144,12 @@ jobs:
           # Create directory on server
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
           
-          # Copy entire source code to server using rsync
-          rsync -avz --delete \
-            --exclude='.git' \
-            --exclude='node_modules' \
-            --exclude='dist' \
-            --exclude='.github' \
-            -e "ssh -o StrictHostKeyChecking=no" \
-            ./ ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
+          # Create tar archive with proper exclusions and ignore file changes
+          tar --exclude='.git' --exclude='node_modules' --exclude='dist' --exclude='.github' --warning=no-file-changed -czf source.tar.gz .
+          
+          # Copy and extract on server
+          scp -o StrictHostKeyChecking=no source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24 && tar -xzf source.tar.gz && rm source.tar.gz'
           
           # Execute deployment
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
