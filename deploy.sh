@@ -44,7 +44,8 @@ docker compose build --build-arg VITE_BASE_URL="$VITE_BASE_URL" \
   --build-arg VITE_XPRESS_LAUNCH_URL="$VITE_XPRESS_LAUNCH_URL" \
   --build-arg VITE_XPRESS_PRIVATE_KEY="$VITE_XPRESS_PRIVATE_KEY" \
   --build-arg VITE_XPRESS_PUBLIC_KEY="$VITE_XPRESS_PUBLIC_KEY" \
-  --build-arg VITE_MQTT_URI="$VITE_MQTT_URI"
+  --build-arg VITE_MQTT_URI="$VITE_MQTT_URI" \
+  --build-arg VITE_FEED_TOGGLE="$VITE_FEED_TOGGLE"
 
 # Start services
 docker compose up -d

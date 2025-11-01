@@ -1,4 +1,4 @@
-export const BASE_API = 'https://api.koretbet.com'
+export const BASE_API = import.meta.env.VITE_BASE_URL || 'https://api.koretbet.com'
 export const NEW_BASE_API = import.meta.env.VITE_NEW_BASE_API
 
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
