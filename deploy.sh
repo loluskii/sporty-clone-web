@@ -23,6 +23,6 @@ echo "=== Checking running containers ==="
 docker ps
 
 echo "=== Deployment completed successfully ==="
-echo "App should be available on port 3000"
+echo "App should be available on port 3001"
 
      
