@@ -22,8 +22,32 @@ docker network create sbenet || true
 # Stop existing containers
 docker compose down || true
 
-# Build and start services (this will use the local .env file)
-docker compose up -d --build
+# Build with all environment variables passed as build args
+docker compose build --build-arg VITE_BASE_URL="$VITE_BASE_URL" \
+  --build-arg VITE_SITE_URL="$VITE_SITE_URL" \
+  --build-arg VITE_NEW_BASE_API="$VITE_NEW_BASE_API" \
+  --build-arg VITE_ENCRYPT_SECRET_KEY="$VITE_ENCRYPT_SECRET_KEY" \
+  --build-arg VITE_APP_KEY="$VITE_APP_KEY" \
+  --build-arg VITE_CLIENT_ID="$VITE_CLIENT_ID" \
+  --build-arg VITE_CURRENCY="$VITE_CURRENCY" \
+  --build-arg VITE_WTH_PERC="$VITE_WTH_PERC" \
+  --build-arg VITE_EXCISE_DUTY="$VITE_EXCISE_DUTY" \
+  --build-arg VITE_FAST_ADD_AMOUNTS="$VITE_FAST_ADD_AMOUNTS" \
+  --build-arg VITE_TIMEZONE="$VITE_TIMEZONE" \
+  --build-arg VITE_MaxCombinationsByGrouping="$VITE_MaxCombinationsByGrouping" \
+  --build-arg VITE_MaxCouponCombinations="$VITE_MaxCouponCombinations" \
+  --build-arg VITE_MinBonusOdd="$VITE_MinBonusOdd" \
+  --build-arg VITE_MinGroupingsBetStake="$VITE_MinGroupingsBetStake" \
+  --build-arg VITE_MaxGroupingsBetStake="$VITE_MaxGroupingsBetStake" \
+  --build-arg VITE_MinBetStake="$VITE_MinBetStake" \
+  --build-arg VITE_StakeInnerMod0Combination="$VITE_StakeInnerMod0Combination" \
+  --build-arg VITE_XPRESS_LAUNCH_URL="$VITE_XPRESS_LAUNCH_URL" \
+  --build-arg VITE_XPRESS_PRIVATE_KEY="$VITE_XPRESS_PRIVATE_KEY" \
+  --build-arg VITE_XPRESS_PUBLIC_KEY="$VITE_XPRESS_PUBLIC_KEY" \
+  --build-arg VITE_MQTT_URI="$VITE_MQTT_URI"
+
+# Start services
+docker compose up -d
 
 # Show running containers
 docker ps
