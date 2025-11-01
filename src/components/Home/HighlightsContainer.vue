@@ -1,7 +1,7 @@
 <template>
   <div class="important-match">
     <div class="banner">
-      <span class="circle"></span>
+      <!-- <span class="circle"></span> -->
       <span class="text">Highlights</span>
     </div>
     <div class="print-container-wrapper">

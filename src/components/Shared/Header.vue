@@ -877,7 +877,7 @@ onMounted(() => {
   width: 100%;
 }
 .c-header .x-top-wrapper {
-  background: var(--brand-primary);
+  background-color: rgb(222, 226 ,230);;
 }
 .c-header .x-nav-wrapper {
   margin: 0 auto;
