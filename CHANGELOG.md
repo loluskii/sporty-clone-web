@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.0...v1.1.1) (2025-11-01)
+
+
+### Bug Fixes
+
+* remove backticks from .env file causing parsing errors ([721d3a0](https://github.com/zoroplay/sporty-clone-web/commit/721d3a0eb6d21396c0e329be46cf4046368fa5de))
+
 # [1.1.0](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.4...v1.1.0) (2025-11-01)
 
 
