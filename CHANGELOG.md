@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.3...v1.0.4) (2025-11-01)
+
+
+### Bug Fixes
+
+* configure for local Docker build to reflect env changes ([514e746](https://github.com/zoroplay/sporty-clone-web/commit/514e746e1d7c8abcf48187166464f0a147b86a56))
+
 ## [1.0.3](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.2...v1.0.3) (2025-10-31)
 
 
