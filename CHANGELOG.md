@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.1...v1.1.2) (2025-11-01)
+
+
+### Bug Fixes
+
+* pass all VITE env vars as Docker build args ([d6a9250](https://github.com/zoroplay/sporty-clone-web/commit/d6a9250fd7db79353a9b8244c93a9ed529258f4d))
+
 ## [1.1.1](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.0...v1.1.1) (2025-11-01)
 
 
