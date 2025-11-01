@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.4...v1.1.0) (2025-11-01)
+
+
+### Features
+
+* finalize deploy script with comprehensive env verification ([e5cfc0f](https://github.com/zoroplay/sporty-clone-web/commit/e5cfc0f7e6f2635540a3c53a2b8eddcd8694527a))
+
 ## [1.0.4](https://github.com/zoroplay/sporty-clone-web/compare/v1.0.3...v1.0.4) (2025-11-01)
 
 
