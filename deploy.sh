@@ -13,9 +13,8 @@ echo "Setting environment variables for build:"
 set -a
 source .env
 set +a
-echo "Environment variables set:"
-echo "VITE_BASE_URL=$VITE_BASE_URL"
-echo "VITE_NEW_BASE_API=$VITE_NEW_BASE_API"
+echo "All environment variables loaded:"
+env | grep ^VITE_
 
 # Create network if it doesn't exist
 docker network create sbenet || true
