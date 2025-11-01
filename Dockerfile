@@ -2,6 +2,18 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
+# Accept build arguments for environment variables
+ARG VITE_BASE_URL
+ARG VITE_NEW_BASE_API
+ARG VITE_CLIENT_ID
+ARG VITE_CURRENCY
+
+# Set environment variables for build
+ENV VITE_BASE_URL=$VITE_BASE_URL
+ENV VITE_NEW_BASE_API=$VITE_NEW_BASE_API
+ENV VITE_CLIENT_ID=$VITE_CLIENT_ID
+ENV VITE_CURRENCY=$VITE_CURRENCY
+
 COPY package*.json ./
 RUN rm -rf node_modules package-lock.json && \
     npm install && \
