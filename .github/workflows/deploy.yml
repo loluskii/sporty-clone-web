@@ -148,14 +148,22 @@ jobs:
           scp -o StrictHostKeyChecking=no /tmp/source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24/ && tar -xzf source.tar.gz && rm source.tar.gz'
           
-          # Login to GitHub Container Registry on server and execute deployment
+          # Execute deployment with environment verification
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd ~/west-bet24/
+            echo "=== Deployment Environment Check ==="
             echo "Current directory: $(pwd)"
             echo "Files in directory:"
             ls -la
-            echo "Checking for Dockerfile:"
+            echo "Checking .env file:"
+            if [ -f .env ]; then
+              echo ".env file exists"
+              echo "VITE_ variables in .env:"
+              grep "^VITE_" .env || echo "No VITE_ variables found"
+            else
+              echo "WARNING: .env file not found"
+            fi
+            echo "Checking Dockerfile:"
             ls -la Dockerfile || echo "Dockerfile not found"
             chmod +x deploy.sh
             bash deploy.sh
