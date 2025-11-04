@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.2...v1.1.3) (2025-11-04)
+
+
+### Bug Fixes
+
+* update deployment workflow for Vue.js app with proper port mapping and environment verification ([f7cc882](https://github.com/zoroplay/sporty-clone-web/commit/f7cc8823d8ed0b35653569375803ecc5a947577e))
+
 ## [1.1.2](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.1...v1.1.2) (2025-11-01)
 
 
