@@ -1,7 +1,7 @@
 <template>
   <div class="live-match">
     <div class="banner">
-      <span class="circle"></span>
+      <!-- <span class="circle"></span> -->
       <span class="text" data-cms-key="live_betting">Live Betting</span>
       <div class="config" style="">
         <!-- <span class="refresh" @click="handleRefresh">Refresh</span> -->
@@ -148,7 +148,7 @@ const isManualRefetching = ref(false)
 
 // Optimize the query with better caching and error handling
 const { isLoading, refetch } = useQuery('liveData', getLiveHighlights, {
-  enabled: FEED_TOGGLE,
+  // enabled: FEED_TOGGLE,
   // Prevent automatic refetching which can cause recursive updates
   refetchOnWindowFocus: false,
   refetchOnMount: true,

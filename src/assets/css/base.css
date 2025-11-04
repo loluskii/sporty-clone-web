@@ -2228,7 +2228,7 @@ textarea {
 }
 
 .x-tabs-ink-bar {
-  background-color: #33ea6a;
+  background-color: var(--brand-highlight-text);
   bottom: 1px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;

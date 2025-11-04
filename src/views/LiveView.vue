@@ -304,7 +304,7 @@ onUnmounted(() => {
 
 .x-overview .sport-name .sport-name-item.active {
   font-weight: 700;
-  border-bottom: 4px solid var(--brand-secondary);
+  border-bottom: 4px solid var(--brand-highlight-text);
 }
 .x-overview .sport-name .sport-simple-select {
   height: 48px;

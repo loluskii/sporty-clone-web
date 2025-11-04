@@ -494,7 +494,7 @@ onMounted(() => {
     /* // width: calc(100% / 6); */
   }
   .import-match .match-league .market-group .market-item.active {
-    border-bottom: 4px solid var(--brand-secondary);
+    border-bottom: 4px solid var(--brand-highlight-text);
     font-weight: 700;
   }
   .import-match .match-league .market-group .market-item:hover {
