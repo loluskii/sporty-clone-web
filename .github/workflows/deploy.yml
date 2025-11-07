@@ -2,9 +2,9 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ west-bet24 ]
+    branches: [ gcp-staging ]
   pull_request:
-    branches: [ west-bet24 ]
+    branches: [ gcp-staging ]
 
 permissions:
   contents: write
@@ -14,7 +14,7 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/west-bet24
+  IMAGE_NAME: ${{ github.repository_owner }}/gcp-staging-web
 
 jobs:
   version:
@@ -57,10 +57,51 @@ jobs:
           path: .VERSION
           retention-days: 1
 
-  release:
-    needs: [version]
+  build:
+    needs: version
     runs-on: [self-hosted, linux, x64]
-    if: github.ref == 'refs/heads/west-bet24' 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create version file from output
+        run: |
+          echo "${{ needs.version.outputs.version }}" > .VERSION
+          echo "Version from previous job: ${{ needs.version.outputs.version }}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ needs.version.outputs.version }}
+            type=raw,value=latest
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  release:
+    needs: [version, build]
+    runs-on: [self-hosted, linux, x64]
+    if: github.ref == 'refs/heads/gcp-staging' 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -83,7 +124,7 @@ jobs:
           cat > release.config.js << 'EOF'
           export default {
             branches: [
-              { name: 'west-bet24' }
+              { name: 'gcp-staging' }
             ],
             repositoryUrl: 'https://github.com/${{ github.repository }}.git',
             tagFormat: 'v${version}',
@@ -111,7 +152,7 @@ jobs:
     needs: [version]
     runs-on: [self-hosted, linux, x64]
     environment: GCP CI
-    if: github.ref == 'refs/heads/west-bet24' 
+    if: github.ref == 'refs/heads/gcp-staging' 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -141,29 +182,21 @@ jobs:
       - name: Deploy to GCP server
         run: |
           # Create directory on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/gcp-staging-web/'
           
           # Copy all source files to server for local build
-          tar --exclude='.git' --exclude='node_modules' --exclude='dist' --exclude='source.tar.gz' -czf /tmp/source.tar.gz .
-          scp -o StrictHostKeyChecking=no /tmp/source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24/ && tar -xzf source.tar.gz && rm source.tar.gz'
+          tar --exclude='.git' --exclude='node_modules' --exclude='dist' -czf /tmp/source.tar.gz .
+          scp -o StrictHostKeyChecking=no /tmp/source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/gcp-staging-web/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/gcp-staging-web/ && tar -xzf source.tar.gz && rm source.tar.gz'
           
-          # Execute deployment with environment verification
+          # Login to GitHub Container Registry on server and execute deployment
           ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
-            cd ~/west-bet24/
-            echo "=== Deployment Environment Check ==="
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cd ~/gcp-staging-web/
             echo "Current directory: $(pwd)"
             echo "Files in directory:"
             ls -la
-            echo "Checking .env file:"
-            if [ -f .env ]; then
-              echo ".env file exists"
-              echo "VITE_ variables in .env:"
-              grep "^VITE_" .env || echo "No VITE_ variables found"
-            else
-              echo "WARNING: .env file not found"
-            fi
-            echo "Checking Dockerfile:"
+            echo "Checking for Dockerfile:"
             ls -la Dockerfile || echo "Dockerfile not found"
             chmod +x deploy.sh
             bash deploy.sh
