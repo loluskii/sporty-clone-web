@@ -1,4 +1,4 @@
-export const BASE_API = import.meta.env.VITE_BASE_URL || 'https://api.koretbet.com'
+export const BASE_API = import.meta.env.VITE_BASE_URL
 export const NEW_BASE_API = import.meta.env.VITE_NEW_BASE_API
 
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
@@ -8,7 +8,7 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL
 export const AUTH_EXCLUDE_LIST = []
 export const WTH_PERC = 0
 
-export const FEED_TOGGLE = import.meta.env.VITE_FEED_TOGGLE
+export const FEED_TOGGLE = true
 
 export const PINIA_PERSIST_OPTIONS = {
   storage: localStorage

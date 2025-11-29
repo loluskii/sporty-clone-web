@@ -801,7 +801,7 @@ onMounted(() => {
   line-height: 16px;
 }
 .c-header .x-login-bar .x-forgetPsd {
-  color: rgba(255, 255, 255, 0.6);
+  color: #1c2475;
   display: inline-block;
   font-size: 12px;
   font-weight: bold;
@@ -845,7 +845,8 @@ onMounted(() => {
 }
 .c-header .x-btn-register {
   background: transparent;
-  border: 1px solid #fff !important;
+  border: 1px solid #1C2475 !important;
+  color: #1C2475 !important;
   border: none;
   border-radius: 2px;
   margin-left: 10px;
@@ -960,7 +961,7 @@ onMounted(() => {
   align-items: center;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  color: #fff;
+  color: #1C2745;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
