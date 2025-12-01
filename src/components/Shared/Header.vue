@@ -464,7 +464,7 @@ onMounted(() => {
   font-style: normal;
 }
 .c-header .x-login-bar .x-info .x-icon-refresh {
-  color: #fff;
+  color: rgb(217, 37, 29);
   display: inline-block;
   height: 34px;
   vertical-align: top;
@@ -556,7 +556,7 @@ onMounted(() => {
   vertical-align: top;
 }
 .c-header .x-login-bar .x-bablance-wrapper:after {
-  background: #fff;
+  background: #1c2485;
   content: '';
   display: inline-block;
   height: 14px;
@@ -566,7 +566,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-deposit:after,
 .c-header .x-login-bar .x-history:after {
-  background: #fff;
+  background: #1C2475;
   content: '';
   display: inline-block;
   height: 14px;
@@ -578,12 +578,12 @@ onMounted(() => {
   position: relative;
 }
 .c-header .x-login-bar .x-history a {
-  color: #fff;
+  color: #1c2485;
   text-decoration: none;
 }
 .c-header .x-login-bar .x-history a:hover,
 .c-header .x-login-bar .x-history a:active {
-  color: #fff;
+  color: #1c2485;
 }
 .c-header .x-login-bar .x-history .tips-wrapper {
   display: inline-block;
@@ -601,7 +601,7 @@ onMounted(() => {
   border-right: 0;
 }
 .c-header .x-login-bar .x-error-toast {
-  color: #fff;
+  color: #1c2485;
   display: inline-block;
   font-size: 12px;
   margin-right: 5px;
@@ -615,11 +615,11 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-phone,
 .c-header .x-login-bar .x-psd {
-  background: #fff;
+  background: #1c2485;
 }
 .c-header .x-login-bar .x-phone input,
 .c-header .x-login-bar .x-psd input {
-  background: #fff;
+  background: #1c2485;
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -650,7 +650,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-text,
 .c-header .x-login-bar .x-btn {
-  color: #fff;
+  color: #1c2485;
 }
 .c-header .x-login-bar .x-text {
   -webkit-box-sizing: border-box;
@@ -659,14 +659,14 @@ onMounted(() => {
   padding: 0 8px;
 }
 .c-header .x-login-bar .x-balance {
-  color: yellow;
+  color: rgb(217, 37, 29);
   /* font-weight: bold; */
 }
 .c-header .x-login-bar a:hover {
   text-decoration: none;
 }
 .c-header .x-login-bar .x-error-wrapper {
-  color: #fff;
+  color: #1c2485;
   display: block;
   font-size: 12px;
   line-height: 1.5;
@@ -723,7 +723,7 @@ onMounted(() => {
   font-style: normal;
 }
 .c-header .x-login-bar .x-userInfo:before {
-  color: rgba(255, 255, 255, 0.7);
+  color: #1C2475;
   float: right;
   font-size: 10px;
   -webkit-transform: translate3d(5px, 0, 0);
