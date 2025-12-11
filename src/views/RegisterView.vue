@@ -51,6 +51,7 @@
                       name=""
                       placeholder="Promo Code (optional)"
                       class="x-input fs-exclude"
+                      :readonly="promoCodeDisabled"
                       v-model="promoCode"
                   /></span>
                 </div>
@@ -146,6 +147,8 @@ import DefaultLayout from '@/components/Shared/DefaultLayout.vue'
 import { ref, onMounted } from 'vue'
 import { verifyUsername, formattedPhoneNumber, register, verifyOTP, sendOTP } from '@/helpers'
 import { useAuthStore, useUtilsStore } from '@/stores'
+import {useRoute} from "vue-router";
+import { readonly } from 'vue';
 
 const phoneNumber = ref('')
 const authStore = useAuthStore()
@@ -158,6 +161,8 @@ const isDisabled = ref(false)
 let timer
 const agreeToTerms = ref(false)
 const utilsStore = useUtilsStore()
+const route = useRoute()
+const promoCodeDisabled = ref(false)
 
 const handleFormSubmit = async () => {
   authStore.authError = null
@@ -294,6 +299,11 @@ const doRegistration = async () => {
 onMounted(() => {
   authStore.authError = null
   authStore.loading = false
+
+  if(route.name === 'ref-signup' && route.params.code){
+    promoCode.value = route.params.code;
+    promoCodeDisabled.value = true
+  }
 })
 </script>
 

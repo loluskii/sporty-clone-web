@@ -21,31 +21,47 @@ export const useAuthStore = defineStore({
       this.loading = true
       this.authError = ''
       try {
-        const res = await login(payload)
-        if (res.data && res.data.token) {
-          this.token = res.data.token
-          this.mobile_number = payload.username
-          const userStore = useUsersStore()
-          const data = await Promise.all([
-            userStore.loadCurrentUser(),
-            getUserActiveBonus(),
-            getUserCashbackBonus()
-          ])
+  const res = await login(payload)
+  if (res.data && res.data.token) {
+    this.token = res.data.token
+    this.mobile_number = payload.username
+    const userStore = useUsersStore()
 
-          userStore.activeCashback = data[2].data
-          this.loading = false
-          if (this.returnUrl) {
-            return router.push(this.returnUrl)
-          } else {
-            return router.push('/')
-          }
-        } else {
-          throw Error(res.error)
-        }
-      } catch (error) {
-        this.loading = false
-        alert(error)
-      }
+    const results = await Promise.allSettled([
+      userStore.loadCurrentUser(),
+      getUserActiveBonus(),
+      getUserCashbackBonus()
+    ])
+
+    // handle per-result safely
+    if (results[0].status !== "fulfilled") {
+      console.error("Failed to load user", results[0].reason)
+    }
+
+    if (results[1].status === "fulfilled") {
+      // optional: assign activeBonus
+      userStore.activeBonus = results[1].value.data
+    } else {
+      console.warn("Active bonus fetch failed", results[1].reason)
+    }
+
+    if (results[2].status === "fulfilled") {
+      userStore.activeCashback = results[2].value.data
+    } else {
+      console.warn("Cashback bonus fetch failed", results[2].reason)
+      userStore.activeCashback = null
+    }
+
+    this.loading = false
+    return router.push(this.returnUrl || '/')
+  } else {
+    throw Error(res.error)
+  }
+} catch (error) {
+  this.loading = false
+  alert(error)
+}
+
     },
     clearStores() {
       const authStore = useAuthStore()

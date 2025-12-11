@@ -275,11 +275,16 @@ function getFilteredOutcomes(outcomes) {
   return props.selectedMarkets.map((marketIDObj) => {
     const { marketID } = marketIDObj
     let foundOutcomes = outcomes.filter((outcome) => outcome.marketID === marketID)
+    
+    // Add deduplication
+    foundOutcomes = foundOutcomes.filter((outcome, index, self) => 
+      index === self.findIndex(o => o.outcomeID === outcome.outcomeID)
+    )
+    
     const defaultSpecifier = getDefaultSpecifier(foundOutcomes)
     if (defaultSpecifier) {
       foundOutcomes = foundOutcomes.filter((outcome) => outcome.specifier === defaultSpecifier)
     }
-    // Return the structured object without the 'marketID' in each outcome
     return {
       ...marketIDObj,
       specifier: defaultSpecifier,

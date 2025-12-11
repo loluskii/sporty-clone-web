@@ -226,8 +226,7 @@
             >
             <a
               id="header_nav_games"
-              href=""
-              @click.prevent="getCasinoURL"
+              href="/Games"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
