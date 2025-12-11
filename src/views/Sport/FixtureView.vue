@@ -12,10 +12,12 @@
             <TournamentCard
               v-for="tournament in fixturesList"
               :key="tournament.tournamentID"
+              :categoryName="tournament.categoryName"
               :tournamentName="tournament.tournamentName"
               :tournamentID="tournament.tournamentID"
               :events="tournament.events"
               :markets="tournament.markets"
+              :is-loading-tournament="loadingTournamentId === tournament.tournamentID"
               @fetch-fixtures="getTournamentFixtures"
             />
 
@@ -54,6 +56,7 @@ const marketsGroup = ref({})
 
 const isLoading = ref(false)
 const loadingError = ref(false)
+const loadingTournamentId = ref(null)
 
 const lastPage = ref(null)
 const activePage = ref(1)
@@ -77,9 +80,11 @@ watch(
       case 'top-tournament-fixtures':
         break
       case 'fixtures-by-categories':
+        lastPage.value = null
         await getCategoryFixtures()
         break
       case 'fixtures-by-tournaments':
+        lastPage.value = null
         await getTournamentFixtures(tournament[0])
         break
       case 'upcoming-fixtures-by-sport':
@@ -114,6 +119,7 @@ const handlePageChange = async () => {
       await getCategoryFixtures()
       break
     case 'fixtures-by-tournaments':
+      lastPage.value = null
       await getTournamentFixtures(tournament[0])
       break
 
@@ -144,28 +150,21 @@ async function getCategoryFixtures() {
   try {
     isLoading.value = true
 
-    // Extract existing category IDs from fixturesList.value
-    const existingCategoryIDs = fixturesList.value.map((fixture) => fixture.categoryID)
-
-    // Filter out the categoryIDs that are already in fixturesList.value
-    const newCategoryIDs = routeExtractedTIds.filter(
-      (cat) => !existingCategoryIDs.includes(cat.categoryID)
-    )
-
     // Remove fixtures from fixturesList that are no longer in the routeExtractedTIds
     fixturesList.value = fixturesList.value.filter((fixture) =>
       routeExtractedTIds.some((cat) => cat.categoryID === fixture.categoryID)
     )
 
-    // If there are no new categories to fetch, skip the API call
-    if (newCategoryIDs.length === 0) {
+    // If there are no categories to fetch, skip the API call
+    if (routeExtractedTIds.length === 0) {
+      fixturesList.value = []
       isLoading.value = false
       return
     }
 
-    // Fetch data for the new categories
+    // Fetch data for all categories from the URL
     const results = await Promise.allSettled(
-      newCategoryIDs.map((cat) =>
+      routeExtractedTIds.map((cat) =>
         getTournamentsByCategories(cat.categoryID, sid, route.query?.period)
       )
     )
@@ -186,16 +185,19 @@ async function getCategoryFixtures() {
       }
     })
 
-    // Update fixturesList with new fixtures and sort by tournamentID
-    fixturesList.value = fixturesList.value.length
-      ? [...fixturesList.value, ...newFixtures].sort((a, b) => a.tournamentID - b.tournamentID)
-      : newFixtures.sort((a, b) => a.tournamentID - b.tournamentID)
+    // Replace fixturesList with new fixtures and sort by tournamentID
+    fixturesList.value = newFixtures.sort((a, b) => a.tournamentID - b.tournamentID)
 
     // Reset other states
     marketsGroup.value = []
     lastPage.value = null
 
     isLoading.value = false
+
+    // Automatically load fixtures for the first tournament
+    if (fixturesList.value.length > 0) {
+      await getTournamentFixtures(fixturesList.value[0])
+    }
   } catch (error) {
     console.error('Error fetching fixtures:', error)
     isLoading.value = false
@@ -207,10 +209,11 @@ async function getTournamentFixtures(tid) {
     fixturesList.value = []
     return;
   }
-  isLoading.value = true
+  // isLoading.value = !isTournamentView.value
   const sid = activeSport.value.sportID
   tid = tid.tournamentID || tid
   try {
+    loadingTournamentId.value = tid
     const res = await getFixturesByTournamentId(tid, sid, activePage.value)
     const index = fixturesList.value.findIndex((t) => t.tournamentID === tid)
     if (index !== -1) {
@@ -242,8 +245,10 @@ async function getTournamentFixtures(tid) {
     // }
 
     isLoading.value = false
+    loadingTournamentId.value = null
   } catch (error) {
     isLoading.value = false
+    loadingTournamentId.value = null
     loadingError.value = true
     console.error('Error fetching tournament fixtures:', error)
   }
