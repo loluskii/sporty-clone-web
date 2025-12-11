@@ -3,7 +3,7 @@ export const brandDetails = {
   url: 'soccerpay.com',
   title: 'Soccerpay',
   colors: {
-    primaryColor: '#1e8e50',
+    primaryColor: '#021642',
     secondaryColor: '#d99201',
     tertiaryColor: '#1a3f22',
 
@@ -13,10 +13,10 @@ export const brandDetails = {
     primaryTextColor: '#353a45',
     secondaryTextColor: 'var(--brand-secondary)',
 
-    prematchOddBackgroundColor: '#d99201',
-    prematchOddBackgroundHover: '#d9ae01',
+    prematchOddBackgroundColor: '#021642',
+    prematchOddBackgroundHover: '#002576',
     prematchOddTextColor: '#FFF',
-    activePrematchOddBackground: '#ffb700',
+    activePrematchOddBackground: '#F28705',
     activePrematchOddTextColor: '#000',
 
     liveOddBackgroundColor: '#d99201',
