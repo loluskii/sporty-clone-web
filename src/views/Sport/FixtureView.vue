@@ -150,6 +150,11 @@ async function getCategoryFixtures() {
   try {
     isLoading.value = true
 
+    // Remove fixtures from fixturesList that are no longer in the routeExtractedTIds
+    fixturesList.value = fixturesList.value.filter((fixture) =>
+      routeExtractedTIds.some((cat) => cat.categoryID === fixture.categoryID)
+    )
+
     // If there are no categories to fetch, skip the API call
     if (routeExtractedTIds.length === 0) {
       fixturesList.value = []
