@@ -1,16 +1,19 @@
 <template>
-  <div class="match-league-wrap" :class="{ 'is-loading': isLoading }">
+  <div class="match-league-wrap" :class="{ 'is-loading': isLoading || isLoadingTournament }">
     <div class="match-league" :class="{ hide: !cardIsShown }">
       <div class="league-title">
         <div
           class="dis-icon"
           @click="fetchFixtures"
-          :disabled="isLoading"
+          :disabled="isLoading || isLoadingTournament"
           :title="isShown ? 'Refresh fixtures' : 'Load fixtures'"
         >
-          <em :class="{ 'is-loading': isLoading }"></em>
+          <em :class="{ 'is-loading': isLoading || isLoadingTournament }"></em>
         </div>
-        <span class="text">{{ tournamentName }}</span>
+        <span class="text">
+          {{ categoryName+' '+tournamentName }}
+          <span v-if="isLoadingTournament" class="loading-spinner-inline"></span>
+        </span>
       </div>
 
       <template v-if="isShown">
@@ -22,7 +25,7 @@
             class="market-item"
             :class="{ active: market.marketID === activeMarket.marketID }"
             @click="setActiveMarket(market)"
-            :disabled="isLoading"
+            :disabled="isLoading || isLoadingTournament"
           >
             {{ market.marketName }}
           </div>
@@ -84,6 +87,10 @@ const props = defineProps({
     type: String,
     required: true
   },
+  categoryName: {
+    type: String,
+    required: true
+  },
   events: {
     type: Array,
     default: () => []
@@ -95,6 +102,10 @@ const props = defineProps({
   tournamentID: {
     type: Number,
     required: true
+  },
+  isLoadingTournament: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -146,7 +157,7 @@ watch(
 
 // Methods
 const setActiveMarket = (market) => {
-  if (isLoading.value) return
+  if (isLoading.value || props.isLoadingTournament) return
 
   try {
     const sortedMarket = {
@@ -162,7 +173,7 @@ const setActiveMarket = (market) => {
 }
 
 const fetchFixtures = async () => {
-  if (isLoading.value) return
+  if (isLoading.value || props.isLoadingTournament) return
 
   try {
     isLoading.value = true
@@ -190,4 +201,25 @@ onUnmounted(() => {
   // Cleanup any subscriptions or event listeners if needed
 })
 </script>
-<style lang=""></style>
+<style scoped>
+.loading-spinner-inline {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid var(--brand-secondary, #0d9737);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style>

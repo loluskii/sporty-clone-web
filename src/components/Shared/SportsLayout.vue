@@ -53,7 +53,7 @@
                         id=""
                         style="margin-right: 5px; accent-color: var(--brand-secondary)"
                       />
-                      <span>{{ country.categoryName }}</span>
+                      <span :title="country.categoryName">{{ country.categoryName }}</span>
                     </div>
                     <span class="event-size">{{ country.total }}</span>
                   </div>
