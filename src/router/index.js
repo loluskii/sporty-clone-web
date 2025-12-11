@@ -24,6 +24,15 @@ const router = createRouter({
       }
     },
     {
+      path: '/ref/:code',
+      name: 'ref-signup',
+      component: () => import('../views/RegisterView.vue'),
+      meta: {
+        requiresAuth: false,
+        showDefaultHeaderItems: false
+      }
+    },
+    {
       path: '/Account/ResetPassword',
       name: 'reset-password',
       component: () => import('@/views/Account/ForgotPassword.vue'),
@@ -251,7 +260,10 @@ router.beforeEach(async (to, from, next) => {
 
   const mobileUrl = import.meta.env.VITE_MOBILE_URL
   if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    window.location.href = mobileUrl
+    const currentPath = window.location.pathname;   // e.g. /products/45
+    const currentQuery = window.location.search;    // e.g. ?ref=instagram
+
+    window.location.href = `${mobileUrl}${currentPath}${currentQuery}`;
   } else {
     next() // Proceed to the next route
   }
