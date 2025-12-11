@@ -80,6 +80,7 @@ watch(
         await getCategoryFixtures()
         break
       case 'fixtures-by-tournaments':
+        lastPage.value = null
         await getTournamentFixtures(tournament[0])
         break
       case 'upcoming-fixtures-by-sport':
@@ -114,6 +115,7 @@ const handlePageChange = async () => {
       await getCategoryFixtures()
       break
     case 'fixtures-by-tournaments':
+      lastPage.value = null
       await getTournamentFixtures(tournament[0])
       break
 
@@ -207,7 +209,7 @@ async function getTournamentFixtures(tid) {
     fixturesList.value = []
     return;
   }
-  isLoading.value = true
+  // isLoading.value = !isTournamentView.value
   const sid = activeSport.value.sportID
   tid = tid.tournamentID || tid
   try {

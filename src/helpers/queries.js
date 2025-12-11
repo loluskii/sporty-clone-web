@@ -134,7 +134,7 @@ export const getFixturesBySport = async () => {
 export const getToday2 = async (sid, page) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?today=1&page=${page}&perPage=50&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?today=1&page=${page}&perPage=100&timeoffset=${sign}${offsetHours}`
     )
   )
 }
