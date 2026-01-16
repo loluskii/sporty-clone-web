@@ -131,6 +131,12 @@ export const getFixturesBySport = async () => {
   )
 }
 
+export const getGameLobbyUrl = async (payload) => {
+  return parseData(
+    fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/lobby-url`, payload),
+  );
+};
+
 export const getToday2 = async (sid, page) => {
   return parseData(
     fetchWrapper.get(

@@ -1,27 +1,19 @@
 <template>
   <CasinoLayout>
     <div class="game-play">
-      <LoadingSpinner v-if="isLoading"></LoadingSpinner>
-      <div v-if="!isLoading" class="game-container">
-        <div class="game-header">
-          <button class="btn p-0 text-white" @click="router.back()">
-            <i class="x-icon-back"></i>
-            <span class="ms-2">Back to Games</span>
-          </button>
+      <template v-if="isLoading">
+        <div>
+          <img src="/logo.png" alt="" style="height: 50px" />
+          <LoadingSpinner></LoadingSpinner>
         </div>
-        <iframe
-          title="casino"
-          style="border-style: none; width: 100%; height: calc(100vh - 60px); overflow: scroll"
-          :src="gameURL"
-        />
-      </div>
+      </template>
     </div>
   </CasinoLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getCasinoStartUrl } from '@/helpers'
+import { getGameLobbyUrl } from '@/helpers'
 import CasinoLayout from '@/components/Shared/CasinoLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
@@ -42,29 +34,20 @@ async function getCasinoURL() {
     const { username, id, authCode } = currentUser || {}
 
     let payload = {
-      gameId: parseInt(game_id),
+      gameId: 0,
       clientId: import.meta.env.VITE_CLIENT_ID,
-      username,
-      userId: id,
-      demo: false,
-      isMobile: false,
+      username: username || 'Demo',
+      userId: id || 0,
+      demo: id ? false : true,
+      isMobile: true,
       homeUrl: import.meta.env.VITE_SITE_URL,
-      authCode,
-      balanceType: 'real'
+      authCode: authCode || '111111',
+      balanceType: 'real',
+      type: 'lobby'
     }
 
-    if (bonusId && balanceType === 'bonus') {
-      Object.assign(payload, {
-        isBonus: true,
-        bonusType,
-        bonusId,
-        balanceType: 'bonus'
-      })
-    }
-
-    const res = await getCasinoStartUrl(payload, 'real')
-
-    gameURL.value = res.url
+    const res = await getGameLobbyUrl(payload)
+    window.location.href = res.url
   } catch (error) {
     console.error(error)
   } finally {
@@ -74,10 +57,10 @@ async function getCasinoURL() {
 
 onMounted(async () => {
   await getCasinoURL()
-  // router.beforeEach((to, from, next) => {
-  //   previousRoute.value = from.fullPath; // Store the previous route
-  //   next();
-  // });
+  router.beforeEach((to, from, next) => {
+    previousRoute.value = from.fullPath; // Store the previous route
+    next();
+  });
 })
 </script>
 

@@ -226,7 +226,7 @@
             >
             <a
               id="header_nav_games"
-              href="/Games"
+              href="/Casino"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
@@ -615,11 +615,11 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-phone,
 .c-header .x-login-bar .x-psd {
-  background: #1c2485;
+  background: #fff;
 }
 .c-header .x-login-bar .x-phone input,
 .c-header .x-login-bar .x-psd input {
-  background: #1c2485;
+  background: #fff;
   border: none;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -650,7 +650,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-text,
 .c-header .x-login-bar .x-btn {
-  color: #1c2485;
+  color: #fff;
 }
 .c-header .x-login-bar .x-text {
   -webkit-box-sizing: border-box;
