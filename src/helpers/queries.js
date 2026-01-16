@@ -126,6 +126,14 @@ export const getFixturesByCategories = async (categoryId, sid) => {
   )
 }
 
+export const getFixturesBySport = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${BASE_API}/api/sports/group-fixtures-by-sport?date=${today()}&end_date=${end()}&timeoffset=${sign}${offsetHours}`
+    )
+  )
+}
+
 export const getToday2 = async (sid, page) => {
   return parseData(
     fetchWrapper.get(

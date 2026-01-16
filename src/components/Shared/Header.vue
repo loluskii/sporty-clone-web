@@ -226,7 +226,7 @@
             >
             <a
               id="header_nav_games"
-              href="/Games"
+              href="/Casino"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
@@ -659,7 +659,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-text,
 .c-header .x-login-bar .x-btn {
-  color: #1c2485;
+  color: #fff;
 }
 .c-header .x-login-bar .x-text {
   -webkit-box-sizing: border-box;
