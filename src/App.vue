@@ -195,7 +195,7 @@ onMounted(async () => {
 
   Promise.all([fetchBonusList(), fetchGlobalVars(), getSportsMenu(), validateSelections()])
     .then((res) => {
-      couponStore.sportsbookBonusList = res[0].data
+      couponStore.sportsbookBonusList = res[0].data.data
       couponStore.SportsbookGlobalVariable = res[1].data.data
       utilsStore.SportsbookBonusList = res[0].data
       utilsStore.SportsbookGlobalVariable = res[1].data.data

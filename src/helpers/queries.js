@@ -44,7 +44,7 @@ export const fetchBanners = async () => {
 }
 
 export const fetchBonusList = async () => {
-  return fetchWrapper.get(`${BASE_API}/api/utilities/bonuslist?section=onliners`)
+  return fetchWrapper.get(`${NEW_BASE_API}/bonus/acca-bonus?section=onliners`)
 }
 
 export const getSplitPropsData = async (payload) => {

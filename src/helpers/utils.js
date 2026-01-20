@@ -266,6 +266,10 @@ export const formattedPhoneNumber = (phoneNumber) => {
   }
   let pNumber = phoneNumber.replace(/^0/, '').toString()
 
+  if (pNumber.startsWith('234')) {
+    pNumber = pNumber.substring(3)
+  }
+
   const first = pNumber.charAt(0)
   if (first === '0') {
     return pNumber.substring(1)
