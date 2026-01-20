@@ -337,6 +337,11 @@ const storeOTP = async (data) => {
 
 const formattedPhoneNumber = (phoneNumber) => {
   const pNumber = phoneNumber.toString()
+  const dialCode = utilsStore.SportsbookGlobalVariable.DialCode;
+  const dialCodeLength = dialCode.length;
+   if (pNumber.startsWith(dialCode)) {
+    pNumber = pNumber.substring(dialCodeLength)
+  }
   const first = pNumber.charAt(0)
   return first === '0' ? pNumber.substring(1) : pNumber
 }
@@ -349,7 +354,7 @@ const doRegistration = async () => {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
     phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
-    clientID: import.meta.env.VITE_CLIENT_ID,
+    clientId: import.meta.env.VITE_CLIENT_ID,
     promoCode: promoCode.value
   }
 
@@ -367,7 +372,7 @@ const doRegistration = async () => {
     }
   } catch (error) {
     authStore.loading = false
-    authStore.authError = error
+    authStore.authError = error?.message || 'Registration failed. Please try again.'
   }
 }
 
