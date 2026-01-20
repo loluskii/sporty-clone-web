@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.3...v1.2.0) (2026-01-20)
+
+
+### Features
+
+* implement registry-based deployment with versioned images for rollback capability ([705d72b](https://github.com/zoroplay/sporty-clone-web/commit/705d72b27f3d23e706a81119a37cf08ceae85685))
+
 ## [1.1.3](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.2...v1.1.3) (2025-11-04)
 
 
