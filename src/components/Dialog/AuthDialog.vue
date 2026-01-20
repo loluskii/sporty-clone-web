@@ -336,11 +336,10 @@ const storeOTP = async (data) => {
 }
 
 const formattedPhoneNumber = (phoneNumber) => {
-  const pNumber = phoneNumber.toString()
-  const dialCode = utilsStore.SportsbookGlobalVariable.DialCode;
-  const dialCodeLength = dialCode.length;
-   if (pNumber.startsWith(dialCode)) {
-    pNumber = pNumber.substring(dialCodeLength)
+  const pNumber = phoneNumber.toString();
+  
+   if (pNumber.startsWith('234')) {
+    pNumber = pNumber.substring(3)
   }
   const first = pNumber.charAt(0)
   return first === '0' ? pNumber.substring(1) : pNumber
