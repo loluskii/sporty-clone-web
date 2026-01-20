@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/zoroplay/sporty-clone-web/compare/v1.2.1...v1.2.2) (2026-01-20)
+
+
+### Bug Fixes
+
+* correct port mapping to use 3001 for both host and container ([fac8658](https://github.com/zoroplay/sporty-clone-web/commit/fac8658e3be0d005aec6c9ccf9fa89b7b1ee6120))
+
 ## [1.2.1](https://github.com/zoroplay/sporty-clone-web/compare/v1.2.0...v1.2.1) (2026-01-20)
 
 
