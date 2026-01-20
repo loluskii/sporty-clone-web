@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/zoroplay/sporty-clone-web/compare/v1.2.0...v1.2.1) (2026-01-20)
+
+
+### Bug Fixes
+
+* add SSH connection retry and timeout for stable deployment ([1a0a670](https://github.com/zoroplay/sporty-clone-web/commit/1a0a67035692453fde0699e604175098eae86109))
+
 # [1.2.0](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.3...v1.2.0) (2026-01-20)
 
 
