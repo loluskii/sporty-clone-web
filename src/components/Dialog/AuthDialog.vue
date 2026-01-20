@@ -349,7 +349,7 @@ const doRegistration = async () => {
     username: formattedPhoneNumber(phoneNumber.value),
     password: password.value,
     phone: `${utilsStore.SportsbookGlobalVariable.DialCode}${formattedPhoneNumber(phoneNumber.value)}`,
-    clientID: import.meta.env.VITE_CLIENT_ID,
+    clientId: import.meta.env.VITE_CLIENT_ID,
     promoCode: promoCode.value
   }
 
