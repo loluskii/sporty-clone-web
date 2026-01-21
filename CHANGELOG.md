@@ -1,3 +1,24 @@
+## [1.2.2](https://github.com/zoroplay/sporty-clone-web/compare/v1.2.1...v1.2.2) (2026-01-20)
+
+
+### Bug Fixes
+
+* correct port mapping to use 3001 for both host and container ([fac8658](https://github.com/zoroplay/sporty-clone-web/commit/fac8658e3be0d005aec6c9ccf9fa89b7b1ee6120))
+
+## [1.2.1](https://github.com/zoroplay/sporty-clone-web/compare/v1.2.0...v1.2.1) (2026-01-20)
+
+
+### Bug Fixes
+
+* add SSH connection retry and timeout for stable deployment ([1a0a670](https://github.com/zoroplay/sporty-clone-web/commit/1a0a67035692453fde0699e604175098eae86109))
+
+# [1.2.0](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.3...v1.2.0) (2026-01-20)
+
+
+### Features
+
+* implement registry-based deployment with versioned images for rollback capability ([705d72b](https://github.com/zoroplay/sporty-clone-web/commit/705d72b27f3d23e706a81119a37cf08ceae85685))
+
 ## [1.1.3](https://github.com/zoroplay/sporty-clone-web/compare/v1.1.2...v1.1.3) (2025-11-04)
 
 

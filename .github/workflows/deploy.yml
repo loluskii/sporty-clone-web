@@ -181,23 +181,26 @@ jobs:
 
       - name: Deploy to GCP server
         run: |
-          # Create directory on server
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/'
+          # Create directory on server with retry
+          for i in {1..3}; do
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-bet24/' && break
+            echo "SSH attempt $i failed, retrying..."
+            sleep 5
+          done
           
-          # Copy all source files to server for local build
-          tar --exclude='.git' --exclude='node_modules' --exclude='dist' -czf /tmp/source.tar.gz .
-          scp -o StrictHostKeyChecking=no /tmp/source.tar.gz ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'cd ~/west-bet24/ && tar -xzf source.tar.gz && rm source.tar.gz'
+          # Copy deployment files with retry
+          for i in {1..3}; do
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/ && \
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-bet24/ && break
+            echo "File transfer attempt $i failed, retrying..."
+            sleep 5
+          done
           
-          # Login to GitHub Container Registry on server and execute deployment
-          ssh -o StrictHostKeyChecking=no ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
+          # Execute deployment with connection settings
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd ~/west-bet24/
-            echo "Current directory: $(pwd)"
-            echo "Files in directory:"
-            ls -la
-            echo "Checking for Dockerfile:"
-            ls -la Dockerfile || echo "Dockerfile not found"
+            export VERSION=${{ needs.version.outputs.version }}
             chmod +x deploy.sh
-            bash deploy.sh
+            ./deploy.sh
           '
