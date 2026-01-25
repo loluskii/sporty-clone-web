@@ -25,17 +25,27 @@
               >
             </li>
             <li class="x-icon-more">
-              <a href="/cms/betting_rules"
-                ><span data-cms-key="privacy" data-cms-page="common_helps">Betting Rules</span></a
-              >
-            </li>
-            <li class="x-icon-more">
               <a href="/cms/responsible_gambling"
                 ><span data-cms-key="privacy" data-cms-page="common_helps"
                   >Responsible Gambling</span
                 ></a
               >
             </li>
+            <li class="x-icon-more">
+              <a href="/cms/privacy_policy"
+                ><span data-cms-key="t_and_c" data-cms-page="common_helps"
+                  >Privacy Policy</span
+                ></a
+              >
+            </li>
+            <li class="x-icon-more">
+              <a href="/cms/refund_policy"
+                ><span data-cms-key="t_and_c" data-cms-page="common_helps"
+                  >Refund Policy</span
+                ></a
+              >
+            </li>
+            
             <li class="x-icon-more">
               <a href="/cms/contact_us"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Contact Us</span></a
@@ -68,9 +78,9 @@
           <h6 class="x-col-title" data-cms-key="connect_with_us">Connect with Us</h6>
           <address class="x-col-content x-contact">
             <div data-cms-key="tell_phone_number">
-              Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}
+              Telephone: {{ utilsStore.SportsbookGlobalVariable.DialCode }}9167999992, {{ utilsStore.SportsbookGlobalVariable.DialCode }}9137955555
             </div>
-            <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}</div>
+            <div data-cms-key="mail_to">Email: support@bet24.ng</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
                 <a href="https://www.facebook.com/profile.php?id=61586939995098" target="_blank"
