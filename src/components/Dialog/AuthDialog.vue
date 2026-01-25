@@ -336,7 +336,11 @@ const storeOTP = async (data) => {
 }
 
 const formattedPhoneNumber = (phoneNumber) => {
-  const pNumber = phoneNumber.toString()
+  const pNumber = phoneNumber.toString();
+  
+   if (pNumber.startsWith('234')) {
+    pNumber = pNumber.substring(3)
+  }
   const first = pNumber.charAt(0)
   return first === '0' ? pNumber.substring(1) : pNumber
 }
@@ -367,7 +371,7 @@ const doRegistration = async () => {
     }
   } catch (error) {
     authStore.loading = false
-    authStore.authError = error
+    authStore.authError = error?.message || 'Registration failed. Please try again.'
   }
 }
 
