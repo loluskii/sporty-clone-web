@@ -37,7 +37,7 @@
               >
             </li>
             <li class="x-icon-more">
-              <a href="/cms/contact-us"
+              <a href="/cms/contact_us"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Contact Us</span></a
               >
             </li>
@@ -73,12 +73,12 @@
             <div data-cms-key="mail_to">Email: support@{{ utilsStore.brandName }}</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
-                <a href="https://www.facebook.com/frapapaofficialng" target="_blank"
+                <a href="https://www.facebook.com/profile.php?id=61586939995098" target="_blank"
                   ><i class="x-icon x-icon-fb"></i
                 ></a>
               </address>
               <address class="mr-10p">
-                <a href="https://twitter.com/frapapabet" target="_blank"
+                <a href="https://twitter.com/bet24_ng" target="_blank"
                   ><svg
                     viewBox="0 0 29 28"
                     fill="none"
@@ -97,7 +97,7 @@
                 </a>
               </address>
               <address class="mr-10p">
-                <a href="https://www.instagram.com/frapapaofficialng" target="_blank"
+                <a href="https://www.instagram.com/bet24.ng" target="_blank"
                   ><i class="x-icon x-icon-ins"></i
                 ></a>
               </address>
