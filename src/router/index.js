@@ -106,45 +106,53 @@ const router = createRouter({
     },
     // Casino
     {
-      path: '/Games',
-      name: 'game-view',
-      component: () => import('@/views/Games/CasinoView.vue'),
+      path: '/Casino',
+      name: 'casino-view',
+      component: () => import('@/views/CasinoView.vue'),
       meta: {
         requiresAuth: false
       }
     },
-    {
-      path: '/Games/Category/:category_id/:category_name',
-      name: 'casino-category',
-      component: () => import('@/views/Games/CasinoCategoryView.vue'),
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/Games/Providers',
-      name: 'casino-providers',
-      component: () => import('@/views/Games/CasinoProvidersView.vue'),
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/Games/Provider/:provider_id/:provider_name',
-      name: 'casino-provider',
-      component: () => import('@/views/Games/CasinoProviderView.vue'),
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/Games/:game_name/:game_id/Play',
-      name: 'game-play',
-      component: () => import('@/views/Games/PlayView.vue'),
-      meta: {
-        requiresAuth: false
-      }
-    },
+    // {
+    //   path: '/Games',
+    //   name: 'game-view',
+    //   component: () => import('@/views/Games/CasinoView.vue'),
+    //   meta: {
+    //     requiresAuth: false
+    //   }
+    // },
+    // {
+    //   path: '/Games/Category/:category_id/:category_name',
+    //   name: 'casino-category',
+    //   component: () => import('@/views/Games/CasinoCategoryView.vue'),
+    //   meta: {
+    //     requiresAuth: false
+    //   }
+    // },
+    // {
+    //   path: '/Games/Providers',
+    //   name: 'casino-providers',
+    //   component: () => import('@/views/Games/CasinoProvidersView.vue'),
+    //   meta: {
+    //     requiresAuth: false
+    //   }
+    // },
+    // {
+    //   path: '/Games/Provider/:provider_id/:provider_name',
+    //   name: 'casino-provider',
+    //   component: () => import('@/views/Games/CasinoProviderView.vue'),
+    //   meta: {
+    //     requiresAuth: false
+    //   }
+    // },
+    // {
+    //   path: '/Games/:game_name/:game_id/Play',
+    //   name: 'game-play',
+    //   component: () => import('@/views/Games/PlayView.vue'),
+    //   meta: {
+    //     requiresAuth: false
+    //   }
+    // },
     // Account Routes
     {
       path: '/Account/Me',

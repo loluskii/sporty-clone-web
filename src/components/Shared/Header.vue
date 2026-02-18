@@ -226,7 +226,7 @@
             >
             <a
               id="header_nav_games"
-              href="/Games"
+              href="/Casino"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
