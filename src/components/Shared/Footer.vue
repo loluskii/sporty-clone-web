@@ -52,7 +52,7 @@
               >
             </li>
             <li class="x-icon-more">
-              <a href="/cms/become_an_affiliate"
+              <a href="https://affiliate.maxbet.ng/auth/login"
                 ><span data-cms-key="privacy" data-cms-page="common_helps">Become an Affiliate</span></a
               >
             </li>
