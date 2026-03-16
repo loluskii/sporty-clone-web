@@ -151,7 +151,7 @@ jobs:
 
   deploy:
     needs: [version, build]
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     environment: GCP CI
     if: github.ref == 'refs/heads/west-zazabet' 
     steps:
