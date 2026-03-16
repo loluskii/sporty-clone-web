@@ -20,7 +20,7 @@ jobs:
   version:
     runs-on: [self-hosted, linux, x64]
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      version: ${{ steps.version.outputs.version }}west-zazabet
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4west-zazabet
 
       - name: Create version file from output
         run: |
@@ -86,7 +86,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ needs.version.outputs.version }}
-            type=raw,value=latest
+            type=raw,value=latestwest-zazabet
             type=ref,event=branch
 
       - name: Build and push Docker image
