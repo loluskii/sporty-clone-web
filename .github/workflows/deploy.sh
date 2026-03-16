@@ -1,0 +1,207 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [ west-zazabet ]
+  pull_request:
+    branches: [ west-zazabet ]
+
+permissions:
+  contents: write
+  packages: write
+  issues: write
+  pull-requests: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository_owner }}/west-zazabet
+
+jobs:
+  version:
+    runs-on: [self-hosted, linux, x64]
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate version
+        run: |
+          # Generate version based on timestamp for now
+          VERSION="1.0.$(date +%s)"
+          echo "Generated version: $VERSION"
+          echo "$VERSION" > .VERSION
+          echo "File created:"
+          ls -la .VERSION
+          cat .VERSION
+
+      - name: Set version output
+        id: version
+        run: |
+          VERSION=$(cat .VERSION | tr -d "[:space:]\"'" | xargs)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+
+      - name: Upload version artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: version
+          path: .VERSION
+          retention-days: 1
+
+  build:
+    needs: version
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create version file from output
+        run: |
+          echo "${{ needs.version.outputs.version }}" > .VERSION
+          echo "Version from previous job: ${{ needs.version.outputs.version }}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ needs.version.outputs.version }}
+            type=raw,value=latest
+            type=ref,event=branch
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  release:
+    needs: [version, build]
+    runs-on: [self-hosted, linux, x64]
+    if: github.ref == 'refs/heads/west-zazabet' 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/github @semantic-release/exec @semantic-release/git
+
+      - name: Create release config
+        run: |
+          cat > release.config.js << 'EOF'
+          export default {
+            branches: [
+              { name: 'west-zazabet' }
+            ],
+            repositoryUrl: 'https://github.com/${{ github.repository }}.git',
+            tagFormat: 'v${version}',
+            plugins: [
+              '@semantic-release/commit-analyzer',
+              '@semantic-release/release-notes-generator',
+              '@semantic-release/changelog',
+              ['@semantic-release/github', {
+                successComment: false,
+                failComment: false,
+                releasedLabels: false
+              }],
+              '@semantic-release/git',
+            ],
+            preset: 'angular',
+          };
+          EOF
+
+      - name: Run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release
+
+  deploy:
+    needs: [version, build]
+    runs-on: [self-hosted, linux, x64]
+    environment: GCP CI
+    if: github.ref == 'refs/heads/west-zazabet' 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create version file from output
+        run: |
+          echo "${{ needs.version.outputs.version }}" > .VERSION
+          echo "Version from previous job: ${{ needs.version.outputs.version }}"
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GCP_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.GCP_SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Prepare deployment files
+        run: |
+          NEXT_VERSION=$(cat .VERSION | tr -d "[:space:]\"'" | xargs)
+          echo "Deploying version: $NEXT_VERSION"
+          
+          # Copy repository .env file
+          cp .env .env.backup 2>/dev/null || echo "No existing .env file to backup"
+          
+          # Note: Building locally, no need to update image version
+
+      - name: Deploy to GCP server
+        run: |
+          # Create directory on server with retry
+          for i in {1..3}; do
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} 'mkdir -p ~/west-zazabet/' && break
+            echo "SSH attempt $i failed, retrying..."
+            sleep 5
+          done
+          
+          # Copy deployment files with retry
+          for i in {1..3}; do
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-zazabet/ && \
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 deploy.sh ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }}:~/west-zazabet/ && break
+            echo "File transfer attempt $i failed, retrying..."
+            sleep 5
+          done
+          
+          # Execute deployment with connection settings
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ secrets.GCP_SERVER_USER }}@${{ secrets.GCP_SERVER_IP }} '
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            cd ~/west-zazabet/
+            export VERSION=${{ needs.version.outputs.version }}
+            chmod +x deploy.sh
+            ./deploy.sh
+          '

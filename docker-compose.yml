@@ -1,0 +1,15 @@
+services:
+  sportsbook-web:
+    image: ghcr.io/zoroplay/west-zazabet:${VERSION:-west-zazabet}
+    ports:
+      - "3002:3001"
+    environment:
+      - NODE_ENV=production
+    
+    restart: unless-stopped
+    networks:
+      - sbenet
+
+networks:
+  sbenet:
+    external: true
