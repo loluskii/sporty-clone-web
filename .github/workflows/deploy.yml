@@ -163,6 +163,12 @@ jobs:
           echo "${{ needs.version.outputs.version }}" > .VERSION
           echo "Version from previous job: ${{ needs.version.outputs.version }}"
 
+      - name: Test connectivity
+        run: |
+          echo "Testing connectivity to GCP server..."
+          nc -zv -w 5 ${{ secrets.GCP_SERVER_IP }} 22 || echo "Port 22 unreachable"
+          nslookup ${{ secrets.GCP_SERVER_IP }} || echo "DNS lookup failed"
+
       - name: Set up SSH
         run: |
           mkdir -p ~/.ssh
