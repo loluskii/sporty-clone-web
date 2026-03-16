@@ -189,19 +189,19 @@ jobs:
       - name: Deploy to GCP server
         run: |
           for i in {1..3}; do
-            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ secrets.GCP_SERVER_USER }}@89.167.2.139 'mkdir -p ~/west-zazabet/' && break
+            ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 devops@89.167.2.139 'mkdir -p ~/west-zazabet/' && break
             echo "SSH attempt $i failed, retrying..."
             sleep 5
           done
           
           for i in {1..3}; do
-            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 docker-compose.yml ${{ secrets.GCP_SERVER_USER }}@89.167.2.139:~/west-zazabet/ && \
-            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 deploy.sh ${{ secrets.GCP_SERVER_USER }}@89.167.2.139:~/west-zazabet/ && break
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 docker-compose.yml devops@89.167.2.139:~/west-zazabet/ && \
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=30 deploy.sh devops@89.167.2.139:~/west-zazabet/ && break
             echo "File transfer attempt $i failed, retrying..."
             sleep 5
           done
           
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 ${{ secrets.GCP_SERVER_USER }}@89.167.2.139 '
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -o ServerAliveInterval=60 devops@89.167.2.139 '
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             cd ~/west-zazabet/
             export VERSION=${{ needs.version.outputs.version }}
