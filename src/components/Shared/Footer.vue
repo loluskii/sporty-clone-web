@@ -94,7 +94,7 @@
             <div data-cms-key="mail_to">Email: maxbet@maxlottery.ng</div>
             <div class="d-flex mt-10p">
               <address class="mr-10p">
-                <a href="https://www.facebook.com/Maxbetng" target="_blank"
+                <a href="https://www.facebook.com/Maxbetngr" target="_blank"
                   ><i class="x-icon x-icon-fb"></i
                 ></a>
               </address>
