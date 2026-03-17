@@ -33,7 +33,7 @@
               </div>
             </div>
             <Carousel></Carousel>
-            <div style="display: none" class="x-instant-reg x-instant-black">
+            <div v-if="!currentUser" class="x-instant-reg x-instant-black">
               <div class="x-title">
                 <span data-cms-key="instant_registration" data-cms-page="pc_layout_right"
                   >Instant Registration</span
@@ -76,11 +76,16 @@ import { ref, onMounted } from 'vue'
 import { FEED_TOGGLE, getTopBets } from '@/helpers'
 import Carousel from '../CarouselSlider.vue'
 import emitter from '@/plugins/emitter'
-import { useUtilsStore } from '@/stores'
+import { useUsersStore, useUtilsStore } from '@/stores'
 
 const utilsStore = useUtilsStore()
+const usersStore = useUsersStore()
 
 const featuredTournaments = ref([])
+
+const currentUser = computed(() => {
+  return usersStore.currentUser
+})
 
 async function getFeaturedGames() {
   if(!FEED_TOGGLE){
