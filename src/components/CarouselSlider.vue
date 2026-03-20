@@ -3,7 +3,7 @@
   <div id="carousel" class="main-banner">
     <div data-ride="carousel" class="carousel slide">
       <div role="listbox" class="carousel-inner">
-        <div
+        <!-- <div
           v-for="(image, index) in images"
           :key="index"
           class="item"
@@ -11,6 +11,12 @@
           @click="goToSlide(image)"
         >
           <img :src="image.image" />
+        </div> -->
+        <div
+          class="item active"
+          @click="goToSlide(image)"
+        >
+          <img src="@/assets/images/500.png" />
         </div>
       </div>
     </div>
