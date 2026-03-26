@@ -5,7 +5,8 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import VOtpInput from 'vue3-otp-input'
 import applyBranding from './helpers/utils'
-import VueGtag from 'vue-gtag';
+import { createGtag } from "vue-gtag";
+
 import { VueFbq } from 'vue3-facebook-pixel';
 
 import App from './App.vue'
@@ -25,12 +26,11 @@ const startApp = async () => {
     app.use(VueQueryPlugin)
     app.component('v-otp-input', VOtpInput)
 
-    app.use(VueGtag, {
-      config: {
-        id: 'G-QS32GCT1W3' // Replace with your actual Google tag ID
-      }
-    }, router); // Pass the router instance to enable automatic page view trackin
-
+    const gtag = createGtag({
+      tagId: "G-QS32GCT1W3"
+    })
+    app.use(gtag);
+    
     app.use(VueFbq, {
       pixelId: '2678472575859316', // Replace with your actual Pixel ID
       debug: true
