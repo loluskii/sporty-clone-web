@@ -2,15 +2,15 @@ import moment from 'moment'
 import { getSplitPropsData } from '@/helpers'
 import { brandDetails } from '/branding'
 import { useUtilsStore } from '@/stores'
-import { brandDetails as defBrandDetails } from '/branding-template'
+// import { brandDetails as defBrandDetails } from '/branding-template'
 
 export const applyBranding = async () => {
   try {
     let defConfig
     if (brandDetails) {
       defConfig = brandDetails
-    } else {
-      defConfig = defBrandDetails
+    // } else {
+    //   defConfig = defBrandDetails
     }
     const config = defConfig
     const utilsStore = useUtilsStore()

@@ -1,7 +1,6 @@
 <template>
   <div class="live-match">
     <div class="banner">
-      <span class="circle"></span>
       <span class="text" data-cms-key="live_betting">Live Betting</span>
       <div class="config" style="">
         <!-- <span class="refresh" @click="handleRefresh">Refresh</span> -->
