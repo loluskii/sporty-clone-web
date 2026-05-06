@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { FEED_TOGGLE, getTopBets } from '@/helpers'
 import Carousel from '../CarouselSlider.vue'
 import emitter from '@/plugins/emitter'
