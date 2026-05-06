@@ -650,7 +650,7 @@ onMounted(() => {
 }
 .c-header .x-login-bar .x-text,
 .c-header .x-login-bar .x-btn {
-  color: #fff;
+  color: #1c2485;
 }
 .c-header .x-login-bar .x-text {
   -webkit-box-sizing: border-box;

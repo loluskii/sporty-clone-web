@@ -47,21 +47,25 @@
   </div>
 </template>
 <script setup>
-import { useUtilsStore } from '@/stores'
+import { useUtilsStore, useUsersStore } from '@/stores'
 import { getSportsMenu, slugify } from '@/helpers'
 import { onMounted, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { MD5 } from 'crypto-js'
 
 const utilsStore = useUtilsStore()
+const usersStore = useUsersStore()
 const showMoreSports = ref(false)
 const route = useRoute()
-const token = ref('111111')
 const group = ref(import.meta.env.VITE_APP_KEY)
 const mode = ref(0)
 
 const sportsList = computed(() => {
   return utilsStore.sportsMenu
+})
+
+const token = computed(() => {
+  return usersStore.currentUser ? usersStore.currentUser.authCode : '111111';
 })
 
 const hashStr = computed(() => {
