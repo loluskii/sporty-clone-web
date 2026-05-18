@@ -180,7 +180,7 @@
 <script setup>
 import { defineComponent, watch, ref, computed, onUnmounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { getFixtureMarkets, createID, isSelected } from '@/helpers'
+import { getFeedsGameDetail, createID, isSelected } from '@/helpers'
 import LiveLayout from '@/components/Shared/LiveLayout.vue'
 import BetContainer from '@/components/Shared/BetContainer.vue'
 import _ from 'lodash'
@@ -243,7 +243,7 @@ async function getEventDetail(id) {
   console.log(id)
   isLoading.value = true
   try {
-    const res = await getFixtureMarkets(id)
+    const res = await getFeedsGameDetail(id)
     isLoading.value = false
     if (Object.keys(res).length && res.markets && res.statusCode === 1) {
       setupMqttSubscriptions(res.matchID)
@@ -326,7 +326,7 @@ function setupPeriodicRefetch(matchId) {
     if (!matchHasEnded.value) {
       // console.log(`🔄 Periodic refetch for match ID: ${matchId}`);
       try {
-        const res = await getFixtureMarkets(matchId)
+        const res = await getFeedsGameDetail(matchId)
         if (Object.keys(res).length && res.markets) {
           // Filter out suspended markets
           eventMarkets.value = res.markets.filter((market) => market.statusName !== 'Suspended')

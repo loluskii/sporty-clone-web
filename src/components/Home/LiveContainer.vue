@@ -115,7 +115,7 @@ import { useUtilsStore } from '@/stores'
 import { computed, ref, watch } from 'vue'
 import LoadingSpinner from '../Loaders/LoadingSpinner.vue'
 import { useQuery } from 'vue-query'
-import { FEED_TOGGLE, getLiveHighlights } from '@/helpers'
+import { FEED_TOGGLE, getFeedsLiveFixtures } from '@/helpers'
 import Fixture from '@/components/Live/LiveFixture.vue'
 import _ from 'lodash'
 
@@ -147,7 +147,7 @@ const MoreSportsLabel = ref('More Sports')
 const isManualRefetching = ref(false)
 
 // Optimize the query with better caching and error handling
-const { isLoading, refetch } = useQuery('liveData', getLiveHighlights, {
+const { isLoading, refetch } = useQuery('liveData', getFeedsLiveFixtures, {
   enabled: FEED_TOGGLE,
   // Prevent automatic refetching which can cause recursive updates
   refetchOnWindowFocus: false,
