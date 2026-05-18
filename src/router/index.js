@@ -106,9 +106,9 @@ const router = createRouter({
     },
     // Casino
     {
-      path: '/Games',
-      name: 'game-view',
-      component: () => import('@/views/Games/CasinoView.vue'),
+      path: '/Casino',
+      name: 'casino-view',
+      component: () => import('@/views/CasinoView.vue'),
       meta: {
         requiresAuth: false
       }

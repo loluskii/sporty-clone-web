@@ -226,7 +226,7 @@
             >
             <a
               id="header_nav_games"
-              href="/Games"
+              href="/Casino"
               class="x-flex-item"
               :class="viewIsCasino ? 'x-flex-item--active' : ''"
               ><span data-cms-key="casino">Casino</span></a
@@ -297,9 +297,18 @@ const date = new Date()
 const offset = date.getTimezoneOffset()
 const sign = offset >= 0 ? '-' : '+'
 const offsetHours = Math.abs(offset / 60)
-const token = ref('111111')
-const group = ref(import.meta.env.VITE_APP_KEY)
-const mode = ref(0)
+
+const token = computed(() => {
+  return usersStore.currentUser ? usersStore.currentUser.authCode : '111111';
+})
+
+const mode = computed(() => {
+  return usersStore.currentUser ? 1 : 0;
+})
+
+const group = computed(() => {
+  return usersStore.currentUser ? usersStore.currentUser.group : import.meta.env.VITE_APP_KEY;
+})
 
 const currentUser = computed(() => {
   return usersStore.currentUser
