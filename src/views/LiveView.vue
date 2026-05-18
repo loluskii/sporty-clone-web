@@ -151,7 +151,7 @@ import BetContainer from '@/components/Shared/BetContainer.vue'
 import Fixture from '@/components/Live/LiveFixture.vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import { useUsersStore, useUtilsStore } from '@/stores'
-import { FEED_TOGGLE, getLiveHighlights } from '@/helpers'
+import { FEED_TOGGLE, getFeedsLiveFixtures } from '@/helpers'
 import emitter from '@/plugins/emitter'
 
 // State
@@ -172,7 +172,7 @@ const visibleSports = computed(() => sportList.value.slice(0, 5))
 const moreSports = computed(() => sportList.value.slice(5))
 
 // Optimize the query with better caching
-const { isLoading } = useQuery('liveData', getLiveHighlights, {
+const { isLoading } = useQuery('liveData', getFeedsLiveFixtures, {
   enabled: FEED_TOGGLE,
   refetchInterval: 20000,
   staleTime: 15000, // Add stale time

@@ -1,5 +1,6 @@
 import { fetchWrapper } from './fetch-wrapper'
-import { BASE_API, CLIENT_ID, NEW_BASE_API } from './constants'
+import { BASE_API, CLIENT_ID, NEW_BASE_API, FEEDS_API, FEEDS_API_BASE } from './constants'
+import moment from 'moment'
 
 function today() {
   let today = new Date()
@@ -55,6 +56,12 @@ export const getCombosData = async (payload) => {
   return fetchWrapper.post(`${BASE_API}/api/sports/get-combos`, { selections: payload.selections })
 }
 
+export const getGameLobbyUrl = async (payload) => {
+  return parseData(
+    fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/lobby-url`, payload),
+  );
+};
+
 export const login = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/auth/login?source=website`, payload))
 }
@@ -77,10 +84,6 @@ export const verifyUsername = async (payload) => {
 
 export const resetPassword = async (payload) => {
   return parseData(fetchWrapper.patch(`${NEW_BASE_API}/auth/update/reset-password`, payload))
-}
-
-export const updatePassword = async (data) => {
-  return parseData(fetchWrapper.put(`${NEW_BASE_API}/auth/update/password/`, data))
 }
 
 export const updateProfile = async (payload) => {
@@ -146,37 +149,58 @@ export const getToday2 = async (sid, page) => {
 }
 
 export const getLiveHighlights = async () => {
-  return parseData(fetchWrapper.get(`${NEW_BASE_API}/sports/highlight/live/0?source=web&markets=1`))
+  return parseData(
+    fetchWrapper.get(`${NEW_BASE_API}/sports/highlight/live/0?source=mobile&markets=1`)
+  )
+}
+
+export const getLiveCountBySport = async (sid) => {
+  return parseData(fetchWrapper.get(`${NEW_BASE_API}/sports/live/games/count/${sid}`))
 }
 
 export const getSportHighlights = async (sid, hours, page) => {
-  if (hours) {
-    return parseData(
-      fetchWrapper.get(
-        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&hours=${hours}&page=1&perPage=50&timeoffset=${sign}${offsetHours}`
-      )
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=${page}&perPage=15&timeoffset=${sign}${offsetHours}`
     )
-  } else {
-    return parseData(
-      fetchWrapper.get(
-        `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=${page}&perPage=50&timeoffset=${sign}${offsetHours}`
-      )
+  )
+}
+
+export const getSportUpcoming = async (sid, period) => {
+  const todayDate = moment().startOf('day').format('YYYY-MM-DD')
+  const tomorrowDate = moment().add(1, 'day').startOf('day').format('YYYY-MM-DD')
+  const isTodayPeriod = todayDate === period?.startDate && todayDate === period?.endDate
+  const isTomorrowPeriod = tomorrowDate === period?.startDate && tomorrowDate === period?.endDate
+
+  const periodParam = isTodayPeriod
+    ? 'period=today'
+    : isTomorrowPeriod
+      ? 'period=tomorrow'
+      : period?.startDate !== undefined && period?.endDate !== undefined
+        ? `startDate=${period?.startDate}&endDate=${period?.endDate}`
+        : `period=${period}`
+
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/sports/fixtures/upcoming?sportID=${sid}&${periodParam}&timeoffset=${sign}${offsetHours}&limit=15`
     )
-  }
+  )
 }
 
 export const getHighlights2 = async (sid) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=30&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/highlight/prematch/${sid}?upcoming=1&page=1&perPage=15&timeoffset=${sign}${offsetHours}`
     )
   )
 }
 
-export const getFixturesByTournamentId = async (id, sid) => {
+export const getFixturesByTournamentId = async (id, sid, period = null) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/sports/get-fixtures/${id}?sportID=${sid}&marketID=1&source=web&timeoffset=${sign}${offsetHours}`
+      `${NEW_BASE_API}/sports/get-fixtures/${id}?sportID=${sid}&marketID=1&source=mobile&timeoffset=${sign}${offsetHours}&period=${
+        period ? period : 'all'
+      }&limit=50`
     )
   )
 }
@@ -203,12 +227,8 @@ export const fetchBankAssets = async () => {
   return parseData(fetchWrapper.get(`${NEW_BASE_API}/user/wallet/bank-accounts`))
 }
 
-export const getCouponById = async (id) => {
-  return parseData(fetchWrapper.get(`${BASE_API}/api/sports/find-coupon/${id}`))
-}
-
-export const placeBet = async (payload) => {
-  return parseData(fetchWrapper.post(`${BASE_API}/api/sports/place-bet?channel=mobile`, payload))
+export const updatePassword = async (payload) => {
+  return parseData(fetchWrapper.put(`${NEW_BASE_API}/auth/update/password/`, payload))
 }
 
 export const placeBet2 = async (payload) => {
@@ -223,16 +243,8 @@ export const performCashout = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/cashout/`, payload))
 }
 
-export const bookBet = async (payload) => {
-  return parseData(fetchWrapper.post(`${BASE_API}/api/sports/book-bet?channel=mobile`, payload))
-}
-
 export const bookBet2 = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/book-bet/${CLIENT_ID}`, payload))
-}
-
-export const loadBetslip = async (betslipId) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/bets/find-bet?code=${betslipId}`))
 }
 
 export const loadBetslipByCode = async (betslipId) => {
@@ -268,6 +280,10 @@ export const getProviders = async () => {
 
 export const getCasinoStartUrl = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/start`, payload))
+}
+
+export const getSmatVirtualStartUrl = async (payload) => {
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/start-url`, payload))
 }
 
 export const getTopGameCategories = async () => {
@@ -312,13 +328,13 @@ export const getBanksList = async () => {
 
 export const verifyAccount = async (payload) => {
   return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/verify-bank-account?source=web`, payload)
+    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/verify-bank-account?source=mobile`, payload)
   )
 }
 
 export const getDepositURL = async (payload) => {
   return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/initiate-deposit?source=web`, payload)
+    fetchWrapper.post(`${NEW_BASE_API}/user/wallet/initiate-deposit?source=mobile`, payload)
   )
 }
 
@@ -331,31 +347,24 @@ export const verifyDeposit = async (channel, ref) => {
 }
 
 export const withdrawalRequest = async (payload) => {
-  return parseData(fetchWrapper.post(`${NEW_BASE_API}/user/wallet/withdraw?source=web`, payload))
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/user/wallet/withdraw?source=mobile`, payload))
+}
+
+export const smileandpayPayout = async (payload) => {
+  return parseData(fetchWrapper.post(`${NEW_BASE_API}/user/wallet/smileandpay/payout/${CLIENT_ID}?source=mobile`, payload))
+}
+
+export const transferRequest = async (payload) => {
+  return parseData(
+    fetchWrapper.put(
+      `${NEW_BASE_API}/auth/initiate-transfer/${import.meta.env.VITE_CLIENT_ID}`,
+      payload
+    )
+  )
 }
 
 export const getUserBonus = async () => {
   return parseData(fetchWrapper.get(`${NEW_BASE_API}/bonus/user/list?client_id=${CLIENT_ID}`))
-}
-
-export const checkFirstDeposit = async () => {
-  return parseData(
-    fetchWrapper.get(`${NEW_BASE_API}/bonus/user/check-deposit-bonus?client_id=${CLIENT_ID}`)
-  )
-}
-
-export const awardBonus = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/bonus/user/award?client_id=${CLIENT_ID}`, payload)
-  )
-}
-
-export const getCMSPage = async (slug) => {
-  return parseData(
-    fetchWrapper.get(
-      `${NEW_BASE_API}/content-management/page?slug=${slug}&clientId=${import.meta.env.VITE_CLIENT_ID}`
-    )
-  )
 }
 
 export const getUserActiveBonus = async () => {
@@ -370,10 +379,54 @@ export const getUserCashbackBonus = async () => {
   )
 }
 
-export const getPromotions = async () => {
+export const checkFirstDeposit = async () => {
+  return parseData(
+    fetchWrapper.get(`${NEW_BASE_API}/bonus/user/check-deposit-bonus?client_id=${CLIENT_ID}`)
+  )
+}
+
+export const awardBonus = async (payload) => {
+  return parseData(
+    fetchWrapper.post(`${NEW_BASE_API}/bonus/user/award?client_id=${CLIENT_ID}`, payload)
+  )
+}
+
+export const getCMS = async (page) => {
   return parseData(
     fetchWrapper.get(
-      `${NEW_BASE_API}/games/promotions?clientId=${import.meta.env.VITE_CLIENT_ID}`
+      `${NEW_BASE_API}/content-management/page?clientId=${import.meta.env.VITE_CLIENT_ID}&slug=${page}`
     )
+  )
+}
+
+// ============================================
+// NEW FEEDS API ENDPOINTS
+// ============================================
+
+/**
+ * Get live fixtures from new feeds API
+ * @param {number} sportId - Sport ID (0 for all sports, 1 for Soccer, etc.)
+ * @param {number} tournamentId - Tournament ID filter (0 for all)
+ * @param {number} categoryId - Category ID filter (0 for all)
+ * @param {string} orderType - Order type ('priority' or 'time')
+ * @returns {Promise} Live fixtures data
+ */
+export const getFeedsLiveFixtures = async (sportId = 0, tournamentId = 0, categoryId = 0, orderType = 'priority') => {
+  return parseData(
+    fetchWrapper.get(
+      `${FEEDS_API}/fixtures/live/0?tournament_id=${tournamentId}&category_id=${categoryId}&order_type=${orderType}`
+    )
+  )
+}
+
+/**
+ * Get single game details with all markets from new feeds API
+ * @param {number} gameId - Game/Match ID
+ * @param {number} groupId - Market group ID (0 for all)
+ * @returns {Promise} Game details with markets and outcomes
+ */
+export const getFeedsGameDetail = async (gameId, groupId = 0) => {
+  return parseData(
+    fetchWrapper.get(`${FEEDS_API_BASE}/game/${gameId}?group_id=${groupId}`)
   )
 }

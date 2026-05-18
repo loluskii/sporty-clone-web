@@ -336,7 +336,7 @@ const storeOTP = async (data) => {
 }
 
 const formattedPhoneNumber = (phoneNumber) => {
-  const pNumber = phoneNumber.toString();
+  let pNumber = phoneNumber.toString();
   
    if (pNumber.startsWith('234')) {
     pNumber = pNumber.substring(3)

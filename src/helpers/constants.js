@@ -1,5 +1,7 @@
 export const BASE_API = import.meta.env.VITE_BASE_URL
 export const NEW_BASE_API = import.meta.env.VITE_NEW_BASE_API
+export const FEEDS_API = 'https://odds-service-tdurqo2k.on-forge.com/v1'
+export const FEEDS_API_BASE = import.meta.env.VITE_FEEDS_API?.replace('/v1', '') || ''
 
 export const CLIENT_ID = import.meta.env.VITE_CLIENT_ID
 export const APP_KEY = import.meta.env.VITE_APP_KEY
@@ -7,8 +9,14 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL
 
 export const AUTH_EXCLUDE_LIST = []
 export const WTH_PERC = 0
-
+export const SIM_ALLOWED_MARKETS = [
+  1, 10, 18, 19, 20, 21, 26, 29, 35, 37, 45, 47, 60, 63, 75, 81, 98, 548,
+];
+export const SIM_ENABLED = false;
+export const DEPOSIT_ALLOWED = true
 export const FEED_TOGGLE = true
+export const EXCLUDED_LIVE_SPORT_IDS = [2, 5]
+
 
 export const PINIA_PERSIST_OPTIONS = {
   storage: localStorage
