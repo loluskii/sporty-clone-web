@@ -56,12 +56,6 @@ export const getCombosData = async (payload) => {
   return fetchWrapper.post(`${BASE_API}/api/sports/get-combos`, { selections: payload.selections })
 }
 
-export const getGameLobbyUrl = async (payload) => {
-  return parseData(
-    fetchWrapper.post(`${NEW_BASE_API}/games/${CLIENT_ID}/lobby-url`, payload),
-  );
-};
-
 export const login = async (payload) => {
   return parseData(fetchWrapper.post(`${NEW_BASE_API}/auth/login?source=website`, payload))
 }
