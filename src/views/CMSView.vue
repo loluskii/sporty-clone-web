@@ -12,7 +12,7 @@
 
 <script setup>
 // import HeaderOther from '@/components/HeaderOther.vue'
-import { getCMSPage } from '@/helpers'
+import { getCMS } from '@/helpers'
 import { onMounted, ref } from 'vue'
 import LoadingSpinner from '@/components/Loaders/LoadingSpinner.vue'
 import CMSLayout from '@/components/Shared/CMSLayout.vue'
@@ -26,7 +26,7 @@ const route = useRoute()
 const getPageContent = async (slug) => {
   try {
     isLoading.value = true
-    const res = await getCMSPage(slug)
+    const res = await getCMS(slug)
     isLoading.value = false
     html.value = Object.values(res.data)[0].content
   } catch (error) {

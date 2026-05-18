@@ -393,6 +393,14 @@ export const getCMS = async (page) => {
   )
 }
 
+export const getPromotions = async () => {
+  return parseData(
+    fetchWrapper.get(
+      `${NEW_BASE_API}/games/promotions?clientId=${import.meta.env.VITE_CLIENT_ID}`
+    )
+  )
+}
+
 // ============================================
 // NEW FEEDS API ENDPOINTS
 // ============================================
