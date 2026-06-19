@@ -57,7 +57,7 @@ onMounted(async () => {
               </h4>
               <!-- Use v-html to render the content as HTML in single view -->
               <div
-                class="card-text promo-body text-muted mb-2 text-center"
+                class="card-text promo-body mb-2 text-center"
                 style=""
                 v-if="selectedPromotion.content"
                 v-html="selectedPromotion.content"
@@ -174,7 +174,7 @@ onMounted(async () => {
 .single-promo-view .promo-body {
   display: block; /* Show body in single view */
   font-size: 1rem;
-  color: #b0b0b0;
+  color: #6d6d6d;
   padding: 0 1rem;
 }
 
